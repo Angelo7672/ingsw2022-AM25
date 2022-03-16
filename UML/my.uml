@@ -195,4 +195,84 @@
       <specification xmi:type="uml:LiteralInteger" xmi:id="_OdoyoaPXEeyUnIA73bAnjg" value="3"/>
     </ownedLiteral>
   </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_5sEbMKRlEey8rsPN8yCl_Q" name="A_studentes_isolas" memberEnd="_5sEbMaRlEey8rsPN8yCl_Q _5sEbNKRlEey8rsPN8yCl_Q" navigableOwnedEnd="_5sEbMaRlEey8rsPN8yCl_Q _5sEbNKRlEey8rsPN8yCl_Q">
+    <ownedEnd xmi:id="_5sEbMaRlEey8rsPN8yCl_Q" name="studentes" type="_s93rgKO7EeylK_zZKC3i9A" association="_5sEbMKRlEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5sEbMqRlEey8rsPN8yCl_Q"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5sEbM6RlEey8rsPN8yCl_Q" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_5sEbNKRlEey8rsPN8yCl_Q" name="isolas" type="_C6WfAKO-EeylK_zZKC3i9A" association="_5sEbMKRlEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5sEbNaRlEey8rsPN8yCl_Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5sEbNqRlEey8rsPN8yCl_Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_D9EJ4KRmEey8rsPN8yCl_Q" memberEnd="_D9EJ4aRmEey8rsPN8yCl_Q _D9EJ5KRmEey8rsPN8yCl_Q" navigableOwnedEnd="_D9EJ4aRmEey8rsPN8yCl_Q _D9EJ5KRmEey8rsPN8yCl_Q">
+    <ownedEnd xmi:id="_D9EJ4aRmEey8rsPN8yCl_Q" name="studentes" type="_s93rgKO7EeylK_zZKC3i9A" association="_D9EJ4KRmEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_D9EJ4qRmEey8rsPN8yCl_Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_D9EJ46RmEey8rsPN8yCl_Q" value="59"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_D9EJ5KRmEey8rsPN8yCl_Q" name="scuolas" type="_Qm7uUKO_EeylK_zZKC3i9A" association="_D9EJ4KRmEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_D9EJ5aRmEey8rsPN8yCl_Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_D9EJ5qRmEey8rsPN8yCl_Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_To6XsKRmEey8rsPN8yCl_Q" memberEnd="_To6XsaRmEey8rsPN8yCl_Q _To6XtKRmEey8rsPN8yCl_Q" navigableOwnedEnd="_To6XsaRmEey8rsPN8yCl_Q _To6XtKRmEey8rsPN8yCl_Q">
+    <ownedEnd xmi:id="_To6XsaRmEey8rsPN8yCl_Q" name="professores" type="_GRjWQKO8EeylK_zZKC3i9A" association="_To6XsKRmEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_To6XsqRmEey8rsPN8yCl_Q"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_To6Xs6RmEey8rsPN8yCl_Q" value="5"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_To6XtKRmEey8rsPN8yCl_Q" name="scuolas" type="_Qm7uUKO_EeylK_zZKC3i9A" association="_To6XsKRmEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_To6XtaRmEey8rsPN8yCl_Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_To6XtqRmEey8rsPN8yCl_Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_g1yosKRmEey8rsPN8yCl_Q" memberEnd="_g1yosaRmEey8rsPN8yCl_Q _g1yotKRmEey8rsPN8yCl_Q" navigableOwnedEnd="_g1yosaRmEey8rsPN8yCl_Q _g1yotKRmEey8rsPN8yCl_Q">
+    <ownedEnd xmi:id="_g1yosaRmEey8rsPN8yCl_Q" name="studentes" type="_s93rgKO7EeylK_zZKC3i9A" association="_g1yosKRmEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_g1yosqRmEey8rsPN8yCl_Q"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_g1yos6RmEey8rsPN8yCl_Q" value="4"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_g1yotKRmEey8rsPN8yCl_Q" name="nuvolas" type="_EFRaAKO-EeylK_zZKC3i9A" association="_g1yosKRmEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_g1yotaRmEey8rsPN8yCl_Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_g1yotqRmEey8rsPN8yCl_Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_shZUMKRmEey8rsPN8yCl_Q" memberEnd="_shZUMaRmEey8rsPN8yCl_Q _shZUNKRmEey8rsPN8yCl_Q" navigableOwnedEnd="_shZUMaRmEey8rsPN8yCl_Q _shZUNKRmEey8rsPN8yCl_Q">
+    <ownedEnd xmi:id="_shZUMaRmEey8rsPN8yCl_Q" name="assistentis" type="_i1HdYKO8EeylK_zZKC3i9A" association="_shZUMKRmEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_shZUMqRmEey8rsPN8yCl_Q"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_shZUM6RmEey8rsPN8yCl_Q" value="10"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_shZUNKRmEey8rsPN8yCl_Q" name="giocatores" type="_qcuSgKO9EeylK_zZKC3i9A" association="_shZUMKRmEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_shZUNaRmEey8rsPN8yCl_Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_shZUNqRmEey8rsPN8yCl_Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Y8bDQKRnEey8rsPN8yCl_Q" memberEnd="_Y8bDQaRnEey8rsPN8yCl_Q _Y8bDRKRnEey8rsPN8yCl_Q" navigableOwnedEnd="_Y8bDQaRnEey8rsPN8yCl_Q _Y8bDRKRnEey8rsPN8yCl_Q">
+    <ownedEnd xmi:id="_Y8bDQaRnEey8rsPN8yCl_Q" name="madre Naturas" type="_JteGsKPAEeylK_zZKC3i9A" association="_Y8bDQKRnEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Y8bDQqRnEey8rsPN8yCl_Q"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Y8bDQ6RnEey8rsPN8yCl_Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_Y8bDRKRnEey8rsPN8yCl_Q" name="isolas" type="_C6WfAKO-EeylK_zZKC3i9A" association="_Y8bDQKRnEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Y8bDRaRnEey8rsPN8yCl_Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Y8bDRqRnEey8rsPN8yCl_Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_gzwL4KRnEey8rsPN8yCl_Q" memberEnd="_gzwL4aRnEey8rsPN8yCl_Q _gzwL5KRnEey8rsPN8yCl_Q" navigableOwnedEnd="_gzwL4aRnEey8rsPN8yCl_Q _gzwL5KRnEey8rsPN8yCl_Q">
+    <ownedEnd xmi:id="_gzwL4aRnEey8rsPN8yCl_Q" name="torres" type="_GA71cKO-EeylK_zZKC3i9A" association="_gzwL4KRnEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gzwL4qRnEey8rsPN8yCl_Q"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gzwL46RnEey8rsPN8yCl_Q" value="8"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_gzwL5KRnEey8rsPN8yCl_Q" name="scuolas" type="_Qm7uUKO_EeylK_zZKC3i9A" association="_gzwL4KRnEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gzwL5aRnEey8rsPN8yCl_Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gzwL5qRnEey8rsPN8yCl_Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_stv4sKRnEey8rsPN8yCl_Q" memberEnd="_stv4saRnEey8rsPN8yCl_Q _stv4tKRnEey8rsPN8yCl_Q" navigableOwnedEnd="_stv4saRnEey8rsPN8yCl_Q _stv4tKRnEey8rsPN8yCl_Q">
+    <ownedEnd xmi:id="_stv4saRnEey8rsPN8yCl_Q" name="torres" type="_GA71cKO-EeylK_zZKC3i9A" association="_stv4sKRnEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_stv4sqRnEey8rsPN8yCl_Q"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_stv4s6RnEey8rsPN8yCl_Q" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_stv4tKRnEey8rsPN8yCl_Q" name="isolas" type="_C6WfAKO-EeylK_zZKC3i9A" association="_stv4sKRnEey8rsPN8yCl_Q">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_stv4taRnEey8rsPN8yCl_Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_stv4tqRnEey8rsPN8yCl_Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
 </uml:Model>
