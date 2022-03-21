@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_q2ASoKXVEeyCfZ0D-bYWPw" name="NewModel">
+  <packageImport xmi:id="_ftTMAKeaEey6erbqSw8fXA">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_wDedEKXVEeyCfZ0D-bYWPw" name="Player" visibility="public">
+    <ownedAttribute xmi:id="_BhYhkKXaEeyCfZ0D-bYWPw" name="nickname" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_BhZIoKXaEeyCfZ0D-bYWPw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_BhZIoaXaEeyCfZ0D-bYWPw" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_FI1JYKXaEeyCfZ0D-bYWPw" name="charcter" visibility="public" type="_QybpwKXaEeyCfZ0D-bYWPw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FI1wcKXaEeyCfZ0D-bYWPw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FI1wcaXaEeyCfZ0D-bYWPw" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_Qy5j0KXaEeyCfZ0D-bYWPw" name="team" visibility="public" type="_ojRBsKXaEeyCfZ0D-bYWPw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Qy5j0aXaEeyCfZ0D-bYWPw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Qy5j0qXaEeyCfZ0D-bYWPw" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_tlcnkKeaEey6erbqSw8fXA" name="number" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_tldOoKeaEey6erbqSw8fXA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_tldOoaeaEey6erbqSw8fXA" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_Shy_sKh5EeyVv4gaBE6dqg" name="coins" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Shy_sah5EeyVv4gaBE6dqg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Shy_sqh5EeyVv4gaBE6dqg" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_tyfrUKkqEeyet4Dm0VjhUQ" name="lastCard" visibility="public" type="_z8GRoKiMEeyVv4gaBE6dqg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_tygSYKkqEeyet4Dm0VjhUQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_tygSYakqEeyet4Dm0VjhUQ" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_wVyN0KkyEeyet4Dm0VjhUQ" name="hand" visibility="public" type="_z8GRoKiMEeyVv4gaBE6dqg" isUnique="false">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wVyN0akyEeyet4Dm0VjhUQ" value="10"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wVyN0qkyEeyet4Dm0VjhUQ" value="10"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_CuO5wKXbEeyCfZ0D-bYWPw" name="setTeam"/>
+    <ownedOperation xmi:id="_EWWuIKXbEeyCfZ0D-bYWPw" name="getTeam"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_OMszEKXZEeyCfZ0D-bYWPw" name="Character" visibility="public">
+    <ownedLiteral xmi:id="_V0hgEKXZEeyCfZ0D-bYWPw" name="WIZARD">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_V0hgEaXZEeyCfZ0D-bYWPw"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_YJS_EKXZEeyCfZ0D-bYWPw" name="KING">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_YJTmIKXZEeyCfZ0D-bYWPw" value="1"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_aIcMUKXZEeyCfZ0D-bYWPw" name="WITCH">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_aIczYKXZEeyCfZ0D-bYWPw" value="2"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_bZ_60KXZEeyCfZ0D-bYWPw" name="SAMURAI">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_bZ_60aXZEeyCfZ0D-bYWPw" value="3"/>
+    </ownedLiteral>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_QybpwKXaEeyCfZ0D-bYWPw" name="Charcter "/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_ojRBsKXaEeyCfZ0D-bYWPw" name="Team "/>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_pSvW0KXaEeyCfZ0D-bYWPw" name="Team" visibility="public">
+    <ownedLiteral xmi:id="_qd1Q8KXaEeyCfZ0D-bYWPw" name="WHITE">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_qd1Q8aXaEeyCfZ0D-bYWPw"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_sTyF8KXaEeyCfZ0D-bYWPw" name="BLACK">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_sTytAKXaEeyCfZ0D-bYWPw" value="1"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_tgjbEKXaEeyCfZ0D-bYWPw" name="GREY">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_tgjbEaXaEeyCfZ0D-bYWPw" value="2"/>
+    </ownedLiteral>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_UE5_wKXdEeyCfZ0D-bYWPw" name="" memberEnd="_UE5_waXdEeyCfZ0D-bYWPw _UE5_xKXdEeyCfZ0D-bYWPw" navigableOwnedEnd="_UE5_waXdEeyCfZ0D-bYWPw _UE5_xKXdEeyCfZ0D-bYWPw">
+    <ownedEnd xmi:id="_UE5_waXdEeyCfZ0D-bYWPw" name="players" type="_wDedEKXVEeyCfZ0D-bYWPw" association="_UE5_wKXdEeyCfZ0D-bYWPw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_UE5_wqXdEeyCfZ0D-bYWPw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_UE5_w6XdEeyCfZ0D-bYWPw" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_UE5_xKXdEeyCfZ0D-bYWPw" name="characters" type="_OMszEKXZEeyCfZ0D-bYWPw" association="_UE5_wKXdEeyCfZ0D-bYWPw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_UE5_xaXdEeyCfZ0D-bYWPw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_UE5_xqXdEeyCfZ0D-bYWPw" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_1CKrAKXdEeyCfZ0D-bYWPw" memberEnd="_1CKrAaXdEeyCfZ0D-bYWPw _1CKrBKXdEeyCfZ0D-bYWPw" navigableOwnedEnd="_1CKrAaXdEeyCfZ0D-bYWPw _1CKrBKXdEeyCfZ0D-bYWPw">
+    <ownedEnd xmi:id="_1CKrAaXdEeyCfZ0D-bYWPw" name="teams" type="_pSvW0KXaEeyCfZ0D-bYWPw" association="_1CKrAKXdEeyCfZ0D-bYWPw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1CKrAqXdEeyCfZ0D-bYWPw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1CKrA6XdEeyCfZ0D-bYWPw" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_1CKrBKXdEeyCfZ0D-bYWPw" name="players" type="_wDedEKXVEeyCfZ0D-bYWPw" association="_1CKrAKXdEeyCfZ0D-bYWPw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1CKrBaXdEeyCfZ0D-bYWPw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1CKrBqXdEeyCfZ0D-bYWPw" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_VPgs4KY5EeyCfZ0D-bYWPw" name="bool "/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Y06GQKY5EeyCfZ0D-bYWPw" name="bool  [120]"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_EFWRgKY6EeyCfZ0D-bYWPw" name="bool  [130] [5]{unique}"/>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_NUOYYKeZEey6erbqSw8fXA" name="Planning Phase" visibility="public">
+    <ownedAttribute xmi:id="_mcfA0KeaEey6erbqSw8fXA" name="queue" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mcfA0aeaEey6erbqSw8fXA" value="2"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mcfA0qeaEey6erbqSw8fXA" value="4"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_E832cKeaEey6erbqSw8fXA" name="playCard">
+      <ownedParameter xmi:id="_ILbdIKeaEey6erbqSw8fXA" name="Player"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_IXuMsKeaEey6erbqSw8fXA" name="lookLastCard">
+      <ownedParameter xmi:id="_MdxcEKeaEey6erbqSw8fXA" name="Player"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NwJC4KeaEey6erbqSw8fXA" name="inOrderOfPlay"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_htKyAKeaEey6erbqSw8fXA" name="int [4]{unique}"/>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_GGrhsKebEey6erbqSw8fXA" name="Action Phase" visibility="public">
+    <ownedOperation xmi:id="_JyWiMKebEey6erbqSw8fXA" name="moveStudent">
+      <ownedParameter xmi:id="_5MoMUKkqEeyet4Dm0VjhUQ" name="Player"/>
+      <ownedParameter xmi:id="_2pP0IKkrEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_V4iQ4KebEey6erbqSw8fXA" name="conquestIsland">
+      <ownedParameter xmi:id="_A_q1YKksEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_t4TcsKebEey6erbqSw8fXA" name="checkAdjacentIslands">
+      <ownedParameter xmi:id="_DyuL0KksEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_0ziwgKebEey6erbqSw8fXA" name="chooseCloud">
+      <ownedParameter xmi:id="_LVEi8KksEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_NYVlwKktEeyet4Dm0VjhUQ" name="checkPosForCoin"/>
+    <ownedOperation xmi:id="_mCtNwKktEeyet4Dm0VjhUQ" name="useSpecial">
+      <ownedParameter xmi:id="_pczWEKktEeyet4Dm0VjhUQ" name="Special"/>
+      <ownedParameter xmi:id="_A78hEKkuEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_rgC0oKk3Eeyet4Dm0VjhUQ" name="moveMotherNature">
+      <ownedParameter xmi:id="_rgC0oak3Eeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_c9Ev8KhyEeyVv4gaBE6dqg" name="School" visibility="public">
+    <ownedAttribute xmi:id="_eqZNYKhyEeyVv4gaBE6dqg" name="towers" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eqZNYahyEeyVv4gaBE6dqg"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eqZNYqhyEeyVv4gaBE6dqg" value="8"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_nIpMEKhyEeyVv4gaBE6dqg" name="professors" visibility="public" type="_VPgs4KY5EeyCfZ0D-bYWPw" isUnique="false">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nIpzIKhyEeyVv4gaBE6dqg" value="5"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_nIpzIahyEeyVv4gaBE6dqg" value="5"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_rN3VAKhyEeyVv4gaBE6dqg" name="studentsEntrance" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rN3VAahyEeyVv4gaBE6dqg" value="5"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rN3VAqhyEeyVv4gaBE6dqg" value="5"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_Jyf8AKhzEeyVv4gaBE6dqg" name="studentsTable" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Jyf8AahzEeyVv4gaBE6dqg" value="5"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Jyf8AqhzEeyVv4gaBE6dqg" value="5"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_EL_KAKh0EeyVv4gaBE6dqg" name="setProfessor"/>
+    <ownedOperation xmi:id="_puh-UKh0EeyVv4gaBE6dqg" name="setSchool">
+      <ownedParameter xmi:id="_rN0m0Kh0EeyVv4gaBE6dqg" name="int"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_tGv3UKh0EeyVv4gaBE6dqg" name="setStudentsEntrance">
+      <ownedParameter xmi:id="_v6VZQKh0EeyVv4gaBE6dqg" name="int"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_x9IXcKh0EeyVv4gaBE6dqg" name="setSchoolTower">
+      <ownedParameter xmi:id="_zOSdUKh0EeyVv4gaBE6dqg" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_S2638Kh1EeyVv4gaBE6dqg" memberEnd="_S2638ah1EeyVv4gaBE6dqg _S27fAKh1EeyVv4gaBE6dqg" navigableOwnedEnd="_S27fAKh1EeyVv4gaBE6dqg">
+    <ownedEnd xmi:id="_S2638ah1EeyVv4gaBE6dqg" name="players" type="_wDedEKXVEeyCfZ0D-bYWPw" association="_S2638Kh1EeyVv4gaBE6dqg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_S2638qh1EeyVv4gaBE6dqg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_S26386h1EeyVv4gaBE6dqg" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_S27fAKh1EeyVv4gaBE6dqg" name="schools" type="_c9Ev8KhyEeyVv4gaBE6dqg" association="_S2638Kh1EeyVv4gaBE6dqg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_S27fAah1EeyVv4gaBE6dqg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_S27fAqh1EeyVv4gaBE6dqg" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_gR6dcKh1EeyVv4gaBE6dqg" name="Island" visibility="public">
+    <ownedAttribute xmi:id="_iOTRoKh1EeyVv4gaBE6dqg" name="students" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iOTRoah1EeyVv4gaBE6dqg" value="5"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iOTRoqh1EeyVv4gaBE6dqg" value="5"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_nFr3UKh1EeyVv4gaBE6dqg" name="whiteTower" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nFr3Uah1EeyVv4gaBE6dqg"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_nFr3Uqh1EeyVv4gaBE6dqg" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_y2tOUKh1EeyVv4gaBE6dqg" name="blackTower" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_y2tOUah1EeyVv4gaBE6dqg"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_y2tOUqh1EeyVv4gaBE6dqg" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_0KCecKh1EeyVv4gaBE6dqg" name="greyTower" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_0KDFgKh1EeyVv4gaBE6dqg"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_0KDFgah1EeyVv4gaBE6dqg" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_lSMPcKkwEeyet4Dm0VjhUQ" name="inhibited" visibility="public" type="_VPgs4KY5EeyCfZ0D-bYWPw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lSM2gKkwEeyet4Dm0VjhUQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lSM2gakwEeyet4Dm0VjhUQ" value="1"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_CeW4oKh2EeyVv4gaBE6dqg" name="incrValueTower">
+      <ownedParameter xmi:id="_GPhdIKh2EeyVv4gaBE6dqg" name="Player"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_JPf1QKh2EeyVv4gaBE6dqg" name="incrStudents">
+      <ownedParameter xmi:id="_Wu9rEKh2EeyVv4gaBE6dqg" name="char"/>
+      <ownedParameter xmi:id="_Wu9rEah2EeyVv4gaBE6dqg" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_hokR4Kh2EeyVv4gaBE6dqg" name="CloudTile" visibility="public">
+    <ownedAttribute xmi:id="_naIn4Kh2EeyVv4gaBE6dqg" name="students" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_naJO8Kh2EeyVv4gaBE6dqg" value="5"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_naJO8ah2EeyVv4gaBE6dqg" value="5"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_0tVjUKh2EeyVv4gaBE6dqg" name="refreshCloudStudents"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_kUR0wKh3EeyVv4gaBE6dqg" name="Game Setup" visibility="public">
+    <ownedAttribute xmi:id="_97_10Kh3EeyVv4gaBE6dqg" name="motherPosition" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_97_10ah3EeyVv4gaBE6dqg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_97_10qh3EeyVv4gaBE6dqg" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_c7UNsKh4EeyVv4gaBE6dqg" name="clouds" visibility="public" type="_hokR4Kh2EeyVv4gaBE6dqg" isUnique="false">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c7UNsah4EeyVv4gaBE6dqg" value="2"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c7UNsqh4EeyVv4gaBE6dqg" value="4"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_zlRdIKh4EeyVv4gaBE6dqg" name="players" visibility="public" type="_wDedEKXVEeyCfZ0D-bYWPw" isUnique="false">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zlRdIah4EeyVv4gaBE6dqg" value="2"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zlRdIqh4EeyVv4gaBE6dqg" value="4"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_KMtSIKh7EeyVv4gaBE6dqg" name="bag" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#char"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KMtSIah7EeyVv4gaBE6dqg" value="130"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KMtSIqh7EeyVv4gaBE6dqg" value="130"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_Sk0zoKh7EeyVv4gaBE6dqg" name="islands" visibility="public" type="_gR6dcKh1EeyVv4gaBE6dqg" isUnique="false">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Sk0zoah7EeyVv4gaBE6dqg" value="3"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Sk0zoqh7EeyVv4gaBE6dqg" value="12"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_sK7wQKktEeyet4Dm0VjhUQ" name="special" visibility="public" type="_9hCS8KiJEeyVv4gaBE6dqg" isUnique="false">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sK7wQaktEeyet4Dm0VjhUQ" value="12"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sK7wQqktEeyet4Dm0VjhUQ" value="12"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_0NUfIKh5EeyVv4gaBE6dqg" name="setMotherNature"/>
+    <ownedOperation xmi:id="_35WE8Kh5EeyVv4gaBE6dqg" name="setPlayer">
+      <ownedParameter xmi:id="_35WE8ah5EeyVv4gaBE6dqg" name="int"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_4jE-cKh5EeyVv4gaBE6dqg" name="setBag"/>
+    <ownedOperation xmi:id="_nlH4MKksEeyet4Dm0VjhUQ" name="checkVictory"/>
+    <ownedOperation xmi:id="_qnwiwKksEeyet4Dm0VjhUQ" name="setNumberOfPlayer">
+      <ownedParameter xmi:id="_vPMA4KksEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_wTcdwKktEeyet4Dm0VjhUQ" name="chooseSpecials"/>
+    <ownedOperation xmi:id="_hFS0YKk0Eeyet4Dm0VjhUQ" name="setClouds">
+      <ownedParameter xmi:id="_hFS0Yak0Eeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_OGhn0Kk1Eeyet4Dm0VjhUQ" name="readQueue"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_7WM4QKh3EeyVv4gaBE6dqg" name="char [130]{unique}"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_WPIpkKh4EeyVv4gaBE6dqg" name="Island [3..12]{unique}"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_gNjlEKh5EeyVv4gaBE6dqg" name="A_players_game Setups" memberEnd="_gNjlEah5EeyVv4gaBE6dqg _gNjlFKh5EeyVv4gaBE6dqg" navigableOwnedEnd="_gNjlEah5EeyVv4gaBE6dqg _gNjlFKh5EeyVv4gaBE6dqg">
+    <ownedEnd xmi:id="_gNjlEah5EeyVv4gaBE6dqg" name="players" type="_wDedEKXVEeyCfZ0D-bYWPw" association="_gNjlEKh5EeyVv4gaBE6dqg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gNjlEqh5EeyVv4gaBE6dqg" value="2"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gNjlE6h5EeyVv4gaBE6dqg" value="4"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_gNjlFKh5EeyVv4gaBE6dqg" name="game Setups" type="_kUR0wKh3EeyVv4gaBE6dqg" association="_gNjlEKh5EeyVv4gaBE6dqg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gNjlFah5EeyVv4gaBE6dqg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gNjlFqh5EeyVv4gaBE6dqg" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_rBFZEKh5EeyVv4gaBE6dqg" name="A_game Setups_cloudTiles" memberEnd="_rBFZEah5EeyVv4gaBE6dqg _rBFZFKh5EeyVv4gaBE6dqg" navigableOwnedEnd="_rBFZEah5EeyVv4gaBE6dqg _rBFZFKh5EeyVv4gaBE6dqg">
+    <ownedEnd xmi:id="_rBFZEah5EeyVv4gaBE6dqg" name="game Setups" type="_kUR0wKh3EeyVv4gaBE6dqg" association="_rBFZEKh5EeyVv4gaBE6dqg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rBFZEqh5EeyVv4gaBE6dqg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rBFZE6h5EeyVv4gaBE6dqg" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_rBFZFKh5EeyVv4gaBE6dqg" name="cloudTiles" type="_hokR4Kh2EeyVv4gaBE6dqg" association="_rBFZEKh5EeyVv4gaBE6dqg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rBFZFah5EeyVv4gaBE6dqg" value="2"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rBFZFqh5EeyVv4gaBE6dqg" value="4"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_n_5qkKh6EeyVv4gaBE6dqg" memberEnd="_n_5qkah6EeyVv4gaBE6dqg _n_5qlKh6EeyVv4gaBE6dqg" navigableOwnedEnd="_n_5qkah6EeyVv4gaBE6dqg _n_5qlKh6EeyVv4gaBE6dqg">
+    <ownedEnd xmi:id="_n_5qkah6EeyVv4gaBE6dqg" name="islands" type="_gR6dcKh1EeyVv4gaBE6dqg" association="_n_5qkKh6EeyVv4gaBE6dqg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_n_5qkqh6EeyVv4gaBE6dqg" value="12"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_n_5qk6h6EeyVv4gaBE6dqg" value="12"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_n_5qlKh6EeyVv4gaBE6dqg" name="game Setups" type="_kUR0wKh3EeyVv4gaBE6dqg" association="_n_5qkKh6EeyVv4gaBE6dqg">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_n_5qlah6EeyVv4gaBE6dqg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_n_5qlqh6EeyVv4gaBE6dqg" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_9hCS8KiJEeyVv4gaBE6dqg" name="Special" visibility="public" isAbstract="true">
+    <ownedAttribute xmi:id="_AJpT8KiKEeyVv4gaBE6dqg" name="cost" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_AJpT8aiKEeyVv4gaBE6dqg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_AJpT8qiKEeyVv4gaBE6dqg" value="1"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_RXvXoKiKEeyVv4gaBE6dqg" name="increaseCost">
+      <ownedParameter xmi:id="_UYM38KiKEeyVv4gaBE6dqg" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Y7mKoKiKEeyVv4gaBE6dqg" name="Special1" visibility="public">
+    <generalization xmi:id="_-3Z-EKiLEeyVv4gaBE6dqg" general="_9hCS8KiJEeyVv4gaBE6dqg"/>
+    <ownedAttribute xmi:id="_ehC9sKkuEeyet4Dm0VjhUQ" name="students" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ehC9sakuEeyet4Dm0VjhUQ" value="5"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ehC9sqkuEeyet4Dm0VjhUQ" value="5"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_wawKMKkuEeyet4Dm0VjhUQ" name="effect">
+      <ownedParameter xmi:id="_M18YcKkvEeyet4Dm0VjhUQ" name="int"/>
+      <ownedParameter xmi:id="_QTzmcKkvEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_evjGQKiKEeyVv4gaBE6dqg" name="Special2" visibility="public">
+    <generalization xmi:id="_-YnJQKiLEeyVv4gaBE6dqg" general="_9hCS8KiJEeyVv4gaBE6dqg"/>
+    <ownedOperation xmi:id="_URlDkKkvEeyet4Dm0VjhUQ" name="effect">
+      <ownedParameter xmi:id="_gQz1sKkvEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_hV1MAKiKEeyVv4gaBE6dqg" name="Special3" visibility="public">
+    <generalization xmi:id="_5Xn7oKiLEeyVv4gaBE6dqg" general="_9hCS8KiJEeyVv4gaBE6dqg"/>
+    <ownedOperation xmi:id="_nGvywKkvEeyet4Dm0VjhUQ" name="effect">
+      <ownedParameter xmi:id="_o00eIKkvEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_lWuOkKiKEeyVv4gaBE6dqg" name="Special4" visibility="public">
+    <generalization xmi:id="__bb4MKiLEeyVv4gaBE6dqg" general="_9hCS8KiJEeyVv4gaBE6dqg"/>
+    <ownedOperation xmi:id="_1mpK0KkvEeyet4Dm0VjhUQ" name="effect"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_qMMIsKiKEeyVv4gaBE6dqg" name="Special5" visibility="public">
+    <generalization xmi:id="__3StwKiLEeyVv4gaBE6dqg" general="_9hCS8KiJEeyVv4gaBE6dqg"/>
+    <ownedAttribute xmi:id="_Yacg8KkwEeyet4Dm0VjhUQ" name="inhibition" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Yacg8akwEeyet4Dm0VjhUQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YadIAKkwEeyet4Dm0VjhUQ" value="1"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_8OLfgKkvEeyet4Dm0VjhUQ" name="effect">
+      <ownedParameter xmi:id="_dmpgEKkwEeyet4Dm0VjhUQ" name="int"/>
+      <ownedParameter xmi:id="_iljDAKkwEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_tegOAKiKEeyVv4gaBE6dqg" name="Special6" visibility="public">
+    <generalization xmi:id="_AwLdkKiMEeyVv4gaBE6dqg" general="_9hCS8KiJEeyVv4gaBE6dqg"/>
+    <ownedOperation xmi:id="_1j_C8KkwEeyet4Dm0VjhUQ" name="effect">
+      <ownedParameter xmi:id="_3C7tMKkwEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_05EiIKiKEeyVv4gaBE6dqg" name="Special7" visibility="public">
+    <generalization xmi:id="_BsNoAKiMEeyVv4gaBE6dqg" general="_9hCS8KiJEeyVv4gaBE6dqg"/>
+    <ownedAttribute xmi:id="_ALDvUKkxEeyet4Dm0VjhUQ" name="students" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ALEWYKkxEeyet4Dm0VjhUQ" value="5"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ALEWYakxEeyet4Dm0VjhUQ" value="5"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_FOiQQKkxEeyet4Dm0VjhUQ" name="effect">
+      <ownedParameter xmi:id="_G186AKkxEeyet4Dm0VjhUQ" name="int"/>
+      <ownedParameter xmi:id="_JTzcgKkxEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_4D6GcKiKEeyVv4gaBE6dqg" name="Special8" visibility="public">
+    <generalization xmi:id="_FM8j0KiMEeyVv4gaBE6dqg" general="_9hCS8KiJEeyVv4gaBE6dqg"/>
+    <ownedOperation xmi:id="_NpecQKkxEeyet4Dm0VjhUQ" name="effect"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_EpBM0KiLEeyVv4gaBE6dqg" name="Special9" visibility="public">
+    <generalization xmi:id="_F-adAKiMEeyVv4gaBE6dqg" general="_9hCS8KiJEeyVv4gaBE6dqg"/>
+    <ownedOperation xmi:id="_QQ7msKkxEeyet4Dm0VjhUQ" name="effect">
+      <ownedParameter xmi:id="_UTT3AKkxEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_JHOdgKiLEeyVv4gaBE6dqg" name="Special10" visibility="public">
+    <generalization xmi:id="_Gj9aEKiMEeyVv4gaBE6dqg" general="_9hCS8KiJEeyVv4gaBE6dqg"/>
+    <ownedOperation xmi:id="_egmKYKkxEeyet4Dm0VjhUQ" name="effect">
+      <ownedParameter xmi:id="_gL2LQKkxEeyet4Dm0VjhUQ" name="int"/>
+      <ownedParameter xmi:id="_gL2LQakxEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Nv3ckKiLEeyVv4gaBE6dqg" name="Special11" visibility="public">
+    <generalization xmi:id="_HcQ7EKiMEeyVv4gaBE6dqg" general="_9hCS8KiJEeyVv4gaBE6dqg"/>
+    <ownedAttribute xmi:id="_o8apAKkxEeyet4Dm0VjhUQ" name="students" visibility="public" isUnique="false">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_o8apAakxEeyet4Dm0VjhUQ" value="5"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_o8apAqkxEeyet4Dm0VjhUQ" value="5"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_13D6gKkxEeyet4Dm0VjhUQ" name="effect">
+      <ownedParameter xmi:id="_3MT2MKkxEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_TDmAAKiLEeyVv4gaBE6dqg" name="Special12" visibility="public">
+    <generalization xmi:id="_I5-2QKiMEeyVv4gaBE6dqg" general="_9hCS8KiJEeyVv4gaBE6dqg"/>
+    <ownedOperation xmi:id="_8qLNEKkxEeyet4Dm0VjhUQ" name="effect">
+      <ownedParameter xmi:id="_--4aoKkxEeyet4Dm0VjhUQ" name="int"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_z8GRoKiMEeyVv4gaBE6dqg" name="Assistant" visibility="public">
+    <ownedAttribute xmi:id="_3hqDEKiMEeyVv4gaBE6dqg" name="valur" visibility="public" isStatic="true">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_3hqDEaiMEeyVv4gaBE6dqg"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_3hqDEqiMEeyVv4gaBE6dqg" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_BuC-kKiNEeyVv4gaBE6dqg" name="Assistant" visibility="public">
+    <ownedAttribute xmi:id="_CoM5sKiNEeyVv4gaBE6dqg" name="value" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_CoNgwKiNEeyVv4gaBE6dqg"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_CoNgwaiNEeyVv4gaBE6dqg" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_Gv7kEKiNEeyVv4gaBE6dqg" name="movementOfMother" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Gv7kEaiNEeyVv4gaBE6dqg"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Gv7kEqiNEeyVv4gaBE6dqg" value="1"/>
+    </ownedAttribute>
+    <ownedLiteral xmi:id="_LzchQKiNEeyVv4gaBE6dqg" name="Lion: value">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_LzdIUKiNEeyVv4gaBE6dqg"/>
+    </ownedLiteral>
+  </packagedElement>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_-9Ut8KiNEeyVv4gaBE6dqg" name="" visibility="public"/>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_Bg9IUKiOEeyVv4gaBE6dqg" name="Assistant" visibility="public">
+    <ownedAttribute xmi:id="_QI63QKiOEeyVv4gaBE6dqg" name="value" visibility="public">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QI63QaiOEeyVv4gaBE6dqg"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QI63QqiOEeyVv4gaBE6dqg" value="1"/>
+    </ownedAttribute>
+    <ownedLiteral xmi:id="_Koq6wKiOEeyVv4gaBE6dqg" name="LION: value=1, movement=1 ">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_Korh0KiOEeyVv4gaBE6dqg"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_iGnL4KiOEeyVv4gaBE6dqg" name="GOOSE: value=2, movement=1 ">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_iGnL4aiOEeyVv4gaBE6dqg" value="1"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_jAKqEKiOEeyVv4gaBE6dqg" name="CAT: value=3, movement=2 ">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_jAKqEaiOEeyVv4gaBE6dqg" value="2"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_jy6VoKiOEeyVv4gaBE6dqg" name="EAGLE: value=4, movement=2 ">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_jy6VoaiOEeyVv4gaBE6dqg" value="3"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_kma2MKiOEeyVv4gaBE6dqg" name="FOX: value=5, movement=3 ">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_kma2MaiOEeyVv4gaBE6dqg" value="4"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_lZ_oMKiOEeyVv4gaBE6dqg" name="LIZARD: value=6, movement=3 ">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_lZ_oMaiOEeyVv4gaBE6dqg" value="5"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_mMVEEKiOEeyVv4gaBE6dqg" name="OCTOPUS: value=7, movement=4 ">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_mMVrIKiOEeyVv4gaBE6dqg" value="6"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_m77VAKiOEeyVv4gaBE6dqg" name="DOG: value=8, movement=4 ">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_m77VAaiOEeyVv4gaBE6dqg" value="7"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_oOtLgKiOEeyVv4gaBE6dqg" name="ELEPHANT: value=9, movement=5 ">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_oOtLgaiOEeyVv4gaBE6dqg" value="8"/>
+    </ownedLiteral>
+    <ownedLiteral xmi:id="_qMYZIKiOEeyVv4gaBE6dqg" name="TURTLE: value=10, movement=5 ">
+      <specification xmi:type="uml:LiteralInteger" xmi:id="_qMZAMKiOEeyVv4gaBE6dqg" value="9"/>
+    </ownedLiteral>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_vSKjwKkpEeyet4Dm0VjhUQ" client="_kUR0wKh3EeyVv4gaBE6dqg" supplier="_GGrhsKebEey6erbqSw8fXA"/>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_w3ydwKkpEeyet4Dm0VjhUQ" client="_kUR0wKh3EeyVv4gaBE6dqg" supplier="_NUOYYKeZEey6erbqSw8fXA"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_TQ3YAKkwEeyet4Dm0VjhUQ" name="int [1]{unique}"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_TxEQIKkyEeyet4Dm0VjhUQ" memberEnd="_TxEQIakyEeyet4Dm0VjhUQ _TxEQJKkyEeyet4Dm0VjhUQ" navigableOwnedEnd="_TxEQIakyEeyet4Dm0VjhUQ _TxEQJKkyEeyet4Dm0VjhUQ">
+    <ownedEnd xmi:id="_TxEQIakyEeyet4Dm0VjhUQ" name="game Setups" type="_kUR0wKh3EeyVv4gaBE6dqg" association="_TxEQIKkyEeyet4Dm0VjhUQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_TxEQIqkyEeyet4Dm0VjhUQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_TxEQI6kyEeyet4Dm0VjhUQ" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_TxEQJKkyEeyet4Dm0VjhUQ" name="specials" type="_9hCS8KiJEeyVv4gaBE6dqg" association="_TxEQIKkyEeyet4Dm0VjhUQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_TxEQJakyEeyet4Dm0VjhUQ" value="12"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_TxEQJqkyEeyet4Dm0VjhUQ" value="12"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_93wIkKkzEeyet4Dm0VjhUQ" memberEnd="_93wIkakzEeyet4Dm0VjhUQ _93wIlKkzEeyet4Dm0VjhUQ" navigableOwnedEnd="_93wIkakzEeyet4Dm0VjhUQ _93wIlKkzEeyet4Dm0VjhUQ">
+    <ownedEnd xmi:id="_93wIkakzEeyet4Dm0VjhUQ" name="players" type="_wDedEKXVEeyCfZ0D-bYWPw" association="_93wIkKkzEeyet4Dm0VjhUQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_93wIkqkzEeyet4Dm0VjhUQ" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_93wIk6kzEeyet4Dm0VjhUQ" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_93wIlKkzEeyet4Dm0VjhUQ" name="assistants" type="_Bg9IUKiOEeyVv4gaBE6dqg" association="_93wIkKkzEeyet4Dm0VjhUQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_93wIlakzEeyet4Dm0VjhUQ" value="10"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_93wIlqkzEeyet4Dm0VjhUQ" value="10"/>
+    </ownedEnd>
+  </packagedElement>
+</uml:Model>
