@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model;
 
 public class Player {
-    private String nickname;
-    private Character character;
-    private Team team;
-    private int number;             //serve veramente? Forse basta nickname
+    private final String nickname;
+    private final Character character;
+    private final Team team;
+    private final int number;             //serve veramente? Forse basta nickname
     private int coins;
     private Assistant lastCard;     //questo forse ha senso metterlo nel controller (mettere li' una board)
     private Assistant hand[] = new Assistant[] { Assistant.LION, Assistant.GOOSE,Assistant.CAT, Assistant.EAGLE, Assistant.FOX,
@@ -20,21 +20,47 @@ public class Player {
         private final int value;
         private final int movement;
 
-        Assistant(int value,int movement){ this.value = value; this.movement = movement; }
+        Assistant(int value,int movement) {     //ma se faccio cosi' do' la possibilita' di creare nuovi assistenti
+            this.value = value;
+            this.movement = movement;
+        }
 
         public int getValue(Assistant) { return value; }
         public int getMovement(Assistant) { return movement; }
     }
 
+    public Player(String nickname, Character character, Team team, int number, int numberOfPlayer){
+        this.nickname = nickname;
+        this.character = character;
+        this.team = team;
+        this.number = number;
+        this.coins = 1;
+        school.setTowers(numberOfPlayer);
+    }
+
+    public String getNickname() { return nickname; }
+    public Character getCharacter() { return character; }
+    public Team getTeam() { return team; }
+    public int getNumber() { return number; }
+    public int getCoins() { return coins; }
+    public Assistant getLastCard() { return lastCard; }
+    public void setLastCard(Assistant lastCard) { this.lastCard = lastCard; }
+
     private class School{
         private int towers;
-        private boolean professors[] = new boolean[] {false,false,false,false,false};
-        private int studentEntrance[5];
-        private int studentsTable[5];
+        private boolean professors[] = new boolean[] {false, false, false, false, false};
+        private int studentEntrance[]= {0,0,0,0,0};
+        private int studentsTable[] = {0,0,0,0,0};
 
         public void setProfessors(int colour) {...}
 
-        public void setStudentEntrance(int colour) {..}
+        public void setStudentEntrance(int colour) {...}
+
+
+        public void setTowers(int towers) { ... }
+        public int getTowers() { return towers; }
+        public void placeTower() { towers++; }
+        public void removeTower() { towers--; }
     }
 
 

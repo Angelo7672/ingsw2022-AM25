@@ -96,8 +96,8 @@
   <packagedElement xmi:type="uml:Class" xmi:id="_c9Ev8KhyEeyVv4gaBE6dqg" name="School" visibility="private">
     <ownedAttribute xmi:id="_eqZNYKhyEeyVv4gaBE6dqg" name="towers" visibility="private" isUnique="false">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eqZNYahyEeyVv4gaBE6dqg"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eqZNYqhyEeyVv4gaBE6dqg" value="8"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eqZNYahyEeyVv4gaBE6dqg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eqZNYqhyEeyVv4gaBE6dqg" value="1"/>
     </ownedAttribute>
     <ownedAttribute xmi:id="_nIpMEKhyEeyVv4gaBE6dqg" name="professors" visibility="private" type="_VPgs4KY5EeyCfZ0D-bYWPw" isUnique="false">
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nIpzIKhyEeyVv4gaBE6dqg" value="5"/>
@@ -117,6 +117,8 @@
     <ownedOperation xmi:id="_tGv3UKh0EeyVv4gaBE6dqg" name="setStudentsEntrance" visibility="public">
       <ownedParameter xmi:id="_v6VZQKh0EeyVv4gaBE6dqg" name="int"/>
     </ownedOperation>
+    <ownedOperation xmi:id="_hmyQ4LDUEey5dtRf998S-Q" name="placeTower" visibility="public"/>
+    <ownedOperation xmi:id="_kTEQ8LDUEey5dtRf998S-Q" name="removeTower" visibility="public"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_gR6dcKh1EeyVv4gaBE6dqg" name="Island" visibility="private">
     <ownedAttribute xmi:id="_iOTRoKh1EeyVv4gaBE6dqg" name="students" visibility="private" isUnique="false">
