@@ -14,27 +14,24 @@ public class CloudsManager implements GameSetup {
             this.studentNumber = studentNumber;
         }
 
-        public int[] getStudents() {
-            return students;
-        }
-
-        public void refreshCloudStudents(){
-            for(int i=0; i <= studentNumber; i++){
-                int tmp = b.extraction();
-                //extraction returns an int which correspond to the student extracted from the bag
-                if(tmp == 1)
-                    cloud.students[0]++;
-                else if(tmp == 2)
-                    cloud.students[1]++;
-                else if(tmp == 3)
-                    cloud.students[2]++;
-                else if(tmp == 4)
-                    cloud.students[3]++;
-                else
-                    cloud.students[4]++;
+        public void refreshCloudStudents() {
+            for (int i = 1; i <= studentNumber; i++) {
+                for(int j = 1; j <= 5; j++){
+                    if(b.extraction() == j){
+                        students[j-1]++;
+                    }
+                }
             }
-
         }
+
+    }
+
+    public int getStudentNumber() {
+        return cloud.studentNumber;
+    }
+
+    public int[] getStudents() {
+        return cloud.students;
     }
 
     @Override // override GameSetup's method
@@ -52,7 +49,7 @@ public class CloudsManager implements GameSetup {
     public int[] removeStudents() {
         int[] students = new int[cloud.students.length];
 
-        for (int i = 0; i <= cloud.students.length; i++) {
+        for (int i = 0; i < cloud.students.length; i++) {
             students[i]=cloud.students[i];
             cloud.students[i]=0;
         }
