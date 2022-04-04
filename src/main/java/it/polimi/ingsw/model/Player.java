@@ -1,10 +1,9 @@
 package it.polimi.ingsw.model;
 
 public class Player {
-    private final String nickname;
+    private final String nickname;  //da limitare
     private final Character character;
     private final Team team;
-    private final int number;             //serve veramente? Forse basta nickname
     private int coins;
     private Assistant lastCard;     //questo forse ha senso metterlo nel controller (mettere li' una board)
     private Assistant hand[] = new Assistant[] { Assistant.LION, Assistant.GOOSE,Assistant.CAT, Assistant.EAGLE, Assistant.FOX,
@@ -12,7 +11,6 @@ public class Player {
     private School school;
 
     private enum Character{ WIZARD, KING, WITCH, SAMURAI };
-    private enum Team{ WHITE, BLACK, GREY };
 
     private enum Assistant{
         LION(1,1), GOOSE(2,1), CAT(3,2), EAGLE(4,2), FOX(5,3),
@@ -25,15 +23,14 @@ public class Player {
             this.movement = movement;
         }
 
-        public int getValue(Assistant) { return value; }
-        public int getMovement(Assistant) { return movement; }
+        public int getValue() { return value; }
+        public int getMovement() { return movement; }
     }
 
-    public Player(String nickname, Character character, Team team, int number, int numberOfPlayer){
+    public Player(String nickname, Character character, Team team, int numberOfPlayer){
         this.nickname = nickname;
         this.character = character;
         this.team = team;
-        this.number = number;
         this.coins = 1;
         school.setTowers(numberOfPlayer);
     }
@@ -41,7 +38,6 @@ public class Player {
     public String getNickname() { return nickname; }
     public Character getCharacter() { return character; }
     public Team getTeam() { return team; }
-    public int getNumber() { return number; }
     public int getCoins() { return coins; }
     public Assistant getLastCard() { return lastCard; }
     public void setLastCard(Assistant lastCard) { this.lastCard = lastCard; }
@@ -52,12 +48,12 @@ public class Player {
         private int studentEntrance[]= {0,0,0,0,0};
         private int studentsTable[] = {0,0,0,0,0};
 
-        public void setProfessors(int colour) {...}
+        public void setProfessors(int colour) { }
 
-        public void setStudentEntrance(int colour) {...}
+        public void setStudentEntrance(int colour) { }
 
 
-        public void setTowers(int towers) { ... }
+        public void setTowers(int towers) { }
         public int getTowers() { return towers; }
         public void placeTower() { towers++; }
         public void removeTower() { towers--; }
