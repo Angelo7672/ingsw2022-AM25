@@ -96,8 +96,8 @@
   <packagedElement xmi:type="uml:Class" xmi:id="_c9Ev8KhyEeyVv4gaBE6dqg" name="School" visibility="private">
     <ownedAttribute xmi:id="_eqZNYKhyEeyVv4gaBE6dqg" name="towers" visibility="private" isUnique="false">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eqZNYahyEeyVv4gaBE6dqg"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eqZNYqhyEeyVv4gaBE6dqg" value="8"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eqZNYahyEeyVv4gaBE6dqg" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eqZNYqhyEeyVv4gaBE6dqg" value="1"/>
     </ownedAttribute>
     <ownedAttribute xmi:id="_nIpMEKhyEeyVv4gaBE6dqg" name="professors" visibility="private" type="_VPgs4KY5EeyCfZ0D-bYWPw" isUnique="false">
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nIpzIKhyEeyVv4gaBE6dqg" value="5"/>
@@ -574,6 +574,18 @@
     </ownedEnd>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_0CtC0K0UEeyV47VGOhAGvQ" name="Round" visibility="public">
+    <ownedAttribute xmi:id="_Q4Xx0LNQEeyWP-BM0LWZ8Q" name="islandsManger" visibility="private" type="_QWIeIKtSEeyxT-XPkyO5NA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Q4a1ILNQEeyWP-BM0LWZ8Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Q4a1IbNQEeyWP-BM0LWZ8Q" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_ht0sALNQEeyWP-BM0LWZ8Q" name="playersManager" visibility="private" type="_DLU-0KtUEeyxT-XPkyO5NA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ht0sAbNQEeyWP-BM0LWZ8Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ht0sArNQEeyWP-BM0LWZ8Q" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_22RFYLNQEeyWP-BM0LWZ8Q" name="cloudsManager" visibility="private" type="_yh_DcKtSEeyxT-XPkyO5NA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_22RFYbNQEeyWP-BM0LWZ8Q" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_22RFYrNQEeyWP-BM0LWZ8Q" value="1"/>
+    </ownedAttribute>
     <ownedOperation xmi:id="_25PyIK0UEeyV47VGOhAGvQ" name="moveStudent" visibility="public">
       <ownedParameter xmi:id="_25PyIa0UEeyV47VGOhAGvQ" name="Player"/>
       <ownedParameter xmi:id="_25PyIq0UEeyV47VGOhAGvQ" name="int"/>
