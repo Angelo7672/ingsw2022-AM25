@@ -10,47 +10,53 @@ class CloudsManagerTest {
     // tests if the number of students returned is correct
     void removeStudentsTest2Players(){
 
-        CloudsManager cloudsManager = new CloudsManager();
-        cloudsManager.setup(2);
-        int studentNumber = cloudsManager.getStudentNumber();
-        int[] arr = cloudsManager.removeStudents();
-        int sum = 0;
-        for(int i=0; i < 5; i++){
-            sum = sum + arr[i];
+        int playerNumber = 2;
+        CloudsManager cloudsManager = new CloudsManager(playerNumber);
+        cloudsManager.setup();
+        for(int i = 0; i < playerNumber; i++){
+            int[] arr = cloudsManager.removeStudents(i);
+            int sum = 0;
+            for(int j=0; j < 5; j++) {
+                sum = sum + arr[j];
+            }
+            assertEquals(cloudsManager.getStudentNumber(), sum);
         }
-        assertEquals(studentNumber, sum);
-
     }
-
     @Test
     void removeStudentsTest3Players(){
 
-        CloudsManager cloudsManager = new CloudsManager();
-        cloudsManager.setup(3);
-        int studentNumber = cloudsManager.getStudentNumber();
-        int[] arr = cloudsManager.removeStudents();
-        int sum = 0;
-        for(int i=0; i < 5; i++){
-            sum = sum + arr[i];
+        int playerNumber = 3;
+        CloudsManager cloudsManager = new CloudsManager(playerNumber);
+        cloudsManager.setup();
+        for(int i = 0; i < playerNumber; i++){
+            int[] arr = cloudsManager.removeStudents(i);
+            int sum = 0;
+            for(int j=0; j < 5; j++) {
+                sum = sum + arr[j];
+
+            }
+            assertEquals(cloudsManager.getStudentNumber(), sum);
         }
-        assertEquals(studentNumber, sum);
-
     }
-
     @Test
     void removeStudentsTest4Players(){
 
-        CloudsManager cloudsManager = new CloudsManager();
-        cloudsManager.setup(4);
-        int studentNumber = cloudsManager.getStudentNumber();
-        int[] arr = cloudsManager.removeStudents();
-        int sum = 0;
-        for(int i=0; i < 5; i++){
-            sum = sum + arr[i];
-        }
-        assertEquals(studentNumber, sum);
+        int playerNumber = 4;
+        CloudsManager cloudsManager = new CloudsManager(playerNumber);
+        cloudsManager.setup();
+        for(int i = 0; i < playerNumber; i++){
+            int[] arr = cloudsManager.removeStudents(i);
+            int sum = 0;
+            for(int j=0; j < 5; j++) {
+                sum = sum + arr[j];
 
+            }
+            assertEquals(cloudsManager.getStudentNumber(), sum);
+        }
     }
+
+
+
 
 
 }

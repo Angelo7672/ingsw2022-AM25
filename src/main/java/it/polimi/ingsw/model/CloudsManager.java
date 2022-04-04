@@ -1,60 +1,77 @@
 package it.polimi.ingsw.model;
 
-public class CloudsManager implements GameSetup {
+import java.util.ArrayList;
 
-    private Cloud cloud;
+public class CloudsManager /*implements GameSetup*/ {
+
+    private ArrayList<Cloud> clouds;
     private Bag b = new Bag();
 
     private class Cloud{
-        private int[] students= {0,0,0,0,0};
+        private int[] students;
         private int studentNumber;
 
         // Cloud constructor
         public Cloud(int studentNumber){
             this.studentNumber = studentNumber;
+            this.students = new int[]{0, 0, 0, 0, 0};
         }
 
+        //fill the cloud with students extracted from the bag
         public void refreshCloudStudents() {
-            for (int i = 1; i <= studentNumber; i++) {
-                for(int j = 1; j <= 5; j++){
-                    if(b.extraction() == j){
-                        students[j-1]++;
-                    }
-                }
-            }
+            for (int i = 0; i < studentNumber; i++)
+                students[b.extraction()]++;
         }
 
     }
 
+    // CloudsManager constructor, create an arrayList of Clouds.
+    // Each cloud has 3 or 4 students on it, depending on the number of players */
+    public CloudsManager(int playerNumber){
+        clouds = new ArrayList<>();
+        int studentsNumber;
+        if(playerNumber == 3)
+            studentsNumber = 4;
+        else
+            studentsNumber = 3;
+
+        for(int i = 0; i < playerNumber; i++){
+            Cloud cloud = new Cloud(studentsNumber);
+            clouds.add(cloud);
+        }
+    }
+
+    // return the number of students on a single cloud
     public int getStudentNumber() {
-        return cloud.studentNumber;
+        return clouds.get(0).studentNumber;
     }
 
-    public int[] getStudents() {
-        return cloud.students;
+    // given the index of a cloud, return the array of students on that cloud
+    public int[] getStudents(int cloudIndex) {
+        return clouds.get(cloudIndex).students;
     }
 
-    @Override // override GameSetup's method
-    public void setup (int playersNumber){
-        if(playersNumber == 2 || playersNumber == 4){
-            cloud = new Cloud(3);
+    // overrides GameSetup's method
+    // called when the game starts, fills each cloud with students
+    // @Override
+    public void setup (){
+        for(Cloud c: clouds){
+            c.refreshCloudStudents();
         }
-        else {
-            cloud = new Cloud(4);
-        }
-        cloud.refreshCloudStudents();
-        // fill the cloud with the students extracted from the bag
+
     }
 
-    public int[] removeStudents() {
+    // given the index of a cloud, it empties the cloud and returns the array of the students on the cloud
+    public int[] removeStudents(int cloudIndex) {
+
+        Cloud cloud = clouds.get(cloudIndex);
         int[] students = new int[cloud.students.length];
 
         for (int i = 0; i < cloud.students.length; i++) {
-            students[i]=cloud.students[i];
-            cloud.students[i]=0;
+            students[i]=clouds.get(cloudIndex).students[i];
+            clouds.get(cloudIndex).students[i]=0;
         }
         return students;
-        // returns the array of the students on the cloud, and empties the cloud
     }
 }
 
