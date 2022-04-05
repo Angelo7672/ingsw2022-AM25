@@ -20,7 +20,7 @@ public class Bag {
     private void randomize(){
         Random r = new Random();
         for(int i = 0; i < 130; i++){
-            int j = r.nextInt(131);
+            int j = r.nextInt(130);
             Colour tmp = bag[i];
             bag[i] = bag[j];
             bag[j] = tmp;
