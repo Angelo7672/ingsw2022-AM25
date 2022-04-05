@@ -3,13 +3,28 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 
 public class PlayerManager{
-    ArrayList<Player> players;
+    ArrayList<Player> players;      //bisogna partire inizializzando questa lista in setup()
     ArrayList<Queue> queue;
 
+    public PlayerManager(int numberOfPlayer){ setup(numberOfPlayer); }
+    private void setup(int numberOfPlayer){
+        if(numberOfPlayer == 2){
 
-    private class Queue{
-        private String nickname;
+        }else if(numberOfPlayer == 3){
+
+        }else if(numberOfPlayer == 4){
+
+        }
+    }
+
+    private class Queue{    //la creiamo in setup
+        private final String nickname;
         private int valueCard;
+
+        public Queue(String nickname) {
+            this.nickname = nickname;
+            this.valueCard = 0;
+        }
     }
 
     private class Player {
@@ -113,4 +128,12 @@ public class PlayerManager{
             public int getTowers() { return towers; }
         }
     }
+
+    private boolean checkVictory(){}
+
+    private void checkPosForCoin(){}
+
+    private void inOrderOfPlay(){}
+
+    public int readQueue(){}
 }
