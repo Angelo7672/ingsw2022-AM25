@@ -1,8 +1,10 @@
 package it.polimi.ingsw;
 
-import static org.junit.Assert.assertTrue;
+import org.testng.annotations.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit test for simple App.
