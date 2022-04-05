@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import java.util.Random;
 
 public class Bag {
-    private Colour bag[];
+    private Colour bag[];   //collection
 
     private enum Colour{ GREEN, RED, YELLOW, PINK, BLUE ,NONE};
 
