@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class CloudsManager /*implements GameSetup*/ {
 
     private ArrayList<Cloud> clouds;
-    private Bag b = new Bag();
+    private Bag b;
 
     private class Cloud{
         private int[] students;
