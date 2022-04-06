@@ -1,33 +1,35 @@
 package it.polimi.ingsw;
 
 import org.junit.jupiter.api.Test;
-
+import java.util.function.BooleanSupplier;
 import java.util.ArrayList;
 
 
+import static it.polimi.ingsw.Team.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IslandManagerTest {
 
     @Test
-        //check setup isole vuote posMother e davanti a mother
+    //check setup isole vuote posMother e davanti a mother
     void setupIslandMotherTest() {
         IslandsManager islandsManager = new IslandsManager();
         for(int i=0; i<12; i++){
             islandsManager.setup(0, i);
         }
         assertEquals(0, islandsManager.getStudent(islandsManager.getMotherPos(), 0));
-        assertEquals(0, islandsManager.getStudent(islandsManager.getMotherPos()+5, 0));
+        assertEquals(0, islandsManager.getStudent(islandsManager.sum(islandsManager.getMotherPos(), 6), 0));
     }
 
     @Test
-        //check setup isole
+    //check setup isole
     void setupIslandTest() {
         IslandsManager islandsManager = new IslandsManager();
         for(int i=0; i<12; i++){
             islandsManager.setup(0, i);
-            assertEquals(1, islandsManager.getStudent(i, 0));
+            if(i!= islandsManager.getMotherPos()&&i!=islandsManager.sum(islandsManager.getMotherPos(), 6))
+                assertEquals(1, islandsManager.getStudent(i, 0)); //controllo nelle isole al di fuori delle due escluse
         }
     }
 
@@ -40,8 +42,8 @@ public class IslandManagerTest {
             islandsManager.incStudent(0, i);
             prof.add(-1);
         }
-        int influence = islandsManager.highestInfluenceTeam(prof, 0);
-        assertEquals(-1,influence);
+        Team influence = islandsManager.highestInfluenceTeam(prof, 0);
+        assertEquals(NOONE,influence);
     }
 
     @Test
@@ -53,32 +55,33 @@ public class IslandManagerTest {
             islandsManager.incStudent(0, i);
             prof.add(0);
         }
-        int influence = islandsManager.highestInfluenceTeam(prof, 0);
-        assertEquals(0,influence);
+        Team influence = islandsManager.highestInfluenceTeam(prof, 0);
+        assertEquals(WHITE,influence);
     }
+
 
     @Test
         //checkVictory se le isole sono = 3
     void checkVictoryTest(){
         IslandsManager islandsManager = new IslandsManager();
-        islandsManager.setTower(0,0);
-        islandsManager.setTower(0,11);
-        islandsManager.setTower(0,1);
-        islandsManager.checkAdjacentIslands(0); //0,1,11 si uniscono in 0
-        islandsManager.setTower(0,1);
-        islandsManager.checkAdjacentIslands(0); //1 si unisce in 0
-        islandsManager.setTower(1,1);
-        islandsManager.setTower(1,2);
-        islandsManager.setTower(1,3);
+        islandsManager.setTower(WHITE,0);
+        islandsManager.setTower(WHITE,1);
+        islandsManager.setTower(WHITE,2);
+        islandsManager.setTower(WHITE,3);
+        islandsManager.setTower(BLACK,4);;
+        islandsManager.setTower(BLACK,5);
+        islandsManager.setTower(BLACK,6);
+        islandsManager.setTower(GREY,7);
+        islandsManager.setTower(GREY,8);
+        islandsManager.setTower(GREY,9);
+        islandsManager.setTower(GREY,10);
+        islandsManager.setTower(GREY,11);
+        islandsManager.checkAdjacentIslands(1); //0,1,2 si uniscono in 0
+        islandsManager.checkAdjacentIslands(1); //0,1 si uniscono in 0
         islandsManager.checkAdjacentIslands(2); //1,2,3 si uniscono in 1
-        islandsManager.setTower(2,2);
-        islandsManager.setTower(2,3);
-        islandsManager.setTower(2,4);
-        islandsManager.checkAdjacentIslands(3); //2,3,4 si uniscono in 2
-        islandsManager.setTower(2,3);
-        islandsManager.setTower(2,4);
+        islandsManager.checkAdjacentIslands(3); //2,3,4 si unisce in 2
         islandsManager.checkAdjacentIslands(3); //3,4 si uniscono in 2
-        assertTrue(islandsManager.checkVictory());
+        assertEquals(islandsManager.size(),3);
     }
 
 
