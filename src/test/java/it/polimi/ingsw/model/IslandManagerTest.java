@@ -1,11 +1,11 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import org.junit.jupiter.api.Test;
-import java.util.function.BooleanSupplier;
+
 import java.util.ArrayList;
 
 
-import static it.polimi.ingsw.Team.*;
+import static it.polimi.ingsw.model.Team.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
