@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CloudsManagerTest {
 
-    @Test
+   /* @Test
     // tests if the number of students returned is correct
     void removeStudentsTest2Players(){
 
@@ -53,7 +53,7 @@ class CloudsManagerTest {
             }
             assertEquals(cloudsManager.getStudentNumber(), sum);
         }
-    }
+    }*/
 
 
 
