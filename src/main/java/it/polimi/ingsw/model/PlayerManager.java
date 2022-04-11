@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import java.util.*;
 
-public class PlayerManager implements Comparable<Queue> {
+public class PlayerManager  {
     private List<Player> players;
     private List<Queue> queue;
 
@@ -76,23 +76,13 @@ public class PlayerManager implements Comparable<Queue> {
     }
 
     private void inOrderOfPlay(){
-
-
-
-
-        /*Collections.sort(queue, new Comparator<Queue>() {
+        Collections.sort(queue, new Comparator<Queue>() {
             @Override
-            public int compare(Queue qOne, Queue qTwo) {
-                return qOne.getValueCard().compareTo(qTwo.getValueCard());
+            public int compare(Queue q1, Queue q2) {
+                return q1.compareTo(q2);
             }
         });
-        //Collections.sort(queue, (x, y) -> { return x.getValueCard().compareTo(y.getValueCard());});*/
     }
-    @Override
-    public int compareTo(Queue qOne) {
-        return getValueCard().compareTo(qOne.getValueCard());
-    }
-
 
     public String readQueue(int ref){ return queue.get(ref).getNickname(); }
 
@@ -106,13 +96,26 @@ public class PlayerManager implements Comparable<Queue> {
                 players.get(playerRef).school.removeStudentEntrance(colour);
             }
         }
-        if(inSchool){   //if inSchool is true, it's placed on the table
+        else if(inSchool){   //if inSchool is true, it's placed on the table
             if(players.get(playerRef).school.getStudentEntrance(colour) > 0)
                 players.get(playerRef).school.removeStudentEntrance(colour);
-                players.get(playerRef).school.setStudentEntrance(colour);
+                players.get(playerRef).school.setStudentTable(colour);
                 checkPosForCoin(players.get(playerRef),colour); //check the position, in case we have to give a coin to the player
         }
     }
+
+    public void setProfessor(int playerRef, int colour){ players.get(playerRef).school.setProfessor(colour); }
+    public void removeProfessor(int playerRef, int colour){ players.get(playerRef).school.removeProfessor(colour); }
+
+    public void removeTower(int playerRef){ players.get(playerRef).school.removeTower(); }
+    public void placeTower(int playerRef){ players.get(playerRef).school.placeTower(); }
+
+    public void setStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.setStudentEntrance(colour); }
+
+    public Team getTeam(int playerRef){ return players.get(playerRef).getTeam(); }
+
+    public void removeCoin(int playerRef, int cost){ players.get(playerRef).removeCoin(cost); }
+    public int getCoins(int playerRef){ return players.get(playerRef).getCoins(); }
 
     public boolean checkVictory(Player player){     //Check if the player has built his last tower
         if(player.school.getTowers()==0) return true;
@@ -150,15 +153,9 @@ public class PlayerManager implements Comparable<Queue> {
         return winner;
     }
 
-
-
-
-
-
-
-    private class Queue{
+    private class Queue implements Comparable<Queue>{
         private final String nickname;
-        private int valueCard;
+        private Integer valueCard;
 
         public Queue(String nickname) {
             this.nickname = nickname;
@@ -167,6 +164,11 @@ public class PlayerManager implements Comparable<Queue> {
 
         public String getNickname() { return nickname; }
         public int getValueCard() { return valueCard; }
+
+        @Override
+        public int compareTo(Queue o) {
+            return valueCard.compareTo(o.getValueCard());
+        }
     }
 
     private class Player {
@@ -205,10 +207,11 @@ public class PlayerManager implements Comparable<Queue> {
         }
 
         public String getNickname() { return nickname; }
-        public Character getCharacter() { return character; }
         public Team getTeam() { return team; }
+
         public int getCoins() { return coins; }
         public void giveCoin() { coins++; }
+        public void removeCoin(int cost) { coins-=cost; }
         public Assistant getLastCard() { return lastCard; }
         public void setLastCard(Assistant lastCard) { this.lastCard = lastCard; }
 
