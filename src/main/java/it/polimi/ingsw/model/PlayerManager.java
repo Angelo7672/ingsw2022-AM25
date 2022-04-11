@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import java.util.*;
 
-public class PlayerManager implements Comparable<Queue> {
+public class PlayerManager {
     private List<Player> players;
     private List<Queue> queue;
 
@@ -74,25 +74,6 @@ public class PlayerManager implements Comparable<Queue> {
         else if(string.equals("SAMURAI")) return Character.SAMURAI;
         return Character.NONE;
     }
-
-    private void inOrderOfPlay(){
-
-
-
-
-        /*Collections.sort(queue, new Comparator<Queue>() {
-            @Override
-            public int compare(Queue qOne, Queue qTwo) {
-                return qOne.getValueCard().compareTo(qTwo.getValueCard());
-            }
-        });
-        //Collections.sort(queue, (x, y) -> { return x.getValueCard().compareTo(y.getValueCard());});*/
-    }
-    @Override
-    public int compareTo(Queue qOne) {
-        return getValueCard().compareTo(qOne.getValueCard());
-    }
-
 
     public String readQueue(int ref){ return queue.get(ref).getNickname(); }
 
