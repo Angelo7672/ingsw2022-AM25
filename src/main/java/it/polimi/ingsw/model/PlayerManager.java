@@ -87,7 +87,7 @@ public class PlayerManager {
                 players.get(playerRef).school.removeStudentEntrance(colour);
             }
         }
-        if(inSchool){   //if inSchool is true, it's placed on the table
+        else if(inSchool){   //if inSchool is true, it's placed on the table
             if(players.get(playerRef).school.getStudentEntrance(colour) > 0)
                 players.get(playerRef).school.removeStudentEntrance(colour);
                 players.get(playerRef).school.setStudentEntrance(colour);
@@ -99,7 +99,7 @@ public class PlayerManager {
         if(player.school.getTowers()==0) return true;
         return false;
     }
-
+    //da fixare togliendo player
     public boolean checkIfCardsFinished(Player player){  //Check if the player has played his last card
         return player.hand.isEmpty();
     }
