@@ -19,6 +19,7 @@ class BagTest {
         }
     }
 
+    /**
     @Test       //e' corretto questo test? Tecnicamente c'e' la prob che siano tutti uguali
     @DisplayName("Second test: create a bag and compare its contents with three other bags")
     void differentBag() {
@@ -33,6 +34,7 @@ class BagTest {
                 ()->assertNotEquals(cavia,cavia3,"The probability that they are equal is low")       //tre abbiamo un problema
         );
     }
+     */
 
     @Test
     @DisplayName("Third test: extracts 130 students and check the victory")
