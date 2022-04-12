@@ -15,42 +15,42 @@ public class PlayerManager  {
         int firstInQueue;
 
         if (numberOfPlayer == 2) {
-            Player g1 = new Player(playersInfo[1], stringToCharacter(playersInfo[2]), Team.WHITE, numberOfPlayer);
-            Queue firstPlayer = new Queue(playersInfo[1].substring(0, 10));
+            Player g1 = new Player(playersInfo[0], stringToCharacter(playersInfo[1]), Team.WHITE, numberOfPlayer);
+            Queue firstPlayer = new Queue(playersInfo[0].substring(Math.min(playersInfo[0].length(), 10)));
             players.add(g1);            //insert the firstPlayer in the player list
             queue.add(firstPlayer);     //insert the firstPlayer in the queue for planification phase
-            Player g2 = new Player(playersInfo[3], stringToCharacter(playersInfo[4]), Team.BLACK, numberOfPlayer);
-            Queue secondPlayer = new Queue(playersInfo[3].substring(0, 10));
+            Player g2 = new Player(playersInfo[2], stringToCharacter(playersInfo[3]), Team.BLACK, numberOfPlayer);
+            Queue secondPlayer = new Queue(playersInfo[2].substring(Math.min(playersInfo[2].length(), 10)));
             players.add(g2);
             queue.add(secondPlayer);
         } else if (numberOfPlayer == 3) {
-            Player g1 = new Player(playersInfo[1], stringToCharacter(playersInfo[2]), Team.WHITE, numberOfPlayer);
-            Queue firstPlayer = new Queue(playersInfo[1].substring(0, 10));
+            Player g1 = new Player(playersInfo[0], stringToCharacter(playersInfo[1]), Team.WHITE, numberOfPlayer);
+            Queue firstPlayer = new Queue(playersInfo[0].substring(Math.min(playersInfo[0].length(), 10)));
             players.add(g1);
             queue.add(firstPlayer);
-            Player g2 = new Player(playersInfo[3], stringToCharacter(playersInfo[4]), Team.BLACK, numberOfPlayer);
-            Queue secondPlayer = new Queue(playersInfo[3].substring(0, 10));
+            Player g2 = new Player(playersInfo[2], stringToCharacter(playersInfo[3]), Team.BLACK, numberOfPlayer);
+            Queue secondPlayer = new Queue(playersInfo[2].substring(Math.min(playersInfo[2].length(), 10)));
             players.add(g2);
             queue.add(secondPlayer);
-            Player g3 = new Player(playersInfo[5], stringToCharacter(playersInfo[6]), Team.GREY, numberOfPlayer);
-            Queue thirdPlayer = new Queue(playersInfo[5].substring(0, 10));
+            Player g3 = new Player(playersInfo[4], stringToCharacter(playersInfo[5]), Team.GREY, numberOfPlayer);
+            Queue thirdPlayer = new Queue(playersInfo[4].substring(Math.min(playersInfo[4].length(), 10)));
             players.add(g3);
             queue.add(thirdPlayer);
         } else if (numberOfPlayer == 4) {
-            Player g1 = new Player(playersInfo[1], stringToCharacter(playersInfo[2]), Team.WHITE, numberOfPlayer);
-            Queue firstPlayer = new Queue(playersInfo[1].substring(0, 10));
+            Player g1 = new Player(playersInfo[0], stringToCharacter(playersInfo[1]), Team.WHITE, numberOfPlayer);
+            Queue firstPlayer = new Queue(playersInfo[0].substring(Math.min(playersInfo[0].length(), 10)));
             players.add(g1);
             queue.add(firstPlayer);
-            Player g2 = new Player(playersInfo[3], stringToCharacter(playersInfo[4]), Team.WHITE, numberOfPlayer);
-            Queue secondPlayer = new Queue(playersInfo[3].substring(0, 10));
+            Player g2 = new Player(playersInfo[2], stringToCharacter(playersInfo[3]), Team.WHITE, numberOfPlayer);
+            Queue secondPlayer = new Queue(playersInfo[2].substring(Math.min(playersInfo[2].length(), 10)));
             players.add(g2);
             queue.add(secondPlayer);
-            Player g3 = new Player(playersInfo[5], stringToCharacter(playersInfo[6]), Team.BLACK, numberOfPlayer);
-            Queue thirdPlayer = new Queue(playersInfo[5].substring(0, 10));
+            Player g3 = new Player(playersInfo[4], stringToCharacter(playersInfo[5]), Team.BLACK, numberOfPlayer);
+            Queue thirdPlayer = new Queue(playersInfo[4].substring(Math.min(playersInfo[4].length(), 10)));
             players.add(g3);
             queue.add(thirdPlayer);
-            Player g4 = new Player(playersInfo[7], stringToCharacter(playersInfo[8]), Team.BLACK, numberOfPlayer);
-            Queue fourthPlayer = new Queue(playersInfo[7].substring(0, 10));
+            Player g4 = new Player(playersInfo[6], stringToCharacter(playersInfo[7]), Team.BLACK, numberOfPlayer);
+            Queue fourthPlayer = new Queue(playersInfo[6].substring(Math.min(playersInfo[6].length(), 10)));
             players.add(g4);
             queue.add(fourthPlayer);
         }
@@ -117,8 +117,8 @@ public class PlayerManager  {
     public void removeCoin(int playerRef, int cost){ players.get(playerRef).removeCoin(cost); }
     public int getCoins(int playerRef){ return players.get(playerRef).getCoins(); }
 
-    public boolean checkVictory(Player player){     //Check if the player has built his last tower
-        if(player.school.getTowers()==0) return true;
+    public boolean checkVictory(int playerRef){     //Check if the player has built his last tower
+        if(players.get(playerRef).school.getTowers()==0) return true;
         return false;
     }
 
@@ -177,7 +177,7 @@ public class PlayerManager  {
         private final Team team;
         private int coins;
         private Assistant lastCard;     //questo forse ha senso metterlo nel controller (mettere li' una board)
-        private List<Assistant> hand;
+        private List<Assistant> hand;   //MANCA PLAYCARD!!!
         private School school;
 
         private enum Assistant {        //penso vada tolta da qui
@@ -196,7 +196,7 @@ public class PlayerManager  {
         }
 
         public Player(String nickname, Character character, Team team, int numberOfPlayer) {
-            this.nickname = nickname.substring(0, 10);
+            this.nickname = nickname.substring(Math.min(nickname.length(), 10));
             this.character = character;
             this.team = team;
             this.coins = 1;
@@ -235,7 +235,7 @@ public class PlayerManager  {
             public void removeProfessor(int colour) { professors[colour] = false; }
             public boolean getProfessor(int colour){ return professors[colour]; }
 
-            public void setStudentEntrance(int colour) { if (checkStudentEntrance()) studentEntrance[colour]++; }
+            public void setStudentEntrance(int colour) { studentEntrance[colour]++; }
             public void removeStudentEntrance(int colour) { if (checkStudentEntrance()) studentEntrance[colour]--; }
             private boolean checkStudentEntrance() {    //Students in the entrance must be in range [0,10]
                 int sum = 0;
@@ -261,18 +261,8 @@ public class PlayerManager  {
             }
             public int getStudentTable(int colour) { return studentsTable[colour]; }
 
-            public void placeTower() { if (checkTower()) towers++; }
+            public void placeTower() { towers++; }
             public void removeTower() { towers--; }
-            private boolean checkTower() {
-                if (numberOfPlayer == 2 || numberOfPlayer == 4) {
-                    if (towers > 7) return false;
-                    return true;
-                } else if (numberOfPlayer == 3) {
-                    if (towers > 5) return false;
-                    return true;
-                }
-                return false;
-            }
             public int getTowers() { return towers; }
         }
     }
