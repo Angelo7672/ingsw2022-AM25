@@ -22,9 +22,14 @@ public class Round {
                     cloudsManager.refreshCloudStudents(bag.extraction(), j);
                 }
             }
-        }else if(numberOfPlayer==3)
+        } else if(numberOfPlayer==3) {
+            for (int j = 0; j < numberOfPlayer; j++) {
+                for (int i = 0; i < 4; i++) {
+                    cloudsManager.refreshCloudStudents(bag.extraction(), j);
+                }
             }
         }
+    }
 
 
     public void moveStudent(int playerRef, int colour, boolean inSchool){

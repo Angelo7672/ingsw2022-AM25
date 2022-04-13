@@ -40,11 +40,10 @@ public class CloudsManager /*implements GameSetup*/ {
         return clouds.get(cloudIndex).students;
     }
 
-    //fill the cloud with students extracted from the bag
-    public void refreshCloudStudents(int[] studentsExtracted, int cloudIndex) {
-        for (int i = 0; i < clouds.get(cloudIndex).studentNumber; i++) {
-            clouds.get(cloudIndex).students[i] = studentsExtracted[i];
-        }
+    //given the index of a cloud and the color of the student extracted from the bag, add the student to the cloud
+    public void refreshCloudStudents(int studentExtracted, int cloudIndex) {
+            clouds.get(cloudIndex).students[studentExtracted]++;
+
     }
 
 
