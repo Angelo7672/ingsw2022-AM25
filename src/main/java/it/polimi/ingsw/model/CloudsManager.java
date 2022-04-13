@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class CloudsManager /*implements GameSetup*/ {
 
     private ArrayList<Cloud> clouds;
-    private Bag b;
 
     private class Cloud{
         private int[] students;
@@ -15,12 +14,6 @@ public class CloudsManager /*implements GameSetup*/ {
         public Cloud(int studentNumber){
             this.studentNumber = studentNumber;
             this.students = new int[]{0, 0, 0, 0, 0};
-        }
-
-        //fill the cloud with students extracted from the bag
-        public void refreshCloudStudents() {
-            for (int i = 0; i < studentNumber; i++)
-                students[b.extraction()]++;
         }
 
     }
@@ -41,25 +34,19 @@ public class CloudsManager /*implements GameSetup*/ {
         }
     }
 
-    // return the number of students on a single cloud
-    public int getStudentNumber() {
-        return clouds.get(0).studentNumber;
-    }
 
     // given the index of a cloud, return the array of students on that cloud
     public int[] getStudents(int cloudIndex) {
         return clouds.get(cloudIndex).students;
     }
 
-    // overrides GameSetup's method
-    // called when the game starts, fills each cloud with students
-    // @Override
-    public void setup (){
-        for(Cloud c: clouds){
-            c.refreshCloudStudents();
+    //fill the cloud with students extracted from the bag
+    public void refreshCloudStudents(int[] studentsExtracted, int cloudIndex) {
+        for (int i = 0; i < clouds.get(cloudIndex).studentNumber; i++) {
+            clouds.get(cloudIndex).students[i] = studentsExtracted[i];
         }
-
     }
+
 
     // given the index of a cloud, it empties the cloud and returns the array of the students on the cloud
     public int[] removeStudents(int cloudIndex) {
