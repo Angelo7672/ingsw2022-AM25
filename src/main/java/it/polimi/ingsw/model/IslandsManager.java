@@ -45,7 +45,7 @@ public class IslandsManager {
 
     }
 
-    IslandsManager() {
+    IslandsManager(ArrayList<Integer> color) {
         i1 = new Island(); i2 = new Island(); i3 = new Island();
         i4 = new Island(); i5 = new Island(); i6 = new Island();
         i7 = new Island(); i8 = new Island(); i9 = new Island();
@@ -57,24 +57,12 @@ public class IslandsManager {
         islands.add(i10); islands.add(i11); islands.add(i12);
         rand=new Random();
         motherPos = rand.nextInt(12);
-    }
 
-    /*setup nel caso si passasse un array
-    public void setup(ArrayList<Integer> color){
         for(int i=0; i<12; i++){
             if(i!=motherPos && i!=motherPos+6){
                 islands.get(i).incStudents(color.get(0));
                 color.remove(0);
             }
-        }
-    }*/
-
-
-    //se si passa puntatore di posizione (tanto viene creato un ciclo per chiamare 10 volte il metodo per inserire gli studenti quindi si passa la variabile)
-    //senza verificare se va bene per pos madre. Nel caso si verifica basta togliere l'if e si può usare sempre durante la partita (come setStudent)
-    public void setup(int color, int island){
-        if(island!=motherPos && island!=sum(motherPos,6)){
-            islands.get(island).incStudents(color);
         }
     }
 
