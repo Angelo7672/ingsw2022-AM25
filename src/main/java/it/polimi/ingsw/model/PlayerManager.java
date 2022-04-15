@@ -1,0 +1,294 @@
+package it.polimi.ingsw.model;
+
+import java.util.*;
+
+public class PlayerManager  {
+    private List<Player> players;
+    private List<Queue> queue;
+
+    private enum Character {WIZARD, KING, WITCH, SAMURAI, NONE};
+
+    public PlayerManager(int numberOfPlayer, String[] playersInfo) {
+        players = new ArrayList<>();
+        queue = new ArrayList<>();
+        Random rnd = new Random();
+        int firstInQueue;
+
+        if (numberOfPlayer == 2) {
+            Player g1 = new Player(playersInfo[0], stringToCharacter(playersInfo[1]), Team.WHITE, numberOfPlayer);
+            Queue firstPlayer = new Queue(playersInfo[0].substring(Math.min(playersInfo[0].length(), 10)));
+            players.add(g1);            //insert the firstPlayer in the player list
+            queue.add(firstPlayer);     //insert the firstPlayer in the queue for planification phase
+            Player g2 = new Player(playersInfo[2], stringToCharacter(playersInfo[3]), Team.BLACK, numberOfPlayer);
+            Queue secondPlayer = new Queue(playersInfo[2].substring(Math.min(playersInfo[2].length(), 10)));
+            players.add(g2);
+            queue.add(secondPlayer);
+        } else if (numberOfPlayer == 3) {
+            Player g1 = new Player(playersInfo[0], stringToCharacter(playersInfo[1]), Team.WHITE, numberOfPlayer);
+            Queue firstPlayer = new Queue(playersInfo[0].substring(Math.min(playersInfo[0].length(), 10)));
+            players.add(g1);
+            queue.add(firstPlayer);
+            Player g2 = new Player(playersInfo[2], stringToCharacter(playersInfo[3]), Team.BLACK, numberOfPlayer);
+            Queue secondPlayer = new Queue(playersInfo[2].substring(Math.min(playersInfo[2].length(), 10)));
+            players.add(g2);
+            queue.add(secondPlayer);
+            Player g3 = new Player(playersInfo[4], stringToCharacter(playersInfo[5]), Team.GREY, numberOfPlayer);
+            Queue thirdPlayer = new Queue(playersInfo[4].substring(Math.min(playersInfo[4].length(), 10)));
+            players.add(g3);
+            queue.add(thirdPlayer);
+        } else if (numberOfPlayer == 4) {
+            Player g1 = new Player(playersInfo[0], stringToCharacter(playersInfo[1]), Team.WHITE, numberOfPlayer);
+            Queue firstPlayer = new Queue(playersInfo[0].substring(Math.min(playersInfo[0].length(), 10)));
+            players.add(g1);
+            queue.add(firstPlayer);
+            Player g2 = new Player(playersInfo[2], stringToCharacter(playersInfo[3]), Team.WHITE, numberOfPlayer);
+            Queue secondPlayer = new Queue(playersInfo[2].substring(Math.min(playersInfo[2].length(), 10)));
+            players.add(g2);
+            queue.add(secondPlayer);
+            Player g3 = new Player(playersInfo[4], stringToCharacter(playersInfo[5]), Team.BLACK, numberOfPlayer);
+            Queue thirdPlayer = new Queue(playersInfo[4].substring(Math.min(playersInfo[4].length(), 10)));
+            players.add(g3);
+            queue.add(thirdPlayer);
+            Player g4 = new Player(playersInfo[6], stringToCharacter(playersInfo[7]), Team.BLACK, numberOfPlayer);
+            Queue fourthPlayer = new Queue(playersInfo[6].substring(Math.min(playersInfo[6].length(), 10)));
+            players.add(g4);
+            queue.add(fourthPlayer);
+        }
+
+        //The first player is chosen randomly, then proceeds clockwise. The distribution of players at the table is arranged clockwise in this order 1 2 3 4
+        firstInQueue = rnd.nextInt(numberOfPlayer - 1);
+        if (firstInQueue != 0)
+            if (firstInQueue == 1) {
+                Collections.rotate(queue, 1);
+            } else if (firstInQueue == 2){
+                Collections.rotate(queue, 2);
+            }else if (firstInQueue == 3){
+                Collections.rotate(queue,3);
+            }
+    }
+
+    private Character stringToCharacter(String string){
+        if(string.equals("WIZARD")) return Character.WIZARD;
+        else if(string.equals("KING")) return Character.KING;
+        else if(string.equals("WITCH")) return Character.WITCH;
+        else if(string.equals("SAMURAI")) return Character.SAMURAI;
+        return Character.NONE;
+    }
+
+    private void inOrderOfPlay(){
+        Collections.sort(queue, new Comparator<Queue>() {
+            @Override
+            public int compare(Queue q1, Queue q2) {
+                return q1.compareTo(q2);
+            }
+        });
+    }
+
+    public String readQueue(int ref){ return queue.get(ref).getNickname(); }
+
+    private void checkPosForCoin(Player player, int colour){
+        if(player.school.getStudentTable(colour)==3 || player.school.getStudentTable(colour)==6 || player.school.getStudentTable(colour)==9) player.giveCoin();
+    }
+
+    public void transferStudent(int playerRef,int colour, boolean inSchool){    //it is used to remove the student from the entrance
+        if(!inSchool){  //if inSchool is false, it's placed in a island
+            if(players.get(playerRef).school.getStudentEntrance(colour) > 0) {
+                players.get(playerRef).school.removeStudentEntrance(colour);
+            }
+        }
+        else if(inSchool){   //if inSchool is true, it's placed on the table
+            if(players.get(playerRef).school.getStudentEntrance(colour) > 0)
+                players.get(playerRef).school.removeStudentEntrance(colour);
+            players.get(playerRef).school.setStudentTable(colour);
+            checkPosForCoin(players.get(playerRef),colour); //check the position, in case we have to give a coin to the player
+        }
+    }
+
+    public void setProfessor(int playerRef, int colour){ players.get(playerRef).school.setProfessor(colour); }
+    public void removeProfessor(int playerRef, int colour){ players.get(playerRef).school.removeProfessor(colour); }
+
+    public void removeTower(int playerRef, int towers){ players.get(playerRef).school.removeTower(towers); }
+    public void placeTower(int playerRef, int towers){ players.get(playerRef).school.placeTower(towers); }
+
+    public void setStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.setStudentEntrance(colour); }
+
+    public Team getTeam(int playerRef){ return players.get(playerRef).getTeam(); }
+
+    public void removeCoin(int playerRef, int cost){ players.get(playerRef).removeCoin(cost); }
+    public int getCoins(int playerRef){ return players.get(playerRef).getCoins(); }
+
+    public boolean affordSpecial(int cost, int player){
+        if(cost > players.get(player).getCoins()) return false;
+        return true;
+    }
+    public boolean checkVictory(int playerRef){     //Check if the player has built his last tower
+        if(players.get(playerRef).school.getTowers()==0) return true;
+        return false;
+    }
+
+    public boolean checkIfCardsFinished(Player player){  //Check if the player has played his last card
+        return player.hand.isEmpty();
+    }
+
+    public String noMoreCards(){
+        String winner = "none";
+        int numberOfTowers = 9;
+        int professors1 = 0, professors2;
+
+        for(Player p:players){
+            if(p.school.getTowers() < numberOfTowers){
+                numberOfTowers = p.school.getTowers();
+                winner = p.getNickname();
+                professors1 = 0;
+                for(int i = 0; i < 5; i++) {
+                    if (p.school.getProfessor(i)) professors1++;
+                }
+            } else if(p.school.getTowers() == numberOfTowers){
+                professors2 = 0;
+                for(int i = 0; i < 5; i++){
+                    if(p.school.getProfessor(i)) professors2++;
+                }
+                if(professors2 > professors1)
+                    numberOfTowers = p.school.getTowers();
+                winner = p.getNickname();                       //da fixare con nome squadra
+                professors1 = professors2;
+            }
+        }
+        return winner;
+    }
+
+    public ArrayList<Integer> profOwners(String special, int player){
+        ArrayList<Integer> profOwners = new ArrayList<>();
+        if(special=="special2"){
+            //metodo per special
+        }
+        else {
+            for (int i = 0; i < 5; i++) {
+                profOwners.add(searchProfOwner(i));
+            }
+        }
+        return profOwners;
+    }
+
+    private int searchProfOwner(int color){
+        for(int i=0; i<players.size();i++){
+            if(players.get(i).getSchool().getProfessor(color)) return i;
+        }
+        return -1;
+    }
+
+    private class Queue implements Comparable<Queue>{
+        private final String nickname;
+        private Integer valueCard;
+
+        public Queue(String nickname) {
+            this.nickname = nickname;
+            this.valueCard = 0;
+        }
+
+        public String getNickname() { return nickname; }
+        public int getValueCard() { return valueCard; }
+
+        @Override
+        public int compareTo(Queue o) {
+            return valueCard.compareTo(o.getValueCard());
+        }
+    }
+
+    private class Player {
+        private final String nickname;  //limited to 10 characters
+        private final Character character;
+        private final Team team;
+        private int coins;
+        private Assistant lastCard;     //questo forse ha senso metterlo nel controller (mettere li' una board)
+        private List<Assistant> hand;   //MANCA PLAYCARD!!!
+        private School school;
+
+        private enum Assistant {        //penso vada tolta da qui
+            LION(1, 1), GOOSE(2, 1), CAT(3, 2), EAGLE(4, 2), FOX(5, 3),
+            LIZARD(6, 3), OCTOPUS(7, 4), DOG(8, 4), ELEPHANT(9, 5), TURTLE(10, 5);
+            private final int value;
+            private final int movement;
+
+            Assistant(int value, int movement) {
+                this.value = value;
+                this.movement = movement;
+            }
+
+            public int getValue() { return value; }
+            public int getMovement() { return movement; }
+        }
+
+        public Player(String nickname, Character character, Team team, int numberOfPlayer) {
+            this.nickname = nickname.substring(Math.min(nickname.length(), 10));
+            this.character = character;
+            this.team = team;
+            this.coins = 1;
+            this.hand = new ArrayList<>();
+            hand.add(Assistant.LION);hand.add(Assistant.GOOSE);hand.add(Assistant.GOOSE);hand.add(Assistant.CAT);hand.add(Assistant.EAGLE);hand.add(Assistant.FOX);
+            hand.add(Assistant.LIZARD);hand.add(Assistant.OCTOPUS);hand.add(Assistant.DOG);hand.add(Assistant.ELEPHANT);hand.add(Assistant.TURTLE);
+            this.school = new School(numberOfPlayer);
+        }
+
+        public String getNickname() { return nickname; }
+        public Team getTeam() { return team; }
+
+        public int getCoins() { return coins; }
+        public void giveCoin() { coins++; }
+        public void removeCoin(int cost) { coins-=cost; }
+        public Assistant getLastCard() { return lastCard; }
+        public void setLastCard(Assistant lastCard) { this.lastCard = lastCard; }
+        public School getSchool(){return school;}
+
+        private class School {
+            private int towers;
+            private boolean professors[];
+            private int studentEntrance[];
+            private int studentsTable[];
+            private int numberOfPlayer;
+
+            public School(int numberOfPlayer) {
+                this.professors = new boolean[]{false, false, false, false, false};
+                this.studentEntrance = new int[]{0, 0, 0, 0, 0};
+                this.studentsTable = new int[]{0, 0, 0, 0, 0};
+                if (numberOfPlayer == 2 || numberOfPlayer == 4) this.towers = 8;
+                else this.towers = 6;
+                this.numberOfPlayer = numberOfPlayer;
+            }
+
+            public void setProfessor(int colour) { professors[colour] = true; }
+            public void removeProfessor(int colour) { professors[colour] = false; }
+            public boolean getProfessor(int colour){ return professors[colour]; }
+
+            public void setStudentEntrance(int colour) { studentEntrance[colour]++; }
+            public void removeStudentEntrance(int colour) { if (checkStudentEntrance()) studentEntrance[colour]--; }
+            private boolean checkStudentEntrance() {    //Students in the entrance must be in range [0,10]
+                int sum = 0;
+                if (numberOfPlayer == 2 || numberOfPlayer == 4) {
+                    for (int i = 0; i < 5; i++)
+                        sum += studentEntrance[i];
+                    if (sum > 6 || sum < 1) return false;   //in teoria non dovrebbe mai essere false
+                    return true;
+                } else if (numberOfPlayer == 3) {
+                    for (int i = 0; i < 5; i++)
+                        sum += studentEntrance[i];
+                    if (sum > 8 || sum < 1) return false;   //in teoria non dovrebbe mai essere false
+                    return true;
+                }
+                return false;
+            }
+            public int getStudentEntrance(int colour){ return studentEntrance[colour]; }
+
+            public void setStudentTable(int colour) { if (checkStudentTable(colour)) studentsTable[colour]++; }
+            private boolean checkStudentTable(int colour) {    //Students at the table must be in range [0,10]
+                if (studentsTable[colour] > 9) return false;
+                return true;
+            }
+            public int getStudentTable(int colour) { return studentsTable[colour]; }
+
+            public void placeTower(int towers) { this.towers+=towers; }
+            public void removeTower(int towers) { this.towers-=towers; }
+            public int getTowers() { return towers; }
+        }
+    }
+}
