@@ -103,24 +103,36 @@ public class PlayerManager  {
                 checkPosForCoin(players.get(playerRef),colour); //check the position, in case we have to give a coin to the player
         }
     }
+    public void setStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.setStudentEntrance(colour); }
 
+    public int getStudentTable(int playerRef, int colour){ return players.get(playerRef).school.getStudentTable(colour); }
     public void setProfessor(int playerRef, int colour){ players.get(playerRef).school.setProfessor(colour); }
     public void removeProfessor(int playerRef, int colour){ players.get(playerRef).school.removeProfessor(colour); }
+    public boolean getProfessor(int playerRef, int colour){ return players.get(playerRef).school.getProfessor(colour); }
 
-    public void removeTower(int playerRef){ players.get(playerRef).school.removeTower(); }
-    public void placeTower(int playerRef){ players.get(playerRef).school.placeTower(); }
+    public boolean removeTower(Team team) {
+        boolean victory = false;
 
-    public void setStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.setStudentEntrance(colour); }
+        for (Player p : players) {
+            if (p.getTeam().equals(team)){
+                p.school.removeTower();
+                if(p.checkVictory()) victory = true;
+            }
+        }
+        return victory;
+    }
+    public void placeTower(Team team){
+        for (Player p : players) {
+            if (p.getTeam().equals(team)) p.school.placeTower();
+        }
+    }
+
+
 
     public Team getTeam(int playerRef){ return players.get(playerRef).getTeam(); }
 
     public void removeCoin(int playerRef, int cost){ players.get(playerRef).removeCoin(cost); }
     public int getCoins(int playerRef){ return players.get(playerRef).getCoins(); }
-
-    public boolean checkVictory(int playerRef){     //Check if the player has built his last tower
-        if(players.get(playerRef).school.getTowers()==0) return true;
-        return false;
-    }
 
     public boolean checkIfCardsFinished(Player player){  //Check if the player has played his last card
         return player.hand.isEmpty();
@@ -214,6 +226,10 @@ public class PlayerManager  {
         public void removeCoin(int cost) { coins-=cost; }
         public Assistant getLastCard() { return lastCard; }
         public void setLastCard(Assistant lastCard) { this.lastCard = lastCard; }
+        public boolean checkVictory(){     //Check if the player has built his last tower
+            if(school.getTowers()==0) return true;
+            return false;
+        }
 
         private class School {
             private int towers;
