@@ -7,15 +7,19 @@ public class Round {
     private Bag bag;
 
     public Round(int numberOfPlayer, String[] playersInfo){
+        int[] studentsForIsland = new int[9];
+
         this.bag = new Bag();
         this.cloudsManager = new CloudsManager(numberOfPlayer);
         refreshStudentsCloud(numberOfPlayer);
-        this.islandsManager = new IslandsManager();
+        for(int i = 0; i < 10; i++){
+            studentsForIsland[i] = bag.extraction();
+        }
+        this.islandsManager = new IslandsManager(studentsForIsland);
         this.playerManager = new PlayerManager(numberOfPlayer, playersInfo);
     }
 
     public void refreshStudentsCloud(int numberOfPlayer){
-
         if(numberOfPlayer == 2 || numberOfPlayer ==4 ) {
             for (int j = 0; j < numberOfPlayer; j++) {
                 for (int i = 0; i < 3; i++) {
@@ -31,11 +35,16 @@ public class Round {
         }
     }
 
+    public void fillEntrance(int playerRef,int cloudRef){
+        for(int i = 0; i < 5 ; i++){
+            playerManager.setStudentEntrance(playerRef, cloudsManager.removeStudents(cloudRef)[i]);
+        }
+    };
 
-    public void moveStudent(int playerRef, int colour, boolean inSchool){
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef){
         if(!inSchool){
             playerManager.transferStudent(playerRef, colour, inSchool);
-            //metodo di IslandsManager per mettere studente su isola
+            islandsManager.incStudent(islandRef,colour);
         }
         else if(inSchool)
             playerManager.transferStudent(playerRef, colour, inSchool);

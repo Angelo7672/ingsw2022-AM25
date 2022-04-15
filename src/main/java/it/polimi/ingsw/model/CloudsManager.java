@@ -15,7 +15,6 @@ public class CloudsManager /*implements GameSetup*/ {
             this.studentNumber = studentNumber;
             this.students = new int[]{0, 0, 0, 0, 0};
         }
-
     }
 
     // CloudsManager constructor, create an arrayList of Clouds.
@@ -23,6 +22,7 @@ public class CloudsManager /*implements GameSetup*/ {
     public CloudsManager(int playerNumber){
         clouds = new ArrayList<>();
         int studentsNumber;
+
         if(playerNumber == 3)
             studentsNumber = 4;
         else
@@ -34,7 +34,6 @@ public class CloudsManager /*implements GameSetup*/ {
         }
     }
 
-
     // given the index of a cloud, return the array of students on that cloud
     public int[] getStudents(int cloudIndex) {
         return clouds.get(cloudIndex).students;
@@ -43,13 +42,10 @@ public class CloudsManager /*implements GameSetup*/ {
     //given the index of a cloud and the color of the student extracted from the bag, add the student to the cloud
     public void refreshCloudStudents(int studentExtracted, int cloudIndex) {
             clouds.get(cloudIndex).students[studentExtracted]++;
-
     }
-
 
     // given the index of a cloud, it empties the cloud and returns the array of the students on the cloud
     public int[] removeStudents(int cloudIndex) {
-
         Cloud cloud = clouds.get(cloudIndex);
         int[] students = new int[cloud.students.length];
 
