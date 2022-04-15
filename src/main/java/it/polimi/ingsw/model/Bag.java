@@ -43,4 +43,15 @@ public class Bag {
     public boolean checkVictory(){      //must be called every time an extraction is made
         return bag.isEmpty();
     }
+
+    public void fillBag(int color, int num){
+        for(int i=0; i<num;i++){
+            if(color==0) bag.add(Colour.GREEN);
+            else if(color==1) bag.add(Colour.RED);
+            else if(color==2) bag.add(Colour.YELLOW);
+            else if(color==3) bag.add(Colour.PINK);
+            else if(color==3) bag.add(Colour.BLUE);
+        }
+        Collections.shuffle(bag);
+    }
 }

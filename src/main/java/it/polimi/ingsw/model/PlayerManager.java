@@ -111,6 +111,17 @@ public class PlayerManager  {
     public void placeTower(int playerRef, int towers){ players.get(playerRef).school.placeTower(towers); }
 
     public void setStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.setStudentEntrance(colour); }
+    public void removeStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.removeStudentEntrance(colour); }
+
+    public void decreaseStudentTable(int player, int color, int num){
+        players.get(player).getSchool().decreaseStudentTable(color, num);
+    }
+    public void increaseStudentTable(int player, int color){
+        players.get(player).getSchool().setStudentTable(color);
+    }
+    public int getStudentsTable(int player, int color){
+        return players.get(player).getSchool().getStudentTable(color);
+    }
 
     public Team getTeam(int playerRef){ return players.get(playerRef).getTeam(); }
 
@@ -175,6 +186,10 @@ public class PlayerManager  {
             if(players.get(i).getSchool().getProfessor(color)) return i;
         }
         return -1;
+    }
+
+    public int getLastMove(int player){
+        return players.get(player).getLastCard().movement;
     }
 
     private class Queue implements Comparable<Queue>{
@@ -289,6 +304,11 @@ public class PlayerManager  {
             public void placeTower(int towers) { this.towers+=towers; }
             public void removeTower(int towers) { this.towers-=towers; }
             public int getTowers() { return towers; }
+
+
+            public void decreaseStudentTable(int color, int num){
+                studentsTable[color]-=num;
+            }
         }
     }
 }

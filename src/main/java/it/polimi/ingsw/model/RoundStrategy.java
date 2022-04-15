@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.Islands.IslandsManager;
 import it.polimi.ingsw.model.Specials.Special;
+import it.polimi.ingsw.model.Specials.Special7;
 import it.polimi.ingsw.model.Specials.SpecialsManager;
 
 import java.util.ArrayList;
@@ -14,8 +15,19 @@ public abstract class RoundStrategy {
     public SpecialsManager specialsManager;
     public Bag bag;
     public Special special;
+    public int numberOfPlayer
+
+    public void moveMother(int steps){
+        islandsManager.moveMotherNature(steps);
+    }
+
+    //ottiene numero steps da far scegliere al client
+    public int getSteps(int player){
+        return playerManager.getLastMove(player);
+    }
 
     public RoundStrategy(int numberOfPlayer, String[] playersInfo){
+        this.numberOfPlayer=numberOfPlayer;
         this.bag = new Bag();
         this.cloudsManager = new CloudsManager(numberOfPlayer);
         refreshStudentsCloud(numberOfPlayer);
@@ -88,7 +100,7 @@ public abstract class RoundStrategy {
     }
 
     //da fare override con special
-    private Team highestInfluenceTeam(ArrayList<Integer> prof, int pos, int noColor, int player) {
+    public Team highestInfluenceTeam(ArrayList<Integer> prof, int pos, int noColor, int player) {
         int inflP1 = 0, inflP2 = 0, inflP3 = 0;
         for(int i=0; i<5; i++) {
             if(islandsManager.getStudent(pos, i)>0)
