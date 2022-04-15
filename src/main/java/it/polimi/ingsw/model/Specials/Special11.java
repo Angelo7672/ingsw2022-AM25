@@ -5,7 +5,7 @@ import java.util.ArrayList;
 //uno studente scelto va nella sala, poi gli viene dato uno estratto
 public class Special11 extends Special{
 
-    Special11(){
+    public Special11(){
         super(2, "special11");
     }
     private ArrayList<Integer> students;

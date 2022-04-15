@@ -19,17 +19,17 @@ public class RoundSpecial8 extends RoundStrategy{
                 //aggiunge a chi possiede il prof di quel colore il numero di studenti
                 //se aggungiamo una variabile influence ad ogni player ci evidiamo lo switch
                 switch (prof.get(i)){
-                    case(0): inflP1+=island.getNumStudents(i); break;
-                    case(1): inflP2+=island.getNumStudents(i); break;
-                    case(2): inflP3+=island.getNumStudents(i); break;
+                    case(0): inflP1+=islandsManager.getStudent(pos, i); break;
+                    case(1): inflP2+=islandsManager.getStudent(pos, i); break;
+                    case(2): inflP3+=islandsManager.getStudent(pos, i); break;
                 }
         }
 
         //sommo le torri all'influenza
-        switch (island.getTowerTeam().toString()){
-            case("WHITE"): inflP1 += island.getTowerValue(); break;
-            case("BLACK"): inflP2 += island.getTowerValue(); break;
-            case("GREY"): inflP3 += island.getTowerValue(); break;
+        switch (islandsManager.getTowerTeam(pos).toString()){
+            case("WHITE"): inflP1 += islandsManager.getTowerValue(pos); break;
+            case("BLACK"): inflP2 += islandsManager.getTowerValue(pos); break;
+            case("GREY"): inflP3 += islandsManager.getTowerValue(pos); break;
         }
 
         switch(player){

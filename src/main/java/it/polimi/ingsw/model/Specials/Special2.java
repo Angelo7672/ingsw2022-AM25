@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.Specials;
 
 public class Special2 extends Special{
 
-    Special2(){
+    public Special2(){
         super(2, "special2");
     }
 

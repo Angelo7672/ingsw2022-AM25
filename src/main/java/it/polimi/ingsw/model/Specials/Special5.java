@@ -3,14 +3,10 @@ package it.polimi.ingsw.model.Specials;
 public class Special5 extends Special{
     private int noEntry;
 
-    Special5(){
+    public Special5(){
         super(2, "special5");
         noEntry=4;
     }
-
-    /*public void effect() {
-
-    }*/
 
     public int getNoEntry(){
         return noEntry;

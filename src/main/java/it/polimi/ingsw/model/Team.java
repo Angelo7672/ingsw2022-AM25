@@ -12,9 +12,10 @@ public enum Team {
         this.value=value;
     }
 
-    public int getTeam(){
+    public int getValue(){
         return value;
     }
+
 
 
 

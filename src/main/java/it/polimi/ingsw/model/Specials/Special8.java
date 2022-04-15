@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Special8 extends Special{
 
 
-    Special8(){
+    public Special8(){
         super(2, "special8");
     }
 

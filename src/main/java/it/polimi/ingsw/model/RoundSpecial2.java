@@ -21,10 +21,10 @@ public class RoundSpecial2 extends RoundStrategy {
 
     @Override
     public void conquestIsland(int pos, String strategy, int noColor, int player){
-        ArrayList<Integer> prof = playerManager.profOwners();
-        Team playerInfluence = highestInfluenceTeam(prof, pos, strategy, noColor, player);
+        ArrayList<Integer> prof = playerManager.profOwners(strategy, player);
+        Team playerInfluence = highestInfluenceTeam(prof, pos, noColor, player);
         if(playerInfluence != islandsManager.getTowerTeam(pos) && playerInfluence != Team.NOONE) { //se l'influenza è cambiata e se è != -1
-            towerChange(playerInfluence.getTeam(), pos);
+            towerChange(playerInfluence.getValue(), pos);
             islandsManager.checkAdjacentIslands(pos);
         }
     }

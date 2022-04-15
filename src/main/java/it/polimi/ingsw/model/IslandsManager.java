@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.Islands;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.Team;
 
@@ -12,7 +12,7 @@ public class IslandsManager {
     private int motherPos;
     private Random rand;
 
-    protected class Island {
+    private class Island {
 
         private int[] students = {0,0,0,0,0};
         private int towerValue;
@@ -47,7 +47,7 @@ public class IslandsManager {
 
     }
 
-    public IslandsManager() {
+    public IslandsManager(ArrayList<Integer> color) {
         i1 = new Island(); i2 = new Island(); i3 = new Island();
         i4 = new Island(); i5 = new Island(); i6 = new Island();
         i7 = new Island(); i8 = new Island(); i9 = new Island();
@@ -59,26 +59,15 @@ public class IslandsManager {
         islands.add(i10); islands.add(i11); islands.add(i12);
         rand=new Random();
         motherPos = rand.nextInt(12);
-    }
 
-    /*setup nel caso si passasse un array
-    public void setup(ArrayList<Integer> color){
         for(int i=0; i<12; i++){
             if(i!=motherPos && i!=motherPos+6){
                 islands.get(i).incStudents(color.get(0));
                 color.remove(0);
             }
         }
-    }*/
-
-
-    //se si passa puntatore di posizione (tanto viene creato un ciclo per chiamare 10 volte il metodo per inserire gli studenti quindi si passa la variabile)
-    //senza verificare se va bene per pos madre. Nel caso si verifica basta togliere l'if e si può usare sempre durante la partita (come setStudent)
-    public void setup(int color, int island){
-        if(island!=motherPos && island!=sum(motherPos,6)){
-            islands.get(island).incStudents(color);
-        }
     }
+
 
     public void moveMotherNature(int steps) {
         motherPos=sum(motherPos, steps);
@@ -96,56 +85,25 @@ public class IslandsManager {
     public Team getTowerTeam(int pos){
         return islands.get(pos).getTowerTeam();
     }
-    public void setTowerTeam(int pos, Team team){
-        islands.get(pos).setTowerTeam(team);
+    public void setTowerTeam(int pos, int team){
+        islands.get(pos).setTowerTeam(getTeam(team));
     }
-
-
-
-    //check che vanno fatti insieme dopo spostamento studenti in isole. private o public?
-    //variabile pos utile solo nel caso in cui si usano gli specials perchè senza si usa motherPos sempre
-    public void conquestIsland(ArrayList<Integer> prof, int pos, String strategy, int noColor, int player) {
-        Team playerInfluence = highestInfluenceTeam(prof, pos, strategy, noColor, player); //int che contiene il player con influenza maggiore sull'isola selezionata
-        if(playerInfluence != islands.get(pos).getTowerTeam() && playerInfluence != Team.NOONE) { //se l'influenza è cambiata e se è != -1
-            //towerChange(playerInfluence, pos, players); //metodo da sistemare.
-            checkAdjacentIslands(pos);
-            checkVictory(); //lasciato qua non serve a niente ma è per intendere che ha senso farlo solo in caso di conquiste o meglio se solo dopo unione di isole
+    public Team getTeam(int player){
+        switch (player){
+            case(-1): return Team.NOONE;
+            case(0): return Team.WHITE;
+            case(1): return Team.BLACK;
+            case (2): return Team.GREY;
         }
-    }
-
-    //per controllare chi ha l'influenza maggiore bisogna avere accesso alla scuola di ogni studente.
-    //se creiamo un metodo in player manager che crea un array di interi contenente il player che possiede il prof ci risparmiamo l'accesso
-    //nel caso di 4 giocatori nell'array dei prof entrambi i giocatori white saranno messi con dicitura 0, entrambi i black con 1.
-    //Il metodo ritorna chi ha l'influenza maggiore, -1 se nessuno
-    //public per test
-    public Team highestInfluenceTeam(ArrayList<Integer> prof, int pos, String strategy, int noColor, int player) {
-        InfluenceStrategy influenceStrategy;
-        switch(strategy){
-            case("special9"): influenceStrategy = new InfluenceNoColor(); break;
-            case("special6"): influenceStrategy = new InfluenceNoTowers(); break;
-            default: influenceStrategy = new Influence();
-        }
-        return influenceStrategy.highestInfluenceTeam(prof, islands.get(pos), noColor, player);
+        return Team.NOONE;
     }
 
     //metto questo solo per fare i test finchè non sistemiamo tower change
     public void setTower(Team player, int pos){
         islands.get(pos).setTowerTeam(player);
     }
-    //bisogna farlo in manager perchè serve l'accesso alla scuola dei players
-    /*private void towerChange(int player, int pos, ArrayList<Player> players) {
-        //se c'era gia una torre sull'isola
-        if (islands.get(pos).getTowerTeam() != -1) {
-            /*metodo da scrivere a seconda di come viene scritto player e scuola. riporta la torre (o le torri) nella scuola
-                es: player.getSchool.setNumTowers(numTowers+towerValue).
-             *
-        }
-        islands.get(pos).setTowerTeam(player); //setto il player che ha conquistato l'isola
 
-        //metodo da scrivere a seconda di come viene scritto player e scuola.
-        //setta il numero di torri nella scuola di chi ha conquistato = numero torri-towerValue
 
-    }*/
     //public momentaneo
     public int size(){return islands.size();}
 

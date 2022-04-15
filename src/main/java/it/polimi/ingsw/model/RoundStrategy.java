@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Islands.IslandsManager;
 import it.polimi.ingsw.model.Specials.Special;
-import it.polimi.ingsw.model.Specials.Special7;
 import it.polimi.ingsw.model.Specials.SpecialsManager;
 
 import java.util.ArrayList;
@@ -15,7 +13,17 @@ public abstract class RoundStrategy {
     public SpecialsManager specialsManager;
     public Bag bag;
     public Special special;
-    public int numberOfPlayer
+    public int numberOfPlayer;
+
+    public RoundStrategy(int numberOfPlayer, String[] playersInfo, ArrayList<Integer> color){
+        this.numberOfPlayer=numberOfPlayer;
+        this.bag = new Bag();
+        this.cloudsManager = new CloudsManager(numberOfPlayer);
+        refreshStudentsCloud(numberOfPlayer);
+        this.islandsManager = new IslandsManager(color);
+        this.playerManager = new PlayerManager(numberOfPlayer, playersInfo);
+        specialsManager = new SpecialsManager();
+    }
 
     public void moveMother(int steps){
         islandsManager.moveMotherNature(steps);
@@ -26,15 +34,6 @@ public abstract class RoundStrategy {
         return playerManager.getLastMove(player);
     }
 
-    public RoundStrategy(int numberOfPlayer, String[] playersInfo){
-        this.numberOfPlayer=numberOfPlayer;
-        this.bag = new Bag();
-        this.cloudsManager = new CloudsManager(numberOfPlayer);
-        refreshStudentsCloud(numberOfPlayer);
-        this.islandsManager = new IslandsManager();
-        this.playerManager = new PlayerManager(numberOfPlayer, playersInfo);
-        specialsManager = new SpecialsManager();
-    }
     public void refreshStudentsCloud(int numberOfPlayer){
 
         if(numberOfPlayer == 2 || numberOfPlayer ==4 ) {
@@ -52,13 +51,14 @@ public abstract class RoundStrategy {
         }
     }
 
-    private void towerChange(int player, int pos){
-
+    public void towerChange(int player, int pos){
+        //se c'era una torre la rimette nella scuola del giocatore
         if(islandsManager.getTowerTeam(pos).toString()!="NOONE"){
-            playerManager.placeTower(islandsManager.getTowerTeam(pos).getTeam(), islandsManager.getTowerValue(pos));
+            playerManager.placeTower(islandsManager.getTowerTeam(pos).getValue(), islandsManager.getTowerValue(pos));
         }
-        islandsManager.setTowerTeam(player, islandsManager.getTowerTeam(pos));
-        playerManager.removeTower(islandsManager.getTowerTeam(pos).getTeam(), islandsManager.getTowerValue(pos));
+        //toglie la torre dalla scuola e la posiziona sull'isola
+        islandsManager.setTowerTeam(pos, player);
+        playerManager.removeTower(islandsManager.getTowerTeam(pos).getValue(), islandsManager.getTowerValue(pos));
 
     }
 
@@ -92,9 +92,9 @@ public abstract class RoundStrategy {
 
     public void conquestIsland(int pos, String strategy, int noColor, int player){
         ArrayList<Integer> prof = playerManager.profOwners(strategy, player);
-        Team playerInfluence = highestInfluenceTeam(prof, pos, strategy, noColor, player);
+        Team playerInfluence = highestInfluenceTeam(prof, pos, noColor, player);
         if(playerInfluence != islandsManager.getTowerTeam(pos) && playerInfluence != Team.NOONE) { //se l'influenza è cambiata e se è != -1
-            towerChange(playerInfluence.getTeam(), pos);
+            towerChange(playerInfluence.getValue(), pos);
             islandsManager.checkAdjacentIslands(pos);
         }
     }
@@ -107,17 +107,17 @@ public abstract class RoundStrategy {
                 //aggiunge a chi possiede il prof di quel colore il numero di studenti
                 //se aggungiamo una variabile influence ad ogni player ci evidiamo lo switch
                 switch (prof.get(i)){
-                    case(0): inflP1+=island.getNumStudents(i); break;
-                    case(1): inflP2+=island.getNumStudents(i); break;
-                    case(2): inflP3+=island.getNumStudents(i); break;
+                    case(0): inflP1+=islandsManager.getStudent(pos, i); break;
+                    case(1): inflP2+=islandsManager.getStudent(pos, i); break;
+                    case(2): inflP3+=islandsManager.getStudent(pos, i); break;
                 }
         }
 
         //sommo le torri all'influenza
-        switch (island.getTowerTeam().toString()){
-            case("WHITE"): inflP1 += island.getTowerValue(); break;
-            case("BLACK"): inflP2 += island.getTowerValue(); break;
-            case("GREY"): inflP3 += island.getTowerValue(); break;
+        switch (islandsManager.getTowerTeam(pos).toString()){
+            case("WHITE"): inflP1 += islandsManager.getTowerValue(pos); break;
+            case("BLACK"): inflP2 += islandsManager.getTowerValue(pos); break;
+            case("GREY"): inflP3 += islandsManager.getTowerValue(pos); break;
         }
 
         //non so se è meglio metterli dentro ad un metodo findMax questi if
