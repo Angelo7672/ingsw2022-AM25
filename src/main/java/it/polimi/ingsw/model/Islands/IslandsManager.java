@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.Islands;
+
+import it.polimi.ingsw.model.Team;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,7 +12,7 @@ public class IslandsManager {
     private int motherPos;
     private Random rand;
 
-    private class Island {
+    protected class Island {
 
         private int[] students = {0,0,0,0,0};
         private int towerValue;
@@ -45,7 +47,7 @@ public class IslandsManager {
 
     }
 
-    IslandsManager() {
+    public IslandsManager() {
         i1 = new Island(); i2 = new Island(); i3 = new Island();
         i4 = new Island(); i5 = new Island(); i6 = new Island();
         i7 = new Island(); i8 = new Island(); i9 = new Island();
@@ -88,12 +90,22 @@ public class IslandsManager {
     public int getStudent(int island, int color){
         return islands.get(island).getNumStudents(color);
     }
+    public int getTowerValue(int pos){
+        return islands.get(pos).getTowerValue();
+    }
+    public Team getTowerTeam(int pos){
+        return islands.get(pos).getTowerTeam();
+    }
+    public void setTowerTeam(int pos, Team team){
+        islands.get(pos).setTowerTeam(team);
+    }
+
 
 
     //check che vanno fatti insieme dopo spostamento studenti in isole. private o public?
     //variabile pos utile solo nel caso in cui si usano gli specials perchè senza si usa motherPos sempre
-    public void conquestIsland(ArrayList<Integer> prof, int pos) {
-        Team playerInfluence = highestInfluenceTeam(prof, pos); //int che contiene il player con influenza maggiore sull'isola selezionata
+    public void conquestIsland(ArrayList<Integer> prof, int pos, String strategy, int noColor, int player) {
+        Team playerInfluence = highestInfluenceTeam(prof, pos, strategy, noColor, player); //int che contiene il player con influenza maggiore sull'isola selezionata
         if(playerInfluence != islands.get(pos).getTowerTeam() && playerInfluence != Team.NOONE) { //se l'influenza è cambiata e se è != -1
             //towerChange(playerInfluence, pos, players); //metodo da sistemare.
             checkAdjacentIslands(pos);
@@ -106,23 +118,14 @@ public class IslandsManager {
     //nel caso di 4 giocatori nell'array dei prof entrambi i giocatori white saranno messi con dicitura 0, entrambi i black con 1.
     //Il metodo ritorna chi ha l'influenza maggiore, -1 se nessuno
     //public per test
-    public Team highestInfluenceTeam(ArrayList<Integer> prof, int pos) {
-        int inflP1 = 0, inflP2 = 0, inflP3 = 0;
-        for(int i=0; i<5; i++) {
-            if(islands.get(pos).getNumStudents(i)>0)
-                //aggiunge a chi possiede il prof di quel colore il numero di studenti
-                //se aggungiamo una variabile influence ad ogni player ci evidiamo lo switch
-                switch (prof.get(i)){
-                    case(0): inflP1+=islands.get(pos).getNumStudents(i); break;
-                    case(1): inflP2+=islands.get(pos).getNumStudents(i); break;
-                    case(2): inflP3+=islands.get(pos).getNumStudents(i); break;
-                }
+    public Team highestInfluenceTeam(ArrayList<Integer> prof, int pos, String strategy, int noColor, int player) {
+        InfluenceStrategy influenceStrategy;
+        switch(strategy){
+            case("special9"): influenceStrategy = new InfluenceNoColor(); break;
+            case("special6"): influenceStrategy = new InfluenceNoTowers(); break;
+            default: influenceStrategy = new Influence();
         }
-        //non so se è meglio metterli dentro ad un metodo findMax questi if
-        if (inflP1>inflP2 && inflP1>inflP3) return Team.WHITE;
-        if (inflP2>inflP1 && inflP2>inflP3) return Team.BLACK;
-        if (inflP3>inflP2 && inflP3>inflP1) return Team.GREY;
-        return Team.NOONE;
+        return influenceStrategy.highestInfluenceTeam(prof, islands.get(pos), noColor, player);
     }
 
     //metto questo solo per fare i test finchè non sistemiamo tower change

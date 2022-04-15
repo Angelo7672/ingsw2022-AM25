@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.Islands.IslandsManager;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class IslandManagerTest {
             islandsManager.incStudent(0, i);
             prof.add(-1);
         }
-        Team influence = islandsManager.highestInfluenceTeam(prof, 0);
+        Team influence = islandsManager.highestInfluenceTeam(prof, 0, "no",-1, -1);
         assertEquals(NOONE,influence);
     }
 
@@ -55,7 +56,7 @@ public class IslandManagerTest {
             islandsManager.incStudent(0, i);
             prof.add(0);
         }
-        Team influence = islandsManager.highestInfluenceTeam(prof, 0);
+        Team influence = islandsManager.highestInfluenceTeam(prof, 0, "no",-1,-1);
         assertEquals(WHITE,influence);
     }
 
