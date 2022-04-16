@@ -45,7 +45,7 @@ public class IslandsManager {
 
     }
 
-    IslandsManager(ArrayList<Integer> color) {
+    public IslandsManager(int[] color) {
         i1 = new Island(); i2 = new Island(); i3 = new Island();
         i4 = new Island(); i5 = new Island(); i6 = new Island();
         i7 = new Island(); i8 = new Island(); i9 = new Island();
@@ -58,16 +58,17 @@ public class IslandsManager {
         rand=new Random();
         motherPos = rand.nextInt(12);
 
+        int j=0;
         for(int i=0; i<12; i++){
             if(i!=motherPos && i!=motherPos+6){
-                islands.get(i).incStudents(color.get(0));
-                color.remove(0);
+                islands.get(i).incStudents(color[j]);
+                j++;
             }
         }
     }
 
     public void moveMotherNature(int steps) {
-        motherPos=sum(motherPos, steps);
+        motherPos= circularArray(motherPos, steps);
     }
 
     public void  incStudent(int island, int color){
@@ -76,40 +77,23 @@ public class IslandsManager {
     public int getStudent(int island, int color){
         return islands.get(island).getNumStudents(color);
     }
-
-
-    //check che vanno fatti insieme dopo spostamento studenti in isole. private o public?
-    //variabile pos utile solo nel caso in cui si usano gli specials perchè senza si usa motherPos sempre
-    public void conquestIsland(ArrayList<Integer> prof, int pos) {
-        Team playerInfluence = highestInfluenceTeam(prof, pos); //int che contiene il player con influenza maggiore sull'isola selezionata
-        if(playerInfluence != islands.get(pos).getTowerTeam() && playerInfluence != Team.NOONE) { //se l'influenza è cambiata e se è != -1
-            //towerChange(playerInfluence, pos, players); //metodo da sistemare.
-            checkAdjacentIslands(pos);
-            checkVictory(); //lasciato qua non serve a niente ma è per intendere che ha senso farlo solo in caso di conquiste o meglio se solo dopo unione di isole
-        }
+    public int getTowerValue(int pos){
+        return islands.get(pos).getTowerValue();
+    }
+    public Team getTowerTeam(int pos){
+        return islands.get(pos).getTowerTeam();
+    }
+    public void setTowerTeam(int pos, int team){
+        islands.get(pos).setTowerTeam(getTeam(team));
     }
 
-    //per controllare chi ha l'influenza maggiore bisogna avere accesso alla scuola di ogni studente.
-    //se creiamo un metodo in player manager che crea un array di interi contenente il player che possiede il prof ci risparmiamo l'accesso
-    //nel caso di 4 giocatori nell'array dei prof entrambi i giocatori white saranno messi con dicitura 0, entrambi i black con 1.
-    //Il metodo ritorna chi ha l'influenza maggiore, -1 se nessuno
-    //public per test
-    public Team highestInfluenceTeam(ArrayList<Integer> prof, int pos) {
-        int inflP1 = 0, inflP2 = 0, inflP3 = 0;
-        for(int i=0; i<5; i++) {
-            if(islands.get(pos).getNumStudents(i)>0)
-                //aggiunge a chi possiede il prof di quel colore il numero di studenti
-                //se aggungiamo una variabile influence ad ogni player ci evidiamo lo switch
-                switch (prof.get(i)){
-                    case(0): inflP1+=islands.get(pos).getNumStudents(i); break;
-                    case(1): inflP2+=islands.get(pos).getNumStudents(i); break;
-                    case(2): inflP3+=islands.get(pos).getNumStudents(i); break;
-                }
+    public Team getTeam(int player){
+        switch (player){
+            case(-1): return Team.NOONE;
+            case(0): return Team.WHITE;
+            case(1): return Team.BLACK;
+            case (2): return Team.GREY;
         }
-        //non so se è meglio metterli dentro ad un metodo findMax questi if
-        if (inflP1>inflP2 && inflP1>inflP3) return Team.WHITE;
-        if (inflP2>inflP1 && inflP2>inflP3) return Team.BLACK;
-        if (inflP3>inflP2 && inflP3>inflP1) return Team.GREY;
         return Team.NOONE;
     }
 
@@ -117,20 +101,8 @@ public class IslandsManager {
     public void setTower(Team player, int pos){
         islands.get(pos).setTowerTeam(player);
     }
-    //bisogna farlo in manager perchè serve l'accesso alla scuola dei players
-    /*private void towerChange(int player, int pos, ArrayList<Player> players) {
-        //se c'era gia una torre sull'isola
-        if (islands.get(pos).getTowerTeam() != -1) {
-            /*metodo da scrivere a seconda di come viene scritto player e scuola. riporta la torre (o le torri) nella scuola
-                es: player.getSchool.setNumTowers(numTowers+towerValue).
-             *
-        }
-        islands.get(pos).setTowerTeam(player); //setto il player che ha conquistato l'isola
 
-        //metodo da scrivere a seconda di come viene scritto player e scuola.
-        //setta il numero di torri nella scuola di chi ha conquistato = numero torri-towerValue
 
-    }*/
     //public momentaneo
     public int size(){return islands.size();}
 
@@ -138,11 +110,11 @@ public class IslandsManager {
     public void checkAdjacentIslands(int pos) {
         int posTemp;
         //torre a sx
-        posTemp = sum(pos,-1);
+        posTemp = circularArray(pos,-1);
         checkAdjacent(pos, posTemp);
-        pos = sum(pos,-1);
+        pos = circularArray(pos,-1);
         //torre a dx
-        posTemp = sum(pos,1);
+        posTemp = circularArray(pos,1);
         checkAdjacent(pos, posTemp);
     }
 
@@ -170,7 +142,7 @@ public class IslandsManager {
 
     //somma numeri per non uscire dall'array
     //public momentaneo
-    public int sum(int pos, int number){
+    public int circularArray(int pos, int number){
         pos += number;
         if(pos >= islands.size()) pos -= islands.size();
         else if(pos < 0) pos += islands.size();
@@ -178,28 +150,6 @@ public class IslandsManager {
     }
 
 
-    //avevo scritto un print mentre controllavo se fosse giusto, lo lascio se magari serve poi
-    public void printIslands(int pos) {
-        System.out.println();
-        System.out.print("isola numero " + pos);
-        System.out.print(" Verde: " + islands.get(pos).getNumStudents(0) + " Rosso: " + islands.get(pos).getNumStudents(1) +
-                " Giallo: " + islands.get(pos).getNumStudents(2) + " Rosa: " + islands.get(pos).getNumStudents(3) +
-                " Azzurro: " + islands.get(pos).getNumStudents(4));
-        switch (islands.get(pos).getTowerTeam().toString()) {
-            case ("NOONE"):
-                System.out.print(" Non ci sono torri");
-                break;
-            case ("WHITE"):
-                System.out.print(" torri banchi:  " + islands.get(pos).getTowerValue());
-                break;
-            case ("BLACK"):
-                System.out.print(" torri nere:  " + islands.get(pos).getTowerValue());
-                break;
-            case ("GREY"):
-                System.out.print(" torri grige:  " + islands.get(pos).getTowerValue());
-                break;
-        }
-    }
 
 
 }
