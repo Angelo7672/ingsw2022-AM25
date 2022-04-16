@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class SchoolTest {
+/*class SchoolTest {
     @Test
     @DisplayName("First test")
     void schoolInit(){
@@ -17,4 +17,4 @@ class SchoolTest {
         }
         assertTrue(playerManager.checkVictory(1));
     }
-}
+}*/
