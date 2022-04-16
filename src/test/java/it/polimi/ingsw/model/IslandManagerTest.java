@@ -8,7 +8,7 @@ import static it.polimi.ingsw.model.Team.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IslandManagerTest {
+/*public class IslandManagerTest {
 
     @Test
     //check setup isole vuote posMother e davanti a mother
@@ -84,4 +84,4 @@ public class IslandManagerTest {
     }
 
 
-}
+}*/

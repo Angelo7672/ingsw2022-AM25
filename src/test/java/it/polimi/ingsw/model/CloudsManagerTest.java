@@ -29,7 +29,6 @@ class CloudsManagerTest {
 
         //for each cloud, checks if the number of students returned is correct
         for (int i = 0; i < playerNumber; i++) {
-
             int[] arr = cloudsManager.removeStudents(i);
             int sum = 0;
             for (int j = 0; j < 5; j++) {
@@ -44,7 +43,7 @@ class CloudsManagerTest {
     void removeStudentsTest3Players() {
         int playerNumber = 3;
         int color = 1;
-        int[] array = new int[]{0, 3, 0, 0, 0};
+        int[] array = new int[]{0, 4, 0, 0, 0};
 
         //fill the clouds
         CloudsManager cloudsManager = new CloudsManager(playerNumber);
@@ -55,12 +54,12 @@ class CloudsManagerTest {
         }
         assertAll(
                 () -> assertArrayEquals(array, cloudsManager.getStudents(0), "Arrays must be equal"),
-                () -> assertArrayEquals(array, cloudsManager.getStudents(1), "Arrays must be equal")
+                () -> assertArrayEquals(array, cloudsManager.getStudents(1), "Arrays must be equal"),
+                () -> assertArrayEquals(array, cloudsManager.getStudents(2), "Arrays must be equal")
         );
 
         //for each cloud, checks if the number of students returned is correct
         for (int i = 0; i < playerNumber; i++) {
-
             int[] arr = cloudsManager.removeStudents(i);
             int sum = 0;
             for (int j = 0; j < 5; j++) {
@@ -73,7 +72,7 @@ class CloudsManagerTest {
     @Test
     @DisplayName("Tests if the number of students returned is correct for 4 players")
     void removeStudentsTest4Players() {
-        int playerNumber = 2;
+        int playerNumber = 4;
         int color = 1;
         int[] array = new int[]{0, 3, 0, 0, 0};
 
@@ -86,12 +85,13 @@ class CloudsManagerTest {
         }
         assertAll(
                 () -> assertArrayEquals(array, cloudsManager.getStudents(0), "Arrays must be equal"),
-                () -> assertArrayEquals(array, cloudsManager.getStudents(1), "Arrays must be equal")
+                () -> assertArrayEquals(array, cloudsManager.getStudents(1), "Arrays must be equal"),
+                () -> assertArrayEquals(array, cloudsManager.getStudents(2), "Arrays must be equal"),
+                () -> assertArrayEquals(array, cloudsManager.getStudents(3), "Arrays must be equal")
         );
 
         //for each cloud, checks if the number of students returned is correct
         for (int i = 0; i < playerNumber; i++) {
-
             int[] arr = cloudsManager.removeStudents(i);
             int sum = 0;
             for (int j = 0; j < 5; j++) {
