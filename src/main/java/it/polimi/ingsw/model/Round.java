@@ -35,11 +35,6 @@ public class Round {
         return Assistant.NONE;
     }
 
-    public void playCard(int playerRef, String card){ playerManager.playCard(playerRef,stringToAssistant(card)); }
-    public void inOrderForActionPhase(){ playerManager.inOrderForActionPhase(); }
-    public int readQueue(int pos){ return playerManager.readQueue(pos); }
-    public void queueForPlanification(){ playerManager.queueForPlanification(); }
-
     public void refreshStudentsCloud(int numberOfPlayer){
         if(numberOfPlayer == 2 || numberOfPlayer ==4 ) {
             for (int j = 0; j < numberOfPlayer; j++) {
@@ -56,17 +51,10 @@ public class Round {
         }
     }
 
-    public void fillEntrance(int playerRef,int cloudRef){
-        for(int i = 0; i < 5 ; i++){
-            playerManager.setStudentEntrance(playerRef, cloudsManager.removeStudents(cloudRef)[i]);
-        }
-    };
-
-
-    private void highInfluence(){
-        //playerManager.getProfessor
-
-    }
+    public void queueForPlanificationPhase(){ playerManager.queueForPlanificationPhase(numberOfPlayer); }
+    public void playCard(int playerRef, String card){ playerManager.playCard(playerRef,stringToAssistant(card)); }
+    public void inOrderForActionPhase(){ playerManager.inOrderForActionPhase(); }
+    public int readQueue(int pos){ return playerManager.readQueue(pos); }
 
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef){
         if(!inSchool){
@@ -76,4 +64,74 @@ public class Round {
         else if(inSchool)
             playerManager.transferStudent(playerRef, colour, inSchool);
     }
+
+    public void moveMotherNature(int queueRef, int desiredMovement){
+        int maxMovement;
+        boolean victory = false;
+
+        maxMovement = playerManager.readMaxMotherNatureMovement(queueRef);
+        if(desiredMovement > 0 && desiredMovement <= maxMovement ){
+            islandsManager.moveMotherNature(desiredMovement);
+            victory= conquestIsland(islandsManager.getMotherPos());
+        }
+    }
+    private boolean conquestIsland(int islandRef){
+        Team teamStronger = highInfluenceTeam();
+        Team teamWeaker = Team.NOONE;
+        int[] infoTower;    //in the first cell there is the number of towers built, in the second there is the previous owner of the towers
+        boolean victory = false;
+
+        if(highInfluenceTeam() != Team.NOONE){
+            infoTower = islandsManager.towerChange(islandRef,teamStronger);
+            victory = islandsManager.checkVictory();
+            victory = playerManager.removeTower(teamStronger,infoTower[0]);
+            if(infoTower[1] == 0) teamWeaker = Team.WHITE;
+            else if(infoTower[1] == 1) teamWeaker = Team.BLACK;
+            else if(infoTower[1] == 2) teamWeaker = Team.GREY;
+            playerManager.placeTower(teamWeaker,infoTower[0]);
+        }
+
+        return victory;
+    }
+    private Team highInfluenceTeam() {
+        int[] studentOnIsland = new int[5];
+        int professorOwner;
+        Team teamOwner;
+        int influenceTeamWHITE = 0;
+        int influenceTeamBLACK = 0;
+        int influenceTeamGREY = 0;
+
+        for (int i = 0; i < 5; i++) {
+            studentOnIsland[i] = islandsManager.getStudent(islandsManager.getMotherPos(), i);
+            if (studentOnIsland[i] > 0) {
+                professorOwner = playerManager.getProfessorPropriety(i);
+                if (professorOwner != -1) {
+                    teamOwner = playerManager.getTeam(professorOwner);
+                    if (teamOwner.equals(Team.WHITE)) influenceTeamWHITE += studentOnIsland[i];
+                    else if (teamOwner.equals(Team.BLACK)) influenceTeamBLACK += studentOnIsland[i];
+                    else if (teamOwner.equals(Team.GREY)) influenceTeamGREY += studentOnIsland[i];
+                }
+            }
+        }
+
+        if (influenceTeamBLACK < influenceTeamWHITE) {
+            if (influenceTeamGREY < influenceTeamWHITE) return Team.WHITE;
+        } else if (influenceTeamWHITE < influenceTeamBLACK) {
+            if (influenceTeamGREY < influenceTeamBLACK) return Team.BLACK;
+        } else if (influenceTeamWHITE < influenceTeamGREY){
+            if (influenceTeamBLACK < influenceTeamGREY) return Team.GREY;
+        }
+        return Team.NOONE;
+    }
+
+
+    public void fillEntrance(int playerRef,int cloudRef){
+        for(int i = 0; i < 5 ; i++){
+            playerManager.setStudentEntrance(playerRef, cloudsManager.removeStudents(cloudRef)[i]);
+        }
+    };
+
+
+
+
 }

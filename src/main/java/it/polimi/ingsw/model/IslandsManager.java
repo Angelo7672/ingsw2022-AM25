@@ -149,8 +149,25 @@ public class IslandsManager {
         return pos;
     }
 
+    private class Island {
+        private int[] students;
+        private int towerValue;
+        private Team towerTeam;
 
+        private Island(){
+            this.students = new int[]{0,0,0,0,0};
+            this.towerValue = 1;
+            this.towerTeam = Team.NOONE;
+        }
 
+        public Team getTowerTeam(){ return towerTeam; }
+        public int getTowerValue(){ return towerValue; }
+        public void setTowerTeam(Team team){ towerTeam=team; }
+        public void incTowerValue(int value){ towerValue+=value; }
+        public int getNumStudents(int color){ return students[color]; }
+        public void copyStudents(int color, int nStudents){ students[color] = nStudents; }
+        public void incStudents(int color){ students[color]++; }
+    }
 
 }
 

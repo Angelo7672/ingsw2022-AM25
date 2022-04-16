@@ -20,56 +20,29 @@ public class PlayerManager  {
 
         if (numberOfPlayer == 2) {
             Player g1 = new Player(playersInfo[0], stringToCharacter(playersInfo[1]), Team.WHITE, numberOfPlayer);
-            Queue firstPlayer = new Queue(0,-1);
             players.add(g1);            //insert the firstPlayer in the player list
-            queue.add(firstPlayer);     //insert the firstPlayer in the queue for planification phase
             Player g2 = new Player(playersInfo[2], stringToCharacter(playersInfo[3]), Team.BLACK, numberOfPlayer);
-            Queue secondPlayer = new Queue(1,-1);
             players.add(g2);
-            queue.add(secondPlayer);
         } else if (numberOfPlayer == 3) {
             Player g1 = new Player(playersInfo[0], stringToCharacter(playersInfo[1]), Team.WHITE, numberOfPlayer);
-            Queue firstPlayer = new Queue(0,-1);
             players.add(g1);
-            queue.add(firstPlayer);
             Player g2 = new Player(playersInfo[2], stringToCharacter(playersInfo[3]), Team.BLACK, numberOfPlayer);
-            Queue secondPlayer = new Queue(1,-1);
             players.add(g2);
-            queue.add(secondPlayer);
             Player g3 = new Player(playersInfo[4], stringToCharacter(playersInfo[5]), Team.GREY, numberOfPlayer);
-            Queue thirdPlayer = new Queue(2,-1);
             players.add(g3);
-            queue.add(thirdPlayer);
         } else if (numberOfPlayer == 4) {
             Player g1 = new Player(playersInfo[0], stringToCharacter(playersInfo[1]), Team.WHITE, numberOfPlayer);
-            Queue firstPlayer = new Queue(0,-1);
             players.add(g1);
-            queue.add(firstPlayer);
             Player g2 = new Player(playersInfo[2], stringToCharacter(playersInfo[3]), Team.WHITE, numberOfPlayer);
-            Queue secondPlayer = new Queue(1,-1);
             players.add(g2);
-            queue.add(secondPlayer);
             Player g3 = new Player(playersInfo[4], stringToCharacter(playersInfo[5]), Team.BLACK, numberOfPlayer);
-            Queue thirdPlayer = new Queue(2,-1);
             players.add(g3);
-            queue.add(thirdPlayer);
             Player g4 = new Player(playersInfo[6], stringToCharacter(playersInfo[7]), Team.BLACK, numberOfPlayer);
-            Queue fourthPlayer = new Queue(3,-1);
             players.add(g4);
-            queue.add(fourthPlayer);
         }
-
-        //The first player is chosen randomly, then proceeds clockwise. The distribution of players at the table is arranged clockwise in this order 1 2 3 4
+        //The first player is chosen randomly, then queueForPlanificationPhase order the queue.
         firstInQueue = rnd.nextInt(numberOfPlayer - 1);
-        if (firstInQueue != 0) {
-            if (firstInQueue == 1) {
-                Collections.rotate(queue, 1);
-            } else if (firstInQueue == 2) {
-                Collections.rotate(queue, 2);
-            } else if (firstInQueue == 3) {
-                Collections.rotate(queue, 3);
-            }
-        }
+        Queue first = new Queue(firstInQueue,-1,-1);
     }
 
     private Character stringToCharacter(String string){
@@ -80,33 +53,24 @@ public class PlayerManager  {
         return Character.NONE;
     }
 
-    public void playCard(int playerRef, Assistant card){
-        Queue a;
-
-        players.get(playerRef).hand.remove(card);
-        a = new Queue(playerRef,card.getValue());
-        queue.add(a);
-    }
-    public void inOrderForActionPhase(){
-        Collections.sort(queue, new Comparator<Queue>() {
-            @Override
-            public int compare(Queue q1, Queue q2) {
-                return q1.compareTo(q2);
-            }
-        });
-    }
-    public void queueForPlanification(){
+    public void queueForPlanificationPhase(int numberOfPlayer){
         int firstInQueue;
-        Queue one = new Queue(0,-1);
-        Queue two = new Queue(1,-1);
-        Queue three = new Queue(2,-1);
-        Queue four = new Queue(3,-1);
 
         firstInQueue = queue.get(0).getPlayerRef();         //destroy the previous queue
         while (!queue.isEmpty()) queue.remove(0);
 
-        queue.add(one);queue.add(two);queue.add(three);queue.add(four);
-
+        Queue one = new Queue(0,-1,-1);
+        Queue two = new Queue(1,-1,-1);
+        queue.add(one);queue.add(two);
+        if(numberOfPlayer == 3){
+            Queue three = new Queue(2,-1,-1);
+            queue.add(three);
+        }else if(numberOfPlayer == 4){
+            Queue three = new Queue(2,-1,-1);
+            Queue four = new Queue(3,-1,-1);
+            queue.add(three);queue.add(four);
+        }
+        //The first player is the one who played first in the previous action phase, then proceeds clockwise.The distribution of players at the table is arranged clockwise in this order 1 2 3 4
         if (firstInQueue != 0) {
             if (firstInQueue == 1) {
                 Collections.rotate(queue, 1);
@@ -117,7 +81,21 @@ public class PlayerManager  {
             }
         }
     }
-    public int readQueue(int ref){ return queue.get(ref).getPlayerRef(); }
+    public void playCard(int playerRef, Assistant card){
+        players.get(playerRef).hand.remove(card);
+        queue.get(playerRef).setValueCard(card.getValue());
+        queue.get(playerRef).setMaxMoveMotherNature(card.getMovement());
+    }
+    public void inOrderForActionPhase(){
+        Collections.sort(queue, new Comparator<Queue>() {
+            @Override
+            public int compare(Queue q1, Queue q2) {
+                return q1.compareTo(q2);
+            }
+        });
+    }
+    public int readQueue(int queueRef){ return queue.get(queueRef).getPlayerRef(); }
+    public int readMaxMotherNatureMovement(int queueRef){ return queue.get(queueRef).getMaxMoveMotherNature(); }
 
     public void transferStudent(int playerRef,int colour, boolean inSchool){    //it is used to remove the student from the entrance
         int studentTableofThisColour = -1;
@@ -152,28 +130,29 @@ public class PlayerManager  {
             }
         }
     }
+
     public void setStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.setStudentEntrance(colour); }
 
     public int getStudentTable(int playerRef, int colour){ return players.get(playerRef).school.getStudentTable(colour); }
     private void setProfessor(int playerRef, int colour){ players.get(playerRef).school.setProfessor(colour); }
     private void removeProfessor(int playerRef, int colour){ players.get(playerRef).school.removeProfessor(colour); }
     public boolean getProfessor(int playerRef, int colour){ return players.get(playerRef).school.getProfessor(colour); }
-    public int[] getProfessorPropriety() { return professorPropriety; }
+    public int getProfessorPropriety(int color) { return professorPropriety[color]; }
 
-    public boolean removeTower(Team team) {
+    public boolean removeTower(Team team, int numberOfTower) {
         boolean victory = false;
 
         for (Player p : players) {
             if (p.getTeam().equals(team)){
-                p.school.removeTower();
+                p.school.removeTower(numberOfTower);
                 if(p.checkVictory()) victory = true;
             }
         }
         return victory;
     }
-    public void placeTower(Team team){
+    public void placeTower(Team team, int numberOfTower){
         for (Player p : players) {
-            if (p.getTeam().equals(team)) p.school.placeTower();
+            if (p.getTeam().equals(team)) p.school.placeTower(numberOfTower);
         }
     }
 
@@ -216,14 +195,20 @@ public class PlayerManager  {
     private class Queue implements Comparable<Queue>{   //it is used both in the planning phase and in the action phase
         private int playerRef;
         private Integer valueCard;
+        private int maxMoveMotherNature;
 
-        public Queue(int playerRef,int valueCard) {
+        public Queue(int playerRef,int valueCard,int maxMoveMotherNature) {
             this.playerRef = playerRef;
             this.valueCard = valueCard;
+            this.maxMoveMotherNature = maxMoveMotherNature;
         }
 
         private int getPlayerRef() { return playerRef; }
         private int getValueCard() { return valueCard; }
+        public int getMaxMoveMotherNature() { return maxMoveMotherNature; }
+
+        public void setValueCard(Integer valueCard) { this.valueCard = valueCard; }
+        public void setMaxMoveMotherNature(int maxMoveMotherNature) { this.maxMoveMotherNature = maxMoveMotherNature; }
 
         @Override
         public int compareTo(Queue o) {
@@ -237,7 +222,7 @@ public class PlayerManager  {
         private final Team team;
         private int coins;
         //private Assistant lastCard;     //questo forse ha senso metterlo nel controller (mettere li' una board)
-        private List<Assistant> hand;   //MANCA PLAYCARD!!!
+        private List<Assistant> hand;
         private School school;
 
         private Player(String nickname, Character character, Team team, int numberOfPlayer) {
@@ -311,8 +296,8 @@ public class PlayerManager  {
             }
             private int getStudentTable(int colour) { return studentsTable[colour]; }
 
-            private void placeTower() { towers++; }
-            private void removeTower() { towers--; }
+            private void placeTower(int number) { towers+=number; }
+            private void removeTower(int number) { towers-=number ; }
             private int getTowers() { return towers; }
         }
     }
