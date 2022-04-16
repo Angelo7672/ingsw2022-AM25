@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class RoundSpecial2 extends RoundStrategy {
 
-    public RoundSpecial2(int numberOfPlayer, String[] playersInfo){
-        super(numberOfPlayer,playersInfo);
+    public RoundSpecial2(int numberOfPlayer, String[] playersInfo, ArrayList<Integer> color){
+        super(numberOfPlayer,playersInfo, color);
         special = new Special2();
     }
 

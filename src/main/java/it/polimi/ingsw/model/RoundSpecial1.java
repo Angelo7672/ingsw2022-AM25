@@ -2,13 +2,15 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.Specials.*;
 
+import java.util.ArrayList;
+
 
 public class RoundSpecial1 extends RoundStrategy{
 
 
 
-    public RoundSpecial1(int numberOfPlayer, String[] playersInfo){
-        super(numberOfPlayer, playersInfo);
+    public RoundSpecial1(int numberOfPlayer, String[] playersInfo, ArrayList<Integer> color){
+        super(numberOfPlayer, playersInfo, color);
         special =new Special1();
     }
 

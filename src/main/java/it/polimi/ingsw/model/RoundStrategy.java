@@ -59,7 +59,6 @@ public abstract class RoundStrategy {
         //toglie la torre dalla scuola e la posiziona sull'isola
         islandsManager.setTowerTeam(pos, player);
         playerManager.removeTower(islandsManager.getTowerTeam(pos).getValue(), islandsManager.getTowerValue(pos));
-
     }
 
     public Boolean useSpecial(int special, int player){
@@ -112,7 +111,6 @@ public abstract class RoundStrategy {
                     case(2): inflP3+=islandsManager.getStudent(pos, i); break;
                 }
         }
-
         //sommo le torri all'influenza
         switch (islandsManager.getTowerTeam(pos).toString()){
             case("WHITE"): inflP1 += islandsManager.getTowerValue(pos); break;

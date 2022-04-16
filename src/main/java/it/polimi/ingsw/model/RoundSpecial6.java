@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.Specials.Special6;
 import java.util.ArrayList;
 
 public class RoundSpecial6 extends RoundStrategy{
-    public RoundSpecial6(int numberOfPlayer, String[] playersInfo){
-        super(numberOfPlayer,playersInfo);
+    public RoundSpecial6(int numberOfPlayer, String[] playersInfo, ArrayList<Integer> color){
+        super(numberOfPlayer,playersInfo, color);
         special = new Special6();
     }
 
