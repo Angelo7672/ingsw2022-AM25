@@ -9,7 +9,7 @@ public class IslandsManager {
     private int motherPos;
     private Random rand;
 
-    public IslandsManager(ArrayList<Integer> color) {
+    public IslandsManager(int[] color) {
         i1 = new Island(); i2 = new Island(); i3 = new Island();
         i4 = new Island(); i5 = new Island(); i6 = new Island();
         i7 = new Island(); i8 = new Island(); i9 = new Island();
@@ -19,25 +19,22 @@ public class IslandsManager {
         islands.add(i4); islands.add(i5); islands.add(i6);
         islands.add(i7); islands.add(i8); islands.add(i9);
         islands.add(i10); islands.add(i11); islands.add(i12);
+
         rand= new Random();
         motherPos = rand.nextInt(12);
 
-        for(int i=0; i<12; i++){
-            if(i!=motherPos && i!=motherPos+6){
-                islands.get(i).incStudents(color.get(0));
-                color.remove(0);
+        for(int i = 0, j = 0; i < 12 && j < 10; i++) {
+            if (i != motherPos && i != motherPos + 6){
+                islands.get(i).incStudents(color[j]);
+                j++;
             }
         }
     }
 
-    public void incStudent(int island, int color){
-        islands.get(island).incStudents(color);
-    }
+    public void incStudent(int island, int color){ islands.get(island).incStudents(color); }
 
     public void moveMotherNature(int steps) { motherPos = circularArray(motherPos, steps); }
-    public int getMotherPos(){
-        return motherPos;
-    }
+    public int getMotherPos(){ return motherPos; }
 
     public int getStudent(int island, int color){ return islands.get(island).getNumStudents(color); }
 
@@ -102,13 +99,13 @@ public class IslandsManager {
             this.towerTeam = Team.NOONE;
         }
 
-        public Team getTowerTeam(){ return towerTeam; }
-        public int getTowerValue(){ return towerValue; }
-        public void setTowerTeam(Team team){ towerTeam=team; }
-        public void incTowerValue(int value){ towerValue+=value; }
-        public int getNumStudents(int color){ return students[color]; }
-        public void copyStudents(int color, int nStudents){ students[color] = nStudents; }
-        public void incStudents(int color){ students[color]++; }
+        private Team getTowerTeam(){ return towerTeam; }
+        private int getTowerValue(){ return towerValue; }
+        private void setTowerTeam(Team team){ towerTeam = team; }
+        private void incTowerValue(int value){ towerValue+=value; }
+        private int getNumStudents(int color){ return students[color]; }
+        private void copyStudents(int color, int nStudents){ students[color] = nStudents; }
+        private void incStudents(int color){ students[color]++; }
     }
 
 }
