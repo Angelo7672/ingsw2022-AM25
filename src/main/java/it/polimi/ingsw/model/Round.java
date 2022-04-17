@@ -105,7 +105,7 @@ public class Round {
     private Team highInfluenceTeam() {
         int[] studentOnIsland = new int[5];
         int professorOwner;
-        Team teamOwner;
+        Team teamOwnerProfessor, teamOwnerTower;
         int influenceTeamWHITE = 0;
         int influenceTeamBLACK = 0;
         int influenceTeamGREY = 0;
@@ -115,13 +115,17 @@ public class Round {
             if (studentOnIsland[i] > 0) {
                 professorOwner = playerManager.getProfessorPropriety(i);
                 if (professorOwner != -1) {
-                    teamOwner = playerManager.getTeam(professorOwner);
-                    if (teamOwner.equals(Team.WHITE)) influenceTeamWHITE += studentOnIsland[i];
-                    else if (teamOwner.equals(Team.BLACK)) influenceTeamBLACK += studentOnIsland[i];
-                    else if (teamOwner.equals(Team.GREY)) influenceTeamGREY += studentOnIsland[i];
+                    teamOwnerProfessor = playerManager.getTeam(professorOwner);
+                    if (teamOwnerProfessor.equals(Team.WHITE)) influenceTeamWHITE += studentOnIsland[i];
+                    else if (teamOwnerProfessor.equals(Team.BLACK)) influenceTeamBLACK += studentOnIsland[i];
+                    else if (teamOwnerProfessor.equals(Team.GREY)) influenceTeamGREY += studentOnIsland[i];
                 }
             }
         }
+        teamOwnerTower = islandsManager.getTowerTeam(islandsManager.getMotherPos());
+        if(teamOwnerTower.equals(Team.WHITE)) influenceTeamWHITE += islandsManager.getTowerValue(islandsManager.getMotherPos());
+        else if(teamOwnerTower.equals(Team.BLACK)) influenceTeamBLACK += islandsManager.getTowerValue(islandsManager.getMotherPos());
+        else if(teamOwnerTower.equals(Team.GREY)) influenceTeamGREY += islandsManager.getTowerValue(islandsManager.getMotherPos());
 
         if (influenceTeamBLACK < influenceTeamWHITE) {
             if (influenceTeamGREY < influenceTeamWHITE) return Team.WHITE;

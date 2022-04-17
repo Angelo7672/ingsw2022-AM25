@@ -38,21 +38,29 @@ public class IslandsManager {
 
     public int getStudent(int island, int color){ return islands.get(island).getNumStudents(color); }
 
+    public Team getTowerTeam(int islandRef){ return islands.get(islandRef).getTowerTeam(); }
+    public int getTowerValue(int islandRef){ return islands.get(islandRef).getTowerValue(); }
     public int[] towerChange(int islandRef, Team team) {
         int[] returnItem = new int[2];  //in the first cell there is the number of towers built, in the second there is the previous owner of the towers
 
-        if(islands.get(islandRef).getTowerTeam().equals(Team.NOONE)) {
+        if(!islands.get(islandRef).getTowerTeam().equals(team)) {
+            if (islands.get(islandRef).getTowerTeam().equals(Team.NOONE)) {
+                islands.get(islandRef).setTowerTeam(team);
+                checkAdjacentIslands(islandRef);
+                returnItem[0] = 1;
+                returnItem[1] = -1;
+                return returnItem;
+            }
+
+            returnItem[1] = islands.get(islandRef).getTowerTeam().getTeam();
             islands.get(islandRef).setTowerTeam(team);
             checkAdjacentIslands(islandRef);
-            returnItem[0] = 1;
-            returnItem[1] = -1;
+            returnItem[0] = islands.get(islandRef).getTowerValue();
             return returnItem;
         }
 
-        returnItem[1] = islands.get(islandRef).getTowerTeam().getTeam();
-        islands.get(islandRef).setTowerTeam(team);
-        checkAdjacentIslands(islandRef);
-        returnItem[0] = islands.get(islandRef).getTowerValue();
+        returnItem[0] = 0;
+        returnItem[1] = -1;
         return returnItem;
     }
     private void checkAdjacentIslands(int pos) {
