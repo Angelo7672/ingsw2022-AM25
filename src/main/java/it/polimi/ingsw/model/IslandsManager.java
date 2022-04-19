@@ -1,15 +1,15 @@
 package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class IslandsManager {
     private ArrayList<Island> islands;
     private Island i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12;
     private int motherPos;
-    private Random rand;
 
-    public IslandsManager(int[] color) {
+    public IslandsManager() {
         i1 = new Island(); i2 = new Island(); i3 = new Island();
         i4 = new Island(); i5 = new Island(); i6 = new Island();
         i7 = new Island(); i8 = new Island(); i9 = new Island();
@@ -20,13 +20,19 @@ public class IslandsManager {
         islands.add(i7); islands.add(i8); islands.add(i9);
         islands.add(i10); islands.add(i11); islands.add(i12);
 
-        rand= new Random();
+        Random rand = new Random();
         motherPos = rand.nextInt(12);
 
-        for(int i = 0, j = 0; i < 12 && j < 10; i++) {
+        ArrayList<Integer> miniBag = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            miniBag.add(i);
+            miniBag.add(i);
+        }
+        Collections.shuffle(miniBag);
+        for(int i = 0; i < 12 && !miniBag.isEmpty(); i++) {
             if (i != motherPos && i != motherPos + 6){
-                islands.get(i).incStudents(color[j]);
-                j++;
+                islands.get(i).incStudents(miniBag.get(0));
+                miniBag.remove(0);
             }
         }
     }

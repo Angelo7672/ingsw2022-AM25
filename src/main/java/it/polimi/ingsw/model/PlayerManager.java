@@ -116,7 +116,7 @@ public class PlayerManager  {
                 for (i = 0; i < numberOfPlayer && !stop; i++) {
                     if (i != playerRef && studentTableofThisColour < getStudentTable(i, colour))
                         stop = true;  //if it finds someone with more students at the table it stops
-                    else if (i != playerRef && players.get(i).school.getProfessor(colour)) {
+                    else if (i != playerRef && getProfessor(i,colour)) {
                         removeProfessor(i, colour);    //otherwise check if the other had the professor
                         setProfessor(playerRef, colour);
                         professorPropriety[colour] = playerRef;
@@ -145,7 +145,7 @@ public class PlayerManager  {
         for (Player p : players) {
             if (p.getTeam().equals(team)){
                 p.school.removeTower(numberOfTower);
-                if(p.checkVictory()) victory = true;
+                if(p.school.checkVictory()) victory = true;
             }
         }
         return victory;
@@ -245,10 +245,6 @@ public class PlayerManager  {
         }
         private void giveCoin() { coins++; }
         private void removeCoin(int cost) { coins-=cost; }
-        private boolean checkVictory(){     //Check if the player has built his last tower
-            if(school.getTowers()==0) return true;
-            return false;
-        }
 
         private class School {
             private int towers;
@@ -299,6 +295,11 @@ public class PlayerManager  {
             private void placeTower(int number) { towers+=number; }
             private void removeTower(int number) { towers-=number ; }
             private int getTowers() { return towers; }
+
+            private boolean checkVictory(){     //Check if the player has built his last tower
+                if(getTowers()==0) return true;
+                return false;
+            }
         }
     }
 }
