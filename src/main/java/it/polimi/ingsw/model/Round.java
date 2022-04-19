@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-public class Round {
+public class Round implements GameManager{
     private CloudsManager cloudsManager;
     private IslandsManager islandsManager;
     private PlayerManager playerManager;
@@ -10,7 +10,6 @@ public class Round {
     public Round(int numberOfPlayer, String[] playersInfo){
         this.bag = new Bag();
         this.cloudsManager = new CloudsManager(numberOfPlayer);
-        refreshStudentsCloud(numberOfPlayer);
         this.islandsManager = new IslandsManager();
         this.playerManager = new PlayerManager(numberOfPlayer, playersInfo);
         if(numberOfPlayer == 2 || numberOfPlayer == 4){
@@ -37,6 +36,7 @@ public class Round {
         return Assistant.NONE;
     }
 
+    @Override
     public void refreshStudentsCloud(int numberOfPlayer){
         if(numberOfPlayer == 2 || numberOfPlayer ==4 ) {
             for (int j = 0; j < numberOfPlayer; j++) {
@@ -53,11 +53,16 @@ public class Round {
         }
     }
 
+    @Override
     public void queueForPlanificationPhase(){ playerManager.queueForPlanificationPhase(numberOfPlayer); }
+    @Override
     public void playCard(int playerRef, String card){ playerManager.playCard(playerRef,stringToAssistant(card)); }
+    @Override
     public void inOrderForActionPhase(){ playerManager.inOrderForActionPhase(); }
+    @Override
     public int readQueue(int pos){ return playerManager.readQueue(pos); }
 
+    @Override
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef){
         if(!inSchool){
             playerManager.transferStudent(playerRef, colour, inSchool);
@@ -67,6 +72,7 @@ public class Round {
             playerManager.transferStudent(playerRef, colour, inSchool);
     }
 
+    @Override
     public boolean moveMotherNature(int queueRef, int desiredMovement){
         int maxMovement;
         boolean victory = false;
@@ -132,7 +138,8 @@ public class Round {
         return Team.NOONE;
     }
 
-    public void fillEntrance(int playerRef,int cloudRef){
+    @Override
+    public void chooseCloud(int playerRef,int cloudRef){
         for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef, cloudsManager.removeStudents(cloudRef)[i]);
     }
 }
