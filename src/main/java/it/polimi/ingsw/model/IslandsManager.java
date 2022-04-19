@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class IslandsManager {
+
     private ArrayList<Island> islands;
     private Island i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12;
     private int motherPos;
     private Random rand;
 
-    public IslandsManager(ArrayList<Integer> color) {
+    public IslandsManager(int[] color) {
         i1 = new Island(); i2 = new Island(); i3 = new Island();
         i4 = new Island(); i5 = new Island(); i6 = new Island();
         i7 = new Island(); i8 = new Island(); i9 = new Island();
@@ -19,26 +20,38 @@ public class IslandsManager {
         islands.add(i4); islands.add(i5); islands.add(i6);
         islands.add(i7); islands.add(i8); islands.add(i9);
         islands.add(i10); islands.add(i11); islands.add(i12);
-        rand= new Random();
+        rand=new Random();
         motherPos = rand.nextInt(12);
 
         for(int i = 0, j = 0; i < 12 && j < 10; i++) {
-            if (i != motherPos && i != motherPos + 6){
+            if (i != motherPos && i != circularArray(motherPos,6)){
                 islands.get(i).incStudents(color[j]);
                 j++;
             }
         }
     }
 
-    public void incStudent(int island, int color){ islands.get(island).incStudents(color); }
+    public void  incStudent(int island, int color){
+        islands.get(island).incStudents(color);
+    }
 
-    public void moveMotherNature(int steps) { motherPos = circularArray(motherPos, steps); }
-    public int getMotherPos(){ return motherPos; }
+    public void moveMotherNature(int steps) {
+        motherPos= circularArray(motherPos, steps);
+    }
+    public int getMotherPos(){
+        return motherPos;
+    }
 
-    public int getStudent(int island, int color){ return islands.get(island).getNumStudents(color); }
+    public int getStudent(int island, int color){
+        return islands.get(island).getNumStudents(color);
+    }
 
-    public Team getTowerTeam(int islandRef){ return islands.get(islandRef).getTowerTeam(); }
-    public int getTowerValue(int islandRef){ return islands.get(islandRef).getTowerValue(); }
+    public int getTowerValue(int pos){
+        return islands.get(pos).getTowerValue();
+    }
+    public Team getTowerTeam(int pos){
+        return islands.get(pos).getTowerTeam();
+    }
     public int[] towerChange(int islandRef, Team team) {
         int[] returnItem = new int[2];  //in the first cell there is the number of towers built, in the second there is the previous owner of the towers
 
@@ -62,33 +75,36 @@ public class IslandsManager {
         returnItem[1] = -1;
         return returnItem;
     }
+
     private void checkAdjacentIslands(int pos) {
         int posTemp;
 
-        posTemp = circularArray(pos,-1);    //sx tower
-        checkAdjacent(pos, posTemp);
-        pos = circularArray(pos,-1);
+        posTemp = circularArray(pos,-1);    //left tower
+        if(checkAdjacent(pos, posTemp)) pos=circularArray(pos,-1);
 
-        posTemp = circularArray(pos,1);     //dx tower
+        posTemp = circularArray(pos,1);     //right tower
         checkAdjacent(pos, posTemp);
     }
-    private void checkAdjacent(int pos, int posTemp){
+    private boolean checkAdjacent(int pos, int posTemp){
         if (islands.get(pos).getTowerTeam() == islands.get(posTemp).getTowerTeam()) {
             for (int i = 0; i < 5; i++) {   //high student on an island
-                islands.get(pos).copyStudents(i,islands.get(pos).getNumStudents(i) + islands.get(posTemp).getNumStudents(i));
+                islands.get(pos).copyStudents(i, islands.get(pos).getNumStudents(i) + islands.get(posTemp).getNumStudents(i));
             }
             islands.get(pos).incTowerValue(islands.get(posTemp).getTowerValue()); //tower value increase
             islands.remove(posTemp); //island delete
-            if(motherPos == posTemp) motherPos = pos;   //I move mother, if there was one, from the eliminated island
+            if (motherPos == posTemp) motherPos = pos;   //I move mother from the eliminated island if she was there//
+            return true;
         }
+        return false;
     }
+
     public boolean checkVictory(){
         if(islands.size()==3) return true;
         return false;
     }
 
     //public momentaneo
-    public int circularArray(int pos, int number){  //add numbers to not leave the array
+    public int circularArray(int pos, int number){ //add numbers to not leave the array
         pos += number;
         if(pos >= islands.size()) pos -= islands.size();
         else if(pos < 0) pos += islands.size();
@@ -106,13 +122,13 @@ public class IslandsManager {
             this.towerTeam = Team.NOONE;
         }
 
-        public Team getTowerTeam(){ return towerTeam; }
-        public int getTowerValue(){ return towerValue; }
-        public void setTowerTeam(Team team){ towerTeam=team; }
-        public void incTowerValue(int value){ towerValue+=value; }
-        public int getNumStudents(int color){ return students[color]; }
-        public void copyStudents(int color, int nStudents){ students[color] = nStudents; }
-        public void incStudents(int color){ students[color]++; }
+        private Team getTowerTeam(){ return towerTeam; }
+        private int getTowerValue(){ return towerValue; }
+        private void setTowerTeam(Team team){ towerTeam = team; }
+        private void incTowerValue(int value){ towerValue+=value; }
+        private int getNumStudents(int color){ return students[color]; }
+        private void copyStudents(int color, int nStudents){ students[color] = nStudents; }
+        private void incStudents(int color){ students[color]++; }
     }
 
 }
