@@ -8,15 +8,10 @@ public class Round {
     private int numberOfPlayer;
 
     public Round(int numberOfPlayer, String[] playersInfo){
-        int[] studentsForIsland = new int[9];
-
         this.bag = new Bag();
         this.cloudsManager = new CloudsManager(numberOfPlayer);
         refreshStudentsCloud(numberOfPlayer);
-        for(int i = 0; i < 10; i++){
-            studentsForIsland[i] = bag.extraction();
-        }
-        this.islandsManager = new IslandsManager(studentsForIsland);
+        this.islandsManager = new IslandsManager();
         this.playerManager = new PlayerManager(numberOfPlayer, playersInfo);
         if(numberOfPlayer == 2 || numberOfPlayer == 4){
             for(int j = 0; j < numberOfPlayer; j++)

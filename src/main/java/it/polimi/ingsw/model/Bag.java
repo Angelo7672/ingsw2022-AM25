@@ -19,11 +19,11 @@ public class Bag {
 
     public Bag() {
         this.bag = new ArrayList<>();
-        for (int i = 0; i < 26; i++) bag.add(Colour.GREEN);
-        for (int i = 0; i < 26; i++) bag.add(Colour.RED);
-        for (int i = 0; i < 26; i++) bag.add(Colour.YELLOW);
-        for (int i = 0; i < 26; i++) bag.add(Colour.PINK);
-        for (int i = 0; i < 26; i++) bag.add(Colour.BLUE);
+        for (int i = 0; i < 24; i++) bag.add(Colour.GREEN);
+        for (int i = 0; i < 24; i++) bag.add(Colour.RED);
+        for (int i = 0; i < 24; i++) bag.add(Colour.YELLOW);
+        for (int i = 0; i < 24; i++) bag.add(Colour.PINK);
+        for (int i = 0; i < 24; i++) bag.add(Colour.BLUE);
 
         Collections.shuffle(bag);
     }
@@ -37,7 +37,7 @@ public class Bag {
         else if(bag.get(0).equals(Colour.PINK)){ bag.remove(0); return 3; }
         else if(bag.get(0).equals(Colour.BLUE)){ bag.remove(0); return 4; }
 
-        return -1;  //se ritorna -1 si e' cannato qualcosa!
+        return -1;  //if it returns -1 something is wrong
     }
 
     public boolean checkVictory(){      //must be called every time an extraction is made
