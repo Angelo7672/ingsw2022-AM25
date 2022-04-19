@@ -117,6 +117,8 @@
     <ownedOperation xmi:id="_tGv3UKh0EeyVv4gaBE6dqg" name="setStudentsEntrance" visibility="public">
       <ownedParameter xmi:id="_v6VZQKh0EeyVv4gaBE6dqg" name="int"/>
     </ownedOperation>
+    <ownedOperation xmi:id="_hmyQ4LDUEey5dtRf998S-Q" name="placeTower" visibility="public"/>
+    <ownedOperation xmi:id="_kTEQ8LDUEey5dtRf998S-Q" name="removeTower" visibility="public"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_gR6dcKh1EeyVv4gaBE6dqg" name="Island" visibility="private">
     <ownedAttribute xmi:id="_iOTRoKh1EeyVv4gaBE6dqg" name="students" visibility="private" isUnique="false">

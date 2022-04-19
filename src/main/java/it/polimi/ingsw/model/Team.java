@@ -5,18 +5,16 @@ public enum Team {
     WHITE(0),
     BLACK(1),
     GREY(2);
+    private int team;
 
-    int value;
-
-    Team(int value){
-        this.value=value;
+    Team(int team){
+        this.team=team;
     }
 
-    public int getValue(){
-        return value;
+    public int getTeam() {
+        return team;
     }
-
-
-
-
+    public void setTeam(int value){
+        this.team=value;
+    }
 }
