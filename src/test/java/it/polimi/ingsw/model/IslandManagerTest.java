@@ -10,12 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class IslandManagerTest {
     Round round;
-    int[] color={0,0,1,1,2,2,3,3,4,4,5,5};
 
     @Test
     @DisplayName("Test if the island of Mother Nature and the one in front are empty")
     void setupIslandMotherTest() {
-        IslandsManager islandsManager = new IslandsManager(color);
+        IslandsManager islandsManager = new IslandsManager();
         assertEquals(0, islandsManager.getStudent(islandsManager.getMotherPos(), 0));
         assertEquals(0, islandsManager.getStudent(islandsManager.circularArray(islandsManager.getMotherPos(), 6), 0));
     }
@@ -23,11 +22,20 @@ public class IslandManagerTest {
     @Test
     @DisplayName("Test if islands are filled correctly")
     void setupIslandTest() {
-        int[] color={0,0,0,0,0,0,0,0,0,0};
-        IslandsManager islandsManager = new IslandsManager(color);
-        for(int i=0; i<12; i++){
-            if(i!= islandsManager.getMotherPos()&&i!=islandsManager.circularArray(islandsManager.getMotherPos(), 6))
-                assertEquals(1, islandsManager.getStudent(i, 0)); //controllo nelle isole al di fuori delle due escluse
+        IslandsManager islandsManager = new IslandsManager();
+        ArrayList<Integer> numStudentPerIsland = new ArrayList<>();
+        for(int i=0; i<12; i++){ //count the number of student on each island and fill the array
+            int numStudents = 0;
+            for(int j=0; j<5; j++) numStudents += islandsManager.getStudent(i,j);
+            numStudentPerIsland.add(numStudents);
+        }
+        for(int i=0; i<12; i++) {
+            if (i != islandsManager.getMotherPos() && i != islandsManager.circularArray(islandsManager.getMotherPos(), 6)){
+                assertEquals(1, numStudentPerIsland.get(i)); //controllo nelle isole al di fuori delle due escluse
+            }
+            else {
+                assertEquals(0, numStudentPerIsland.get(i));
+            }
         }
     }
 
@@ -35,7 +43,7 @@ public class IslandManagerTest {
     @DisplayName("Test if checkVitcory return true when there are only 3 islands")
     void checkVictoryTest(){
         Round round;
-        IslandsManager islandsManager = new IslandsManager(color);
+        IslandsManager islandsManager = new IslandsManager();
         islandsManager.towerChange(0,WHITE);
         islandsManager.towerChange(2, WHITE);
         islandsManager.towerChange(1,WHITE); //si uniscono queste 3 in 0
