@@ -1,87 +1,63 @@
 package it.polimi.ingsw.model;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 
 import static it.polimi.ingsw.model.Team.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-/*public class IslandManagerTest {
+public class IslandManagerTest {
+    Round round;
 
     @Test
-    //check setup isole vuote posMother e davanti a mother
+    @DisplayName("Test if the island of Mother Nature and the one in front are empty")
     void setupIslandMotherTest() {
         IslandsManager islandsManager = new IslandsManager();
-        for(int i=0; i<12; i++){
-            islandsManager.setup(0, i);
-        }
         assertEquals(0, islandsManager.getStudent(islandsManager.getMotherPos(), 0));
-        assertEquals(0, islandsManager.getStudent(islandsManager.sum(islandsManager.getMotherPos(), 6), 0));
+        assertEquals(0, islandsManager.getStudent(islandsManager.circularArray(islandsManager.getMotherPos(), 6), 0));
     }
 
     @Test
-    //check setup isole
+    @DisplayName("Test if islands are filled correctly")
     void setupIslandTest() {
         IslandsManager islandsManager = new IslandsManager();
-        for(int i=0; i<12; i++){
-            islandsManager.setup(0, i);
-            if(i!= islandsManager.getMotherPos()&&i!=islandsManager.sum(islandsManager.getMotherPos(), 6))
-                assertEquals(1, islandsManager.getStudent(i, 0)); //controllo nelle isole al di fuori delle due escluse
+        ArrayList<Integer> numStudentPerIsland = new ArrayList<>();
+        for(int i=0; i<12; i++){ //count the number of student on each island and fill the array
+            int numStudents = 0;
+            for(int j=0; j<5; j++) numStudents += islandsManager.getStudent(i,j);
+            numStudentPerIsland.add(numStudents);
+        }
+        for(int i=0; i<12; i++) {
+            if (i != islandsManager.getMotherPos() && i != islandsManager.circularArray(islandsManager.getMotherPos(), 6)){
+                assertEquals(1, numStudentPerIsland.get(i)); //controllo nelle isole al di fuori delle due escluse
+            }
+            else {
+                assertEquals(0, numStudentPerIsland.get(i));
+            }
         }
     }
 
     @Test
-        //test calcolo influenza -1
-    void influenceNoOneTest(){
-        IslandsManager islandsManager = new IslandsManager();
-        ArrayList<Integer> prof = new ArrayList<>();
-        for(int i=0; i<5; i++) {
-            islandsManager.incStudent(0, i);
-            prof.add(-1);
-        }
-        Team influence = islandsManager.highestInfluenceTeam(prof, 0);
-        assertEquals(NOONE,influence);
-    }
-
-    @Test
-        //test calcolo influenza
-    void influenceSomeOneTest(){
-        IslandsManager islandsManager = new IslandsManager();
-        ArrayList<Integer> prof = new ArrayList<>();
-        for(int i=0; i<5; i++) {
-            islandsManager.incStudent(0, i);
-            prof.add(0);
-        }
-        Team influence = islandsManager.highestInfluenceTeam(prof, 0);
-        assertEquals(WHITE,influence);
-    }
-
-
-    @Test
-        //checkVictory se le isole sono = 3
+    @DisplayName("Test if checkVitcory return true when there are only 3 islands")
     void checkVictoryTest(){
+        Round round;
         IslandsManager islandsManager = new IslandsManager();
-        islandsManager.setTower(WHITE,0);
-        islandsManager.setTower(WHITE,1);
-        islandsManager.setTower(WHITE,2);
-        islandsManager.setTower(WHITE,3);
-        islandsManager.setTower(BLACK,4);;
-        islandsManager.setTower(BLACK,5);
-        islandsManager.setTower(BLACK,6);
-        islandsManager.setTower(GREY,7);
-        islandsManager.setTower(GREY,8);
-        islandsManager.setTower(GREY,9);
-        islandsManager.setTower(GREY,10);
-        islandsManager.setTower(GREY,11);
-        islandsManager.checkAdjacentIslands(1); //0,1,2 si uniscono in 0
-        islandsManager.checkAdjacentIslands(1); //0,1 si uniscono in 0
-        islandsManager.checkAdjacentIslands(2); //1,2,3 si uniscono in 1
-        islandsManager.checkAdjacentIslands(3); //2,3,4 si unisce in 2
-        islandsManager.checkAdjacentIslands(3); //3,4 si uniscono in 2
-        assertEquals(islandsManager.size(),3);
+        islandsManager.towerChange(0,WHITE);
+        islandsManager.towerChange(2, WHITE);
+        islandsManager.towerChange(1,WHITE); //si uniscono queste 3 in 0
+        islandsManager.towerChange(1, WHITE); // si unisce in 0
+        islandsManager.towerChange(1,BLACK);
+        islandsManager.towerChange(3, BLACK);
+        islandsManager.towerChange(2,BLACK);// si uniscono queste 3 in 1
+        islandsManager.towerChange(2, GREY);
+        islandsManager.towerChange(4, GREY);
+        islandsManager.towerChange(3, GREY);// si uniscono queste 3 in 2
+        islandsManager.towerChange(3, GREY);// si unisce in 2
+        islandsManager.towerChange(3, WHITE);//si unisce in 0
+
+        assertTrue(islandsManager.checkVictory());
     }
 
-
-}*/
+}

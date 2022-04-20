@@ -8,6 +8,7 @@ public class IslandsManager {
     private ArrayList<Island> islands;
     private Island i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12;
     private int motherPos;
+    private Random rand;
 
     public IslandsManager() {
         i1 = new Island(); i2 = new Island(); i3 = new Island();
@@ -30,7 +31,7 @@ public class IslandsManager {
         }
         Collections.shuffle(miniBag);
         for(int i = 0; i < 12 && !miniBag.isEmpty(); i++) {
-            if (i != motherPos && i != motherPos + 6){
+            if (i != motherPos && i != circularArray(motherPos, 6)){
                 islands.get(i).incStudents(miniBag.get(0));
                 miniBag.remove(0);
             }
@@ -69,17 +70,17 @@ public class IslandsManager {
         returnItem[1] = -1;
         return returnItem;
     }
+
     private void checkAdjacentIslands(int pos) {
         int posTemp;
 
         posTemp = circularArray(pos,-1);    //sx tower
-        checkAdjacent(pos, posTemp);
-        pos = circularArray(pos,-1);
+        if(checkAdjacent(pos, posTemp)) pos = circularArray(pos,-1);;
 
         posTemp = circularArray(pos,1);     //dx tower
         checkAdjacent(pos, posTemp);
     }
-    private void checkAdjacent(int pos, int posTemp){
+    private boolean checkAdjacent(int pos, int posTemp){
         if (islands.get(pos).getTowerTeam() == islands.get(posTemp).getTowerTeam()) {
             for (int i = 0; i < 5; i++) {   //high student on an island
                 islands.get(pos).copyStudents(i,islands.get(pos).getNumStudents(i) + islands.get(posTemp).getNumStudents(i));
@@ -87,7 +88,9 @@ public class IslandsManager {
             islands.get(pos).incTowerValue(islands.get(posTemp).getTowerValue()); //tower value increase
             islands.remove(posTemp); //island delete
             if(motherPos == posTemp) motherPos = pos;   //I move mother, if there was one, from the eliminated island
+            return true;
         }
+        return false;
     }
     public boolean checkVictory(){
         if(islands.size()==3) return true;
