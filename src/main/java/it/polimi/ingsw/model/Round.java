@@ -35,28 +35,39 @@ public class Round implements GameManager{
         else if(string.equals("TURTLE")) return Assistant.TURTLE;
         return Assistant.NONE;
     }
+    private String toString(Team team){
+        if(team.equals(Team.WHITE)) return "WHITE";
+        else if(team.equals(Team.BLACK)) return "BLACK";
+        else if(team.equals(Team.GREY)) return "GREY";
+        return "NONE";
+    }
 
     @Override
-    public void refreshStudentsCloud(int numberOfPlayer){
+    public boolean refreshStudentsCloud(int numberOfPlayer){
+        boolean lastTurn = false;   //if true, the students are finished
+
         if(numberOfPlayer == 2 || numberOfPlayer ==4 ) {
-            for (int j = 0; j < numberOfPlayer; j++) {
+            for (int j = 0; j < numberOfPlayer && !lastTurn; j++) {
                 for (int i = 0; i < 3; i++) {
                     cloudsManager.refreshCloudStudents(bag.extraction(), j);
+                    lastTurn = bag.checkVictory();
                 }
             }
         } else if(numberOfPlayer==3) {
-            for (int j = 0; j < numberOfPlayer; j++) {
+            for (int j = 0; j < numberOfPlayer && !lastTurn; j++) {
                 for (int i = 0; i < 4; i++) {
                     cloudsManager.refreshCloudStudents(bag.extraction(), j);
+                    lastTurn = bag.checkVictory();
                 }
             }
         }
+        return lastTurn;
     }
 
     @Override
     public void queueForPlanificationPhase(){ playerManager.queueForPlanificationPhase(numberOfPlayer); }
     @Override
-    public void playCard(int playerRef, String card){ playerManager.playCard(playerRef,stringToAssistant(card)); }
+    public String playCard(int playerRef, String card){ return toString(playerManager.playCard(playerRef,stringToAssistant(card))); }
     @Override
     public void inOrderForActionPhase(){ playerManager.inOrderForActionPhase(); }
     @Override
@@ -142,4 +153,7 @@ public class Round implements GameManager{
     public void chooseCloud(int playerRef,int cloudRef){
         for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef, cloudsManager.removeStudents(cloudRef)[i]);
     }
+
+    @Override
+    public String oneLastRide(){ return toString(playerManager.checkVictory()); }
 }

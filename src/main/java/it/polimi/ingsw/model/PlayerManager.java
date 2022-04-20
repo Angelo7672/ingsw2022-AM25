@@ -81,10 +81,42 @@ public class PlayerManager  {
             }
         }
     }
-    public void playCard(int playerRef, Assistant card){
+    public Team playCard(int playerRef, Assistant card){
         players.get(playerRef).hand.remove(card);
         queue.get(playerRef).setValueCard(card.getValue());
         queue.get(playerRef).setMaxMoveMotherNature(card.getMovement());
+        if(checkIfCardsFinished(playerRef)) return checkVictory();
+
+        return Team.NOONE;
+    }
+    private boolean checkIfCardsFinished(int playerRef){  //Check if the player has played his last card
+        return players.get(playerRef).hand.isEmpty();
+    }
+    public Team checkVictory(){
+        Team winner = Team.NOONE;
+        int numberOfTowers = 9;     //let's put a high number
+        int professors1 = 0, professors2;
+
+        for(Player p:players){
+            if(p.school.getTowers() < numberOfTowers){  //looking for the player with the most towers
+                numberOfTowers = p.school.getTowers();
+                winner = p.getTeam();
+                professors1 = 0;
+                for(int i = 0; i < 5; i++) {
+                    if (p.school.getProfessor(i)) professors1++;
+                }
+            } else if(p.school.getTowers() == numberOfTowers){  //if two players have the same number of towers, look at the professors
+                professors2 = 0;
+                for(int i = 0; i < 5; i++){
+                    if(p.school.getProfessor(i)) professors2++;
+                }
+                if(professors2 > professors1)
+                    numberOfTowers = p.school.getTowers();
+                winner = p.getTeam();
+                professors1 = professors2;
+            }
+        }
+        return winner;
     }
     public void inOrderForActionPhase(){
         Collections.sort(queue, new Comparator<Queue>() {
@@ -103,12 +135,12 @@ public class PlayerManager  {
         boolean stop = false;
 
         if(!inSchool){  //if inSchool is false, it's placed in a island
-            if(players.get(playerRef).school.getStudentEntrance(colour) > 0) {
+            if(getStudentEntrance(playerRef, colour) > 0) {
                 players.get(playerRef).school.removeStudentEntrance(colour);
             }
         }
         else if(inSchool){   //if inSchool is true, it's placed on the table
-            if(players.get(playerRef).school.getStudentEntrance(colour) > 0) {
+            if(getStudentEntrance(playerRef,colour) > 0) {
                 players.get(playerRef).school.removeStudentEntrance(colour);
                 players.get(playerRef).school.setStudentTable(colour);
                 players.get(playerRef).checkPosForCoin(colour);    //check the position, in case we have to give a coin to the player
@@ -132,6 +164,7 @@ public class PlayerManager  {
     }
 
     public void setStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.setStudentEntrance(colour); }
+    public int getStudentEntrance(int playerRef, int colour){ return players.get(playerRef).school.getStudentEntrance(colour); }
 
     public int getStudentTable(int playerRef, int colour){ return players.get(playerRef).school.getStudentTable(colour); }
     private void setProfessor(int playerRef, int colour){ players.get(playerRef).school.setProfessor(colour); }
@@ -145,7 +178,7 @@ public class PlayerManager  {
         for (Player p : players) {
             if (p.getTeam().equals(team)){
                 p.school.removeTower(numberOfTower);
-                if(p.school.checkVictory()) victory = true;
+                if(p.school.towerExpired()) victory = true;
             }
         }
         return victory;
@@ -155,42 +188,12 @@ public class PlayerManager  {
             if (p.getTeam().equals(team)) p.school.placeTower(numberOfTower);
         }
     }
+    public int getTowers(int playerRef){ return players.get(playerRef).school.getTowers(); }
 
     public Team getTeam(int playerRef){ return players.get(playerRef).getTeam(); }
 
     public void removeCoin(int playerRef, int cost){ players.get(playerRef).removeCoin(cost); }
     public int getCoins(int playerRef){ return players.get(playerRef).getCoins(); }
-
-    public boolean checkIfCardsFinished(Player player){  //Check if the player has played his last card
-        return player.hand.isEmpty();
-    }
-
-    public String noMoreCards(){
-        String winner = "none";
-        int numberOfTowers = 9;
-        int professors1 = 0, professors2;
-
-        for(Player p:players){
-            if(p.school.getTowers() < numberOfTowers){
-                numberOfTowers = p.school.getTowers();
-                winner = p.getNickname();
-                professors1 = 0;
-                for(int i = 0; i < 5; i++) {
-                    if (p.school.getProfessor(i)) professors1++;
-                }
-            } else if(p.school.getTowers() == numberOfTowers){
-                professors2 = 0;
-                for(int i = 0; i < 5; i++){
-                    if(p.school.getProfessor(i)) professors2++;
-                }
-                if(professors2 > professors1)
-                    numberOfTowers = p.school.getTowers();
-                winner = p.getNickname();                       //da fixare con nome squadra
-                professors1 = professors2;
-            }
-        }
-        return winner;
-    }
 
     private class Queue implements Comparable<Queue>{   //it is used both in the planning phase and in the action phase
         private int playerRef;
@@ -296,7 +299,7 @@ public class PlayerManager  {
             private void removeTower(int number) { towers-=number ; }
             private int getTowers() { return towers; }
 
-            private boolean checkVictory(){     //Check if the player has built his last tower
+            private boolean towerExpired(){     //Check if the player has built his last tower
                 if(getTowers()==0) return true;
                 return false;
             }

@@ -3,10 +3,10 @@ package it.polimi.ingsw.model;
 public interface GameManager {
 
     //Planification Phase
-    void refreshStudentsCloud(int numberOfPlayer);
+    boolean refreshStudentsCloud(int numberOfPlayer);
     void queueForPlanificationPhase();
     int readQueue(int pos);
-    void playCard(int playerRef, String card);
+    String playCard(int playerRef, String card);
 
     //Action Phase
     //readQueue
@@ -14,4 +14,7 @@ public interface GameManager {
     void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef);
     boolean moveMotherNature(int queueRef, int desiredMovement);
     void chooseCloud(int playerRef,int cloudRef);
+
+    //to be called at the end of the turn in which refreshCloudStudents gave true
+    String oneLastRide();
 }
