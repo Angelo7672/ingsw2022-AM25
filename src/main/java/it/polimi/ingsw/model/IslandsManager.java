@@ -8,7 +8,6 @@ public class IslandsManager {
     private ArrayList<Island> islands;
     private Island i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12;
     private int motherPos;
-    private Random rand;
 
     public IslandsManager() {
         i1 = new Island(); i2 = new Island(); i3 = new Island();
