@@ -239,7 +239,6 @@ public class PlayerManager  {
             this.school = new School(numberOfPlayer);
         }
 
-        private String getNickname() { return nickname; }
         private Team getTeam() { return team; }
 
         private int getCoins() { return coins; }
