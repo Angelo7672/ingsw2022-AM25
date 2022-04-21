@@ -5,7 +5,7 @@ public abstract class Special {
     private int cost;
     private String name;
 
-    Special(int cost, String name){
+    public Special(int cost, String name){
         this.cost=cost;
         this.name=name;
     }
@@ -20,6 +20,7 @@ public abstract class Special {
     public int getCost(){
         return cost;
     }
+    public void effect(){}
     public void effect(int uno, int due){}
 
 }

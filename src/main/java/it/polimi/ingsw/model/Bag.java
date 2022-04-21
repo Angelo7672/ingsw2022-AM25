@@ -50,7 +50,7 @@ public class Bag {
             else if(color==1) bag.add(Colour.RED);
             else if(color==2) bag.add(Colour.YELLOW);
             else if(color==3) bag.add(Colour.PINK);
-            else if(color==3) bag.add(Colour.BLUE);
+            else if(color==4) bag.add(Colour.BLUE);
         }
         Collections.shuffle(bag);
     }

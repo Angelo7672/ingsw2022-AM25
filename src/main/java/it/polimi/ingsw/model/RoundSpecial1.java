@@ -7,16 +7,16 @@ import java.util.ArrayList;
 
 public class RoundSpecial1 extends RoundStrategy{
 
-
-
-    public RoundSpecial1(int numberOfPlayer, String[] playersInfo, ArrayList<Integer> color){
-        super(numberOfPlayer, playersInfo, color);
-        special =new Special1();
+    Special1 special;
+    
+    public RoundSpecial1(int numberOfPlayer, String[] playersInfo){
+        super(numberOfPlayer, playersInfo);
+        special = new Special1();
     }
 
-    public void effect(int color, int pos, int player){
-        if(useSpecial(special.getCost(), player)) {
-            islandsManager.incStudent(pos, color);
+    public void effect(int color, int islandRef, int playerRef){
+        if(useSpecial(special.getCost(), playerRef)) {
+            islandsManager.incStudent(islandRef, color);
             int extracted = bag.extraction();
             special.effect(color, extracted);
         }

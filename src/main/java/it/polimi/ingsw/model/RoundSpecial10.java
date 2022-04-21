@@ -1,19 +1,26 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.Specials.Special10;
+import it.polimi.ingsw.model.Specials.Special7;
 
 import java.util.ArrayList;
 
 public class RoundSpecial10 extends RoundStrategy{
 
-    public RoundSpecial10(int numberOfPlayer, String[] playersInfo, ArrayList<Integer> color){
-        super(numberOfPlayer,playersInfo, color);
+    Special10 special;
+
+    public RoundSpecial10(int numberOfPlayer, String[] playersInfo){
+        super(numberOfPlayer,playersInfo);
         special = new Special10();
     }
 
-    public void effect(int player, int entranceColor,int tableColor){
-        playerManager.transferStudent(player, entranceColor, true);
-        playerManager.decreaseStudentTable(player, tableColor, 1);
-        playerManager.setStudentEntrance(player, tableColor);
+    public void effect(int playerRef, ArrayList<Integer> entranceStudent, ArrayList<Integer> tableStudent){
+        if(useSpecial(special.getCost(), playerRef)) {
+            for (int i = 0; i < entranceStudent.size(); i++) {
+                playerManager.transferStudent(playerRef, entranceStudent.get(i), true, false);
+                playerManager.removeStudentTable(playerRef, tableStudent.get(i));
+                playerManager.setStudentEntrance(playerRef, tableStudent.get(i));
+            }
+        }
     }
 }

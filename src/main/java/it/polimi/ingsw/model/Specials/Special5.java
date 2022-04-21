@@ -8,11 +8,12 @@ public class Special5 extends Special{
         noEntry=4;
     }
 
+
     public int getNoEntry(){
         return noEntry;
     }
 
-    public void increaseNoEntry(){
+    public void effect(){
         noEntry+=1;
     }
 
