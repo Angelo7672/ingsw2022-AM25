@@ -129,7 +129,7 @@ public class PlayerManager  {
     public int readQueue(int queueRef){ return queue.get(queueRef).getPlayerRef(); }
     public int readMaxMotherNatureMovement(int queueRef){ return queue.get(queueRef).getMaxMoveMotherNature(); }
 
-    public void transferStudent(int playerRef,int colour, boolean inSchool){    //it is used to remove the student from the entrance
+    public void transferStudent(int playerRef,int colour, boolean inSchool, boolean special){    //it is used to remove the student from the entrance
         int studentTableofThisColour = -1;
         int i;
         boolean stop = false;
@@ -165,8 +165,14 @@ public class PlayerManager  {
 
     public void setStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.setStudentEntrance(colour); }
     public int getStudentEntrance(int playerRef, int colour){ return players.get(playerRef).school.getStudentEntrance(colour); }
+    public void removeStudentEntrance(int playerRef, int colour){
+        players.get(playerRef).school.removeStudentEntrance(colour);
+    }
 
     public int getStudentTable(int playerRef, int colour){ return players.get(playerRef).school.getStudentTable(colour); }
+    public void setStudentTable(int playerRef, int colour){ players.get(playerRef).school.setStudentTable(colour); }
+    public void removeStudentTable(int playerRef, int colour){ players.get(playerRef).school.removeStudentTable(colour); }
+
     private void setProfessor(int playerRef, int colour){ players.get(playerRef).school.setProfessor(colour); }
     private void removeProfessor(int playerRef, int colour){ players.get(playerRef).school.removeProfessor(colour); }
     public boolean getProfessor(int playerRef, int colour){ return players.get(playerRef).school.getProfessor(colour); }
@@ -194,6 +200,17 @@ public class PlayerManager  {
 
     public void removeCoin(int playerRef, int cost){ players.get(playerRef).removeCoin(cost); }
     public int getCoins(int playerRef){ return players.get(playerRef).getCoins(); }
+
+
+    public boolean affordSpecial(int cost, int player){
+        if(cost > players.get(player).getCoins()) return false;
+        return true;
+    }
+
+
+    public boolean checkIfCardsFinished(Player player){  //Check if the player has played his last card
+        return player.hand.isEmpty();
+    }
 
     private class Queue implements Comparable<Queue>{   //it is used both in the planning phase and in the action phase
         private int playerRef;
@@ -288,8 +305,9 @@ public class PlayerManager  {
             private int getStudentEntrance(int colour){ return studentEntrance[colour]; }
 
             private void setStudentTable(int colour) { if (checkStudentTable(colour)) studentsTable[colour]++; }
+            private void removeStudentTable(int colour){ if (checkStudentTable(colour)) studentsTable[colour]--;}
             private boolean checkStudentTable(int colour) {    //Students at the table must be in range [0,10]
-                if (studentsTable[colour] > 9) return false;
+                if (studentsTable[colour] > 9 || studentsTable[colour] == 0) return false;
                 return true;
             }
             private int getStudentTable(int colour) { return studentsTable[colour]; }

@@ -104,15 +104,23 @@ public class IslandsManager {
         return pos;
     }
 
+    public boolean getInhibited(int islandRef){ return islands.get(islandRef).getInhibited(); }
+    public void setInhibited(int islandRef, boolean inhibited){ islands.get(islandRef).setInhibited(inhibited);}
+    public int size(){
+        return islands.size();
+    }
+
     private class Island {
         private int[] students;
         private int towerValue;
         private Team towerTeam;
+        private boolean inhibited;
 
         private Island(){
             this.students = new int[]{0,0,0,0,0};
             this.towerValue = 1;
             this.towerTeam = Team.NOONE;
+            inhibited = false;
         }
 
         private Team getTowerTeam(){ return towerTeam; }
@@ -122,6 +130,8 @@ public class IslandsManager {
         private int getNumStudents(int color){ return students[color]; }
         private void copyStudents(int color, int nStudents){ students[color] = nStudents; }
         private void incStudents(int color){ students[color]++; }
+        private boolean getInhibited(){ return inhibited; }
+        private void setInhibited(Boolean inhibited){ this.inhibited = inhibited; }
     }
 
 }
