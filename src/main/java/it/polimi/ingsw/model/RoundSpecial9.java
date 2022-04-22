@@ -1,16 +1,11 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Specials.Special7;
-import it.polimi.ingsw.model.Specials.Special9;
-
-import java.util.ArrayList;
-
 public class RoundSpecial9 extends RoundStrategy{
 
     Special9 special;
 
-    public RoundSpecial9(int numberOfPlayer, String[] playersInfo){
-        super(numberOfPlayer,playersInfo);
+    public RoundSpecial9(int numberOfPlayer, String[] playersInfo, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
+        super(numberOfPlayer,playersInfo, cloudsManager, islandsManager, playerManager, bag);
         special = new Special9();
     }
 
@@ -25,9 +20,7 @@ public class RoundSpecial9 extends RoundStrategy{
 
         for (int i = 0; i < 5; i++) {
             if(i==noColor){
-                if(useSpecial(special.getCost(), playerRef)) {
-                    i++; //salta il colore bannato
-                }
+                i++; //salta il colore bannato
             }
             studentOnIsland[i] = islandsManager.getStudent(islandRef, i);
             if (studentOnIsland[i] > 0) {
@@ -53,5 +46,25 @@ public class RoundSpecial9 extends RoundStrategy{
             if (influenceTeamBLACK < influenceTeamGREY) return Team.GREY;
         }
         return Team.NOONE;
+    }
+
+    @Override
+    public int getCost(){
+        return special.getCost();
+    }
+    @Override
+    public void increaseCost(){
+        special.increaseCost();
+    }
+    @Override
+    public String getName(){
+        return special.getName();
+    }
+
+
+    private class Special9 extends Special {
+        public Special9(){
+            super(3, "special9");
+        }
     }
 }

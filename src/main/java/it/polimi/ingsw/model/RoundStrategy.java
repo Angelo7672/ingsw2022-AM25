@@ -1,8 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Specials.Special;
-import it.polimi.ingsw.model.Specials.SpecialsManager;
-
 import java.util.ArrayList;
 
 public abstract class RoundStrategy {
@@ -10,24 +7,15 @@ public abstract class RoundStrategy {
     public CloudsManager cloudsManager;
     public IslandsManager islandsManager;
     public PlayerManager playerManager;
-    public SpecialsManager specialsManager;
     public Bag bag;
     public int numberOfPlayer;
 
-    public RoundStrategy(int numberOfPlayer, String[] playersInfo){
+    public RoundStrategy(int numberOfPlayer, String[] playersInfo, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
         this.numberOfPlayer=numberOfPlayer;
-        this.bag = new Bag();
-        this.cloudsManager = new CloudsManager(numberOfPlayer);
-        this.islandsManager = new IslandsManager();
-        this.playerManager = new PlayerManager(numberOfPlayer, playersInfo);
-        if(numberOfPlayer == 2 || numberOfPlayer == 4){
-            for(int j = 0; j < numberOfPlayer; j++)
-                for (int i = 0; i < 7; i++) playerManager.setStudentEntrance(j,bag.extraction());
-        }else if(numberOfPlayer == 3){
-            for(int j = 0; j < numberOfPlayer; j++)
-                for (int i = 0; i < 9; i++) playerManager.setStudentEntrance(j,bag.extraction());
-        }
-        specialsManager = new SpecialsManager();
+        this.bag = bag;
+        this.cloudsManager = cloudsManager;
+        this.islandsManager = islandsManager;
+        this.playerManager =playerManager;
     }
 
     private Assistant stringToAssistant(String string){
@@ -99,15 +87,6 @@ public abstract class RoundStrategy {
         return Team.NOONE;
     }
 
-    public Boolean useSpecial(int special, int player){
-        if(playerManager.affordSpecial(specialsManager.getCost(special), player)){
-            playerManager.removeCoin(player, specialsManager.getCost(special));
-            specialsManager.increaseCost(special);
-            return true;
-        }
-        return false;
-    }
-
     //@Override
     public boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef) {
         int maxMovement;
@@ -118,9 +97,6 @@ public abstract class RoundStrategy {
             islandsManager.moveMotherNature(desiredMovement);
             if (islandsManager.getInhibited(islandsManager.getMotherPos())) {
                 islandsManager.setInhibited(islandsManager.getMotherPos(), false);
-                for (int i = 0; i < 3; i++) {
-                    if (specialsManager.getName(i).equals("special5")) specialsManager.getSpecial(i).effect();
-                }
             } else {
                 victory = conquestIsland(islandsManager.getMotherPos(), noColor, queueRef);
             }
@@ -169,6 +145,15 @@ public abstract class RoundStrategy {
     public void chooseCloud(int playerRef,int cloudRef){
         for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef, cloudsManager.removeStudents(cloudRef)[i]);
     }
+
+    public void effect(){}
+    public void effect(int ref){}
+    public void effect(int ref, int color1){}
+    public void effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){}
+
+    abstract public int getCost();
+    abstract public void increaseCost();
+    abstract public String getName();
 
 
 }

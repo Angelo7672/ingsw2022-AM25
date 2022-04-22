@@ -1,15 +1,11 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Specials.Special3;
-
-import java.util.ArrayList;
-
 public class RoundSpecial3 extends RoundStrategy{
 
     Special3 special;
 
-    public RoundSpecial3(int numberOfPlayer, String[] playersInfo){
-        super(numberOfPlayer,playersInfo);
+    public RoundSpecial3(int numberOfPlayer, String[] playersInfo, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
+        super(numberOfPlayer,playersInfo, cloudsManager, islandsManager, playerManager, bag);
         special = new Special3();
     }
 
@@ -19,16 +15,13 @@ public class RoundSpecial3 extends RoundStrategy{
         boolean victory1 = false;
         boolean victory2 = false;
 
-        if(useSpecial(special.getCost(), queueRef)) victory1 = effect(islandRef, noColor, queueRef);
+        victory1 = SpecialconquestIsland(islandRef, noColor, queueRef);
 
         maxMovement = playerManager.readMaxMotherNatureMovement(queueRef);
         if(desiredMovement > 0 && desiredMovement <= maxMovement ){
             islandsManager.moveMotherNature(desiredMovement);
             if(islandsManager.getInhibited(islandsManager.getMotherPos())){
                 islandsManager.setInhibited(islandsManager.getMotherPos(), false);
-                for(int i=0; i<3; i++){
-                    if(specialsManager.getName(i).equals("special5")) specialsManager.getSpecial(i).effect();
-                }
             }
             else {
                 victory2 = conquestIsland(islandsManager.getMotherPos(), noColor, queueRef);
@@ -39,18 +32,37 @@ public class RoundSpecial3 extends RoundStrategy{
         return false;
     }
 
-    private boolean effect(int islandRef, int noColor, int playerRef){
+    private boolean SpecialconquestIsland(int islandRef, int noColor, int playerRef){
         boolean victory = false;
         if(islandsManager.getInhibited(islandRef)){
             islandsManager.setInhibited(islandsManager.getMotherPos(), false);
-            for(int i=0; i<3; i++){
-                if(specialsManager.getName(i).equals("special5")) specialsManager.getSpecial(i).effect();
-            }
         }
         else {
             victory = conquestIsland(islandsManager.getMotherPos(), noColor, playerRef);
         }
         return victory;
+    }
+
+    @Override
+    public int getCost(){
+        return special.getCost();
+    }
+    @Override
+    public void increaseCost(){
+        special.increaseCost();
+    }
+    @Override
+    public String getName(){
+        return special.getName();
+    }
+
+    private class Special3 extends Special {
+
+        //non fa niente qua, fa solo calcolare l'influenza di un isola a scelta
+        public Special3(){
+            super(3, "special3");
+        }
+
     }
 
 }

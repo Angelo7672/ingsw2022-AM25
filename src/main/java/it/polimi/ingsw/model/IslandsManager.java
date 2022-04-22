@@ -107,6 +107,9 @@ public class IslandsManager {
 
     public boolean getInhibited(int islandRef){ return islands.get(islandRef).getInhibited(); }
     public void setInhibited(int islandRef, boolean inhibited){ islands.get(islandRef).setInhibited(inhibited);}
+    public int size(){
+        return islands.size();
+    }
 
     private class Island {
         private int[] students;

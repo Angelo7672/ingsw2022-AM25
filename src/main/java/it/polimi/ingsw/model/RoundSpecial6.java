@@ -1,15 +1,11 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Specials.Special6;
-
-import java.util.ArrayList;
-
 public class RoundSpecial6 extends RoundStrategy{
 
     Special6 special;
 
-    public RoundSpecial6(int numberOfPlayer, String[] playersInfo){
-        super(numberOfPlayer,playersInfo);
+    public RoundSpecial6(int numberOfPlayer, String[] playersInfo, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
+        super(numberOfPlayer,playersInfo, cloudsManager, islandsManager, playerManager, bag);
         special = new Special6();
     }
 
@@ -34,12 +30,6 @@ public class RoundSpecial6 extends RoundStrategy{
                 }
             }
         }
-        if(!useSpecial(special.getCost(), playerRef)) {
-            teamOwnerTower = islandsManager.getTowerTeam(islandRef);
-            if (teamOwnerTower.equals(Team.WHITE)) influenceTeamWHITE += islandsManager.getTowerValue(islandRef);
-            else if (teamOwnerTower.equals(Team.BLACK)) influenceTeamBLACK += islandsManager.getTowerValue(islandRef);
-            else if (teamOwnerTower.equals(Team.GREY)) influenceTeamGREY += islandsManager.getTowerValue(islandRef);
-        }
 
         if (influenceTeamBLACK < influenceTeamWHITE) {
             if (influenceTeamGREY < influenceTeamWHITE) return Team.WHITE;
@@ -51,5 +41,26 @@ public class RoundSpecial6 extends RoundStrategy{
         return Team.NOONE;
     }
 
+    @Override
+    public int getCost(){
+        return special.getCost();
+    }
+    @Override
+    public void increaseCost(){
+        special.increaseCost();
+    }
+    @Override
+    public String getName(){
+        return special.getName();
+    }
+
+
+    private class Special6 extends Special {
+
+        public Special6(){
+            super(3, "special6");
+        }
+
+    }
 
 }

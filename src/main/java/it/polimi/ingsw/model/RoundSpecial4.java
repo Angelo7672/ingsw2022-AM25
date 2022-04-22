@@ -1,15 +1,11 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Specials.Special4;
-
-import java.util.ArrayList;
-
 public class RoundSpecial4 extends RoundStrategy{
 
     Special4 special;
 
-    public RoundSpecial4(int numberOfPlayer, String[] playersInfo){
-        super(numberOfPlayer,playersInfo);
+    public RoundSpecial4(int numberOfPlayer, String[] playersInfo, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
+        super(numberOfPlayer,playersInfo, cloudsManager, islandsManager, playerManager, bag);
         special = new Special4();
     }
 
@@ -19,21 +15,37 @@ public class RoundSpecial4 extends RoundStrategy{
         int maxMovement;
         boolean victory = false;
 
-        if(useSpecial(special.getCost(), queueRef)) maxMovement = playerManager.readMaxMotherNatureMovement(queueRef)+2; //da incrementare anche per scelta del giocatore
-        else maxMovement = playerManager.readMaxMotherNatureMovement(queueRef);
+        maxMovement = playerManager.readMaxMotherNatureMovement(queueRef)+2; //da incrementare anche per scelta del giocatore
 
         if(desiredMovement > 0 && desiredMovement <= maxMovement){
             islandsManager.moveMotherNature(desiredMovement);
             if(islandsManager.getInhibited(islandsManager.getMotherPos())){
                 islandsManager.setInhibited(islandsManager.getMotherPos(), false);
-                for(int i=0; i<3; i++){
-                    if(specialsManager.getName(i).equals("special5")) specialsManager.getSpecial(i).effect();
-                }
             }
             else {
                 victory = conquestIsland(islandsManager.getMotherPos(), noColor, queueRef);
             }
         }
         return victory;
+    }
+
+    @Override
+    public int getCost(){
+        return special.getCost();
+    }
+    @Override
+    public void increaseCost(){
+        special.increaseCost();
+    }
+    @Override
+    public String getName(){
+        return special.getName();
+    }
+
+    private class Special4 extends Special {
+        //non fa niente qua, fa solo muovere madre natura di due passi in piu
+        public Special4(){
+            super(1, "special4");
+        }
     }
 }

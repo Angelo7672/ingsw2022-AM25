@@ -301,7 +301,7 @@ public class PlayerManager  {
             private void setStudentTable(int colour) { if (checkStudentTable(colour)) studentsTable[colour]++; }
             private void removeStudentTable(int colour){ if (checkStudentTable(colour)) studentsTable[colour]--;}
             private boolean checkStudentTable(int colour) {    //Students at the table must be in range [0,10]
-                if (studentsTable[colour] > 9 && studentsTable[colour] == 0) return false;
+                if (studentsTable[colour] > 9 || studentsTable[colour] == 0) return false;
                 return true;
             }
             private int getStudentTable(int colour) { return studentsTable[colour]; }
