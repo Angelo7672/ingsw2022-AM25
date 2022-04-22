@@ -32,6 +32,13 @@ public abstract class RoundStrategy {
         return Assistant.NONE;
     }
 
+    private String toString(Team team){
+        if(team.equals(Team.WHITE)) return "WHITE";
+        else if(team.equals(Team.BLACK)) return "BLACK";
+        else if(team.equals(Team.GREY)) return "GREY";
+        return "NONE";
+    }
+
     protected boolean conquestIsland(int islandRef, int noColor, int playerRef){
         Team teamStronger = highInfluenceTeam(islandRef, noColor, playerRef);
         Team teamWeaker = Team.NOONE;
@@ -104,33 +111,38 @@ public abstract class RoundStrategy {
         return victory;
     }
 
-    //@Override
-    public void refreshStudentsCloud(int numberOfPlayer){
+
+    public boolean refreshStudentsCloud(){
+        boolean lastTurn = false;   //if true, the students are finished
+
         if(numberOfPlayer == 2 || numberOfPlayer ==4 ) {
-            for (int j = 0; j < numberOfPlayer; j++) {
+            for (int j = 0; j < numberOfPlayer && !lastTurn; j++) {
                 for (int i = 0; i < 3; i++) {
                     cloudsManager.refreshCloudStudents(bag.extraction(), j);
+                    lastTurn = bag.checkVictory();
                 }
             }
         } else if(numberOfPlayer==3) {
-            for (int j = 0; j < numberOfPlayer; j++) {
+            for (int j = 0; j < numberOfPlayer && !lastTurn; j++) {
                 for (int i = 0; i < 4; i++) {
                     cloudsManager.refreshCloudStudents(bag.extraction(), j);
+                    lastTurn = bag.checkVictory();
                 }
             }
         }
+        return lastTurn;
     }
 
-    //@Override
+
     public void queueForPlanificationPhase(){ playerManager.queueForPlanificationPhase(numberOfPlayer); }
-    //@Override
-    public void playCard(int playerRef, String card){ playerManager.playCard(playerRef,stringToAssistant(card)); }
-    //@Override
+
+    public String playCard(int playerRef, String card){ return toString(playerManager.playCard(playerRef,stringToAssistant(card))); }
+
     public void inOrderForActionPhase(){ playerManager.inOrderForActionPhase(); }
-    //@Override
+
     public int readQueue(int pos){ return playerManager.readQueue(pos); }
 
-    //@Override
+
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef){
         if(!inSchool){
             playerManager.transferStudent(playerRef, colour, inSchool, false);
@@ -140,8 +152,8 @@ public abstract class RoundStrategy {
             playerManager.transferStudent(playerRef, colour, inSchool, false);
     }
 
+    public String oneLastRide(){ return toString(playerManager.checkVictory()); }
 
-    //@Override
     public void chooseCloud(int playerRef,int cloudRef){
         for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef, cloudsManager.removeStudents(cloudRef)[i]);
     }

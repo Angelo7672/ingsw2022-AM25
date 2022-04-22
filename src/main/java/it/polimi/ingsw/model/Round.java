@@ -9,6 +9,16 @@ public class Round extends RoundStrategy{
     }
 
     @Override
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef){
+        if(!inSchool){
+            playerManager.transferStudent(playerRef, colour, inSchool, false);
+            islandsManager.incStudent(islandRef,colour);
+        }
+        else if(inSchool)
+            playerManager.transferStudent(playerRef, colour, inSchool, false);
+    }
+
+    @Override
     public int getCost(){
         return 0;
     }
@@ -20,11 +30,4 @@ public class Round extends RoundStrategy{
         return null;
     }
 
-}
-
-
-    @Override
-    public void chooseCloud(int playerRef,int cloudRef){
-        for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef, cloudsManager.removeStudents(cloudRef)[i]);
-    }
 }

@@ -139,7 +139,28 @@ public class PlayerManager  {
                 players.get(playerRef).school.removeStudentEntrance(colour);
             }
         }
-        else if(inSchool){   //if inSchool is true, it's placed on the table
+        else if(inSchool && !special){   //if inSchool is true, it's placed on the table
+            if(getStudentEntrance(playerRef,colour) > 0) {
+                players.get(playerRef).school.removeStudentEntrance(colour);
+                players.get(playerRef).school.setStudentTable(colour);
+                players.get(playerRef).checkPosForCoin(colour);    //check the position, in case we have to give a coin to the player
+                studentTableofThisColour = getStudentTable(playerRef, colour);
+                for (i = 0; i < numberOfPlayer && !stop; i++) {
+                    if (i != playerRef && studentTableofThisColour < getStudentTable(i, colour))
+                        stop = true;  //if it finds someone with more students at the table it stops
+                    else if (i != playerRef && getProfessor(i,colour)) {
+                        removeProfessor(i, colour);    //otherwise check if the other had the professor
+                        setProfessor(playerRef, colour);
+                        professorPropriety[colour] = playerRef;
+                        stop = true;
+                    }
+                }
+                if (i == numberOfPlayer) {    //if no one owned that professor
+                    setProfessor(playerRef, colour);
+                    professorPropriety[colour] = playerRef;
+                }
+            }
+        } else if(inSchool && special){   //if inSchool is true, it's placed on the table
             if(getStudentEntrance(playerRef,colour) > 0) {
                 players.get(playerRef).school.removeStudentEntrance(colour);
                 players.get(playerRef).school.setStudentTable(colour);
