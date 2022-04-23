@@ -122,7 +122,7 @@ class SchoolTest {
         String[] playerInfo = {"Giorgio","SAMURAI","Marco","KING"};
         PlayerManager playerManager = new PlayerManager(numberOfPlayer,playerInfo);
         int[] studentsGiorgio = new int[]{0,0,1,1,2,2,3,3,4,4};
-        int[] studentsMarco = new int[]{0,0,0,0,0,3,3,3,3,3};
+        int[] studentsMarco = new int[]{0,0,0,0,0,3,3,3,4,4};
 
         //We add students to the entry and check for changes
         //First Player
@@ -134,7 +134,7 @@ class SchoolTest {
                 ()->assertEquals(2,playerManager.getStudentEntrance(0,3),"In this test, there must be two students of each color in the entrance"),
                 ()->assertEquals(2,playerManager.getStudentEntrance(0,4),"In this test, there must be two students of each color in the entrance")
         );
-        for(int i = 0; i < 10; i++) playerManager.transferStudent(0,studentsGiorgio[i],true);
+        for(int i = 0; i < 10; i++) playerManager.transferStudent(0,studentsGiorgio[i],true,false);
         assertAll(
                 ()->assertEquals(2,playerManager.getStudentTable(0,0),"In this test, there must be two students at each table"),
                 ()->assertEquals(2,playerManager.getStudentTable(0,1),"In this test, there must be two students at each table"),
@@ -155,16 +155,16 @@ class SchoolTest {
                 ()->assertEquals(5,playerManager.getStudentEntrance(1,0),"In this test, there must be five students of each color in the entrance"),
                 ()->assertEquals(0,playerManager.getStudentEntrance(1,1),"In this test, there must be zero students of each color in the entrance"),
                 ()->assertEquals(0,playerManager.getStudentEntrance(1,2),"In this test, there must be zero students of each color in the entrance"),
-                ()->assertEquals(5,playerManager.getStudentEntrance(1,3),"In this test, there must be five students of each color in the entrance"),
-                ()->assertEquals(0,playerManager.getStudentEntrance(1,4),"In this test, there must be zero students of each color in the entrance")
+                ()->assertEquals(3,playerManager.getStudentEntrance(1,3),"In this test, there must be three students of each color in the entrance"),
+                ()->assertEquals(2,playerManager.getStudentEntrance(1,4),"In this test, there must be two students of each color in the entrance")
         );
-        for(int i = 0; i < 10; i++) playerManager.transferStudent(1,studentsMarco[i],true);
+        for(int i = 0; i < 10; i++) playerManager.transferStudent(1,studentsMarco[i],true,false);
         assertAll(
                 ()->assertEquals(5,playerManager.getStudentTable(1,0),"In this test, there must be five students at each table"),
                 ()->assertEquals(0,playerManager.getStudentTable(1,1),"In this test, there must be zero students at each table"),
                 ()->assertEquals(0,playerManager.getStudentTable(1,2),"In this test, there must be zero students at each table"),
-                ()->assertEquals(5,playerManager.getStudentTable(1,3),"In this test, there must be five students at each table"),
-                ()->assertEquals(0,playerManager.getStudentTable(1,4),"In this test, there must be zero students at each table")
+                ()->assertEquals(3,playerManager.getStudentTable(1,3),"In this test, there must be three students at each table"),
+                ()->assertEquals(2,playerManager.getStudentTable(1,4),"In this test, there must be two students at each table")
         );
         assertAll(
                 ()->assertTrue(playerManager.getProfessor(1,0),"At this point the player must own the professor"),

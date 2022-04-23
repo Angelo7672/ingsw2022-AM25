@@ -12,7 +12,7 @@ public class Game implements GameManager{
     private int numberOfPlayer;
 
 
-    Game(Boolean expertMode, int numberOfPlayer, String[] playersInfo){
+    public Game(Boolean expertMode, int numberOfPlayer, String[] playersInfo){
         roundStrategies = new ArrayList<>();
         this.numberOfPlayer = numberOfPlayer;
         this.cloudsManager = new CloudsManager(numberOfPlayer);
@@ -37,9 +37,9 @@ public class Game implements GameManager{
         }
     }
 
-    public Boolean useSpecial(int special, int player){
-        if(playerManager.affordSpecial(roundStrategies.get(special).getCost(), player)){
-            playerManager.removeCoin(player, roundStrategies.get(special).getCost());
+    public Boolean useSpecial(int special, int playerRef){
+        if(playerManager.getCoins(playerRef) >= roundStrategies.get(special).getCost()){
+            playerManager.removeCoin(playerRef, roundStrategies.get(special).getCost());
             roundStrategies.get(special).increaseCost();
             return true;
         }

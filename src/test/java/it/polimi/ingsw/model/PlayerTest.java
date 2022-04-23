@@ -69,29 +69,29 @@ class PlayerTest {
 
         //First player
         for (int i = 0; i < 10; i++) playerManager.setStudentEntrance(0, studentsGiorgio[i]);
-        playerManager.transferStudent(0,0,true);
-        playerManager.transferStudent(0,0,true);
-        playerManager.transferStudent(0,0,true);
-        playerManager.transferStudent(0,2,true);
-        playerManager.transferStudent(0,2,true);
-        playerManager.transferStudent(0,2,true);
-        playerManager.transferStudent(0,3,true);
-        playerManager.transferStudent(0,3,true);
-        playerManager.transferStudent(0,3,true);
-        playerManager.transferStudent(0,4,true);
+        playerManager.transferStudent(0,0,true,false);
+        playerManager.transferStudent(0,0,true,false);
+        playerManager.transferStudent(0,0,true,false);
+        playerManager.transferStudent(0,2,true,false);
+        playerManager.transferStudent(0,2,true,false);
+        playerManager.transferStudent(0,2,true,false);
+        playerManager.transferStudent(0,3,true,false);
+        playerManager.transferStudent(0,3,true,false);
+        playerManager.transferStudent(0,3,true,false);
+        playerManager.transferStudent(0,4,true,false);
         assertEquals(4,playerManager.getCoins(0),"The player has four coins");
         //Second player
         for (int i = 0; i < 10; i++) playerManager.setStudentEntrance(1, studentsMarco[i]);
-        playerManager.transferStudent(1,0,true);
-        playerManager.transferStudent(1,0,true);
-        playerManager.transferStudent(1,0,true);
-        playerManager.transferStudent(1,0,true);
-        playerManager.transferStudent(1,0,true);
-        playerManager.transferStudent(1,0,true);
-        playerManager.transferStudent(1,2,true);
-        playerManager.transferStudent(1,2,true);
-        playerManager.transferStudent(1,3,true);
-        playerManager.transferStudent(1,3,true);
+        playerManager.transferStudent(1,0,true,false);
+        playerManager.transferStudent(1,0,true,false);
+        playerManager.transferStudent(1,0,true,false);
+        playerManager.transferStudent(1,0,true,false);
+        playerManager.transferStudent(1,0,true,false);
+        playerManager.transferStudent(1,0,true,false);
+        playerManager.transferStudent(1,2,true,false);
+        playerManager.transferStudent(1,2,true,false);
+        playerManager.transferStudent(1,3,true,false);
+        playerManager.transferStudent(1,3,true,false);
         assertEquals(3,playerManager.getCoins(1),"The player has three coins");
 
         playerManager.removeCoin(0,3);

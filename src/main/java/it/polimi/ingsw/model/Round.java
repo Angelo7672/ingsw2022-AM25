@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import java.util.ArrayList;
-
 public class Round extends RoundStrategy{
 
     public Round(int numberOfPlayer, String[] playersInfo, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
@@ -13,8 +11,7 @@ public class Round extends RoundStrategy{
         if(!inSchool){
             playerManager.transferStudent(playerRef, colour, inSchool, false);
             islandsManager.incStudent(islandRef,colour);
-        }
-        else if(inSchool)
+        } else if(inSchool)
             playerManager.transferStudent(playerRef, colour, inSchool, false);
     }
 
