@@ -15,7 +15,7 @@ public abstract class RoundStrategy {
         this.bag = bag;
         this.cloudsManager = cloudsManager;
         this.islandsManager = islandsManager;
-        this.playerManager =playerManager;
+        this.playerManager = playerManager;
     }
 
     private Assistant stringToAssistant(String string){
@@ -136,7 +136,7 @@ public abstract class RoundStrategy {
 
     public void queueForPlanificationPhase(){ playerManager.queueForPlanificationPhase(numberOfPlayer); }
 
-    public String playCard(int playerRef, String card){ return toString(playerManager.playCard(playerRef,stringToAssistant(card))); }
+    public String playCard(int playerRef, int queueRef, String card){ return toString(playerManager.playCard(playerRef, queueRef, stringToAssistant(card))); }
 
     public void inOrderForActionPhase(){ playerManager.inOrderForActionPhase(); }
 

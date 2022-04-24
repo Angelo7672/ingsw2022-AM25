@@ -82,10 +82,10 @@ public class PlayerManager  {
             }
         }
     }
-    public Team playCard(int playerRef, Assistant card){
+    public Team playCard(int playerRef, int queueRef, Assistant card){
         players.get(playerRef).hand.remove(card);
-        queue.get(playerRef).setValueCard(card.getValue());
-        queue.get(playerRef).setMaxMoveMotherNature(card.getMovement());
+        queue.get(queueRef).setValueCard(card.getValue());
+        queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
         if(checkIfCardsFinished(playerRef)) return checkVictory();
 
         return Team.NOONE;
@@ -127,6 +127,9 @@ public class PlayerManager  {
             }
         });
     }
+
+    public int getValueCard(int queueRef){ return queue.get(queueRef).valueCard; }
+
     public int readQueue(int queueRef){ return queue.get(queueRef).getPlayerRef(); }
     public int readMaxMotherNatureMovement(int queueRef){ return queue.get(queueRef).getMaxMoveMotherNature(); }
 
@@ -225,14 +228,14 @@ public class PlayerManager  {
         private Integer valueCard;
         private int maxMoveMotherNature;
 
-        public Queue(int playerRef,int valueCard,int maxMoveMotherNature) {
+        public Queue(int playerRef,Integer valueCard,int maxMoveMotherNature) {
             this.playerRef = playerRef;
             this.valueCard = valueCard;
             this.maxMoveMotherNature = maxMoveMotherNature;
         }
 
         private int getPlayerRef() { return playerRef; }
-        private int getValueCard() { return valueCard; }
+        private Integer getValueCard() { return valueCard; }
         public int getMaxMoveMotherNature() { return maxMoveMotherNature; }
 
         public void setValueCard(Integer valueCard) { this.valueCard = valueCard; }

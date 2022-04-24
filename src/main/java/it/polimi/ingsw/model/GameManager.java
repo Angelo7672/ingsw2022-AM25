@@ -6,7 +6,7 @@ public interface GameManager {
     boolean refreshStudentsCloud();
     void queueForPlanificationPhase();
     int readQueue(int pos);
-    String playCard(int playerRef, String card);
+    String playCard(int playerRef, int queueRef, String card);
 
     //Action Phase
     //readQueue
