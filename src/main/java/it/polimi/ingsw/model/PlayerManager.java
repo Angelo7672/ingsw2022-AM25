@@ -90,16 +90,19 @@ public class PlayerManager  {
 
         return Team.NOONE;
     }
-    private boolean checkIfCardsFinished(int playerRef){  //Check if the player has played his last card
+    public boolean checkIfCardsFinished(int playerRef){  //Check if the player has played his last card
         return players.get(playerRef).hand.isEmpty();
     }
+
+    public List<Assistant> getHand(int playerRef){ return players.get(playerRef).hand; }
+
     public Team checkVictory(){
         Team winner = Team.NOONE;
-        int numberOfTowers = 9;     //let's put a high number
+        int numberOfTowers = -1;
         int professors1 = 0, professors2;
 
         for(Player p:players){
-            if(p.school.getTowers() < numberOfTowers){  //looking for the player with the most towers
+            if(p.school.getTowers() > numberOfTowers){  //looking for the player with the most towers
                 numberOfTowers = p.school.getTowers();
                 winner = p.getTeam();
                 professors1 = 0;
@@ -127,9 +130,6 @@ public class PlayerManager  {
             }
         });
     }
-
-    public int getValueCard(int queueRef){ return queue.get(queueRef).valueCard; }
-
     public int readQueue(int queueRef){ return queue.get(queueRef).getPlayerRef(); }
     public int readMaxMotherNatureMovement(int queueRef){ return queue.get(queueRef).getMaxMoveMotherNature(); }
 
@@ -262,7 +262,7 @@ public class PlayerManager  {
             this.team = team;
             this.coins = 1;
             this.hand = new ArrayList<>();
-            hand.add(Assistant.LION);hand.add(Assistant.GOOSE);hand.add(Assistant.GOOSE);hand.add(Assistant.CAT);hand.add(Assistant.EAGLE);hand.add(Assistant.FOX);
+            hand.add(Assistant.LION);hand.add(Assistant.GOOSE);hand.add(Assistant.CAT);hand.add(Assistant.EAGLE);hand.add(Assistant.FOX);
             hand.add(Assistant.LIZARD);hand.add(Assistant.OCTOPUS);hand.add(Assistant.DOG);hand.add(Assistant.ELEPHANT);hand.add(Assistant.TURTLE);
             this.school = new School(numberOfPlayer);
         }
