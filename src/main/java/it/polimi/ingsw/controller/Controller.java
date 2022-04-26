@@ -6,17 +6,16 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+//the Controller class listen for Property Changes Events in the VirtualView
 public class Controller implements PropertyChangeListener {
 
     private RoundController roundController;
     private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
     private VirtualView virtualView;
-    private boolean isExpert = false;
-    private String[] playersInfo = null;
     private String chosenAssistant;
 
 
-    public Controller(VirtualView virtualView, int numberOfPlayers){
+    public Controller(VirtualView virtualView, int numberOfPlayers, boolean isExpert, String[] playersInfo){ //virtual View is istantiated by the Server class
         roundController = new RoundController(isExpert, numberOfPlayers, playersInfo, this);
         this.virtualView = virtualView;
         virtualView.addPropertyChangeListener(this);
@@ -24,14 +23,12 @@ public class Controller implements PropertyChangeListener {
 
     }
 
+
     //when the virtual View changes that property (evt), the controller changes is state accordingly to the property that has changed
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
-        if(propertyName == "expertMode"){
-            isExpert = (boolean) evt.getNewValue();
-        }
-        else if(propertyName == "gamePhase"){
+        if(propertyName == "gamePhase"){
             if((int) evt.getNewValue() == 1) {
                 roundController.startPlanningPhase();
             }
