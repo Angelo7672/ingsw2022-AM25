@@ -10,12 +10,14 @@ public class RoundSpecial3 extends RoundStrategy{
     }
 
     @Override
-    public boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef){
+    public boolean moveMotherNature(int queueRef, int desiredMovement, int islandRef){
         int maxMovement;
         boolean victory1 = false;
         boolean victory2 = false;
 
-        victory1 = specialConquestIsland(islandRef, -1, queueRef);
+        int playerRef = readQueue(queueRef);
+
+        victory1 = specialConquestIsland(islandRef);
 
         maxMovement = playerManager.readMaxMotherNatureMovement(queueRef);
         if(desiredMovement > 0 && desiredMovement <= maxMovement ){
@@ -24,7 +26,7 @@ public class RoundSpecial3 extends RoundStrategy{
                 islandsManager.decreaseInhibited(islandsManager.getMotherPos());
             }
             else {
-                victory2 = conquestIsland(islandsManager.getMotherPos(), -1, queueRef);
+                victory2 = conquestIsland(islandsManager.getMotherPos(), -1, -1);
             }
         }
 
@@ -32,13 +34,13 @@ public class RoundSpecial3 extends RoundStrategy{
         return false;
     }
 
-    private boolean specialConquestIsland(int islandRef, int noColor, int playerRef){
+    private boolean specialConquestIsland(int islandRef){
         boolean victory = false;
         if(islandsManager.getInhibited(islandRef)>0){
             islandsManager.decreaseInhibited(islandRef);
         }
         else {
-            victory = conquestIsland(islandsManager.getMotherPos(), noColor, playerRef);
+            victory = conquestIsland(islandsManager.getMotherPos(), -1, -1);
         }
         return victory;
     }

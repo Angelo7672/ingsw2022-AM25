@@ -94,7 +94,7 @@ public abstract class RoundStrategy {
         return Team.NOONE;
     }
 
-    public boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef) {
+    public boolean moveMotherNature(int queueRef, int desiredMovement, int ref) {
         int maxMovement;
         boolean victory = false;
 
@@ -104,7 +104,8 @@ public abstract class RoundStrategy {
             if (islandsManager.getInhibited(islandsManager.getMotherPos())>0) {
                 islandsManager.decreaseInhibited(islandsManager.getMotherPos());
             } else {
-                victory = conquestIsland(islandsManager.getMotherPos(), noColor, queueRef);
+                int playerRef = readQueue(queueRef);
+                victory = conquestIsland(islandsManager.getMotherPos(), ref, playerRef);
             }
         }
         return victory;

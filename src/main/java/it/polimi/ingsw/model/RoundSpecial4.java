@@ -11,7 +11,7 @@ public class RoundSpecial4 extends RoundStrategy{
 
 
     @Override
-    public boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef){
+    public boolean moveMotherNature(int queueRef, int desiredMovement, int ref){
         int maxMovement;
         boolean victory = false;
 
@@ -23,7 +23,7 @@ public class RoundSpecial4 extends RoundStrategy{
                 islandsManager.decreaseInhibited(islandsManager.getMotherPos());
             }
             else {
-                victory = conquestIsland(islandsManager.getMotherPos(), noColor, queueRef);
+                victory = conquestIsland(islandsManager.getMotherPos(), -1, -1);
             }
         }
         return victory;

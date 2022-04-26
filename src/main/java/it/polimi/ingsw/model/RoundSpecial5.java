@@ -15,24 +15,6 @@ public class RoundSpecial5 extends RoundStrategy{
     }
 
     @Override
-    public boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef) {
-        int maxMovement;
-        boolean victory = false;
-        effect(islandRef, null1, null2);
-
-        maxMovement = playerManager.readMaxMotherNatureMovement(queueRef);
-        if (desiredMovement > 0 && desiredMovement <= maxMovement) {
-            islandsManager.moveMotherNature(desiredMovement);
-            if (islandsManager.getInhibited(islandsManager.getMotherPos())>0) {
-                islandsManager.decreaseInhibited(islandsManager.getMotherPos());
-            } else {
-                victory = conquestIsland(islandsManager.getMotherPos(), noColor, queueRef);
-            }
-        }
-        return victory;
-    }
-
-    @Override
     public boolean effect(int islandRef, ArrayList<Integer>null1, ArrayList<Integer> null2){
         if(special.getNoEntry()>0){
             islandsManager.increaseInhibited(islandRef);

@@ -20,7 +20,7 @@ public class RoundSpecial9 extends RoundStrategy{
 
         for (int i = 0; i < 5; i++) {
             if(i==noColor){
-                i++; //salta il colore bannato
+                i++; //skip banned color
             }
             studentOnIsland[i] = islandsManager.getStudent(islandRef, i);
             if (studentOnIsland[i] > 0) {

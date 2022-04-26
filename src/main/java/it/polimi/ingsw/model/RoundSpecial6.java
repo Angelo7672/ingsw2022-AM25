@@ -10,6 +10,25 @@ public class RoundSpecial6 extends RoundStrategy{
     }
 
     @Override
+    public boolean moveMotherNature(int queueRef, int desiredMovement, int ref){
+        int maxMovement;
+        boolean victory = false;
+
+        maxMovement = playerManager.readMaxMotherNatureMovement(queueRef); //da incrementare anche per scelta del giocatore
+
+        if(desiredMovement > 0 && desiredMovement <= maxMovement){
+            islandsManager.moveMotherNature(desiredMovement);
+            if(islandsManager.getInhibited(islandsManager.getMotherPos())>0){
+                islandsManager.decreaseInhibited(islandsManager.getMotherPos());
+            }
+            else {
+                victory = conquestIsland(islandsManager.getMotherPos(), -1, -1);
+            }
+        }
+        return victory;
+    }
+
+    @Override
     protected Team highInfluenceTeam(int islandRef, int noColor, int playerRef) {
         int[] studentOnIsland = new int[5];
         int professorOwner;

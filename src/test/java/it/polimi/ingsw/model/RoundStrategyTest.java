@@ -125,12 +125,12 @@ public class RoundStrategyTest {
         round.queueForPlanificationPhase();
         islandsManager.increaseInhibited(islandsManager.circularArray(islandsManager.getMotherPos(), 1));
         round.playCard(0,0,"LION"); round.playCard(1,1,"GOOSE"); round.playCard(2, 2,"CAT");
-        round.moveMotherNature(0,1,-1,0);
+        round.moveMotherNature(0,1,-1);
         assertEquals(0, islandsManager.getInhibited(islandsManager.circularArray(islandsManager.getMotherPos(), 1)));
         //if island is not inhibited
         round.queueForPlanificationPhase();
         round.playCard(0,1,"GOOSE"); round.playCard(1,0,"LION"); round.playCard(2,2, "DOG");
-        boolean victory = round.moveMotherNature(0,1,-1,0);
+        boolean victory = round.moveMotherNature(0,1,-1);
         assertEquals(false, victory);
     }
 
@@ -194,13 +194,13 @@ public class RoundStrategyTest {
         islandsManager.increaseInhibited(islandsManager.circularArray(islandsManager.getMotherPos(), 1));
         islandsManager.increaseInhibited(islandsManager.circularArray(motherPos,-5));
         round.playCard(0,0,"LION"); round.playCard(1,1,"GOOSE"); round.playCard(2, 2,"CAT");
-        round.moveMotherNature(0,1,-1,islandsManager.circularArray(motherPos,-5));
+        round.moveMotherNature(0,1,islandsManager.circularArray(motherPos,-5));
         assertEquals(0, islandsManager.getInhibited(islandsManager.circularArray(islandsManager.getMotherPos(), 1)));
         assertEquals(0, islandsManager.getInhibited(islandsManager.circularArray(motherPos, -5)));
         //if island is not inhibited
         round.queueForPlanificationPhase();
         round.playCard(0,1,"GOOSE"); round.playCard(1,0,"LION"); round.playCard(2,2, "DOG");
-        boolean victory = round.moveMotherNature(0,1,-1,0);
+        boolean victory = round.moveMotherNature(0,1,0);
         assertEquals(false, victory);
     }
 
@@ -211,7 +211,7 @@ public class RoundStrategyTest {
         round.queueForPlanificationPhase();
         round.playCard(0,0,"LION"); round.playCard(1,1,"GOOSE"); round.playCard(2, 2,"CAT");
         int motherPos = islandsManager.getMotherPos();
-        round.moveMotherNature(0,3,-1,islandsManager.circularArray(motherPos,-5));
+        round.moveMotherNature(0,3,islandsManager.circularArray(motherPos,-5));
         motherPos = islandsManager.circularArray(motherPos, 3);
         assertEquals(motherPos, islandsManager.getMotherPos());
     }
@@ -222,13 +222,9 @@ public class RoundStrategyTest {
         RoundStrategy round = new RoundSpecial5(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
         round.queueForPlanificationPhase();
         round.playCard(0,0,"LION"); round.playCard(1,1,"GOOSE"); round.playCard(2, 2,"CAT");
-        round.moveMotherNature(0,1,-1,0);
+        round.moveMotherNature(0,1,-1);
+        round.effect(0,null,null);
         assertEquals(1, islandsManager.getInhibited(0));
-        round.moveMotherNature(1,1,-1,0);
-        round.moveMotherNature(1,1,-1,0);
-        round.moveMotherNature(1,1,-1,0);
-        boolean done = round.moveMotherNature(1,1,-1,0);
-        assertEquals(false, done);
     }
 
     @Test
