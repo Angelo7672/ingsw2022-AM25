@@ -129,6 +129,7 @@ public class PlayerManager  {
             }
         });
     }
+
     public int readQueue(int queueRef){ return queue.get(queueRef).getPlayerRef(); }
     public int readMaxMotherNatureMovement(int queueRef){ return queue.get(queueRef).getMaxMoveMotherNature(); }
 

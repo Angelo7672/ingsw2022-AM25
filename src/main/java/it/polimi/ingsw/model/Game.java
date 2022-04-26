@@ -10,6 +10,7 @@ public class Game implements GameManager{
     private PlayerManager playerManager;
     private Bag bag;
     private int numberOfPlayer;
+    private int indexSpecial;
 
 
     public Game(Boolean expertMode, int numberOfPlayer, String[] playersInfo){
@@ -29,6 +30,7 @@ public class Game implements GameManager{
         Round round = new Round(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
         roundStrategies.add(round);
         if(expertMode){
+            indexSpecial = 0;
             RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
             ArrayList<Integer> random = new ArrayList<>();
             for(int i=1; i<=12; i++) random.add(i); //riempio con numeri da 1 a 12
@@ -37,10 +39,10 @@ public class Game implements GameManager{
         }
     }
 
-    public Boolean useSpecial(int special, int playerRef){
-        if(playerManager.getCoins(playerRef) >= roundStrategies.get(special).getCost()){
-            playerManager.removeCoin(playerRef, roundStrategies.get(special).getCost());
-            roundStrategies.get(special).increaseCost();
+    public Boolean useSpecial(int playerRef){
+        if(playerManager.getCoins(playerRef) >= roundStrategies.get(indexSpecial).getCost()){
+            playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
+            roundStrategies.get(indexSpecial).increaseCost();
             return true;
         }
         return false;
@@ -72,17 +74,17 @@ public class Game implements GameManager{
     }
 
     @Override
-    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef, int specialIndex) {
-        if(findIndex(0,specialIndex) &&
-                useSpecial(specialIndex, playerRef)) roundStrategies.get(specialIndex).moveStudent(playerRef, colour, true, islandRef);
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) {
+        if(findName(0,indexSpecial) &&
+                useSpecial(playerRef)) roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
         else roundStrategies.get(0).moveStudent(playerRef, colour, inSchool, islandRef);
     }
 
     @Override
     public boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef, String special, int specialIndex) {
         boolean victory = false;
-        if(findIndex(1,specialIndex) &&
-                useSpecial(specialIndex, queueRef)) victory = roundStrategies.get(specialIndex).moveMotherNature(queueRef, desiredMovement, noColor, islandRef);
+        if(findName(1,specialIndex) &&
+                useSpecial(queueRef)) victory = roundStrategies.get(specialIndex).moveMotherNature(queueRef, desiredMovement, noColor, islandRef);
         else victory = roundStrategies.get(0).moveMotherNature(queueRef, desiredMovement, noColor, islandRef);
         checkNoEntry(); //possiamo mettere un boolean in game per farlo attivare solo se si usa questo special nella partita
         return victory;
@@ -108,10 +110,16 @@ public class Game implements GameManager{
 
     //to do before moveStudent
     public void effect(int playerRef, ArrayList<Integer> color1, ArrayList<Integer> color2, int specialIndex){
-        if(findIndex(2, specialIndex)&&useSpecial(specialIndex, playerRef))  roundStrategies.get(specialIndex).effect(playerRef,color1, color2);
+        if(findName(2, specialIndex)&&useSpecial(playerRef))  roundStrategies.get(specialIndex).effect(playerRef,color1, color2);
     }
 
-    public boolean findIndex(int method, int index){
+    public void setIndexSpecial(int index){
+        indexSpecial=index;
+    }
+
+
+
+    public boolean findName(int method, int index){
         switch(method){
             case(0):{
                 if(roundStrategies.get(index).getName().equals("special2")) return true;

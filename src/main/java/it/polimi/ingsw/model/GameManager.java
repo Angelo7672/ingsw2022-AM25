@@ -9,9 +9,9 @@ public interface GameManager {
     String playCard(int playerRef, int queueRef, String card);
 
     //Action Phase
-    //readQueue
     void inOrderForActionPhase();
-    void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef, int specialIndex);
+    //use special
+    void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef);
     boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef,  String special, int index);
     void chooseCloud(int playerRef,int cloudRef);
 
