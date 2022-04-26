@@ -11,7 +11,7 @@ public interface GameManager {
     //Action Phase
     //readQueue
     void inOrderForActionPhase();
-    void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef);
+    void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef, int specialIndex);
     boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef,  String special, int index);
     void chooseCloud(int playerRef,int cloudRef);
 

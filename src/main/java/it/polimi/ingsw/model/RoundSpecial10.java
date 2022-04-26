@@ -12,12 +12,16 @@ public class RoundSpecial10 extends RoundStrategy{
     }
 
     @Override
-    public void effect(int playerRef, ArrayList<Integer> entranceStudent, ArrayList<Integer> tableStudent){
-        for (int i = 0; i < entranceStudent.size(); i++) {
-            playerManager.transferStudent(playerRef, entranceStudent.get(i), true, false);
-            playerManager.removeStudentTable(playerRef, tableStudent.get(i));
-            playerManager.setStudentEntrance(playerRef, tableStudent.get(i));
+    public boolean effect(int playerRef, ArrayList<Integer> entranceStudent, ArrayList<Integer> tableStudent){
+        if(playerManager.checkStudentsEntrance(entranceStudent, playerRef)&&playerManager.checkStudentsTable(tableStudent,playerRef)) {
+            for (int i = 0; i < entranceStudent.size(); i++) {
+                playerManager.transferStudent(playerRef, entranceStudent.get(i), true, false);
+                playerManager.removeStudentTable(playerRef, tableStudent.get(i));
+                playerManager.setStudentEntrance(playerRef, tableStudent.get(i));
+            }
+            return true;
         }
+        return false;
     }
     @Override
     public int getCost(){

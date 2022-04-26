@@ -48,4 +48,5 @@ class BagTest {
         tmp = bag.extraction();
         assertTrue(bag.checkVictory(),"The bag be empty");
     }
+
 }

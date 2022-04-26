@@ -115,7 +115,7 @@ class SchoolTest {
         );
     }
 
-    @Test
+    /*@Test
     @DisplayName("Second test: make students move around the school")
     void schoolStudent(){
         int numberOfPlayer = 2;
@@ -178,7 +178,7 @@ class SchoolTest {
                 ()->assertFalse(playerManager.getProfessor(0,0),"The professor is from Marco"),
                 ()->assertFalse(playerManager.getProfessor(0,3),"The professor is from Marco")
         );
-    }
+    }*/
 
     @Test
     @DisplayName("Third test: control the movements of the towers with three players")

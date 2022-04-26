@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+
 public class RoundSpecial12 extends RoundStrategy{
 
     Special12 special;
@@ -9,7 +11,28 @@ public class RoundSpecial12 extends RoundStrategy{
         special =new Special12();
     }
 
-    public void effect(int color){
+    @Override
+    public boolean moveMotherNature(int queueRef, int desiredMovement, int color, int islandRef) {
+        int maxMovement;
+        boolean victory = false;
+
+        effect(color, null, null);
+
+
+        maxMovement = playerManager.readMaxMotherNatureMovement(queueRef);
+        if (desiredMovement > 0 && desiredMovement <= maxMovement) {
+            islandsManager.moveMotherNature(desiredMovement);
+            if (islandsManager.getInhibited(islandsManager.getMotherPos())>0) {
+                islandsManager.decreaseInhibited(islandsManager.getMotherPos());
+            } else {
+                victory = conquestIsland(islandsManager.getMotherPos(), -1, queueRef);
+            }
+        }
+        return victory;
+    }
+
+
+    public boolean effect(int color, ArrayList<Integer> null1, ArrayList<Integer> null2){
         for (int i = 0; i < numberOfPlayer; i++) {
             if (playerManager.getStudentTable(i, color) >= 3) {
                 for(int j=0; j<3; j++) {
@@ -17,11 +40,12 @@ public class RoundSpecial12 extends RoundStrategy{
                 }
                 bag.fillBag(color, 3);
             } else {
-                bag.fillBag(color, playerManager.getStudentTable(i, color)); //da fare prima di decrease perchè dopo non ho piu il num di studenti tolti
+                bag.fillBag(color, playerManager.getStudentTable(i, color));
                 while(playerManager.getStudentTable(i, color) != 0) playerManager.removeStudentTable(i, color);
 
             }
         }
+        return true;
     }
 
     @Override

@@ -1,8 +1,13 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+
 public class RoundSpecial5 extends RoundStrategy{
 
     Special5 special;
+    ArrayList<Integer> null1;
+    ArrayList<Integer> null2;
+
 
     public RoundSpecial5(int numberOfPlayer, String[] playersInfo, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
         super(numberOfPlayer,playersInfo, cloudsManager, islandsManager, playerManager, bag);
@@ -13,13 +18,13 @@ public class RoundSpecial5 extends RoundStrategy{
     public boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef) {
         int maxMovement;
         boolean victory = false;
-        effect(islandRef);
+        effect(islandRef, null1, null2);
 
         maxMovement = playerManager.readMaxMotherNatureMovement(queueRef);
         if (desiredMovement > 0 && desiredMovement <= maxMovement) {
             islandsManager.moveMotherNature(desiredMovement);
-            if (islandsManager.getInhibited(islandsManager.getMotherPos())) {
-                islandsManager.setInhibited(islandsManager.getMotherPos(), false);
+            if (islandsManager.getInhibited(islandsManager.getMotherPos())>0) {
+                islandsManager.decreaseInhibited(islandsManager.getMotherPos());
             } else {
                 victory = conquestIsland(islandsManager.getMotherPos(), noColor, queueRef);
             }
@@ -27,11 +32,14 @@ public class RoundSpecial5 extends RoundStrategy{
         return victory;
     }
 
-    public void effect(int islandRef){
+    @Override
+    public boolean effect(int islandRef, ArrayList<Integer>null1, ArrayList<Integer> null2){
         if(special.getNoEntry()>0){
-            islandsManager.setInhibited(islandRef, true);
+            islandsManager.increaseInhibited(islandRef);
             special.decreaseNoEntry();
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -46,10 +54,12 @@ public class RoundSpecial5 extends RoundStrategy{
     public String getName(){
         return special.getName();
     }
+
+    @Override
     public void effect(){
         int inhibitedIsland = 0;
         for (int i = 0; i<islandsManager.size(); i++){
-            if(islandsManager.getInhibited(i)) inhibitedIsland++;
+            if(islandsManager.getInhibited(i)>0) inhibitedIsland+=islandsManager.getInhibited(i);
         }
         if(inhibitedIsland<(4-special.getNoEntry())) special.increaseNoEntry();
     }

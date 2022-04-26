@@ -94,7 +94,6 @@ public abstract class RoundStrategy {
         return Team.NOONE;
     }
 
-    //@Override
     public boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef) {
         int maxMovement;
         boolean victory = false;
@@ -102,8 +101,8 @@ public abstract class RoundStrategy {
         maxMovement = playerManager.readMaxMotherNatureMovement(queueRef);
         if (desiredMovement > 0 && desiredMovement <= maxMovement) {
             islandsManager.moveMotherNature(desiredMovement);
-            if (islandsManager.getInhibited(islandsManager.getMotherPos())) {
-                islandsManager.setInhibited(islandsManager.getMotherPos(), false);
+            if (islandsManager.getInhibited(islandsManager.getMotherPos())>0) {
+                islandsManager.decreaseInhibited(islandsManager.getMotherPos());
             } else {
                 victory = conquestIsland(islandsManager.getMotherPos(), noColor, queueRef);
             }
@@ -157,11 +156,9 @@ public abstract class RoundStrategy {
     public void chooseCloud(int playerRef,int cloudRef){
         for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef, cloudsManager.removeStudents(cloudRef)[i]);
     }
-
     public void effect(){}
-    public void effect(int ref){}
-    public void effect(int ref, int color1){}
-    public void effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){}
+    public boolean effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){return false;}
+    public int getStudents(int color){return -1;}
 
     abstract public int getCost();
     abstract public void increaseCost();

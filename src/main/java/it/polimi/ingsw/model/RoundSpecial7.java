@@ -9,16 +9,28 @@ public class RoundSpecial7 extends RoundStrategy{
     public RoundSpecial7(int numberOfPlayer, String[] playersInfo, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
         super(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
         special = new Special7();
+        int[] extraction = {0,0,0,0,0};
+        for(int i=0; i<6; i++){
+            extraction[bag.extraction()]++;
+        }
+        special.setup(extraction);
     }
 
     @Override
-    public void effect(int playerRef, ArrayList<Integer> entranceStudent, ArrayList<Integer> cardStudent){
-        for(int i=0; i<entranceStudent.size(); i++){
-            special.effect(cardStudent.get(i), entranceStudent.get(i));
-            playerManager.setStudentEntrance(playerRef, cardStudent.get(i));
-            playerManager.removeStudentEntrance(playerRef, entranceStudent.get(i));
+    public boolean effect(int playerRef, ArrayList<Integer> entranceStudent, ArrayList<Integer> cardStudent){
+        if(playerManager.checkStudentsEntrance(entranceStudent, playerRef )&& special.checkStudents(cardStudent)) {
+            for (int i = 0; i < entranceStudent.size(); i++) {
+                special.effect(cardStudent.get(i), entranceStudent.get(i));
+                playerManager.setStudentEntrance(playerRef, cardStudent.get(i));
+                playerManager.removeStudentEntrance(playerRef, entranceStudent.get(i));
+            }
+            return true;
         }
+        return false;
     }
+
+    @Override
+    public int getStudents(int color){return special.getStudent(color);}
 
     @Override
     public int getCost(){
@@ -35,28 +47,34 @@ public class RoundSpecial7 extends RoundStrategy{
 
     private class Special7 extends Special {
 
-        private ArrayList<Integer> students;
+        int[] students = {0,0,0,0,0};
 
         public Special7(){
             super(1, "special7");
-            students = new ArrayList<>();
-            for(int i=0; i<5; i++) students.add(0);
         }
 
-        public void setup(ArrayList<Integer> color){
+        public void setup(int[] color){
             for(int i=0; i<5;i++){
-                sum(color.get(i), i);
+                students[i]+=color[i];
             }
         }
-
-        private void sum(int num, int color){
-            students.set(color, students.get(color)+num);
+        public int getStudent(int color){
+            return students[color];
         }
 
         @Override
         public void effect(int chosen, int extracted) {
-            sum(1, -chosen);
-            sum(1, extracted);
+            if(getStudent(chosen)>0) {
+                students[chosen]--;
+                students[extracted]++;
+            }
+        }
+
+        public boolean checkStudents(ArrayList<Integer> students){
+            for(int i=0; i<students.size(); i++){
+                if(getStudent(students.get(i))==0) return false;
+            }
+            return true;
         }
 
     }

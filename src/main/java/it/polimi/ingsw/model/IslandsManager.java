@@ -37,7 +37,7 @@ public class IslandsManager {
         }
     }
 
-    public void incStudent(int island, int color){ islands.get(island).incStudents(color); }
+    public void incStudent(int island, int color){ islands.get(island).incStudents(color);}
 
     public void moveMotherNature(int steps) { motherPos = circularArray(motherPos, steps); }
     public int getMotherPos(){ return motherPos; }
@@ -49,22 +49,22 @@ public class IslandsManager {
     public int[] towerChange(int islandRef, Team team) {
         int[] returnItem = new int[2];  //in the first cell there is the number of towers built, in the second there is the previous owner of the towers
 
-        if(!islands.get(islandRef).getTowerTeam().equals(team)) {
-            if (islands.get(islandRef).getTowerTeam().equals(Team.NOONE)) {
+        if(!islands.get(islandRef).getTowerTeam().equals(team)) { //if new team not equals old one
+            if (islands.get(islandRef).getTowerTeam().equals(Team.NOONE)) { //if old team is no one
                 islands.get(islandRef).setTowerTeam(team);
                 checkAdjacentIslands(islandRef);
                 returnItem[0] = 1;
                 returnItem[1] = -1;
                 return returnItem;
             }
-
+            //if old team is not no one
             returnItem[1] = islands.get(islandRef).getTowerTeam().getTeam();
             islands.get(islandRef).setTowerTeam(team);
             checkAdjacentIslands(islandRef);
             returnItem[0] = islands.get(islandRef).getTowerValue();
             return returnItem;
         }
-
+        //if new team equals old one
         returnItem[0] = 0;
         returnItem[1] = -1;
         return returnItem;
@@ -104,8 +104,9 @@ public class IslandsManager {
         return pos;
     }
 
-    public boolean getInhibited(int islandRef){ return islands.get(islandRef).getInhibited(); }
-    public void setInhibited(int islandRef, boolean inhibited){ islands.get(islandRef).setInhibited(inhibited);}
+    public int getInhibited(int islandRef){ return islands.get(islandRef).getInhibited(); }
+    public void increaseInhibited(int islandRef){ islands.get(islandRef).increaseInhibited();}
+    public void decreaseInhibited(int islandRef){ islands.get(islandRef).decreaseInhibited();}
     public int size(){
         return islands.size();
     }
@@ -114,13 +115,13 @@ public class IslandsManager {
         private int[] students;
         private int towerValue;
         private Team towerTeam;
-        private boolean inhibited;
+        private int inhibited;
 
         private Island(){
             this.students = new int[]{0,0,0,0,0};
             this.towerValue = 1;
             this.towerTeam = Team.NOONE;
-            inhibited = false;
+            inhibited = 0;
         }
 
         private Team getTowerTeam(){ return towerTeam; }
@@ -130,8 +131,9 @@ public class IslandsManager {
         private int getNumStudents(int color){ return students[color]; }
         private void copyStudents(int color, int nStudents){ students[color] = nStudents; }
         private void incStudents(int color){ students[color]++; }
-        private boolean getInhibited(){ return inhibited; }
-        private void setInhibited(Boolean inhibited){ this.inhibited = inhibited; }
+        private int getInhibited(){ return inhibited; }
+        private void increaseInhibited(){ this.inhibited++; }
+        private void decreaseInhibited(){this.inhibited--;}
     }
 
 }

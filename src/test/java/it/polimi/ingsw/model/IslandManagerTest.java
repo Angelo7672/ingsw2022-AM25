@@ -9,7 +9,6 @@ import static it.polimi.ingsw.model.Team.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IslandManagerTest {
-    Round round;
 
     @Test
     @DisplayName("Test if the island of Mother Nature and the one in front are empty")
@@ -39,11 +38,12 @@ public class IslandManagerTest {
         }
     }
 
+
     @Test
     @DisplayName("Test if checkVitcory return true when there are only 3 islands")
     void checkVictoryTest(){
-        Round round;
         IslandsManager islandsManager = new IslandsManager();
+        assertEquals(false, islandsManager.checkVictory());
         islandsManager.towerChange(0,WHITE);
         islandsManager.towerChange(2, WHITE);
         islandsManager.towerChange(1,WHITE); //si uniscono queste 3 in 0
@@ -58,6 +58,60 @@ public class IslandManagerTest {
         islandsManager.towerChange(3, WHITE);//si unisce in 0
 
         assertTrue(islandsManager.checkVictory());
+    }
+
+    @Test
+    @DisplayName("Test returned array of towerChange")
+    void towerChangeTest(){
+        IslandsManager islandsManager = new IslandsManager();
+        int[] returnItem = new int[2];
+        returnItem = islandsManager.towerChange(0, WHITE); //if old team not equals new one and is no one
+        assertEquals(1, returnItem[0]);
+        assertEquals(-1, returnItem[1]);
+
+        returnItem = islandsManager.towerChange(0, BLACK); //if old team not equals new one and is not no one
+        assertEquals(1, returnItem[0]);
+        assertEquals(0, returnItem[1]);
+
+        returnItem = islandsManager.towerChange(0, BLACK); //if old team equals new one
+        assertEquals(0, returnItem[0]);
+        assertEquals(-1, returnItem[1]);
+
+    }
+
+    @Test
+    @DisplayName("Test get/set methods")
+    void getSetMethod(){
+
+        //student methods
+        IslandsManager islandsManager = new IslandsManager();
+        islandsManager.incStudent(0, 0);
+        assertEquals(1, islandsManager.getStudent(0,0));
+
+        //mother methods
+        int motherPos = islandsManager.getMotherPos();
+        islandsManager.moveMotherNature(7);
+        assertEquals(islandsManager.circularArray(motherPos, 7), islandsManager.getMotherPos());
+
+        //tower value methods
+        islandsManager.towerChange(0, WHITE);
+        assertEquals(WHITE, islandsManager.getTowerTeam(0));
+        assertEquals(1, islandsManager.getTowerValue(0));
+
+        //size methods
+        islandsManager.towerChange(1, WHITE);
+        assertEquals(2, islandsManager.getTowerValue(0));
+        assertEquals(11, islandsManager.size());
+
+        //inhibition methods
+        assertEquals(0, islandsManager.getInhibited(0));
+        islandsManager.increaseInhibited(0);
+        islandsManager.increaseInhibited(0);
+        assertEquals(2, islandsManager.getInhibited(0));
+        islandsManager.decreaseInhibited(0);
+        assertEquals(1, islandsManager.getInhibited(0));
+
+
     }
 
 }

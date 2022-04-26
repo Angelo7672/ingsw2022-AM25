@@ -29,7 +29,7 @@ public class Game implements GameManager{
         Round round = new Round(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
         roundStrategies.add(round);
         if(expertMode){
-            RoundStrategyFactor roundStrategyFactor = new RoundStrategyFactor(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+            RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
             ArrayList<Integer> random = new ArrayList<>();
             for(int i=1; i<=12; i++) random.add(i); //riempio con numeri da 1 a 12
             Collections.shuffle(random); //mischio i numeri
@@ -72,14 +72,17 @@ public class Game implements GameManager{
     }
 
     @Override
-    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) {
-        roundStrategies.get(0).moveStudent(playerRef, colour, inSchool, islandRef);
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef, int specialIndex) {
+        if(findIndex(0,specialIndex) &&
+                useSpecial(specialIndex, playerRef)) roundStrategies.get(specialIndex).moveStudent(playerRef, colour, true, islandRef);
+        else roundStrategies.get(0).moveStudent(playerRef, colour, inSchool, islandRef);
     }
 
     @Override
-    public boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef, String special, int index) {
+    public boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef, String special, int specialIndex) {
         boolean victory = false;
-        if(useSpecial(index, queueRef)) victory = roundStrategies.get(index).moveMotherNature(queueRef, desiredMovement, noColor, islandRef);
+        if(findIndex(1,specialIndex) &&
+                useSpecial(specialIndex, queueRef)) victory = roundStrategies.get(specialIndex).moveMotherNature(queueRef, desiredMovement, noColor, islandRef);
         else victory = roundStrategies.get(0).moveMotherNature(queueRef, desiredMovement, noColor, islandRef);
         checkNoEntry(); //possiamo mettere un boolean in game per farlo attivare solo se si usa questo special nella partita
         return victory;
@@ -93,46 +96,6 @@ public class Game implements GameManager{
         if(index!=-1) roundStrategies.get(index).effect();
     }
 
-    //vanno prima di moveStudent
-    public void effect(int special, int playerRef, ArrayList<Integer> entranceStudent, ArrayList<Integer> student){
-        if(useSpecial(special, playerRef)) roundStrategies.get(special).effect(playerRef,entranceStudent, student);
-    }
-    public void effect(int special, int playerRef, int ref, int color){
-        if(useSpecial(special, playerRef)) roundStrategies.get(special).effect(ref, color);
-    }
-    public void effect(int special, int playerRef, int ref){
-        if(useSpecial(special, playerRef)) roundStrategies.get(special).effect(ref);
-    }
-
-    /*@Override //al posto di int index si puo fare un metodo che lo restituisce, dipende come vogliamo implementarlo. oppure con index si può togliere lo switch
-    public boolean moveMotherNature(int queueRef, int desiredMovement, int noColor, int islandRef, String special, int index) {
-        switch(special){
-            case("special3"): {
-                roundStrategies.get(index).moveMotherNature(queueRef, desiredMovement, noColor, islandRef);
-                break;
-            }
-            case("special4"): {
-                roundStrategies.get(index).moveMotherNature(queueRef, desiredMovement, noColor, islandRef);
-                break;
-            }
-            case("special6"): {
-                roundStrategies.get(index).moveMotherNature(queueRef, desiredMovement, noColor, islandRef);
-                break;
-            }
-            case("special8"): {
-                roundStrategies.get(index).moveMotherNature(queueRef, desiredMovement, noColor, islandRef);
-                break;
-            }
-            case("special9"): {
-                roundStrategies.get(index).moveMotherNature(queueRef, desiredMovement, noColor, islandRef);
-                break;
-            }
-            default: roundStrategies.get(0).moveMotherNature(queueRef,desiredMovement,-1,islandRef);
-        }
-
-        return false;
-    }*/
-
     @Override
     public void chooseCloud(int playerRef, int cloudRef) {
         roundStrategies.get(0).chooseCloud(playerRef, cloudRef);
@@ -142,4 +105,34 @@ public class Game implements GameManager{
     public String oneLastRide() {
         return roundStrategies.get(0).oneLastRide();
     }
+
+    //to do before moveStudent
+    public void effect(int playerRef, ArrayList<Integer> color1, ArrayList<Integer> color2, int specialIndex){
+        if(findIndex(2, specialIndex)&&useSpecial(specialIndex, playerRef))  roundStrategies.get(specialIndex).effect(playerRef,color1, color2);
+    }
+
+    public boolean findIndex(int method, int index){
+        switch(method){
+            case(0):{
+                if(roundStrategies.get(index).getName().equals("special2")) return true;
+            }
+            case (1):{
+                if(roundStrategies.get(index).getName().equals("special1")) return true;
+                if(roundStrategies.get(index).getName().equals("special3")) return true;
+                if(roundStrategies.get(index).getName().equals("special4")) return true;
+                if(roundStrategies.get(index).getName().equals("special5")) return true;
+                if(roundStrategies.get(index).getName().equals("special6")) return true;
+                if(roundStrategies.get(index).getName().equals("special8")) return true;
+                if(roundStrategies.get(index).getName().equals("special9")) return true;
+                if(roundStrategies.get(index).getName().equals("special11")) return true;
+                if(roundStrategies.get(index).getName().equals("special12")) return true;
+            }
+            case(2):{
+                if(roundStrategies.get(index).getName().equals("special7")) return true;
+                if(roundStrategies.get(index).getName().equals("special10")) return true;
+            }
+            default:return false;
+        }
+    }
+
 }

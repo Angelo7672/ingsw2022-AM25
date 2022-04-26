@@ -87,7 +87,6 @@ public class PlayerManager  {
         queue.get(queueRef).setValueCard(card.getValue());
         queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
         if(checkIfCardsFinished(playerRef)) return checkVictory();
-
         return Team.NOONE;
     }
     public boolean checkIfCardsFinished(int playerRef){  //Check if the player has played his last card
@@ -222,6 +221,17 @@ public class PlayerManager  {
 
     public void removeCoin(int playerRef, int cost){ players.get(playerRef).removeCoin(cost); }
     public int getCoins(int playerRef){ return players.get(playerRef).getCoins(); }
+
+    public boolean checkStudentsEntrance(ArrayList<Integer> student, int playerRef){
+        for(int i=0; i<student.size(); i++){
+            if(getStudentEntrance(playerRef,student.get(i))==0) return false;
+        }
+        return true;
+    }
+    public boolean checkStudentsTable(ArrayList<Integer> student, int playerRef){
+        if(getStudentTable(playerRef,student.get(0))>=student.size()) return true;
+        return false;
+    }
 
     private class Queue implements Comparable<Queue>{   //it is used both in the planning phase and in the action phase
         private int playerRef;

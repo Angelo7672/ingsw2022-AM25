@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 
-public class RoundStrategyFactor {
+public class RoundStrategyFactory {
     int numberOfPlayer;
     String[] playersInfo;
     CloudsManager cloudsManager;
@@ -9,7 +9,7 @@ public class RoundStrategyFactor {
     PlayerManager playerManager;
     Bag bag;
 
-    RoundStrategyFactor(int numberOfPlayer, String[] playersInfo, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
+    RoundStrategyFactory(int numberOfPlayer, String[] playersInfo, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
 
         this.numberOfPlayer = numberOfPlayer;
         this.playersInfo = playersInfo;

@@ -21,6 +21,6 @@ public abstract class Special {
         return cost;
     }
     public void effect(){}
-    public void effect(int uno, int due){}
+    public void effect(int one, int two){}
 
 }

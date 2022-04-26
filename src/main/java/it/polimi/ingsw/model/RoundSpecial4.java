@@ -19,8 +19,8 @@ public class RoundSpecial4 extends RoundStrategy{
 
         if(desiredMovement > 0 && desiredMovement <= maxMovement){
             islandsManager.moveMotherNature(desiredMovement);
-            if(islandsManager.getInhibited(islandsManager.getMotherPos())){
-                islandsManager.setInhibited(islandsManager.getMotherPos(), false);
+            if(islandsManager.getInhibited(islandsManager.getMotherPos())>0){
+                islandsManager.decreaseInhibited(islandsManager.getMotherPos());
             }
             else {
                 victory = conquestIsland(islandsManager.getMotherPos(), noColor, queueRef);
