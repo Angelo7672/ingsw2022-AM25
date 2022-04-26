@@ -3,8 +3,6 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameManager;
 
-import java.util.ArrayList;
-
 public class RoundController {
     //gestisce lo svolgimento della partita per tutti i giocatori
 
@@ -13,15 +11,14 @@ public class RoundController {
     private int currentPlayer;
     private Controller controller;
     private GameBoard gameBoard;
-    private ArrayList<String> assistantCards;
 
 
     public RoundController(boolean expertMode, int numberOfPlayers, String[] playersInfo, Controller controller) {
         this.gameManager = new Game(expertMode, numberOfPlayers, playersInfo);
         this.controller = controller;
         this.numberOfPlayers = numberOfPlayers;
-        this.assistantCards = new ArrayList<>();
     }
+
 
     public void startPlanningPhase(){
         if(gameManager.refreshStudentsCloud() == false) {
@@ -29,7 +26,6 @@ public class RoundController {
             for (int i = 0; i < numberOfPlayers; i++) {
                 int currentPlayer = gameManager.readQueue(i);
                 gameManager.playCard(i, currentPlayer, controller.getChosenAssistant());
-                assistantCards.add(controller.getChosenAssistant());
             }
             gameManager.inOrderForActionPhase();
         }
@@ -37,14 +33,18 @@ public class RoundController {
             gameManager.oneLastRide();
     }
 
+
     public void startActionPhase(){
+        /*
+    }
+        for (int i = 0; i < numberOfPlayers; i++) {
+            int currentPlayer = gameManager.readQueue(i);
+            gameManager.moveStudent(currentPlayer,colour,inSchool,islandRef);
 
+            gameManager.moveMotherNature(queref, desiredMovement,noColor, islandRef, special, index);
+    */
 
-
-
-
-        }
-
+    }
     public void endGame(){
 
     }

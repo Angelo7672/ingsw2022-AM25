@@ -4,20 +4,19 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+//virtual View class listen to PropertyChanges in GameBoard class, and is listened by the Controller
 public class VirtualView implements PropertyChangeListener {
-    //virtual View class listen to PropertyChanges in GameBoard class, and is listened by the Controller
+
 
     private final PropertyChangeSupport viewListeners = new PropertyChangeSupport(this);
-    private boolean expertMode;
     private int phase;
     private String playedCard;
 
     public void addPropertyChangeListener(PropertyChangeListener viewListener){
         this.viewListeners.addPropertyChangeListener(viewListener);
-        expertMode = false;
     }
 
-    //probabilmente da spostare
+    /*
     public void setExpertMode(String isExpert){
         boolean oldValue = this.expertMode;
         if(isExpert == "easy"){
@@ -28,8 +27,9 @@ public class VirtualView implements PropertyChangeListener {
         }
         this.viewListeners.firePropertyChange("expertMode", oldValue, expertMode);
     }
+     */
 
-    public void setPhase(String phase){
+    public void setPhase(String phase){ //this method is called by the Server class
         int previousPhase = this.phase;
 
         if(phase == "planningPhase"){
