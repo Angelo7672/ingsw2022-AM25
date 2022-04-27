@@ -136,7 +136,7 @@ public abstract class RoundStrategy {
 
     public void queueForPlanificationPhase(){ playerManager.queueForPlanificationPhase(numberOfPlayer); }
 
-    public String playCard(int playerRef, int queueRef, String card){ return toString(playerManager.playCard(playerRef, queueRef, stringToAssistant(card))); }
+    public boolean playCard(int playerRef, int queueRef, String card){ return playerManager.playCard(playerRef, queueRef, stringToAssistant(card)); }
 
     public void inOrderForActionPhase(){ playerManager.inOrderForActionPhase(); }
 

@@ -57,7 +57,7 @@ public class Game implements GameManager{
     }
 
     @Override
-    public String playCard(int playerRef, int queRef, String card) {
+    public boolean playCard(int playerRef, int queRef, String card) {
         return roundStrategies.get(0).playCard(playerRef, queRef, card);
     }
 

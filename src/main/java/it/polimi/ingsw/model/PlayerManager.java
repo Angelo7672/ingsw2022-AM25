@@ -57,7 +57,7 @@ public class PlayerManager  {
     public void queueForPlanificationPhase(int numberOfPlayer){
         int firstInQueue;
 
-        firstInQueue = queue.get(0).getPlayerRef();         //destroy the previous queue
+        firstInQueue = readQueue(0);         //destroy the previous queue
         while (!queue.isEmpty()) queue.remove(0);
 
         Queue one = new Queue(0,-1,-1);
@@ -71,37 +71,34 @@ public class PlayerManager  {
             Queue four = new Queue(3,-1,-1);
             queue.add(three);queue.add(four);
         }
-        //The first player is the one who played first in the previous action phase, then proceeds clockwise.The distribution of players at the table is arranged clockwise in this order 1 2 3 4
+        //The first player is the one who played first in the previous action phase, then proceeds clockwise. The distribution of players at the table is arranged clockwise in this order 1 2 3 4
         if (firstInQueue != 0) {
             if (firstInQueue == 1) {
-                Collections.rotate(queue, 1);
+                Collections.rotate(queue, 3);
             } else if (firstInQueue == 2) {
                 Collections.rotate(queue, 2);
             } else if (firstInQueue == 3) {
-                Collections.rotate(queue, 3);
+                Collections.rotate(queue, 1);
             }
         }
     }
-    public Team playCard(int playerRef, int queueRef, Assistant card){
+    public boolean playCard(int playerRef, int queueRef, Assistant card){
         players.get(playerRef).hand.remove(card);
         queue.get(queueRef).setValueCard(card.getValue());
         queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
-        if(checkIfCardsFinished(playerRef)) return checkVictory();
-        return Team.NOONE;
+        if(checkIfCardsFinished(playerRef)) return true;
+        return false;
     }
-    public boolean checkIfCardsFinished(int playerRef){  //Check if the player has played his last card
+    private boolean checkIfCardsFinished(int playerRef){  //Check if the player has played his last card
         return players.get(playerRef).hand.isEmpty();
     }
-
-    public List<Assistant> getHand(int playerRef){ return players.get(playerRef).hand; }
-
     public Team checkVictory(){
         Team winner = Team.NOONE;
-        int numberOfTowers = -1;
+        int numberOfTowers = 9;
         int professors1 = 0, professors2;
 
         for(Player p:players){
-            if(p.school.getTowers() > numberOfTowers){  //looking for the player with the most towers
+            if(p.school.getTowers() < numberOfTowers){  //looking for the player with the most towers
                 numberOfTowers = p.school.getTowers();
                 winner = p.getTeam();
                 professors1 = 0;
@@ -113,10 +110,11 @@ public class PlayerManager  {
                 for(int i = 0; i < 5; i++){
                     if(p.school.getProfessor(i)) professors2++;
                 }
-                if(professors2 > professors1)
+                if(professors2 > professors1) {
                     numberOfTowers = p.school.getTowers();
-                winner = p.getTeam();
-                professors1 = professors2;
+                    winner = p.getTeam();
+                    professors1 = professors2;
+                }
             }
         }
         return winner;
@@ -129,7 +127,6 @@ public class PlayerManager  {
             }
         });
     }
-
     public int readQueue(int queueRef){ return queue.get(queueRef).getPlayerRef(); }
     public int readMaxMotherNatureMovement(int queueRef){ return queue.get(queueRef).getMaxMoveMotherNature(); }
 

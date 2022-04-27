@@ -19,7 +19,6 @@ class QueueTest {
             if(playerManager.readQueue(i) != 3 && i != 3) assertEquals(playerManager.readQueue(i) + 1, playerManager.readQueue(i+1),"We are turning clockwise with the players arranged at the table in the order 0 1 2 3");
             else if(playerManager.readQueue(i) == 3 && i != 3) assertEquals(0, playerManager.readQueue(i+1),"We are turning clockwise with the players arranged at the table in the order 0 1 2 3");
         }
-
     }
 
     @Test
@@ -28,24 +27,24 @@ class QueueTest {
         int numberOfPlayer = 4;
         String[] playerInfo = {"Giorgio","SAMURAI","Marco","KING","Dino","WIZARD","Gloria","WITCH"};
         PlayerManager playerManager = new PlayerManager(numberOfPlayer,playerInfo);
-        Team winner;
+        boolean win;
         int i;
 
         playerManager.queueForPlanificationPhase(numberOfPlayer);
         //Each player knows the card to play, but we don't know the queue order in advance for the first planning step. For this reason the for loop and the if
         for(i = 0; i < numberOfPlayer; i++) {
             if(playerManager.readQueue(i) == 0){
-                winner = playerManager.playCard(0, i, Assistant.DOG);   //First Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
+                win = playerManager.playCard(0, i, Assistant.DOG);   //First Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 1){
-                winner = playerManager.playCard(1, i, Assistant.EAGLE);   //Second Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
+                win = playerManager.playCard(1, i, Assistant.EAGLE);   //Second Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 2){
-                winner = playerManager.playCard(2, i, Assistant.ELEPHANT);   //Third Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
+                win = playerManager.playCard(2, i, Assistant.ELEPHANT);   //Third Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 3){
-                winner = playerManager.playCard(3, i, Assistant.FOX);   //Fourth Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
+                win = playerManager.playCard(3, i, Assistant.FOX);   //Fourth Player
+                assertFalse(win, "Nobody won this round");
             }
         }
 
@@ -71,6 +70,7 @@ class QueueTest {
         int numberOfPlayer = 4;
         String[] playerInfo = {"Giorgio","SAMURAI","Marco","KING","Dino","WIZARD","Gloria","WITCH"};
         PlayerManager playerManager = new PlayerManager(numberOfPlayer,playerInfo);
+        Boolean win;
         Team winner;
         int i;
         int[] studentsGiorgio = new int[]{0,0,1,1,2,2,3,3,4,4};
@@ -82,21 +82,17 @@ class QueueTest {
         playerManager.queueForPlanificationPhase(numberOfPlayer);
         for(i = 0; i < numberOfPlayer; i++) {
             if(playerManager.readQueue(i) == 0){
-                winner = playerManager.playCard(0, i, Assistant.LION);   //First Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(0, i, Assistant.LION);   //First Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 1){
-                winner = playerManager.playCard(1, i, Assistant.FOX);   //Second Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(1, i, Assistant.FOX);   //Second Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 2){
-                winner = playerManager.playCard(2, i, Assistant.CAT);   //Third Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(2, i, Assistant.CAT);   //Third Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 3){
-                winner = playerManager.playCard(3, i, Assistant.OCTOPUS);   //Fourth Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(3, i, Assistant.OCTOPUS);   //Fourth Player
+                assertFalse(win, "Nobody won this round");
             }
         }
         playerManager.inOrderForActionPhase();
@@ -110,21 +106,17 @@ class QueueTest {
         playerManager.queueForPlanificationPhase(numberOfPlayer);
         for(i = 0; i < numberOfPlayer; i++) {
             if(playerManager.readQueue(i) == 0){
-                winner = playerManager.playCard(0, i, Assistant.EAGLE);   //First Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(0, i, Assistant.EAGLE);   //First Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 1){
-                winner = playerManager.playCard(1, i, Assistant.CAT);   //Second Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(1, i, Assistant.CAT);   //Second Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 2){
-                winner = playerManager.playCard(2, i, Assistant.OCTOPUS);   //Third Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(2, i, Assistant.OCTOPUS);   //Third Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 3){
-                winner = playerManager.playCard(3, i, Assistant.LIZARD);   //Fourth Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(3, i, Assistant.LIZARD);   //Fourth Player
+                assertFalse(win, "Nobody won this round");
             }
         }
         playerManager.inOrderForActionPhase();
@@ -138,21 +130,17 @@ class QueueTest {
         playerManager.queueForPlanificationPhase(numberOfPlayer);
         for(i = 0; i < numberOfPlayer; i++) {
             if(playerManager.readQueue(i) == 0){
-                winner = playerManager.playCard(0, i, Assistant.FOX);   //First Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(0, i, Assistant.FOX);   //First Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 1){
-                winner = playerManager.playCard(1, i, Assistant.DOG);   //Second Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(1, i, Assistant.DOG);   //Second Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 2){
-                winner = playerManager.playCard(2, i, Assistant.LIZARD);   //Third Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(2, i, Assistant.LIZARD);   //Third Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 3){
-                winner = playerManager.playCard(3, i, Assistant.TURTLE);   //Fourth Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(3, i, Assistant.TURTLE);   //Fourth Player
+                assertFalse(win, "Nobody won this round");
             }
         }
         playerManager.inOrderForActionPhase();
@@ -166,21 +154,17 @@ class QueueTest {
         playerManager.queueForPlanificationPhase(numberOfPlayer);
         for(i = 0; i < numberOfPlayer; i++) {
             if(playerManager.readQueue(i) == 0){
-                winner = playerManager.playCard(0, i, Assistant.ELEPHANT);   //First Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(0, i, Assistant.ELEPHANT);   //First Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 1){
-                winner = playerManager.playCard(1, i, Assistant.LIZARD);   //Second Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(1, i, Assistant.LIZARD);   //Second Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 2){
-                winner = playerManager.playCard(2, i, Assistant.DOG);   //Third Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(2, i, Assistant.DOG);   //Third Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 3){
-                winner = playerManager.playCard(3, i, Assistant.LION);   //Fourth Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(3, i, Assistant.LION);   //Fourth Player
+                assertFalse(win, "Nobody won this round");
             }
         }
         playerManager.inOrderForActionPhase();
@@ -194,21 +178,17 @@ class QueueTest {
         playerManager.queueForPlanificationPhase(numberOfPlayer);
         for(i = 0; i < numberOfPlayer; i++) {
             if(playerManager.readQueue(i) == 0){
-                winner = playerManager.playCard(0, i, Assistant.CAT);   //First Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(0, i, Assistant.CAT);   //First Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 1){
-                winner = playerManager.playCard(1, i, Assistant.EAGLE);   //Second Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(1, i, Assistant.EAGLE);   //Second Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 2){
-                winner = playerManager.playCard(2, i, Assistant.TURTLE);   //Third Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(2, i, Assistant.TURTLE);   //Third Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 3){
-                winner = playerManager.playCard(3, i, Assistant.FOX);   //Fourth Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(3, i, Assistant.FOX);   //Fourth Player
+                assertFalse(win, "Nobody won this round");
             }
         }
         playerManager.inOrderForActionPhase();
@@ -222,21 +202,17 @@ class QueueTest {
         playerManager.queueForPlanificationPhase(numberOfPlayer);
         for(i = 0; i < numberOfPlayer; i++) {
             if(playerManager.readQueue(i) == 0){
-                winner = playerManager.playCard(0, i, Assistant.LIZARD);   //First Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(0, i, Assistant.LIZARD);   //First Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 1){
-                winner = playerManager.playCard(1, i, Assistant.LION);   //Second Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(1, i, Assistant.LION);   //Second Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 2){
-                winner = playerManager.playCard(2, i, Assistant.FOX);   //Third Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win= playerManager.playCard(2, i, Assistant.FOX);   //Third Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 3){
-                winner = playerManager.playCard(3, i, Assistant.CAT);   //Fourth Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(3, i, Assistant.CAT);   //Fourth Player
+                assertFalse(win, "Nobody won this round");
             }
         }
         playerManager.inOrderForActionPhase();
@@ -250,21 +226,17 @@ class QueueTest {
         playerManager.queueForPlanificationPhase(numberOfPlayer);
         for(i = 0; i < numberOfPlayer; i++) {
             if(playerManager.readQueue(i) == 0){
-                winner = playerManager.playCard(0, i, Assistant.DOG);   //First Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(0, i, Assistant.DOG);   //First Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 1){
-                winner = playerManager.playCard(1, i, Assistant.OCTOPUS);   //Second Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(1, i, Assistant.OCTOPUS);   //Second Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 2){
-                winner = playerManager.playCard(2, i, Assistant.LION);   //Third Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(2, i, Assistant.LION);   //Third Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 3){
-                winner = playerManager.playCard(3, i, Assistant.EAGLE);   //Fourth Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(3, i, Assistant.EAGLE);   //Fourth Player
+                assertFalse(win, "Nobody won this round");
             }
         }
         playerManager.inOrderForActionPhase();
@@ -278,21 +250,17 @@ class QueueTest {
         playerManager.queueForPlanificationPhase(numberOfPlayer);
         for(i = 0; i < numberOfPlayer; i++) {
             if(playerManager.readQueue(i) == 0){
-                winner = playerManager.playCard(0, i, Assistant.GOOSE);   //First Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(0, i, Assistant.GOOSE);   //First Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 1){
-                winner = playerManager.playCard(1, i, Assistant.ELEPHANT);   //Second Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(1, i, Assistant.ELEPHANT);   //Second Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 2){
-                winner = playerManager.playCard(2, i, Assistant.EAGLE);   //Third Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(2, i, Assistant.EAGLE);   //Third Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 3){
-                winner = playerManager.playCard(3, i, Assistant.DOG);   //Fourth Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(3, i, Assistant.DOG);   //Fourth Player
+                assertFalse(win, "Nobody won this round");
             }
         }
         playerManager.inOrderForActionPhase();
@@ -306,21 +274,17 @@ class QueueTest {
         playerManager.queueForPlanificationPhase(numberOfPlayer);
         for(i = 0; i < numberOfPlayer; i++) {
             if(playerManager.readQueue(i) == 0){
-                winner = playerManager.playCard(0, i, Assistant.TURTLE);   //First Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(0, i, Assistant.TURTLE);   //First Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 1){
-                winner = playerManager.playCard(1, i, Assistant.GOOSE);   //Second Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win= playerManager.playCard(1, i, Assistant.GOOSE);   //Second Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 2){
-                winner = playerManager.playCard(2, i, Assistant.ELEPHANT);   //Third Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(2, i, Assistant.ELEPHANT);   //Third Player
+                assertFalse(win, "Nobody won this round");
             }else if(playerManager.readQueue(i) == 3){
-                winner = playerManager.playCard(3, i, Assistant.GOOSE);   //Fourth Player
-                assertTrue(winner.equals(Team.NOONE), "Nobody won this round");
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(3, i, Assistant.GOOSE);   //Fourth Player
+                assertFalse(win, "Nobody won this round");
             }
         }
         playerManager.inOrderForActionPhase();
@@ -334,22 +298,16 @@ class QueueTest {
         playerManager.queueForPlanificationPhase(numberOfPlayer);
         for(i = 0; i < numberOfPlayer; i++) {
             if(playerManager.readQueue(i) == 0){
-                winner = playerManager.playCard(0, i, Assistant.OCTOPUS);   //First Player
-                //assertTrue(winner.equals(Team.WHITE), "WHITE won this round");
-                assertTrue(playerManager.checkIfCardsFinished(0));
-                System.out.println(playerManager.getHand(0));
+                win = playerManager.playCard(0, i, Assistant.OCTOPUS);   //First Player
+                assertTrue(win, "Cards over");
             }else if(playerManager.readQueue(i) == 1){
                 playerManager.playCard(1, i, Assistant.TURTLE);   //Second Player
-                System.out.println(playerManager.getHand(0));
             }else if(playerManager.readQueue(i) == 2){
                 playerManager.playCard(2, i, Assistant.GOOSE);   //Third Player
-                System.out.println(playerManager.getHand(0));
             }else if(playerManager.readQueue(i) == 3){
                 playerManager.playCard(3, i, Assistant.ELEPHANT);   //Fourth Player
-                System.out.println(playerManager.getHand(0));
             }
         }
-        System.out.println(playerManager.checkVictory());
         playerManager.inOrderForActionPhase();
         assertAll(
                 ()->assertEquals(2,playerManager.readQueue(0),"According to our simulation, the order of play must be 2 0 3 1"),
@@ -357,6 +315,110 @@ class QueueTest {
                 ()->assertEquals(3,playerManager.readQueue(2),"According to our simulation, the order of play must be 2 0 3 1"),
                 ()->assertEquals(1,playerManager.readQueue(3),"According to our simulation, the order of play must be 2 0 3 1")
         );
+        //GAME OVER, Cards over
+        assertTrue(playerManager.checkVictory().equals(Team.WHITE),"Giorgio is the player with the most influence and belongs to Team WHITE");
     }
 
+   @Test
+   @DisplayName("Fourth test: extreme cases")
+   void extremeCases(){
+        int numberOfPlayer = 4;
+        String[] playerInfo = {"Giorgio","SAMURAI","Marco","KING","Dino","WIZARD","Gloria","WITCH"};
+        PlayerManager playerManager = new PlayerManager(numberOfPlayer,playerInfo);
+        Boolean win;
+        int i;
+
+        //This first part serves, based on the cards that will be played, just to know who will start the next planning phase
+        playerManager.queueForPlanificationPhase(numberOfPlayer);
+        for(i = 0; i < numberOfPlayer; i++) {
+            if(playerManager.readQueue(i) == 0){
+                win = playerManager.playCard(0, i, Assistant.LION);   //First Player
+                assertFalse(win, "Nobody won this round");
+            }else if(playerManager.readQueue(i) == 1){
+                win = playerManager.playCard(1, i, Assistant.FOX);   //Second Player
+                assertFalse(win, "Nobody won this round");
+            }else if(playerManager.readQueue(i) == 2){
+                win = playerManager.playCard(2, i, Assistant.CAT);   //Third Player
+                assertFalse(win, "Nobody won this round");
+            }else if(playerManager.readQueue(i) == 3){
+                win = playerManager.playCard(3, i, Assistant.OCTOPUS);   //Fourth Player
+                assertFalse(win, "Nobody won this round");
+            }
+        }
+        playerManager.inOrderForActionPhase();
+
+        //Player 0 starts; the previous step was for this
+        //Order of play: 0 1 2 3
+        playerManager.queueForPlanificationPhase(numberOfPlayer);
+        for(i = 0; i < numberOfPlayer; i++) {
+            if(playerManager.readQueue(i) == 0){
+                win = playerManager.playCard(0, i, Assistant.TURTLE);   //First Player
+                assertFalse(win, "Nobody won this round");
+            }else if(playerManager.readQueue(i) == 1){
+                win = playerManager.playCard(1, i, Assistant.LION);   //Second Player
+                assertFalse(win, "Nobody won this round");
+            }else if(playerManager.readQueue(i) == 2){
+                win = playerManager.playCard(2, i, Assistant.TURTLE);   //Third Player, card already played by the first player
+                assertFalse(win, "Nobody won this round");
+            }else if(playerManager.readQueue(i) == 3){
+                win = playerManager.playCard(3, i, Assistant.LION);   //Fourth Player, card already played by the second player
+                assertFalse(win, "Nobody won this round");
+            }
+        }
+        playerManager.inOrderForActionPhase();
+        assertAll(
+                ()->assertEquals(1,playerManager.readQueue(0),"The second player played LION"),
+                ()->assertEquals(3,playerManager.readQueue(1),"The fourth player played LION"),
+                ()->assertEquals(0,playerManager.readQueue(2),"The first player played TURTLE"),
+                ()->assertEquals(2,playerManager.readQueue(3),"The third player played TURTLE")
+        );
+        //Player 1 starts (previous planning phase); order of play: 1 2 3 0
+        playerManager.queueForPlanificationPhase(numberOfPlayer);
+        for(i = 0; i < numberOfPlayer; i++) {
+            if(playerManager.readQueue(i) == 0){
+                win = playerManager.playCard(0, i, Assistant.DOG);   //First Player
+                assertFalse(win, "Nobody won this round");
+            }else if(playerManager.readQueue(i) == 1){
+                win = playerManager.playCard(1, i, Assistant.DOG);   //Second Player
+                assertFalse(win, "Nobody won this round");
+            }else if(playerManager.readQueue(i) == 2){
+                win = playerManager.playCard(2, i, Assistant.DOG);   //Third Player
+                assertFalse(win, "Nobody won this round");
+            }else if(playerManager.readQueue(i) == 3){
+                win = playerManager.playCard(3, i, Assistant.DOG);   //Fourth Player
+                assertFalse(win, "Nobody won this round");
+            }
+        }
+        playerManager.inOrderForActionPhase();
+        assertAll(
+               ()->assertEquals(1,playerManager.readQueue(0),"All players have played DOG, the order 1 2 3 0"),
+               ()->assertEquals(2,playerManager.readQueue(1),"All players have played DOG, the order 1 2 3 0"),
+               ()->assertEquals(3,playerManager.readQueue(2),"All players have played DOG, the order 1 2 3 0"),
+               ()->assertEquals(0,playerManager.readQueue(3),"All players have played DOG, the order 1 2 3 0")
+        );
+        //Player 1 starts (previous planning phase); order of play: 1 2 3 0
+        playerManager.queueForPlanificationPhase(numberOfPlayer);
+        for(i = 0; i < numberOfPlayer; i++) {
+            if(playerManager.readQueue(i) == 0){
+                win = playerManager.playCard(0, i, Assistant.CAT);   //First Player
+                assertFalse(win, "Nobody won this round");
+            }else if(playerManager.readQueue(i) == 1){
+                win = playerManager.playCard(1, i, Assistant.EAGLE);   //Second Player, card already played by the second player
+                assertFalse(win, "Nobody won this round");
+            }else if(playerManager.readQueue(i) == 2){
+                win = playerManager.playCard(2, i, Assistant.EAGLE);   //Third Player, card already played by the second player
+                assertFalse(win, "Nobody won this round");
+            }else if(playerManager.readQueue(i) == 3){
+                win = playerManager.playCard(3, i, Assistant.EAGLE);   //Fourth Player, card already played by the third player
+                assertFalse(win, "Nobody won this round");
+            }
+        }
+        playerManager.inOrderForActionPhase();
+        assertAll(
+                ()->assertEquals(0,playerManager.readQueue(0),"The first player played CAT"),
+                ()->assertEquals(1,playerManager.readQueue(1),"The second player played EAGLE"),
+                ()->assertEquals(2,playerManager.readQueue(2),"The third player played EAGLE"),
+                ()->assertEquals(3,playerManager.readQueue(3),"The fourth player played EAGLE")
+        );
+    }
 }
