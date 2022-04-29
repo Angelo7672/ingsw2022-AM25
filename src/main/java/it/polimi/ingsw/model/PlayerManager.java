@@ -72,15 +72,7 @@ public class PlayerManager  {
             queue.add(three);queue.add(four);
         }
         //The first player is the one who played first in the previous action phase, then proceeds clockwise. The distribution of players at the table is arranged clockwise in this order 1 2 3 4
-        if (firstInQueue != 0) {
-            if (firstInQueue == 1) {
-                Collections.rotate(queue, 3);
-            } else if (firstInQueue == 2) {
-                Collections.rotate(queue, 2);
-            } else if (firstInQueue == 3) {
-                Collections.rotate(queue, 1);
-            }
-        }
+        if (firstInQueue != 0) Collections.rotate(queue,-firstInQueue);
     }
     public boolean playCard(int playerRef, int queueRef, Assistant card){
         players.get(playerRef).hand.remove(card);
