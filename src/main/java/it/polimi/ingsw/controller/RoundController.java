@@ -10,7 +10,6 @@ public class RoundController {
     private int numberOfPlayers;
     private int currentPlayer;
     private Controller controller;
-    private GameBoard gameBoard;
 
 
     public RoundController(boolean expertMode, int numberOfPlayers, String[] playersInfo, Controller controller) {
@@ -19,7 +18,7 @@ public class RoundController {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-
+/*
     public void startPlanningPhase(){
         if(gameManager.refreshStudentsCloud() == false) {
             gameManager.queueForPlanificationPhase();
@@ -42,12 +41,12 @@ public class RoundController {
             gameManager.moveStudent(currentPlayer,colour,inSchool,islandRef);
 
             gameManager.moveMotherNature(queref, desiredMovement,noColor, islandRef, special, index);
-    */
+
 
     }
     public void endGame(){
 
-    }
+    }  */
 
 
 }
