@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 public interface GameManager {
@@ -19,4 +20,6 @@ public interface GameManager {
 
     //to be called at the end of the turn in which refreshCloudStudents gave true
     String oneLastRide();
+
+    public void addModelListener(PropertyChangeListener modelListener);
 }

@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 public class CloudsManager{
     private ArrayList<Cloud> clouds;
+    private PropertyChangeSupport cloudsListeners = new PropertyChangeSupport(this);
 
     private class Cloud{
         private int[] students;
@@ -19,7 +22,7 @@ public class CloudsManager{
     }
 
     // CloudsManager constructor, create an arrayList of Clouds.
-    // Each cloud has 3 or 4 students on it, depending on the number of players */
+    // Each cloud has 3 or 4 students on it, depending on the number of players
     public CloudsManager(int playerNumber){
         clouds = new ArrayList<>();
 
@@ -29,13 +32,32 @@ public class CloudsManager{
         }
     }
 
+    public void addPropertyChangeListener(PropertyChangeListener cloudsListener){
+        this.cloudsListeners.addPropertyChangeListener(cloudsListener);
+    }
+    //add a listener to the list of listeners of this class
+
+
     // given the index of a cloud, return the array of students on that cloud
     public int[] getStudents(int cloudIndex) {
         return clouds.get(cloudIndex).getStudents();
     }
 
     //given the index of a cloud and the color of the student extracted from the bag, add the student to the cloud
-    public void refreshCloudStudents(int studentExtracted, int cloudIndex) { clouds.get(cloudIndex).incrStudents(studentExtracted); }
+    public void refreshCloudStudents(int studentExtracted, int cloudIndex) {
+        int[] oldValue = getStudents(cloudIndex);
+        clouds.get(cloudIndex).incrStudents(studentExtracted);
+        //da cambiare
+        if(cloudIndex == 0)
+            this.cloudsListeners.firePropertyChange("studentsOnCloud0", oldValue, clouds.get(cloudIndex).getStudents() );
+        else if(cloudIndex == 1)
+            this.cloudsListeners.firePropertyChange("studentsOnCloud1", oldValue, clouds.get(cloudIndex).getStudents() );
+        else if(cloudIndex == 2)
+                this.cloudsListeners.firePropertyChange("studentsOnCloud2", oldValue, clouds.get(cloudIndex).getStudents() );
+        else if(cloudIndex == 3)
+            this.cloudsListeners.firePropertyChange("studentsOnCloud3", oldValue, clouds.get(cloudIndex).getStudents() );
+    }
+
 
     // given the index of a cloud, it empties the cloud and returns the array of the students on the cloud
     public int[] removeStudents(int cloudIndex) {

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.*;
 
 public class PlayerManager  {
@@ -7,6 +9,8 @@ public class PlayerManager  {
     private List<Queue> queue;
     private int numberOfPlayer;
     private int[] professorPropriety;
+    private PropertyChangeSupport playerListeners = new PropertyChangeSupport(this);
+    // added to support PropertyChangeListeners - virtualView class is the listener of this class
 
     private enum Character {WIZARD, KING, WITCH, SAMURAI, NONE};
 
@@ -53,6 +57,11 @@ public class PlayerManager  {
         else if(string.equals("SAMURAI")) return Character.SAMURAI;
         return Character.NONE;
     }
+
+    public void addPropertyChangeListener(PropertyChangeListener playerListener){
+        this.playerListeners.addPropertyChangeListener(playerListener);
+    }
+    //add a listener to the list of listeners of this class
 
     public void queueForPlanificationPhase(int numberOfPlayer){
         int firstInQueue;
@@ -126,6 +135,10 @@ public class PlayerManager  {
         int studentTableofThisColour = -1;
         int i;
         boolean stop = false;
+        int[] oldValueEntrance = new int[]{0, 0, 0, 0, 0, playerRef} ;
+        int[] oldValueTable = new int[]{0, 0, 0, 0, 0, playerRef} ;
+        int[] newValueEntrance;
+        int[] newValueTable;
 
         if(!inSchool){  //if inSchool is false, it's placed in a island
             if(getStudentEntrance(playerRef, colour) > 0) {
@@ -174,36 +187,87 @@ public class PlayerManager  {
                 }
             }
         }
+
+        newValueEntrance = oldValueEntrance;
+        newValueEntrance[colour]--;
+        this.playerListeners.firePropertyChange("studentEntrance",oldValueEntrance,newValueEntrance);
+
+        newValueTable = oldValueTable;
+        newValueTable[colour]++;
+        this.playerListeners.firePropertyChange("studentTable",oldValueTable,newValueTable);
+        //fires an array of 6 cells, the first 5 are the colours of the students, the last one is a reference to the Player
     }
 
-    public void setStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.setStudentEntrance(colour); }
+    public void setStudentEntrance(int playerRef, int colour){
+        int[] oldValueEntrance = new int[]{0, 0, 0, 0, 0, playerRef};
+        int [] newValueEntrance = oldValueEntrance;
+        players.get(playerRef).school.setStudentEntrance(colour);
+
+        newValueEntrance[colour]++;
+        this.playerListeners.firePropertyChange("studentEntrance",oldValueEntrance,newValueEntrance);
+    }
+
     public int getStudentEntrance(int playerRef, int colour){ return players.get(playerRef).school.getStudentEntrance(colour); }
-    public void removeStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.removeStudentEntrance(colour); }
+    public void removeStudentEntrance(int playerRef, int colour){
+        int[] oldValueEntrance = new int[]{0, 0, 0, 0, 0, playerRef};
+        int [] newValueEntrance = oldValueEntrance;
+        players.get(playerRef).school.removeStudentEntrance(colour);
+
+        newValueEntrance[colour]--;
+        this.playerListeners.firePropertyChange("studentEntrance",oldValueEntrance,newValueEntrance);
+    }
 
     public int getStudentTable(int playerRef, int colour){ return players.get(playerRef).school.getStudentTable(colour); }
-    public void setStudentTable(int playerRef, int colour){ players.get(playerRef).school.setStudentTable(colour); }
-    public void removeStudentTable(int playerRef, int colour){ players.get(playerRef).school.removeStudentTable(colour); }
+    public void setStudentTable(int playerRef, int colour){
+        int[] oldValueTable = new int[]{0, 0, 0, 0, 0, playerRef};
+        int [] newValueTable = oldValueTable;
+        players.get(playerRef).school.setStudentTable(colour);
 
-    private void setProfessor(int playerRef, int colour){ players.get(playerRef).school.setProfessor(colour); }
-    private void removeProfessor(int playerRef, int colour){ players.get(playerRef).school.removeProfessor(colour); }
+        newValueTable[colour]++;
+        this.playerListeners.firePropertyChange("studentTable",oldValueTable,newValueTable);
+    }
+    public void removeStudentTable(int playerRef, int colour){
+        int[] oldValueTable = new int[]{0, 0, 0, 0, 0, playerRef};
+        int [] newValueTable = oldValueTable;
+        players.get(playerRef).school.removeStudentTable(colour);
+
+        newValueTable[colour]--;
+        this.playerListeners.firePropertyChange("studentTable",oldValueTable,newValueTable);
+    }
+
+    private void setProfessor(int playerRef, int colour){
+
+        players.get(playerRef).school.setProfessor(colour);
+    }
+    private void removeProfessor(int playerRef, int colour){
+        players.get(playerRef).school.removeProfessor(colour);
+    }
+
     public boolean getProfessor(int playerRef, int colour){ return players.get(playerRef).school.getProfessor(colour); }
     public int getProfessorPropriety(int color) { return professorPropriety[color]; }
 
     public boolean removeTower(Team team, int numberOfTower) {
         boolean victory = false;
-
+        int[] oldTowerValue = new int[]{team.getTeam(), numberOfTower};
+        int[] newTowerValue = oldTowerValue;
         for (Player p : players) {
             if (p.getTeam().equals(team)){
                 p.school.removeTower(numberOfTower);
                 if(p.school.towerExpired()) victory = true;
             }
         }
+        newTowerValue[0]-=numberOfTower;
+        this.playerListeners.firePropertyChange("towersInSchool", oldTowerValue, newTowerValue );
         return victory;
     }
     public void placeTower(Team team, int numberOfTower){
+        int[] oldTowerValue = new int[]{team.getTeam(), numberOfTower};
+        int[] newTowerValue = oldTowerValue;
         for (Player p : players) {
             if (p.getTeam().equals(team)) p.school.placeTower(numberOfTower);
         }
+        newTowerValue[0]+=numberOfTower;
+        this.playerListeners.firePropertyChange("towersInSchool", oldTowerValue, newTowerValue );
     }
     public int getTowers(int playerRef){ return players.get(playerRef).school.getTowers(); }
 
@@ -223,28 +287,42 @@ public class PlayerManager  {
         return false;
     }
 
-    private class Queue implements Comparable<Queue>{   //it is used both in the planning phase and in the action phase
+    private class Queue implements Comparable<Queue> {   //it is used both in the planning phase and in the action phase
         private int playerRef;
         private Integer valueCard;
         private int maxMoveMotherNature;
 
-        public Queue(int playerRef,Integer valueCard,int maxMoveMotherNature) {
+        public Queue(int playerRef, Integer valueCard, int maxMoveMotherNature) {
             this.playerRef = playerRef;
             this.valueCard = valueCard;
             this.maxMoveMotherNature = maxMoveMotherNature;
         }
 
-        private int getPlayerRef() { return playerRef; }
-        private Integer getValueCard() { return valueCard; }
-        public int getMaxMoveMotherNature() { return maxMoveMotherNature; }
+        private int getPlayerRef() {
+            return playerRef;
+        }
 
-        public void setValueCard(Integer valueCard) { this.valueCard = valueCard; }
-        public void setMaxMoveMotherNature(int maxMoveMotherNature) { this.maxMoveMotherNature = maxMoveMotherNature; }
+        private Integer getValueCard() {
+            return valueCard;
+        }
+
+        public int getMaxMoveMotherNature() {
+            return maxMoveMotherNature;
+        }
+
+        public void setValueCard(Integer valueCard) {
+            this.valueCard = valueCard;
+        }
+
+        public void setMaxMoveMotherNature(int maxMoveMotherNature) {
+            this.maxMoveMotherNature = maxMoveMotherNature;
+        }
 
         @Override
         public int compareTo(Queue o) {
             return valueCard.compareTo(o.getValueCard());
         }
+
     }
 
     private class Player {

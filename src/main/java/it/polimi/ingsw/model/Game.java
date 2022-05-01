@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -136,6 +137,13 @@ public class Game implements GameManager{
         if(roundStrategies.get(index).getName().equals("special11")) return true;
         if(roundStrategies.get(index).getName().equals("special12")) return true;
         return false;
+    }
+
+    public void addModelListener(PropertyChangeListener listener){
+        playerManager.addPropertyChangeListener(listener);
+        islandsManager.addPropertyChangeListener(listener);
+        cloudsManager.addPropertyChangeListener(listener);
+
     }
 
 

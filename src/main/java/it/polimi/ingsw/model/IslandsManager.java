@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -8,6 +10,7 @@ public class IslandsManager {
     private ArrayList<Island> islands;
     private Island i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12;
     private int motherPos;
+    private PropertyChangeSupport islandListeners = new PropertyChangeSupport(this);
 
     public IslandsManager() {
         i1 = new Island(); i2 = new Island(); i3 = new Island();
@@ -36,6 +39,11 @@ public class IslandsManager {
             }
         }
     }
+
+    public void addPropertyChangeListener(PropertyChangeListener islandListener){
+        this.islandListeners.addPropertyChangeListener(islandListener);
+    }
+    //add a listener to the list of listeners of this class
 
     public void incStudent(int island, int color){ islands.get(island).incStudents(color);}
 
