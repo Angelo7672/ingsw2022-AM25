@@ -8,8 +8,6 @@ public class PlayerManager  {
     private int numberOfPlayer;
     private int[] professorPropriety;
 
-    private enum Character {WIZARD, KING, WITCH, SAMURAI, NONE};
-
     public PlayerManager(int numberOfPlayer, String[] playersInfo) {
         players = new ArrayList<>();
         queue = new ArrayList<>();
