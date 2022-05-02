@@ -1,0 +1,38 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+
+\title{Peer-Review 2: Protocollo di Comunicazione}
+\author{Chiara Di Pasquale, Angelo Attivissimo, Ginevra Bozza\\Gruppo 25}
+
+\begin{document}
+
+\maketitle
+
+Valutazione del protocollo di comunicazione del gruppo 55.
+
+\section{Lati positivi}
+\begin{itemize}
+
+\item L'aver segnato i loop nei sequence diagrams
+\item Il messaggio che dice al client, in fase di login, quanti giocatori mancano dopo essersi collegato 
+\item L'avere già pensato allo stato del client attivo/inattivo
+\end{itemize}
+
+\section{Lati negativi}
+\begin{itemize}
+\item Il fatto che, in fase di login, non venga chiesto il Wizard
+\item Non c'è l'inizializzazione dell'utente. Ad esempio, non viene mandata al client la squadra
+\item Nel diagramma dell'action phase c'è un piccolo refuso: avete scritto "cloud" al posto della mensa (punto 7)
+\item Nell'action phase, forse è meglio usare un unico messaggio per muovere gli studenti, invece che suddividerlo in tre messaggi diversi
+\item Vi consigliamo di inserire un messaggio dopo Choose cloud, che il server manda al client successivo per svegliarlo dalla sua fase di attesa
+\end{itemize}
+
+\section{Confronto tra le architetture}
+\begin{itemize}
+\item Noi non abbiamo pensato ad un messaggio che arriva dal server quando ci si collega ad una partita già iniziata, ma lo metteremo e faremo si che ne venga mandato uno nuovo ogni volta che si collega un nuovo client.
+\item Non abbiamo pensato allo status del client (attivo/inattivo), ma verrà aggiunto anche nel nostro progetto.
+\item Non abbiamo ben evidenziato i loop nel nostro sequence diagram, li renderemo più evidenti con delle notazioni come avete fatto voi
+\end{itemize}
+\end{document}
