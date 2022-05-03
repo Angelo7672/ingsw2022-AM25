@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -20,6 +21,7 @@ public class Proxy_s implements Exit {
         this.port = port;
         this.server = server;
         this.connections_allowed = 1;
+        this.user = new ArrayList<>();
     }
 
     public void start() {

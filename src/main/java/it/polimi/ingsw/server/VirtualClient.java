@@ -14,6 +14,7 @@ public class VirtualClient implements Runnable{
         this.socket = socket;
         this.server = server;
         this.proxy = proxy;
+        run();
     }
 
     @Override
@@ -35,9 +36,18 @@ public class VirtualClient implements Runnable{
             out.println(msg1);
             out.flush();
             res = in.nextLine();
-            if(res.equals("2")) proxy.setConnections_allowed(2);
-            else if(res.equals("3")) proxy.setConnections_allowed(3);
-            else if(res.equals("4")) proxy.setConnections_allowed(4);
+            if(res.equals("2")){
+                proxy.setConnections_allowed(2);
+                server.setNumberOfPlayer(2);
+            }
+            else if(res.equals("3")){
+                proxy.setConnections_allowed(3);
+                server.setNumberOfPlayer(3);
+            }
+            else if(res.equals("4")){
+                proxy.setConnections_allowed(4);
+                server.setNumberOfPlayer(4);
+            }
             out.println(msg2);
             out.flush();
             res = in.nextLine();
