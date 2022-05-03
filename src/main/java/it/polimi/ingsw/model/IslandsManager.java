@@ -45,9 +45,21 @@ public class IslandsManager {
     }
     //add a listener to the list of listeners of this class
 
-    public void incStudent(int island, int color){ islands.get(island).incStudents(color);}
+    public void incStudent(int island, int color){
+        int oldValue= getStudent(island, color);
+        islands.get(island).incStudents(color);
 
-    public void moveMotherNature(int steps) { motherPos = circularArray(motherPos, steps); }
+        this.islandListeners.firePropertyChange("currentColour", null, color);
+        this.islandListeners.firePropertyChange("currentIsland", null, island);
+        this.islandListeners.firePropertyChange("studentsIsland", oldValue, getStudent(island, color));
+
+    }
+
+    public void moveMotherNature(int steps) {
+        int oldPosition = getMotherPos();
+        motherPos = circularArray(motherPos, steps);
+        this.islandListeners.firePropertyChange("motherPosition", oldPosition, getMotherPos());
+    }
     public int getMotherPos(){ return motherPos; }
 
     public int getStudent(int island, int color){ return islands.get(island).getNumStudents(color); }

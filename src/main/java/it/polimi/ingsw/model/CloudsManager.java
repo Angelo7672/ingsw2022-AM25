@@ -47,17 +47,9 @@ public class CloudsManager{
     public void refreshCloudStudents(int studentExtracted, int cloudIndex) {
         int[] oldValue = getStudents(cloudIndex);
         clouds.get(cloudIndex).incrStudents(studentExtracted);
-        //da cambiare
-        if(cloudIndex == 0)
-            this.cloudsListeners.firePropertyChange("studentsOnCloud0", oldValue, clouds.get(cloudIndex).getStudents() );
-        else if(cloudIndex == 1)
-            this.cloudsListeners.firePropertyChange("studentsOnCloud1", oldValue, clouds.get(cloudIndex).getStudents() );
-        else if(cloudIndex == 2)
-                this.cloudsListeners.firePropertyChange("studentsOnCloud2", oldValue, clouds.get(cloudIndex).getStudents() );
-        else if(cloudIndex == 3)
-            this.cloudsListeners.firePropertyChange("studentsOnCloud3", oldValue, clouds.get(cloudIndex).getStudents() );
+        this.cloudsListeners.firePropertyChange("currentCloud", null, cloudIndex);
+        this.cloudsListeners.firePropertyChange("studentsCloud", oldValue, clouds.get(cloudIndex).getStudents() );
     }
-
 
     // given the index of a cloud, it empties the cloud and returns the array of the students on the cloud
     public int[] removeStudents(int cloudIndex) {
@@ -67,6 +59,8 @@ public class CloudsManager{
             students[i]=clouds.get(cloudIndex).getColour(i);
             clouds.get(cloudIndex).removeColour(i);
         }
+        this.cloudsListeners.firePropertyChange("currentCloud", null, cloudIndex);
+        this.cloudsListeners.firePropertyChange("studentsCloud",students, getStudents(cloudIndex));
         return students;
     }
 }

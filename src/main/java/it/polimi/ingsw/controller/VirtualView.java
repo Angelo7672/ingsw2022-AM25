@@ -11,30 +11,76 @@ public class VirtualView implements PropertyChangeListener {
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
     private ArrayList<Hand> hands;
+    private ArrayList<Special> specials;
+    private int currentPlayer;
+    private int currentColour;
+    private int currentIsland;
+    private int currentCloud;
 
 
-    public VirtualView(int numberOfPlayers) {
-        schoolBoards = new ArrayList<>();
+    public VirtualView(int numberOfPlayers, int[] specials ) {
+        this.schoolBoards = new ArrayList<>();
+        this.hands = new ArrayList<>();
+        this.clouds = new ArrayList<>();
+        this.islands = new ArrayList<>();
+        this.specials = new ArrayList<>();
+
+        for(int i=0; i<numberOfPlayers; i++){
+            schoolBoards.add(new SchoolBoard());
+            hands.add(new Hand());
+            clouds.add(new Cloud());
         }
+        for(int i=0; i<12; i++){
+            this.islands.add(new Island());
+        }
+
+    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
-
-        if (propertyName.equals("studentsEntrance")) {
-            int[] modifiedValue = (int[]) evt.getNewValue();
-            schoolBoards.get(modifiedValue[5]).setStudentsEntrance(modifiedValue);
-            /*it receives an array of 6 cells, the first 5 are the colours of the students - all the position are 0 except
-            the one that's been modified. The last position is the reference to the player*/
+        if (propertyName.equals("currentPlayer")){
+            this.currentPlayer=(int) evt.getNewValue();
+        }
+        else if (propertyName.equals("currentColour")){
+            this.currentColour=(int) evt.getNewValue();
+        }
+        else if (propertyName.equals("currentIsland")){
+            this.currentIsland=(int) evt.getNewValue();
+        }
+        else if (propertyName.equals("currentCloud")){
+            this.currentCloud=(int) evt.getNewValue();
+        }
+        else if (propertyName.equals("studentsEntrance")) {
+            schoolBoards.get(currentPlayer).setStudentsEntrance(currentColour, (int) evt.getNewValue());
 
         } else if (propertyName.equals("studentsTable")) {
-            int[] modifiedValue = (int[]) evt.getNewValue();
-            schoolBoards.get(modifiedValue[5]).setStudentsTable(modifiedValue);
-        } else if (propertyName.equals(("towersInSchool"))) {
-            int[] modifiedValue = (int[]) evt.getNewValue();
-            schoolBoards.get(modifiedValue[1]).setTowers(modifiedValue[0]);
+            schoolBoards.get(currentPlayer).setStudentsTable(currentColour, (int) evt.getNewValue());
+
         } else if (propertyName.equals("professors")){
-            //da finire
+            schoolBoards.get(currentPlayer).setProfessors(currentColour, (boolean) evt.getNewValue()) ;
+
+        } else if(propertyName.equals("towersSchool")) {
+
+        } else if (propertyName.equals("coins")){
+            hands.get(currentPlayer).setCoins((int) evt.getNewValue());
+
+        } else if(propertyName.equals("studentsIsland")){
+            islands.get(currentIsland).setStudentsIsland(currentColour, (int) evt.getNewValue());
+
+        } else if(propertyName.equals("motherPosition")){
+            islands.get(currentIsland).setMotherPosition(true);
+
+        } else if(propertyName.equals("towersIslands")){
+
+        } else if(propertyName.equals("studentsCloud")){
+            clouds.get(currentCloud).setCloudStudents((int[]) evt.getNewValue());
+
+        } else if(propertyName.equals("lastPlayedCard")){
+            hands.get(currentPlayer).setLastCard((String) evt.getNewValue());
+
+        } else if(propertyName.equals("cards")){
+            hands.get(currentPlayer).setCards((int) evt.getNewValue());
         }
 
     }
@@ -44,41 +90,66 @@ public class VirtualView implements PropertyChangeListener {
         int[] studentsTable = new int[]{0, 0, 0, 0, 0};
         int towers;
         boolean[] professors = new boolean[]{false, false, false, false, false};
-
-        public void setStudentsEntrance(int[] newEntranceValue) {
-            for (int i = 0; i < 5; i++) {
-                if (newEntranceValue[i] != 0) {
-                    this.studentsEntrance[i] += newEntranceValue[i];
-                }
-            }
+        
+        public void setStudentsEntrance(int color, int newValue){
+            this.studentsEntrance[color]=newValue;
         }
-
-        public void setStudentsTable(int[] newTableValue){
-            for (int i = 0; i < 5; i++) {
-                this.studentsTable[i] += newTableValue[i];
-            }
+        public void setStudentsTable(int color, int newValue) {
+            this.studentsTable[color]=newValue;
         }
 
         public void setTowers(int towers) {
             this.towers = towers;
         }
-
-        public boolean[] getProfessors() {
-            return professors;
+        public void setProfessors(int color, boolean newValue) {
+            this.professors[color] = newValue;
         }
 
-        public void setProfessors(boolean[] professors) {
-            this.professors = professors;
-        }
+
     }
     private class Island{
+        int[] studentsIsland= new int[]{0,0,0,0,0};
+        boolean isMotherPosition;
+        int towers;
+        int team;
 
+        public void setStudentsIsland(int colour, int newValue) {
+            this.studentsIsland[colour]=newValue;
+        }
+
+        public void setMotherPosition(boolean isMotherPos) {
+            this.isMotherPosition=isMotherPos;
+        }
     }
     private class Cloud{
+        int[] students= new int[]{0,0,0,0,0};
 
+        public void setCloudStudents(int[] students) {
+            for(int i=0; i<5; i++){
+                this.students[i]=students[i];
+            }
+        }
     }
     private class Hand{
+        int cards;
+        int coins;
+        String lastPlayedCard;
 
+        public void setCoins(int coins) {
+            this.coins=coins;
+        }
+
+        public void setLastCard(String lastPlayedCard) {
+            this.lastPlayedCard=lastPlayedCard;
+        }
+
+        public void setCards(int cards) {
+            this.cards=cards;
+        }
+    }
+    private class Special{
+        String name;
+        int cost;
     }
 
 }

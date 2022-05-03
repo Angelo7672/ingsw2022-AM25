@@ -10,11 +10,12 @@ public class Controller {
     private String[] chosenAssistants;
     private VirtualView virtualView;
     private GameManager gameManager;
+    private int[] specials;
 
 
     public Controller(int numberOfPlayers, boolean isExpert, String[] playersInfo){
         roundController = new RoundController(isExpert, numberOfPlayers, playersInfo, this);
-        virtualView = new VirtualView(numberOfPlayers);
+        virtualView = new VirtualView(numberOfPlayers , specials);
         gameManager = new Game(isExpert, numberOfPlayers, playersInfo);
         gameManager.addModelListener(virtualView);
 
