@@ -17,7 +17,18 @@ public class Controller {
         roundController = new RoundController(isExpert, numberOfPlayers, playersInfo, this);
         virtualView = new VirtualView(numberOfPlayers , specials);
         gameManager = new Game(isExpert, numberOfPlayers, playersInfo);
-        gameManager.addModelListener(virtualView);
+
+        gameManager.setStudentsEntranceListener(virtualView);
+        gameManager.setStudentsTableListener(virtualView);
+        gameManager.setTowerSchoolListener(virtualView);
+        gameManager.setProfessorsListener(virtualView);
+        gameManager.setPlayedCardListener(virtualView);
+        gameManager.setPlayedSpecialListener(virtualView);
+        gameManager.setCoinsListener(virtualView);
+        gameManager.setIslandSizeListener(virtualView);
+        gameManager.setMotherPositionListener(virtualView);
+        gameManager.setTowersIslandListener(virtualView);
+        gameManager.setIslandSizeListener(virtualView);
 
     }
 

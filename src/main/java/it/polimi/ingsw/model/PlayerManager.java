@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import it.polimi.ingsw.controller.listeners.*;
+
 import java.util.*;
 
 public class PlayerManager  {
@@ -9,8 +9,16 @@ public class PlayerManager  {
     private List<Queue> queue;
     private int numberOfPlayer;
     private int[] professorPropriety;
-    private PropertyChangeSupport playerListeners = new PropertyChangeSupport(this);
-    // added to support PropertyChangeListeners - virtualView class is the listener of this class
+
+    protected StudentsEntranceListener studentsEntranceListener;
+    protected StudentsTableListener studentsTableListener;
+    protected TowerSchoolListener towerSchoolListener;
+    protected ProfessorsListener professorsListener;
+    protected PlayedCardListener playedCardListener;
+    protected PlayedSpecialListener playedSpecialListener;
+    protected CoinsListener coinsListener;
+
+
 
     private enum Character {WIZARD, KING, WITCH, SAMURAI, NONE};
 
@@ -58,10 +66,6 @@ public class PlayerManager  {
         return Character.NONE;
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener playerListener){
-        this.playerListeners.addPropertyChangeListener(playerListener);
-    }
-    //add a listener to the list of listeners of this class
 
     public void queueForPlanificationPhase(int numberOfPlayer){
         int firstInQueue;
@@ -88,10 +92,7 @@ public class PlayerManager  {
         players.get(playerRef).hand.remove(card);
         queue.get(queueRef).setValueCard(card.getValue());
         queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
-
-        this.playerListeners.firePropertyChange("currentPlayer", null, playerRef);
-        this.playerListeners.firePropertyChange("lastPlayedCard", null, card);
-        this.playerListeners.firePropertyChange("cards", null, -1 );
+        //this.playedCardListener.notifyPlayedCard(playerRef,card);
         if(checkIfCardsFinished(playerRef)) return true;
         return false;
     }
@@ -140,8 +141,6 @@ public class PlayerManager  {
         int studentTableofThisColour = -1;
         int i;
         boolean stop = false;
-        int oldValueEntrance = getStudentEntrance(playerRef,colour);
-        int oldValueTable = getStudentTable(playerRef, colour);
 
         if(!inSchool){  //if inSchool is false, it's placed in a island
             if(getStudentEntrance(playerRef, colour) > 0) {
@@ -190,66 +189,39 @@ public class PlayerManager  {
                 }
             }
         }
-
-        this.playerListeners.firePropertyChange("currentPlayer", null, playerRef);
-        this.playerListeners.firePropertyChange("currentColour", null, colour);
-        this.playerListeners.firePropertyChange("studentEntrance",oldValueEntrance,getStudentEntrance(playerRef, colour));
-        this.playerListeners.firePropertyChange("studentTable",oldValueTable,getStudentTable(playerRef, colour));
+        this.studentsEntranceListener.notifyStudentsEntrance(playerRef, colour, getStudentEntrance(playerRef, colour));
+        this.studentsTableListener.notifyStudentsTable(playerRef,colour, getStudentTable(playerRef, colour));
     }
 
     public void setStudentEntrance(int playerRef, int colour){
-        int oldValueEntrance = getStudentEntrance(playerRef, colour);
         players.get(playerRef).school.setStudentEntrance(colour);
-        this.playerListeners.firePropertyChange("currentPlayer", null, playerRef);
-        this.playerListeners.firePropertyChange("currentColour", null, colour);
-        this.playerListeners.firePropertyChange("studentEntrance", oldValueEntrance,getStudentEntrance(playerRef,colour));
+        this.studentsEntranceListener.notifyStudentsEntrance(playerRef,colour,getStudentEntrance(playerRef,colour));
     }
 
     public int getStudentEntrance(int playerRef, int colour){ return players.get(playerRef).school.getStudentEntrance(colour); }
     public void removeStudentEntrance(int playerRef, int colour){
-        int oldValueEntrance = getStudentEntrance(playerRef,colour);
         players.get(playerRef).school.removeStudentEntrance(colour);
-
-        this.playerListeners.firePropertyChange("currentPlayer", null, playerRef);
-        this.playerListeners.firePropertyChange("currentColour", null, colour);
-        this.playerListeners.firePropertyChange("studentEntrance", oldValueEntrance,getStudentEntrance(playerRef,colour));
+        this.studentsEntranceListener.notifyStudentsEntrance(playerRef,colour,getStudentEntrance(playerRef,colour));
 
     }
 
     public int getStudentTable(int playerRef, int colour){ return players.get(playerRef).school.getStudentTable(colour); }
     public void setStudentTable(int playerRef, int colour){
-        int oldValueTable=getStudentTable(playerRef, colour);
         players.get(playerRef).school.setStudentTable(colour);
-
-        this.playerListeners.firePropertyChange("currentPlayer", null, playerRef);
-        this.playerListeners.firePropertyChange("currentColour", null, colour);
-        this.playerListeners.firePropertyChange("studentTable", oldValueTable,getStudentTable(playerRef,colour));
+        this.studentsTableListener.notifyStudentsTable(playerRef, colour,getStudentTable(playerRef,colour));
     }
     public void removeStudentTable(int playerRef, int colour){
-
-        int oldValueTable=getStudentTable(playerRef, colour);
         players.get(playerRef).school.removeStudentTable(colour);
-
-        this.playerListeners.firePropertyChange("currentPlayer", null, playerRef);
-        this.playerListeners.firePropertyChange("currentColour", null, colour);
-        this.playerListeners.firePropertyChange("studentTable", oldValueTable,getStudentTable(playerRef,colour));
+        this.studentsTableListener.notifyStudentsTable(playerRef, colour,getStudentTable(playerRef,colour));
     }
 
     private void setProfessor(int playerRef, int colour){
-        boolean oldProfessorValue = getProfessor(playerRef, colour);
         players.get(playerRef).school.setProfessor(colour);
-
-        this.playerListeners.firePropertyChange("currentPlayer", null, playerRef);
-        this.playerListeners.firePropertyChange("currentColour", null, colour);
-        this.playerListeners.firePropertyChange("professors", oldProfessorValue,getProfessor(playerRef,colour));
+        this.professorsListener.notifyProfessors(playerRef, colour,getProfessor(playerRef, colour));
     }
     private void removeProfessor(int playerRef, int colour){
-        boolean oldProfessorValue = getProfessor(playerRef, colour);
         players.get(playerRef).school.removeProfessor(colour);
-        //this.playerListeners.firePropertyChange("professors", oldProfessorValue, newProfessorValue );
-        this.playerListeners.firePropertyChange("currentPlayer", null, playerRef);
-        this.playerListeners.firePropertyChange("currentColour", null, colour);
-        this.playerListeners.firePropertyChange("professors", oldProfessorValue,getProfessor(playerRef,colour));
+        this.professorsListener.notifyProfessors(playerRef, colour,getProfessor(playerRef, colour));
     }
 
     public boolean getProfessor(int playerRef, int colour){ return players.get(playerRef).school.getProfessor(colour); }
@@ -257,37 +229,32 @@ public class PlayerManager  {
 
     public boolean removeTower(Team team, int numberOfTower) {
         boolean victory = false;
-        //int[] oldTowerValue = new int[]{team.getTeam(), numberOfTower};
-        //int[] newTowerValue = oldTowerValue;
+
         for (Player p : players) {
             if (p.getTeam().equals(team)){
                 p.school.removeTower(numberOfTower);
                 if(p.school.towerExpired()) victory = true;
+                this.towerSchoolListener.notifyTowersSchool(players.indexOf(p), p.school.towers);
             }
         }
-        //newTowerValue[0]-=numberOfTower;
-        //this.playerListeners.firePropertyChange("towersInSchool", oldTowerValue, newTowerValue );
+
         return victory;
     }
     public void placeTower(Team team, int numberOfTower){
-        //int[] oldTowerValue = new int[]{team.getTeam(), numberOfTower};
-        //int[] newTowerValue = oldTowerValue;
         for (Player p : players) {
             if (p.getTeam().equals(team)) p.school.placeTower(numberOfTower);
+            this.towerSchoolListener.notifyTowersSchool(players.indexOf(p), p.school.towers);
         }
-        //newTowerValue[0]+=numberOfTower;
-        //this.playerListeners.firePropertyChange("towersInSchool", oldTowerValue, newTowerValue );
+
+
     }
     public int getTowers(int playerRef){ return players.get(playerRef).school.getTowers(); }
 
     public Team getTeam(int playerRef){ return players.get(playerRef).getTeam(); }
 
     public void removeCoin(int playerRef, int cost){
-        int oldValueCoins=getCoins(playerRef);
         players.get(playerRef).removeCoin(cost);
-
-        this.playerListeners.firePropertyChange("currentPlayer", null, playerRef);
-        this.playerListeners.firePropertyChange("coins", oldValueCoins, getCoins(playerRef));
+        this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef));
 
     }
     public int getCoins(int playerRef){ return players.get(playerRef).getCoins(); }

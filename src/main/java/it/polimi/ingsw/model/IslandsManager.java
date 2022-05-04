@@ -1,7 +1,10 @@
 package it.polimi.ingsw.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import it.polimi.ingsw.controller.listeners.IslandSizeListener;
+import it.polimi.ingsw.controller.listeners.MotherPositionListener;
+import it.polimi.ingsw.controller.listeners.StudentIslandListener;
+import it.polimi.ingsw.controller.listeners.TowerIslandListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -10,7 +13,10 @@ public class IslandsManager {
     private ArrayList<Island> islands;
     private Island i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12;
     private int motherPos;
-    private PropertyChangeSupport islandListeners = new PropertyChangeSupport(this);
+    protected StudentIslandListener studentIslandListener;
+    protected TowerIslandListener towerIslandListener;
+    protected MotherPositionListener motherPositionListener;
+    protected IslandSizeListener islandSizeListener;
 
     public IslandsManager() {
         i1 = new Island(); i2 = new Island(); i3 = new Island();
@@ -40,25 +46,15 @@ public class IslandsManager {
         }
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener islandListener){
-        this.islandListeners.addPropertyChangeListener(islandListener);
-    }
-    //add a listener to the list of listeners of this class
-
     public void incStudent(int island, int color){
-        int oldValue= getStudent(island, color);
         islands.get(island).incStudents(color);
-
-        this.islandListeners.firePropertyChange("currentColour", null, color);
-        this.islandListeners.firePropertyChange("currentIsland", null, island);
-        this.islandListeners.firePropertyChange("studentsIsland", oldValue, getStudent(island, color));
+        this.studentIslandListener.notifyStudentsIsland(island, color, getStudent(island, color));
 
     }
 
     public void moveMotherNature(int steps) {
-        int oldPosition = getMotherPos();
         motherPos = circularArray(motherPos, steps);
-        this.islandListeners.firePropertyChange("motherPosition", oldPosition, getMotherPos());
+        this.motherPositionListener.notifyMotherPosition(motherPos);
     }
     public int getMotherPos(){ return motherPos; }
 
@@ -103,10 +99,17 @@ public class IslandsManager {
         if (islands.get(pos).getTowerTeam() == islands.get(posTemp).getTowerTeam()) {
             for (int i = 0; i < 5; i++) {   //high student on an island
                 islands.get(pos).copyStudents(i,islands.get(pos).getNumStudents(i) + islands.get(posTemp).getNumStudents(i));
+                this.studentIslandListener.notifyStudentsIsland(pos, i, islands.get(pos).getNumStudents(i) + islands.get(posTemp).getNumStudents(i) );
             }
             islands.get(pos).incTowerValue(islands.get(posTemp).getTowerValue()); //tower value increase
+            this.towerIslandListener.notifyTowersIsland(pos, islands.get(pos).getTowerValue()+islands.get(pos).getTowerValue());
             islands.remove(posTemp); //island delete
-            if(motherPos == posTemp) motherPos = pos;   //I move mother, if there was one, from the eliminated island
+            this.islandSizeListener.notifyIslandSizeChange(pos, posTemp);
+            if(motherPos == posTemp){
+                motherPos = pos;   //I move mother, if there was one, from the eliminated island
+                this.motherPositionListener.notifyMotherPosition(motherPos);
+            }
+
             return true;
         }
         return false;

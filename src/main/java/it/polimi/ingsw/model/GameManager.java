@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
-import java.beans.PropertyChangeListener;
+import it.polimi.ingsw.controller.listeners.*;
+
 import java.util.ArrayList;
 
 public interface GameManager {
@@ -21,5 +22,16 @@ public interface GameManager {
     //to be called at the end of the turn in which refreshCloudStudents gave true
     String oneLastRide();
 
-    public void addModelListener(PropertyChangeListener modelListener);
+    //to add the virtualView as a listener for model classess
+    public void setStudentsEntranceListener(StudentsEntranceListener listener);
+    public void setStudentsTableListener(StudentsTableListener listener);
+    public void setTowerSchoolListener(TowerSchoolListener listener);
+    public void setProfessorsListener(ProfessorsListener listener);
+    public void setPlayedCardListener(PlayedCardListener listener);
+    public void setPlayedSpecialListener(PlayedSpecialListener listener);
+    public void setCoinsListener(CoinsListener listener);
+    public void setIslandSizeListener(IslandSizeListener listener);
+    public void setStudentsIslandListener(StudentIslandListener listener);
+    public void setTowersIslandListener(TowerIslandListener listener);
+    public void setMotherPositionListener(MotherPositionListener listener);
 }

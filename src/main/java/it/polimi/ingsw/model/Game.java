@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
-import java.beans.PropertyChangeListener;
+import it.polimi.ingsw.controller.listeners.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -139,12 +140,42 @@ public class Game implements GameManager{
         return false;
     }
 
-    public void addModelListener(PropertyChangeListener listener){
-        playerManager.addPropertyChangeListener(listener);
-        islandsManager.addPropertyChangeListener(listener);
-        cloudsManager.addPropertyChangeListener(listener);
-
+    public void setStudentsEntranceListener(StudentsEntranceListener listener){
+        playerManager.studentsEntranceListener = listener;
     }
+    public void setStudentsTableListener(StudentsTableListener listener){
+        playerManager.studentsTableListener = listener;
+    }
+    public void setTowerSchoolListener(TowerSchoolListener listener){
+        playerManager.towerSchoolListener= listener;
+    }
+    public void setProfessorsListener(ProfessorsListener listener){
+        playerManager.professorsListener=listener;
+    }
+    public void setPlayedCardListener(PlayedCardListener listener){
+        playerManager.playedCardListener=listener;
+    }
+    public void setPlayedSpecialListener(PlayedSpecialListener listener){
+        playerManager.playedSpecialListener=listener;
+    }
+    public void setCoinsListener(CoinsListener listener){
+        playerManager.coinsListener=listener;
+    }
+    public void setIslandSizeListener(IslandSizeListener listener){
+        islandsManager.islandSizeListener=listener;
+    }
+    public void setStudentsIslandListener(StudentIslandListener listener){
+        islandsManager.studentIslandListener=listener;
+    }
+    public void setTowersIslandListener(TowerIslandListener listener){
+        islandsManager.towerIslandListener=listener;
+    }
+    public void setMotherPositionListener(MotherPositionListener listener){
+        islandsManager.motherPositionListener=listener;
+    }
+
+
+
 
 
 }
