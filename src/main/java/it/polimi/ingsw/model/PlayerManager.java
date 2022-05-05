@@ -10,13 +10,12 @@ public class PlayerManager  {
     private int numberOfPlayer;
     private int[] professorPropriety;
 
-    protected StudentsEntranceListener studentsEntranceListener;
-    protected StudentsTableListener studentsTableListener;
-    protected TowerSchoolListener towerSchoolListener;
+    protected TowersListener towersListener;
     protected ProfessorsListener professorsListener;
     protected PlayedCardListener playedCardListener;
     protected PlayedSpecialListener playedSpecialListener;
     protected CoinsListener coinsListener;
+    protected StudentsListener studentsListener;
 
 
 
@@ -92,7 +91,7 @@ public class PlayerManager  {
         players.get(playerRef).hand.remove(card);
         queue.get(queueRef).setValueCard(card.getValue());
         queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
-        //this.playedCardListener.notifyPlayedCard(playerRef,card);
+        this.playedCardListener.notifyPlayedCard(playerRef, String.valueOf(card));
         if(checkIfCardsFinished(playerRef)) return true;
         return false;
     }
@@ -189,30 +188,30 @@ public class PlayerManager  {
                 }
             }
         }
-        this.studentsEntranceListener.notifyStudentsEntrance(playerRef, colour, getStudentEntrance(playerRef, colour));
-        this.studentsTableListener.notifyStudentsTable(playerRef,colour, getStudentTable(playerRef, colour));
+        this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
+        this.studentsListener.notifyStudentsChange(1, playerRef,colour, getStudentTable(playerRef, colour));
     }
 
     public void setStudentEntrance(int playerRef, int colour){
         players.get(playerRef).school.setStudentEntrance(colour);
-        this.studentsEntranceListener.notifyStudentsEntrance(playerRef,colour,getStudentEntrance(playerRef,colour));
+        this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
     }
 
     public int getStudentEntrance(int playerRef, int colour){ return players.get(playerRef).school.getStudentEntrance(colour); }
     public void removeStudentEntrance(int playerRef, int colour){
         players.get(playerRef).school.removeStudentEntrance(colour);
-        this.studentsEntranceListener.notifyStudentsEntrance(playerRef,colour,getStudentEntrance(playerRef,colour));
+        this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
 
     }
 
     public int getStudentTable(int playerRef, int colour){ return players.get(playerRef).school.getStudentTable(colour); }
     public void setStudentTable(int playerRef, int colour){
         players.get(playerRef).school.setStudentTable(colour);
-        this.studentsTableListener.notifyStudentsTable(playerRef, colour,getStudentTable(playerRef,colour));
+        this.studentsListener.notifyStudentsChange(1, playerRef,colour, getStudentTable(playerRef, colour));
     }
     public void removeStudentTable(int playerRef, int colour){
         players.get(playerRef).school.removeStudentTable(colour);
-        this.studentsTableListener.notifyStudentsTable(playerRef, colour,getStudentTable(playerRef,colour));
+        this.studentsListener.notifyStudentsChange(1, playerRef,colour, getStudentTable(playerRef, colour));
     }
 
     private void setProfessor(int playerRef, int colour){
@@ -234,7 +233,7 @@ public class PlayerManager  {
             if (p.getTeam().equals(team)){
                 p.school.removeTower(numberOfTower);
                 if(p.school.towerExpired()) victory = true;
-                this.towerSchoolListener.notifyTowersSchool(players.indexOf(p), p.school.towers);
+                this.towersListener.notifyTowersChange(0, players.indexOf(p), p.school.getTowers());
             }
         }
 
@@ -243,7 +242,7 @@ public class PlayerManager  {
     public void placeTower(Team team, int numberOfTower){
         for (Player p : players) {
             if (p.getTeam().equals(team)) p.school.placeTower(numberOfTower);
-            this.towerSchoolListener.notifyTowersSchool(players.indexOf(p), p.school.towers);
+            this.towersListener.notifyTowersChange(0, players.indexOf(p), p.school.getTowers());
         }
 
 

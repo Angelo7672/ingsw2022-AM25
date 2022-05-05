@@ -6,9 +6,8 @@ import java.util.ArrayList;
 
 //virtual View class listen to changes in model classes through specific listener interfaces
 public class VirtualView
-        implements TowerIslandListener, TowerSchoolListener, StudentsTableListener, StudentsEntranceListener,
-        StudentIslandListener, StudentsCloudListener , ProfessorsListener, PlayedSpecialListener, PlayedCardListener,
-        MotherPositionListener, IslandSizeListener, CoinsListener
+        implements TowersListener, ProfessorsListener, PlayedSpecialListener, PlayedCardListener,
+        MotherPositionListener, IslandSizeListener, CoinsListener, StudentsListener, InhibitedListener
 {
 
     private ArrayList<SchoolBoard> schoolBoards;
@@ -38,13 +37,19 @@ public class VirtualView
     }
 
     @Override
-    public void notifyStudentsEntrance(int playerRef, int colour, int newStudentsValue) {
-        schoolBoards.get(playerRef).setStudentsEntrance(colour, newStudentsValue);
-
-    }
-    @Override
-    public void notifyStudentsTable(int playerRef, int colour, int newStudentsValue) {
-        schoolBoards.get(playerRef).setStudentsTable(colour, newStudentsValue);
+    public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
+        if(place==0){
+            schoolBoards.get(componentRef).setStudentsEntrance(color, newStudentsValue);
+        }
+        else if(place==1){
+            schoolBoards.get(componentRef).setStudentsTable(componentRef, newStudentsValue);
+        }
+        else if(place==2){
+            islands.get(componentRef).setStudentsIsland(color, newStudentsValue);
+        }
+        else if(place==3){
+            clouds.get(componentRef).setCloudStudents(color, newStudentsValue);
+        }
     }
 
     @Override
@@ -54,33 +59,16 @@ public class VirtualView
 
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
-
         islands.get(newMotherPosition).setMotherPosition(true);
     }
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
         hands.get(playerRef).setLastCard(assistantCard);
-        hands.get(playerRef).numberOfCards--;
+        hands.get(playerRef).setNumberOfCards(hands.get(playerRef).numberOfCards--);
     }
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
         hands.get(playerRef).setCoins(newCoinsValue);
-    }
-    @Override
-    public void notifyStudentsIsland(int islandRef, int color, int newStudentValue) {
-        islands.get(islandRef).setStudentsIsland(color, newStudentValue);
-    }
-    @Override
-    public void notifyStudentsCloud(int cloudRef, int color, int newStudentValue) {
-        clouds.get(cloudRef).setCloudStudents(color, newStudentValue);
-    }
-    @Override
-    public void notifyTowersIsland(int islandRef, int towersNumber) {
-        islands.get(islandRef).setTowersNumber(towersNumber);
-    }
-    @Override
-    public void notifyTowersSchool(int playerRef, int towersNumber) {
-        schoolBoards.get(playerRef).setTowersNumber(towersNumber);
     }
 
     @Override
@@ -88,6 +76,26 @@ public class VirtualView
         islands.get(islandRef).increaseSize(islands.get(islandToDelete).getSize());
         islands.remove(islandToDelete);
     }
+
+    @Override
+    public void notifyTowersChange(int place, int componentRef, int towersNumber) {
+        if (place == 0) {
+            schoolBoards.get(componentRef).setTowersNumber(towersNumber);
+        } else if (place == 1) {
+            islands.get(componentRef).setTowersNumber(towersNumber);
+        }
+    }
+
+    @Override
+    public void notifyTowerColor(int islandRef, int newColor) {
+        islands.get(islandRef).setTowersColor(newColor);
+    }
+
+    @Override
+    public void notifyInhibited(int islandRef, int isInhibited) {
+        islands.get(islandRef).setInhibited(isInhibited);
+    }
+
 
     //private class SchoolBoard keeps the state of each player's school board
     private class SchoolBoard {
@@ -117,8 +125,9 @@ public class VirtualView
         int[] studentsIsland= new int[]{0,0,0,0,0};
         boolean isMotherPosition;
         int towersNumber;
-        int towerColor;
+        int towersColor;
         int size; //number of island tiles that forms the island
+        int isInhibited;
 
         public int getSize() {
             return size;
@@ -131,12 +140,17 @@ public class VirtualView
             this.towersNumber = towersNumber;
         }
 
-        public void setStudentsIsland(int colour, int newValue) {
-            this.studentsIsland[colour]=newValue;
+        public void setStudentsIsland(int color, int newValue) {
+            this.studentsIsland[color]=newValue;
         }
 
         public void setMotherPosition(boolean isMotherPos) {
             this.isMotherPosition=isMotherPos;
+        }
+        public void setTowersColor(int newColor){ this.towersColor=newColor; }
+
+        public void setInhibited(int isInhibited) {
+            this.isInhibited=isInhibited;
         }
     }
     private class Cloud {

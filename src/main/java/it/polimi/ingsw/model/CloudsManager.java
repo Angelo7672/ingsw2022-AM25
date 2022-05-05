@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import it.polimi.ingsw.controller.listeners.StudentsListener;
+
 import java.util.ArrayList;
 
 public class CloudsManager{
     private ArrayList<Cloud> clouds;
-    private PropertyChangeSupport cloudsListeners = new PropertyChangeSupport(this);
+    protected StudentsListener studentsListener;
 
     private class Cloud{
         private int[] students;
@@ -32,12 +32,6 @@ public class CloudsManager{
         }
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener cloudsListener){
-        this.cloudsListeners.addPropertyChangeListener(cloudsListener);
-    }
-    //add a listener to the list of listeners of this class
-
-
     // given the index of a cloud, return the array of students on that cloud
     public int[] getStudents(int cloudIndex) {
         return clouds.get(cloudIndex).getStudents();
@@ -45,10 +39,8 @@ public class CloudsManager{
 
     //given the index of a cloud and the color of the student extracted from the bag, add the student to the cloud
     public void refreshCloudStudents(int studentExtracted, int cloudIndex) {
-        int[] oldValue = getStudents(cloudIndex);
         clouds.get(cloudIndex).incrStudents(studentExtracted);
-        this.cloudsListeners.firePropertyChange("currentCloud", null, cloudIndex);
-        this.cloudsListeners.firePropertyChange("studentsCloud", oldValue, clouds.get(cloudIndex).getStudents() );
+        this.studentsListener.notifyStudentsChange(3, cloudIndex, studentExtracted,clouds.get(cloudIndex).getColour(studentExtracted));
     }
 
     // given the index of a cloud, it empties the cloud and returns the array of the students on the cloud
@@ -58,9 +50,8 @@ public class CloudsManager{
         for (int i = 0; i < 5; i++) {
             students[i]=clouds.get(cloudIndex).getColour(i);
             clouds.get(cloudIndex).removeColour(i);
+            this.studentsListener.notifyStudentsChange(3, cloudIndex, i,clouds.get(cloudIndex).getColour(i));
         }
-        this.cloudsListeners.firePropertyChange("currentCloud", null, cloudIndex);
-        this.cloudsListeners.firePropertyChange("studentsCloud",students, getStudents(cloudIndex));
         return students;
     }
 }

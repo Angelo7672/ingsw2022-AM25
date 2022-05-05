@@ -1,6 +1,4 @@
 package it.polimi.ingsw.controller;
-
-
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameManager;
 
@@ -18,17 +16,15 @@ public class Controller {
         virtualView = new VirtualView(numberOfPlayers , specials);
         gameManager = new Game(isExpert, numberOfPlayers, playersInfo);
 
-        gameManager.setStudentsEntranceListener(virtualView);
-        gameManager.setStudentsTableListener(virtualView);
-        gameManager.setTowerSchoolListener(virtualView);
+        gameManager.setStudentsListener(virtualView);
+        gameManager.setTowerListener(virtualView);
         gameManager.setProfessorsListener(virtualView);
         gameManager.setPlayedCardListener(virtualView);
         gameManager.setPlayedSpecialListener(virtualView);
         gameManager.setCoinsListener(virtualView);
-        gameManager.setIslandSizeListener(virtualView);
         gameManager.setMotherPositionListener(virtualView);
-        gameManager.setTowersIslandListener(virtualView);
         gameManager.setIslandSizeListener(virtualView);
+        gameManager.setInhibitedListener(virtualView);
 
     }
 

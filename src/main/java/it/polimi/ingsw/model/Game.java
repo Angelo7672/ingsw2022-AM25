@@ -139,43 +139,36 @@ public class Game implements GameManager{
         if(roundStrategies.get(index).getName().equals("special12")) return true;
         return false;
     }
-
-    public void setStudentsEntranceListener(StudentsEntranceListener listener){
-        playerManager.studentsEntranceListener = listener;
+    @Override
+    public void setStudentsListener(StudentsListener listener){
+        playerManager.studentsListener = listener;
+        islandsManager.studentListener=listener;
+        cloudsManager.studentsListener=listener;
     }
-    public void setStudentsTableListener(StudentsTableListener listener){
-        playerManager.studentsTableListener = listener;
+    @Override
+    public void setTowerListener(TowersListener listener) {
+        playerManager.towersListener= listener;
+        islandsManager.towersListener= listener;
     }
-    public void setTowerSchoolListener(TowerSchoolListener listener){
-        playerManager.towerSchoolListener= listener;
-    }
+    @Override
     public void setProfessorsListener(ProfessorsListener listener){
         playerManager.professorsListener=listener;
     }
+    @Override
     public void setPlayedCardListener(PlayedCardListener listener){
         playerManager.playedCardListener=listener;
     }
-    public void setPlayedSpecialListener(PlayedSpecialListener listener){
-        playerManager.playedSpecialListener=listener;
-    }
+    @Override
+    public void setPlayedSpecialListener(PlayedSpecialListener listener){ playerManager.playedSpecialListener=listener;}
+    @Override
     public void setCoinsListener(CoinsListener listener){
         playerManager.coinsListener=listener;
     }
-    public void setIslandSizeListener(IslandSizeListener listener){
-        islandsManager.islandSizeListener=listener;
-    }
-    public void setStudentsIslandListener(StudentIslandListener listener){
-        islandsManager.studentIslandListener=listener;
-    }
-    public void setTowersIslandListener(TowerIslandListener listener){
-        islandsManager.towerIslandListener=listener;
-    }
-    public void setMotherPositionListener(MotherPositionListener listener){
-        islandsManager.motherPositionListener=listener;
-    }
-
-
-
-
+    @Override
+    public void setIslandSizeListener(IslandSizeListener listener){ islandsManager.islandSizeListener=listener;}
+    @Override
+    public void setMotherPositionListener(MotherPositionListener listener){ islandsManager.motherPositionListener=listener;}
+    @Override
+    public void setInhibitedListener(InhibitedListener listener){ islandsManager.inhibitedListener=listener; }
 
 }
