@@ -1,11 +1,9 @@
 package it.polimi.ingsw.server.Answer;
 
-public class StartTurn implements Answer{
-    public final String currentPlayer;
+public class GeneralAnswer implements Answer{
     private final String message;
 
-    public StartTurn(String currentPlayer, String message) {
-        this.currentPlayer = currentPlayer;
+    public GeneralAnswer(String message) {
         this.message = message;
     }
 

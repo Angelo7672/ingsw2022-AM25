@@ -1,11 +1,11 @@
 package it.polimi.ingsw.server.Answer;
 
-public class StartTurn implements Answer{
-    public final String currentPlayer;
+import it.polimi.ingsw.constants.Constants;
+
+public class SetupGameMessage implements Answer{
     private final String message;
 
-    public StartTurn(String currentPlayer, String message) {
-        this.currentPlayer = currentPlayer;
+    public SetupGameMessage(String message) {
         this.message = message;
     }
 

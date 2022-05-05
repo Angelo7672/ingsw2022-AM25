@@ -1,15 +1,22 @@
 package it.polimi.ingsw.client;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class Client implements Entrance{
 
+
     public static void main(String[] args) {
-        Proxy_c proxy = new Proxy_c("127.0.0.1", 1337);
-        try {
-            proxy.start();
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+        System.out.println("Eriantys");
+        System.out.println();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Do you want to use CLI o GUI?");
+        String graph = scanner.nextLine().toUpperCase(Locale.ROOT);
+        if(graph.equals("CLI")) {
+            CLI cli = new CLI();
+            cli.run();
         }
+
     }
 }

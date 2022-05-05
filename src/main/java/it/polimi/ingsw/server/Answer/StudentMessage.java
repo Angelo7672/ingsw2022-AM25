@@ -29,7 +29,7 @@ public class StudentMessage implements Answer{
         return group;
     }
     @Override
-    public Object getMessage() {
+    public String getMessage() {
         return message;
     }
 }
