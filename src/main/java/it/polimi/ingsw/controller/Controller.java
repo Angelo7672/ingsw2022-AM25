@@ -20,7 +20,7 @@ public class Controller {
         gameManager.setTowerListener(virtualView);
         gameManager.setProfessorsListener(virtualView);
         gameManager.setPlayedCardListener(virtualView);
-        gameManager.setPlayedSpecialListener(virtualView);
+        gameManager.setSpecialListener(virtualView);
         gameManager.setCoinsListener(virtualView);
         gameManager.setMotherPositionListener(virtualView);
         gameManager.setIslandSizeListener(virtualView);

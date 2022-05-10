@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 //virtual View class listen to changes in model classes through specific listener interfaces
 public class VirtualView
-        implements TowersListener, ProfessorsListener, PlayedSpecialListener, PlayedCardListener,
+        implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandSizeListener, CoinsListener, StudentsListener, InhibitedListener
 {
 
@@ -14,7 +14,8 @@ public class VirtualView
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
     private ArrayList<Hand> hands;
-    private ArrayList<Special> specials;
+    private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
+
 
 
     public VirtualView(int numberOfPlayers, int[] specials ) {
@@ -96,6 +97,9 @@ public class VirtualView
         islands.get(islandRef).setInhibited(isInhibited);
     }
 
+    @Override
+    public void notifySpecial(int specialRef) { specials.add(specialRef);}
+
 
     //private class SchoolBoard keeps the state of each player's school board
     private class SchoolBoard {
@@ -176,10 +180,6 @@ public class VirtualView
         public void setNumberOfCards(int numberOfCards) {
             this.numberOfCards=numberOfCards;
         }
-    }
-    private class Special{
-        String name;
-        int cost;
     }
 
 }

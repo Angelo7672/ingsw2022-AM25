@@ -13,7 +13,7 @@ public class PlayerManager  {
     protected TowersListener towersListener;
     protected ProfessorsListener professorsListener;
     protected PlayedCardListener playedCardListener;
-    protected PlayedSpecialListener playedSpecialListener;
+    protected SpecialListener specialListener;
     protected CoinsListener coinsListener;
     protected StudentsListener studentsListener;
 
