@@ -5,25 +5,27 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class VirtualClient implements Runnable{
+public class VirtualClient extends Thread{
     private final Socket socket;
-    private final Server server;
+    private final Entrance server;
     private final Proxy_s proxy;
+    private boolean victory;
 
-    public VirtualClient(Socket socket, Server server, Proxy_s proxy){
+    public VirtualClient(Socket socket, Entrance server, Proxy_s proxy){
         this.socket = socket;
         this.server = server;
         this.proxy = proxy;
-        run();
+        this.victory = false;
     }
 
-    @Override
     public void run() {
-        if(proxy.getConnections_allowed() == 1) {
-            gameSetting();
+        if(proxy.getConnections_allowed() == 1) gameSetting();
+
+        while (true){
+
+            if(victory) break;
         }
-        System.out.println(server.getNumberOfPlayer());
-        System.out.println(server.isExpertMode());
+
     }
 
     public void gameSetting(){

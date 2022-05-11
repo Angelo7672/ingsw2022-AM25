@@ -13,19 +13,21 @@ import java.util.concurrent.Executors;
 
 public class Proxy_s implements Exit {
     private final int port;
-    private final Server server;
+    private final Entrance server;
     private int connections_allowed;
     private List<VirtualClient> user;
+    private List<Pong> checkConnection;
 
-    public Proxy_s(int port,Server server) {
+    public Proxy_s(int port,Entrance server) {
         this.port = port;
         this.server = server;
         this.connections_allowed = 1;
         this.user = new ArrayList<>();
     }
 
+    @Override
     public void start() {
-        ExecutorService executor = Executors.newCachedThreadPool(); //Create threads when needed, but re-use existing ones as much as possible
+        //ExecutorService executor = Executors.newCachedThreadPool(); //Create threads when needed, but re-use existing ones as much as possible
         ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(port);
@@ -34,6 +36,7 @@ public class Proxy_s implements Exit {
             return;
         }
         System.out.println("Eryantis Server | Welcome!");
+        System.out.println("Waiting for players ...");
         try {
             Socket socket = serverSocket.accept();
             user.add(new VirtualClient(socket,server,this));

@@ -72,7 +72,7 @@ public class RoundStrategyTest {
         assertEquals(1,playerManager.getStudentTable(1,0));
     }
 
-    @Test
+    /*@Test
     @DisplayName("Test if conquestIsland change correctly the island's owner")
     void conquestIslandTest(){
 
@@ -99,7 +99,7 @@ public class RoundStrategyTest {
         assertEquals(WHITE,islandsManager.getTowerTeam(0));
         assertEquals(2,islandsManager.getTowerValue(0));
 
-    }
+    }*/
 
     @Test
     @DisplayName("test if highInfluenceTeam return the right team")
