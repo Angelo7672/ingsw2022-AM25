@@ -1,5 +1,8 @@
 package it.polimi.ingsw.controller.listeners;
 
+/**
+ *
+ */
 public interface StudentsListener {
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue);
 }
