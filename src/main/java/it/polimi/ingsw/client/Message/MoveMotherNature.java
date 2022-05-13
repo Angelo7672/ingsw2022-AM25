@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.Message;
 
+
 public class MoveMotherNature implements Message{
 
     private final int desiredMovement;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.Answer;
 
 public class StartTurn implements Answer{
-    public final String currentPlayer;
+    private final String currentPlayer;
     private final String message;
 
     public StartTurn(String currentPlayer, String message) {
@@ -12,5 +12,9 @@ public class StartTurn implements Answer{
     @Override
     public String getMessage() {
         return message;
+    }
+
+    public String getCurrentPlayer() {
+        return currentPlayer;
     }
 }

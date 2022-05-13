@@ -8,14 +8,10 @@ public class StudentMessage implements Answer{
     private final int[] students;
     private final String message;
 
-    public StudentMessage(String message) {
-        this.students = null;
-        this.message = message;
-    }
-
-    public StudentMessage(int[] students, String message) {
+    public StudentMessage(ArrayList<Object> group, int[] students, String message) {
         this.students = students;
         this.message = message;
+        this.group = group;
     }
 
     public int[] getStudents(){

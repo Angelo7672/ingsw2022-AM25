@@ -1,19 +1,25 @@
 package it.polimi.ingsw.client.Message;
 
 public class MoveStudent implements Message{
-    public final int color;
-    public final boolean inSchool;
-    public final int islandRef;
+    private final int color;
+    private final boolean inSchool;
+    private final int islandRef;
 
-    public MoveStudent(int color, boolean inSchool) {
+    public MoveStudent(int color, boolean inSchool, int islandRef) {
         this.color = color;
         this.inSchool = inSchool;
-        this.islandRef = -1;
+        this.islandRef = islandRef;
     }
 
-    public MoveStudent(int color, int islandRef) {
-        this.color = color;
-        this.inSchool = false;
-        this.islandRef = islandRef;
+    public int getColor() {
+        return color;
+    }
+
+    public boolean isInSchool() {
+        return inSchool;
+    }
+
+    public int getIslandRef() {
+        return islandRef;
     }
 }
