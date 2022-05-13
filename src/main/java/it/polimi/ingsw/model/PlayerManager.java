@@ -17,10 +17,6 @@ public class PlayerManager  {
     protected CoinsListener coinsListener;
     protected StudentsListener studentsListener;
 
-
-
-    private enum Character {WIZARD, KING, WITCH, SAMURAI, NONE};
-
     public PlayerManager(int numberOfPlayer, String[] playersInfo) {
         players = new ArrayList<>();
         queue = new ArrayList<>();
