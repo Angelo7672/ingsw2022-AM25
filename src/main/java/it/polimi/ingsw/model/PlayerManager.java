@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.listeners.*;
+
 import java.util.*;
 
 public class PlayerManager  {
@@ -7,6 +9,17 @@ public class PlayerManager  {
     private List<Queue> queue;
     private int numberOfPlayer;
     private int[] professorPropriety;
+
+    protected TowersListener towersListener;
+    protected ProfessorsListener professorsListener;
+    protected PlayedCardListener playedCardListener;
+    protected SpecialListener specialListener;
+    protected CoinsListener coinsListener;
+    protected StudentsListener studentsListener;
+
+
+
+    private enum Character {WIZARD, KING, WITCH, SAMURAI, NONE};
 
     public PlayerManager(int numberOfPlayer, String[] playersInfo) {
         players = new ArrayList<>();
@@ -52,6 +65,7 @@ public class PlayerManager  {
         return Character.NONE;
     }
 
+
     public void queueForPlanificationPhase(int numberOfPlayer){
         int firstInQueue;
 
@@ -73,9 +87,11 @@ public class PlayerManager  {
         if (firstInQueue != 0) Collections.rotate(queue,-firstInQueue);
     }
     public boolean playCard(int playerRef, int queueRef, Assistant card){
+
         players.get(playerRef).hand.remove(card);
         queue.get(queueRef).setValueCard(card.getValue());
         queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
+        this.playedCardListener.notifyPlayedCard(playerRef, String.valueOf(card));
         if(checkIfCardsFinished(playerRef)) return true;
         return false;
     }
@@ -172,18 +188,41 @@ public class PlayerManager  {
                 }
             }
         }
+        this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
+        this.studentsListener.notifyStudentsChange(1, playerRef,colour, getStudentTable(playerRef, colour));
     }
 
-    public void setStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.setStudentEntrance(colour); }
+    public void setStudentEntrance(int playerRef, int colour){
+        players.get(playerRef).school.setStudentEntrance(colour);
+        this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
+    }
+
     public int getStudentEntrance(int playerRef, int colour){ return players.get(playerRef).school.getStudentEntrance(colour); }
-    public void removeStudentEntrance(int playerRef, int colour){ players.get(playerRef).school.removeStudentEntrance(colour); }
+    public void removeStudentEntrance(int playerRef, int colour){
+        players.get(playerRef).school.removeStudentEntrance(colour);
+        this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
+
+    }
 
     public int getStudentTable(int playerRef, int colour){ return players.get(playerRef).school.getStudentTable(colour); }
-    public void setStudentTable(int playerRef, int colour){ players.get(playerRef).school.setStudentTable(colour); }
-    public void removeStudentTable(int playerRef, int colour){ players.get(playerRef).school.removeStudentTable(colour); }
+    public void setStudentTable(int playerRef, int colour){
+        players.get(playerRef).school.setStudentTable(colour);
+        this.studentsListener.notifyStudentsChange(1, playerRef,colour, getStudentTable(playerRef, colour));
+    }
+    public void removeStudentTable(int playerRef, int colour){
+        players.get(playerRef).school.removeStudentTable(colour);
+        this.studentsListener.notifyStudentsChange(1, playerRef,colour, getStudentTable(playerRef, colour));
+    }
 
-    private void setProfessor(int playerRef, int colour){ players.get(playerRef).school.setProfessor(colour); }
-    private void removeProfessor(int playerRef, int colour){ players.get(playerRef).school.removeProfessor(colour); }
+    private void setProfessor(int playerRef, int colour){
+        players.get(playerRef).school.setProfessor(colour);
+        this.professorsListener.notifyProfessors(playerRef, colour,getProfessor(playerRef, colour));
+    }
+    private void removeProfessor(int playerRef, int colour){
+        players.get(playerRef).school.removeProfessor(colour);
+        this.professorsListener.notifyProfessors(playerRef, colour,getProfessor(playerRef, colour));
+    }
+
     public boolean getProfessor(int playerRef, int colour){ return players.get(playerRef).school.getProfessor(colour); }
     public int getProfessorPropriety(int color) { return professorPropriety[color]; }
 
@@ -194,20 +233,29 @@ public class PlayerManager  {
             if (p.getTeam().equals(team)){
                 p.school.removeTower(numberOfTower);
                 if(p.school.towerExpired()) victory = true;
+                this.towersListener.notifyTowersChange(0, players.indexOf(p), p.school.getTowers());
             }
         }
+
         return victory;
     }
     public void placeTower(Team team, int numberOfTower){
         for (Player p : players) {
             if (p.getTeam().equals(team)) p.school.placeTower(numberOfTower);
+            this.towersListener.notifyTowersChange(0, players.indexOf(p), p.school.getTowers());
         }
+
+
     }
     public int getTowers(int playerRef){ return players.get(playerRef).school.getTowers(); }
 
     public Team getTeam(int playerRef){ return players.get(playerRef).getTeam(); }
 
-    public void removeCoin(int playerRef, int cost){ players.get(playerRef).removeCoin(cost); }
+    public void removeCoin(int playerRef, int cost){
+        players.get(playerRef).removeCoin(cost);
+        this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef));
+
+    }
     public int getCoins(int playerRef){ return players.get(playerRef).getCoins(); }
 
     public boolean checkStudentsEntrance(ArrayList<Integer> student, int playerRef){
@@ -221,28 +269,42 @@ public class PlayerManager  {
         return false;
     }
 
-    private class Queue implements Comparable<Queue>{   //it is used both in the planning phase and in the action phase
+    private class Queue implements Comparable<Queue> {   //it is used both in the planning phase and in the action phase
         private int playerRef;
         private Integer valueCard;
         private int maxMoveMotherNature;
 
-        public Queue(int playerRef,Integer valueCard,int maxMoveMotherNature) {
+        public Queue(int playerRef, Integer valueCard, int maxMoveMotherNature) {
             this.playerRef = playerRef;
             this.valueCard = valueCard;
             this.maxMoveMotherNature = maxMoveMotherNature;
         }
 
-        private int getPlayerRef() { return playerRef; }
-        private Integer getValueCard() { return valueCard; }
-        public int getMaxMoveMotherNature() { return maxMoveMotherNature; }
+        private int getPlayerRef() {
+            return playerRef;
+        }
 
-        public void setValueCard(Integer valueCard) { this.valueCard = valueCard; }
-        public void setMaxMoveMotherNature(int maxMoveMotherNature) { this.maxMoveMotherNature = maxMoveMotherNature; }
+        private Integer getValueCard() {
+            return valueCard;
+        }
+
+        public int getMaxMoveMotherNature() {
+            return maxMoveMotherNature;
+        }
+
+        public void setValueCard(Integer valueCard) {
+            this.valueCard = valueCard;
+        }
+
+        public void setMaxMoveMotherNature(int maxMoveMotherNature) {
+            this.maxMoveMotherNature = maxMoveMotherNature;
+        }
 
         @Override
         public int compareTo(Queue o) {
             return valueCard.compareTo(o.getValueCard());
         }
+
     }
 
     private class Player {

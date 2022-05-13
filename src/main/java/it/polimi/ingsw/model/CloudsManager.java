@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.listeners.StudentsListener;
+
 import java.util.ArrayList;
 
 public class CloudsManager{
     private ArrayList<Cloud> clouds;
+    protected StudentsListener studentsListener;
 
     private class Cloud{
         private int[] students;
@@ -19,7 +22,7 @@ public class CloudsManager{
     }
 
     // CloudsManager constructor, create an arrayList of Clouds.
-    // Each cloud has 3 or 4 students on it, depending on the number of players */
+    // Each cloud has 3 or 4 students on it, depending on the number of players
     public CloudsManager(int playerNumber){
         clouds = new ArrayList<>();
 
@@ -35,7 +38,10 @@ public class CloudsManager{
     }
 
     //given the index of a cloud and the color of the student extracted from the bag, add the student to the cloud
-    public void refreshCloudStudents(int studentExtracted, int cloudIndex) { clouds.get(cloudIndex).incrStudents(studentExtracted); }
+    public void refreshCloudStudents(int studentExtracted, int cloudIndex) {
+        clouds.get(cloudIndex).incrStudents(studentExtracted);
+        this.studentsListener.notifyStudentsChange(3, cloudIndex, studentExtracted,clouds.get(cloudIndex).getColour(studentExtracted));
+    }
 
     // given the index of a cloud, it empties the cloud and returns the array of the students on the cloud
     public int[] removeStudents(int cloudIndex) {
@@ -44,6 +50,7 @@ public class CloudsManager{
         for (int i = 0; i < 5; i++) {
             students[i]=clouds.get(cloudIndex).getColour(i);
             clouds.get(cloudIndex).removeColour(i);
+            this.studentsListener.notifyStudentsChange(3, cloudIndex, i,clouds.get(cloudIndex).getColour(i));
         }
         return students;
     }

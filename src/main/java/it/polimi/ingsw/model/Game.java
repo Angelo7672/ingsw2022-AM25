@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.listeners.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -12,6 +14,7 @@ public class Game implements GameManager{
     private int numberOfPlayer;
     private int indexSpecial;
     private int refSpecial;
+    protected SpecialListener specialListener;
 
 
     public Game(Boolean expertMode, int numberOfPlayer, String[] playersInfo){
@@ -126,6 +129,7 @@ public class Game implements GameManager{
     public void setSpecial(int indexSpecial, int refSpecial){
         this.indexSpecial=indexSpecial;
         this.refSpecial = refSpecial;
+        this.specialListener.notifySpecial(indexSpecial);
     }
 
     public boolean findName(int index){
@@ -137,6 +141,35 @@ public class Game implements GameManager{
         if(roundStrategies.get(index).getName().equals("special12")) return true;
         return false;
     }
-
-
+    @Override
+    public void setStudentsListener(StudentsListener listener){
+        playerManager.studentsListener = listener;
+        islandsManager.studentListener=listener;
+        cloudsManager.studentsListener=listener;
+    }
+    @Override
+    public void setTowerListener(TowersListener listener) {
+        playerManager.towersListener= listener;
+        islandsManager.towersListener= listener;
+    }
+    @Override
+    public void setProfessorsListener(ProfessorsListener listener){
+        playerManager.professorsListener=listener;
+    }
+    @Override
+    public void setPlayedCardListener(PlayedCardListener listener){
+        playerManager.playedCardListener=listener;
+    }
+    @Override
+    public void setSpecialListener(SpecialListener listener){ this.specialListener =listener;}
+    @Override
+    public void setCoinsListener(CoinsListener listener){
+        playerManager.coinsListener=listener;
+    }
+    @Override
+    public void setIslandSizeListener(IslandSizeListener listener){ islandsManager.islandSizeListener=listener;}
+    @Override
+    public void setMotherPositionListener(MotherPositionListener listener){ islandsManager.motherPositionListener=listener;}
+    @Override
+    public void setInhibitedListener(InhibitedListener listener){ islandsManager.inhibitedListener=listener; }
 }

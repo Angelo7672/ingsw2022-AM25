@@ -1,18 +1,34 @@
 package it.polimi.ingsw.controller;
-
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.GameManager;
 
 public class Controller {
 
     private RoundController roundController;
+    private String[] chosenAssistants;
     private VirtualView virtualView;
-    private String chosenAssistant;
+    private GameManager gameManager;
+    private int[] specials;
 
 
-    public Controller(VirtualView virtualView, int numberOfPlayers, boolean isExpert, String[] playersInfo){ //virtual View is istantiated by the Server class
+    public Controller(int numberOfPlayers, boolean isExpert, String[] playersInfo){
         roundController = new RoundController(isExpert, numberOfPlayers, playersInfo, this);
-        this.virtualView = virtualView;
+        virtualView = new VirtualView(numberOfPlayers , specials);
+        gameManager = new Game(isExpert, numberOfPlayers, playersInfo);
 
+        gameManager.setStudentsListener(virtualView);
+        gameManager.setTowerListener(virtualView);
+        gameManager.setProfessorsListener(virtualView);
+        gameManager.setPlayedCardListener(virtualView);
+        gameManager.setSpecialListener(virtualView);
+        gameManager.setCoinsListener(virtualView);
+        gameManager.setMotherPositionListener(virtualView);
+        gameManager.setIslandSizeListener(virtualView);
+        gameManager.setInhibitedListener(virtualView);
 
     }
+
+
+
 
 }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.listeners.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -8,6 +10,11 @@ public class IslandsManager {
     private ArrayList<Island> islands;
     private Island i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12;
     private int motherPos;
+    protected StudentsListener studentListener;
+    protected TowersListener towersListener;
+    protected MotherPositionListener motherPositionListener;
+    protected IslandSizeListener islandSizeListener;
+    protected InhibitedListener inhibitedListener;
 
     public IslandsManager() {
         i1 = new Island(); i2 = new Island(); i3 = new Island();
@@ -37,9 +44,16 @@ public class IslandsManager {
         }
     }
 
-    public void incStudent(int island, int color){ islands.get(island).incStudents(color);}
+    public void incStudent(int island, int color){
+        islands.get(island).incStudents(color);
+        this.studentListener.notifyStudentsChange(2,island, color, getStudent(island, color));
 
-    public void moveMotherNature(int steps) { motherPos = circularArray(motherPos, steps); }
+    }
+
+    public void moveMotherNature(int steps) {
+        motherPos = circularArray(motherPos, steps);
+        this.motherPositionListener.notifyMotherPosition(motherPos);
+    }
     public int getMotherPos(){ return motherPos; }
 
     public int getStudent(int island, int color){ return islands.get(island).getNumStudents(color); }
@@ -52,6 +66,8 @@ public class IslandsManager {
         if(!islands.get(islandRef).getTowerTeam().equals(team)) { //if new team not equals old one
             if (islands.get(islandRef).getTowerTeam().equals(Team.NOONE)) { //if old team is no one
                 islands.get(islandRef).setTowerTeam(team);
+                this.towersListener.notifyTowersChange(2, islandRef, getTowerValue(islandRef));
+                this.towersListener.notifyTowerColor(islandRef, islands.get(islandRef).getTowerTeam().getTeam());
                 checkAdjacentIslands(islandRef);
                 returnItem[0] = 1;
                 returnItem[1] = -1;
@@ -60,6 +76,7 @@ public class IslandsManager {
             //if old team is not no one
             returnItem[1] = islands.get(islandRef).getTowerTeam().getTeam();
             islands.get(islandRef).setTowerTeam(team);
+            this.towersListener.notifyTowerColor(islandRef, islands.get(islandRef).getTowerTeam().getTeam());
             checkAdjacentIslands(islandRef);
             returnItem[0] = islands.get(islandRef).getTowerValue();
             return returnItem;
@@ -83,10 +100,17 @@ public class IslandsManager {
         if (islands.get(pos).getTowerTeam() == islands.get(posTemp).getTowerTeam()) {
             for (int i = 0; i < 5; i++) {   //high student on an island
                 islands.get(pos).copyStudents(i,islands.get(pos).getNumStudents(i) + islands.get(posTemp).getNumStudents(i));
+                this.studentListener.notifyStudentsChange(2, pos, i, islands.get(pos).getNumStudents(i) + islands.get(posTemp).getNumStudents(i) );
             }
             islands.get(pos).incTowerValue(islands.get(posTemp).getTowerValue()); //tower value increase
+            this.towersListener.notifyTowersChange(1,pos, islands.get(pos).getTowerValue()+islands.get(pos).getTowerValue());
             islands.remove(posTemp); //island delete
-            if(motherPos == posTemp) motherPos = pos;   //I move mother, if there was one, from the eliminated island
+            this.islandSizeListener.notifyIslandSizeChange(pos, posTemp);
+            if(motherPos == posTemp){
+                motherPos = pos;   //I move mother, if there was one, from the eliminated island
+                this.motherPositionListener.notifyMotherPosition(motherPos);
+            }
+
             return true;
         }
         return false;
@@ -105,8 +129,14 @@ public class IslandsManager {
     }
 
     public int getInhibited(int islandRef){ return islands.get(islandRef).getInhibited(); }
-    public void increaseInhibited(int islandRef){ islands.get(islandRef).increaseInhibited();}
-    public void decreaseInhibited(int islandRef){ islands.get(islandRef).decreaseInhibited();}
+    public void increaseInhibited(int islandRef){
+        islands.get(islandRef).increaseInhibited();
+        this.inhibitedListener.notifyInhibited(islandRef, getInhibited(islandRef));
+        }
+    public void decreaseInhibited(int islandRef){
+        islands.get(islandRef).decreaseInhibited();
+        this.inhibitedListener.notifyInhibited(islandRef, getInhibited(islandRef));
+    }
     public int size(){
         return islands.size();
     }

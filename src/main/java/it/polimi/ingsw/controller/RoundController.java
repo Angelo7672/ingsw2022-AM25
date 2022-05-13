@@ -18,15 +18,16 @@ public class RoundController {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-/*
-    public void startPlanningPhase(){
+    /*
+    public void startPlanningPhase(String[] chosenAssistants){
         if(gameManager.refreshStudentsCloud() == false) {
             gameManager.queueForPlanificationPhase();
             for (int i = 0; i < numberOfPlayers; i++) {
                 int currentPlayer = gameManager.readQueue(i);
-                gameManager.playCard(i, currentPlayer, controller.getChosenAssistant());
+                virtualView.currentPlayer = currentPlayer;
+                gameManager.playCard(i, currentPlayer, chosenAssistants[i]);
+                gameManager.inOrderForActionPhase();
             }
-            gameManager.inOrderForActionPhase();
         }
         else if(gameManager.refreshStudentsCloud()== true)
             gameManager.oneLastRide();
@@ -41,12 +42,12 @@ public class RoundController {
             gameManager.moveStudent(currentPlayer,colour,inSchool,islandRef);
 
             gameManager.moveMotherNature(queref, desiredMovement,noColor, islandRef, special, index);
+    */
 
 
-    }
     public void endGame(){
 
-    }  */
+    }
 
 
 }
