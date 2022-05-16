@@ -14,16 +14,16 @@ public class RoundStrategyTest {
     String[] playersInfo = {"Giorgio", "SAMURAI", "Marco", "KING", "Dino", "WIZARD"};
     private CloudsManager cloudsManager = new CloudsManager(numberOfPlayer);
     private IslandsManager islandsManager = new IslandsManager();
-    private PlayerManager playerManager = new PlayerManager(numberOfPlayer, playersInfo);
+    private PlayerManager playerManager = new PlayerManager(numberOfPlayer);
     private Bag bag= new Bag();
-    RoundStrategy round = new Round(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+    RoundStrategy round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
     private ArrayList<Integer> color1 = new ArrayList<>();
     private ArrayList<Integer> color2 = new ArrayList<>();
 
     @Test
     @DisplayName("Test if RoundStrategyFactory return the right strategy")
     void roundStrategyFactory(){
-        RoundStrategyFactory factory = new RoundStrategyFactory(numberOfPlayer,playersInfo,cloudsManager,islandsManager,playerManager,bag);
+        RoundStrategyFactory factory = new RoundStrategyFactory(numberOfPlayer,cloudsManager,islandsManager,playerManager,bag);
         RoundStrategy round = factory.getRoundStrategy(1);
         assertEquals("special1", round.getName());
         round = factory.getRoundStrategy(2);
@@ -159,7 +159,7 @@ public class RoundStrategyTest {
     @Test
     @DisplayName("Test if RoundSpecial1's effect is correct")
     void effectRoundSpecial1Test(){
-        RoundStrategy round = new RoundSpecial1(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial1(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
         int studentsNumber = islandsManager.getStudent(0,0);
         color1.add(0);
         if(round.getStudents(0)<=0){
@@ -176,7 +176,7 @@ public class RoundStrategyTest {
     @Test
     @DisplayName("Test if RoundSpecial2's moveStudent is correct")
     void moveStudentSpecial2Test(){
-        RoundStrategy round = new RoundSpecial2(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial2(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
         fastSetConqueror(0,0,0);
         playerManager.setStudentEntrance(1,0);
         playerManager.setStudentEntrance(1,0);
@@ -188,7 +188,7 @@ public class RoundStrategyTest {
     @Test
     @DisplayName("Test if RoundSpecial3' moveMotherNature is correct")
     void moveMotherNatureSpecial3Test(){
-        RoundStrategy round = new RoundSpecial3(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial3(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
         round.queueForPlanificationPhase();
         int motherPos = islandsManager.getMotherPos();
         islandsManager.increaseInhibited(islandsManager.circularArray(islandsManager.getMotherPos(), 1));
@@ -207,7 +207,7 @@ public class RoundStrategyTest {
     @Test
     @DisplayName("Test if RoundSpecial4's moveMotherNature is correct")
     void moveMotherNatureSpecial4Test(){
-        RoundStrategy round = new RoundSpecial4(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial4(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
         round.queueForPlanificationPhase();
         round.playCard(0,0,"LION"); round.playCard(1,1,"GOOSE"); round.playCard(2, 2,"CAT");
         int motherPos = islandsManager.getMotherPos();
@@ -219,7 +219,7 @@ public class RoundStrategyTest {
     @Test
     @DisplayName("Test if roundSpecial5's effect is correct")
     void effectRoundSpecial5Test(){
-        RoundStrategy round = new RoundSpecial5(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial5(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
         round.queueForPlanificationPhase();
         round.playCard(0,0,"LION"); round.playCard(1,1,"GOOSE"); round.playCard(2, 2,"CAT");
         round.moveMotherNature(0,1,-1);
@@ -230,7 +230,7 @@ public class RoundStrategyTest {
     @Test
     @DisplayName("Test if RoundSpecial6's highInfluenceTeam is correct")
     void highInfluenceTeamSpecial6(){
-        RoundStrategy round = new RoundSpecial6(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial6(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
 
         fastSetConqueror(0,0,0);
         round.conquestIsland(0,0,0);
@@ -253,7 +253,7 @@ public class RoundStrategyTest {
     @Test
     @DisplayName("Test if RoundSpecial7's effect is correct")
     void effectRoundSpecial7Test() {
-        RoundStrategy round = new RoundSpecial7(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial7(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
         color1.add(0);
         color2.add(1);
         boolean done = round.effect(0, color1,color2);
@@ -284,7 +284,7 @@ public class RoundStrategyTest {
     @Test
     @DisplayName("Test if RoundSpecial8's highInfluenceTeam is correct")
     void highInfluenceTeamSpecial8(){
-        RoundStrategy round = new RoundSpecial8(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial8(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
 
         fastSetConqueror(0,0,0);
         if(islandsManager.getStudent(0,0)==2) { //influence white=2 stud black=0
@@ -296,7 +296,7 @@ public class RoundStrategyTest {
     @Test
     @DisplayName("Test if RoundSpecial9's highInfluenceTeam is correct")
     void highInfluenceTeamSpecial9(){
-        RoundStrategy round = new RoundSpecial9(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial9(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
 
         fastSetConqueror(0,0,3);
         //influence white=2 stud black=0, block color 3
@@ -312,7 +312,7 @@ public class RoundStrategyTest {
     @Test
     @DisplayName("Test if RoundSpecial10's effect is correct")
     void effectRoundSpecial10Test() {
-        RoundStrategy round = new RoundSpecial10(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial10(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
         color1.add(0);
         color2.add(1);
         boolean done = round.effect(0, color1,color2);
@@ -334,7 +334,7 @@ public class RoundStrategyTest {
     @Test
     @DisplayName("Test if RoundSpecial11's effect is correct")
     void effectRoundSpecial11Test() {
-            RoundStrategy round = new RoundSpecial11(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+            RoundStrategy round = new RoundSpecial11(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
             color1.add(0);
             boolean done = false;
             if (round.getStudents(0) > 0) {
@@ -355,7 +355,7 @@ public class RoundStrategyTest {
     @Test
     @DisplayName("Test if RoundSpecial12's effect is correct")
     void effectRoundSpecial12Test() {
-        RoundStrategy round = new RoundSpecial12(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial12(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
         playerManager.setStudentTable(0,0);
         playerManager.setStudentTable(0,0);
         playerManager.setStudentTable(1,0);

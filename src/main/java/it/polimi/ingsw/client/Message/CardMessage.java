@@ -1,13 +1,13 @@
 package it.polimi.ingsw.client.Message;
 
 public class CardMessage implements Message{
-    private final int card;
+    private final String card;
 
-    public CardMessage(int card) {
+    public CardMessage(String card) {
         this.card = card;
     }
 
-    public int getCard() {
+    public String getCard() {
         return card;
     }
 }

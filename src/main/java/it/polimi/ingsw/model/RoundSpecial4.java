@@ -4,8 +4,8 @@ public class RoundSpecial4 extends RoundStrategy{
 
     Special4 special;
 
-    public RoundSpecial4(int numberOfPlayer, String[] playersInfo, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
-        super(numberOfPlayer,playersInfo, cloudsManager, islandsManager, playerManager, bag);
+    public RoundSpecial4(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
+        super(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
         special = new Special4();
     }
 

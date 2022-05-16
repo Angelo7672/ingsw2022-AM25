@@ -17,12 +17,12 @@ public class Game implements GameManager{
     protected SpecialListener specialListener;
 
 
-    public Game(Boolean expertMode, int numberOfPlayer, String[] playersInfo){
+    public Game(Boolean expertMode, int numberOfPlayer){
         roundStrategies = new ArrayList<>();
         this.numberOfPlayer = numberOfPlayer;
         this.cloudsManager = new CloudsManager(numberOfPlayer);
         this.islandsManager = new IslandsManager();
-        this.playerManager = new PlayerManager(numberOfPlayer, playersInfo);
+        this.playerManager = new PlayerManager(numberOfPlayer);
         this.bag = new Bag();
         indexSpecial = 0;
         refSpecial = -1;
@@ -33,10 +33,10 @@ public class Game implements GameManager{
             for(int j = 0; j < numberOfPlayer; j++)
                 for (int i = 0; i < 9; i++) playerManager.setStudentEntrance(j,bag.extraction());
         }
-        Round round = new Round(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+        Round round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
         roundStrategies.add(round);
         if(expertMode){
-            RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, playersInfo, cloudsManager, islandsManager, playerManager, bag);
+            RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
             ArrayList<Integer> random = new ArrayList<>();
             for(int i=1; i<=12; i++) random.add(i); //riempio con numeri da 1 a 12
             Collections.shuffle(random); //mischio i numeri

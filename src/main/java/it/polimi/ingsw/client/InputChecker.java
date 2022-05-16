@@ -10,7 +10,7 @@ public class InputChecker {
 
 
     public boolean checkSetupConnection(ConnectionMessage message, String nickname, String character){
-        if(message.getRemainingCharacter().contains(character)) return false;
+        //if(message.getRemainingCharacter().contains(character)) return false;
         if(!message.getChosenNickname().contains(nickname)) return false;
         return true;
     }
@@ -33,7 +33,7 @@ public class InputChecker {
         return true;
     }
 
-    public boolean checkCloud(StudentMessage message, int cloud){
+    public boolean checkCloud(IslandMessage message, int cloud){
         if(cloud >= message.getGroup().size()) return false;
         return true;
     }

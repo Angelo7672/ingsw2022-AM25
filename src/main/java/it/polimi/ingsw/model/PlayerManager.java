@@ -17,7 +17,7 @@ public class PlayerManager  {
     protected CoinsListener coinsListener;
     protected StudentsListener studentsListener;
 
-    public PlayerManager(int numberOfPlayer, String[] playersInfo) {
+    public PlayerManager(int numberOfPlayer) {
         players = new ArrayList<>();
         queue = new ArrayList<>();
         this.numberOfPlayer = numberOfPlayer;
@@ -26,25 +26,25 @@ public class PlayerManager  {
         int firstInQueue;
 
         if (numberOfPlayer == 2) {
-            Player g1 = new Player(playersInfo[0], stringToCharacter(playersInfo[1]), Team.WHITE, numberOfPlayer);
+            Player g1 = new Player(Team.WHITE, numberOfPlayer);
             players.add(g1);            //insert the firstPlayer in the player list
-            Player g2 = new Player(playersInfo[2], stringToCharacter(playersInfo[3]), Team.BLACK, numberOfPlayer);
+            Player g2 = new Player(Team.BLACK, numberOfPlayer);
             players.add(g2);
         } else if (numberOfPlayer == 3) {
-            Player g1 = new Player(playersInfo[0], stringToCharacter(playersInfo[1]), Team.WHITE, numberOfPlayer);
+            Player g1 = new Player(Team.WHITE, numberOfPlayer);
             players.add(g1);
-            Player g2 = new Player(playersInfo[2], stringToCharacter(playersInfo[3]), Team.BLACK, numberOfPlayer);
+            Player g2 = new Player(Team.BLACK, numberOfPlayer);
             players.add(g2);
-            Player g3 = new Player(playersInfo[4], stringToCharacter(playersInfo[5]), Team.GREY, numberOfPlayer);
+            Player g3 = new Player(Team.GREY, numberOfPlayer);
             players.add(g3);
         } else if (numberOfPlayer == 4) {
-            Player g1 = new Player(playersInfo[0], stringToCharacter(playersInfo[1]), Team.WHITE, numberOfPlayer);
+            Player g1 = new Player(Team.WHITE, numberOfPlayer);
             players.add(g1);
-            Player g2 = new Player(playersInfo[2], stringToCharacter(playersInfo[3]), Team.WHITE, numberOfPlayer);
+            Player g2 = new Player(Team.WHITE, numberOfPlayer);
             players.add(g2);
-            Player g3 = new Player(playersInfo[4], stringToCharacter(playersInfo[5]), Team.BLACK, numberOfPlayer);
+            Player g3 = new Player(Team.BLACK, numberOfPlayer);
             players.add(g3);
-            Player g4 = new Player(playersInfo[6], stringToCharacter(playersInfo[7]), Team.BLACK, numberOfPlayer);
+            Player g4 = new Player(Team.BLACK, numberOfPlayer);
             players.add(g4);
         }
         //The first player is chosen randomly, then queueForPlanificationPhase order the queue.
@@ -304,17 +304,12 @@ public class PlayerManager  {
     }
 
     private class Player {
-        private final String nickname;  //limited to 10 characters
-        private final Character character;
         private final Team team;
         private int coins;
-        //private Assistant lastCard;     //questo forse ha senso metterlo nel controller (mettere li' una board)
         private List<Assistant> hand;
         private School school;
 
-        private Player(String nickname, Character character, Team team, int numberOfPlayer) {
-            this.nickname = nickname.substring(Math.min(nickname.length(), 10));
-            this.character = character;
+        private Player(Team team, int numberOfPlayer) {
             this.team = team;
             this.coins = 1;
             this.hand = new ArrayList<>();

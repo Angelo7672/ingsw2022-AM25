@@ -1,20 +1,24 @@
 package it.polimi.ingsw.controller;
+
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameManager;
 
-public class Controller {
+import java.util.ArrayList;
 
-    private RoundController roundController;
+public class Controller implements ServerController{
     private String[] chosenAssistants;
     private VirtualView virtualView;
     private GameManager gameManager;
+    private boolean expertMode;
+    private int numberOfPlayers;
     private int[] specials;
 
 
-    public Controller(int numberOfPlayers, boolean isExpert, String[] playersInfo){
-        roundController = new RoundController(isExpert, numberOfPlayers, playersInfo, this);
-        virtualView = new VirtualView(numberOfPlayers , specials);
-        gameManager = new Game(isExpert, numberOfPlayers, playersInfo);
+    public Controller(int numberOfPlayers, boolean isExpert){
+        this.numberOfPlayers = numberOfPlayers;
+        this.expertMode = isExpert;
+        this.gameManager = new Game(isExpert, numberOfPlayers);
+        this.virtualView = new VirtualView(numberOfPlayers, specials);
 
         gameManager.setStudentsListener(virtualView);
         gameManager.setTowerListener(virtualView);
@@ -25,7 +29,45 @@ public class Controller {
         gameManager.setMotherPositionListener(virtualView);
         gameManager.setIslandSizeListener(virtualView);
         gameManager.setInhibitedListener(virtualView);
+    }
 
+
+    //Planning Phase
+    @Override
+    public boolean refreshStudentsCloud(){ return gameManager.refreshStudentsCloud(); }
+    @Override
+    public void queueForPlanificationPhase(){ gameManager.queueForPlanificationPhase(); }
+    @Override
+    public int readQueue(int pos){ return gameManager.readQueue(pos); }
+    @Override
+    public ArrayList<String> getHand(int playerRef){
+        //metodo di virtula view per avere la mano di carte
+    }
+    @Override
+    public ArrayList<String> getPlayedCardsInThisTurn(){
+        //metodo di virtual view per avere tutte le last card di questo turno
+    }
+    @Override
+    public void playCard(int playerRef,int currentPlayer,String chosenAssistants){
+        gameManager.playCard(playerRef, currentPlayer, chosenAssistants);
+        //metodo per aggiornare virtual view-> last card
+    }
+    public String oneLastRide(){ return gameManager.oneLastRide(); }
+
+    //Action Phase
+    @Override
+    public void inOrderForActionPhase(){ gameManager.inOrderForActionPhase(); }
+    @Override
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef){
+        gameManager.moveStudent(playerRef,colour,inSchool,islandRef);
+    }
+    @Override
+    public boolean moveMotherNature(int queueRef, int desiredMovement){
+        gameManager.moveMotherNature(queueRef,desiredMovement);
+    }
+    @Override
+    public void chooseCloud(int playerRef, int cloudRef){
+        gameManager.chooseCloud(playerRef,cloudRef);
     }
 
 

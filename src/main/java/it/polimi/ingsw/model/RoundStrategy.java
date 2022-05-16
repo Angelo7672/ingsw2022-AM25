@@ -10,7 +10,7 @@ public abstract class RoundStrategy {
     public Bag bag;
     public int numberOfPlayer;
 
-    public RoundStrategy(int numberOfPlayer, String[] playersInfo, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
+    public RoundStrategy(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
         this.numberOfPlayer=numberOfPlayer;
         this.bag = bag;
         this.cloudsManager = cloudsManager;

@@ -10,8 +10,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class Proxy_c implements Exit{
     private final String address;
@@ -78,7 +76,7 @@ public class Proxy_c implements Exit{
         }
     }
 
-    public boolean playCard(int card) throws IOException, ClassNotFoundException {
+    public boolean playCard(String card) throws IOException, ClassNotFoundException {
         if(!checker.checkCard((CardsMessage) tempObj, card)){
             return false;
         }
@@ -121,7 +119,7 @@ public class Proxy_c implements Exit{
     }
 
     public boolean chooseCloud(int cloud) throws IOException, ClassNotFoundException {
-        if(!checker.checkCloud((StudentMessage) inputStream.readObject(), cloud)) return false;
+        if(!checker.checkCloud((IslandMessage) inputStream.readObject(), cloud)) return false;
         send(new ChosenCloud(cloud));
         tempObj = (Answer) inputStream.readObject();
         if(tempObj.getMessage().equals("ok")) return true;
