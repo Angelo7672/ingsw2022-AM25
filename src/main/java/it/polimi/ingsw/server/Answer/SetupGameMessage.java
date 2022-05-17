@@ -1,16 +1,15 @@
 package it.polimi.ingsw.server.Answer;
 
-import it.polimi.ingsw.constants.Constants;
-
 public class SetupGameMessage implements Answer{
     private final String message;
 
-    public SetupGameMessage(String message) {
+    public SetupGameMessage(String message){
+
         this.message = message;
     }
 
     @Override
     public String getMessage() {
-        return message;
+        return null;
     }
 }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.Message.*;
-import it.polimi.ingsw.constants.Constants;
 import it.polimi.ingsw.server.Answer.*;
 
 import java.io.IOException;
@@ -10,8 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+
 
 public class Proxy_c implements Entrance{
     private final String address;
