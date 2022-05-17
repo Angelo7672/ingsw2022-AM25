@@ -7,16 +7,18 @@
 
 ## Implemented functionalities
 
-| Functionality      |                      State                         |
-|:-------------------|:--------------------------------------------------:|
-| Basic rules        | 🟡 |
-| Complete rules     | 🟡 |
-| Socket             | 🔴 |
-| GUI                | 🔴 |
-| CLI                | 🔴 |
-| Special Characters | 🟡 |
-| 4-players Game     | 🟡 |
-| Multiple Games     | 🔴 |
+| Functionality                |                      State                         |
+|:-----------------------------|:--------------------------------------------------:|
+| Basic rules                  | 🟡 |
+| Complete rules               | 🟡 |
+| Socket                       | 🟡 |
+| GUI                          | 🔴 |
+| CLI                          | 🟡 |
+| Special Characters           | 🟡 |
+| 4-players Game               | 🟡 |
+| Multiple Games               | 🔴 |
+| Persistence                  | 🟡 |
+| Resilience to disconnections | 🔴 |
 
 
 🔴 not implemented <br>
