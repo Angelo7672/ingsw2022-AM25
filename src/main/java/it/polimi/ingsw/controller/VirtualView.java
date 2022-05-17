@@ -2,12 +2,13 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.listeners.*;
 
+import java.io.*;
 import java.util.ArrayList;
 
 //virtual View class listen to changes in model classes through specific listener interfaces
 public class VirtualView
         implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
-        MotherPositionListener, IslandSizeListener, CoinsListener, StudentsListener, InhibitedListener
+        MotherPositionListener, IslandSizeListener, CoinsListener, StudentsListener, InhibitedListener, Serializable
 {
 
     private ArrayList<SchoolBoard> schoolBoards;
@@ -36,6 +37,36 @@ public class VirtualView
         }
 
     }
+
+    public void saveToFile(String fileName){
+        try{
+            ObjectOutputStream outputFile= new ObjectOutputStream(new FileOutputStream(fileName));
+            outputFile.writeObject(this);
+            outputFile.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+    //nel controller
+    String gameStateFile = "gameStateFile.bin";
+
+    public void restoreVirtualView(String fileName){
+        VirtualView virtualView;
+        try{
+            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
+            this.virtualView = (VirtualView) inputFile.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    */
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
@@ -103,11 +134,15 @@ public class VirtualView
 
     //private class SchoolBoard keeps the state of each player's school board
     private class SchoolBoard {
+        String nickname;
+        String wizard;
+        int team;
+
         int[] studentsEntrance = new int[]{0, 0, 0, 0, 0};
         int[] studentsTable = new int[]{0, 0, 0, 0, 0};
         int towersNumber;
         boolean[] professors = new boolean[]{false, false, false, false, false};
-        int team;
+
         
         public void setStudentsEntrance(int color, int newValue){
             this.studentsEntrance[color]=newValue;
@@ -122,8 +157,16 @@ public class VirtualView
         public void setProfessors(int color, boolean newValue) {
             this.professors[color] = newValue;
         }
+        public void setNickname(String nickname){
+            this.nickname = nickname;
+        }
 
-
+        public void setWizard(String wizard) {
+            this.wizard = wizard;
+        }
+        public void setTeam(int team) {
+            this.team = team;
+        }
     }
     private class Island{
         int[] studentsIsland= new int[]{0,0,0,0,0};
