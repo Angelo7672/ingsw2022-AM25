@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.Answer.*;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -20,6 +21,7 @@ public class VirtualClient implements Runnable{
 
     public VirtualClient(Socket socket, Entrance server, Proxy_s proxy, int playerRef){
         this.socket = socket;
+
         this.server = server;
         this.proxy = proxy;
         this.playerRef = playerRef;
@@ -37,21 +39,24 @@ public class VirtualClient implements Runnable{
     public void run() {
         Message tmp;
 
-        while (!victory || ...){
-            try {
-                tmp = (Message) input.readObject();
-                if (tmp instanceof PingMessage) {
-                    //TODO: mandare alla classe Pong
-                } else if (tmp instanceof CardMessage) {
-                    planningPhase((CardMessage) tmp);
-                }else if(tmp instanceof MoveStudent || tmp instanceof UseSpecial){
-                    actionPhase(tmp);
-                } else if (tmp instanceof GenericMessage) {
-                    if (proxy.getConnections_allowed() == 1) gameSetting(tmp);
-                    loginClient(tmp);
+        try {
+            this.socket.setSoTimeout(15000);
+            while (!victory || ...){
+                try {
+                    tmp = (Message) input.readObject();
+                    if (tmp instanceof PingMessage) {
+                        //setssockettimoeuot
+                    } else if (tmp instanceof CardMessage) {
+                        planningPhase((CardMessage) tmp);
+                    } else if (tmp instanceof MoveStudent || tmp instanceof UseSpecial) {  //da sistemare
+                        actionPhase(tmp);
+                    } else if (tmp instanceof GenericMessage) {
+                        if (proxy.getConnections_allowed() == 1) gameSetting(tmp);
+                        loginClient(tmp);
+                    }
                 }
             }
-        }
+        }catch (SocketException)
     }
 
 

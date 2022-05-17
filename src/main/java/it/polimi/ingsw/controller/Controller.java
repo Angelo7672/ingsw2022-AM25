@@ -50,7 +50,6 @@ public class Controller implements ServerController{
     @Override
     public void playCard(int playerRef,int currentPlayer,String chosenAssistants){
         gameManager.playCard(playerRef, currentPlayer, chosenAssistants);
-        //metodo per aggiornare virtual view-> last card
     }
     public String oneLastRide(){ return gameManager.oneLastRide(); }
 

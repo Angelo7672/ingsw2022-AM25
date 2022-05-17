@@ -24,6 +24,7 @@ import java.util.ArrayList;
         @Override
         public void userLogin(String nickname, String character, int playerRef){
             //metodo per andare a modificare nick-char in virtual view
+            //mandare anche il team
         }
 
         private void planningPhase(){   //OPPURE NEL CONTROLLER?
