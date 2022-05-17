@@ -10,20 +10,23 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
-public class Proxy_c implements Exit{
+public class Proxy_c implements Entrance{
     private final String address;
     private final int port;
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
     private Socket socket;
-    private InputChecker checker;
+    private final InputChecker checker;
     private Answer tempObj;
     private Thread ping;
+    private Exit cli;
 
-    public Proxy_c() throws IOException {
-        this.address = Constants.getAddress();
-        this.port = Constants.getPort();
+    public Proxy_c() {
+        this.address = "127.0.0.1";
+        this.port = 2525;
         checker = new InputChecker();
     }
 
@@ -41,28 +44,29 @@ public class Proxy_c implements Exit{
 
     public boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
         inputStream = new ObjectInputStream(socket.getInputStream());
-        tempObj = (Answer) inputStream.readObject();
+        ConnectionMessage message = (ConnectionMessage) inputStream.readObject();
+        if(message.getNumberOfPlayers()==0) cli.setupGame();
         if(!checker.checkSetupConnection((ConnectionMessage) tempObj, nickname, character)) return false;
         send(new SetupConnection(nickname, character));
         tempObj = (Answer) inputStream.readObject();
-        if(!((ConnectionMessage) inputStream.readObject()).getMessage().equalsIgnoreCase("ok")) return false;
+        if(!tempObj.getMessage().equalsIgnoreCase("ok")) return false;
         System.out.println("SetupConnection done");
         return true;
     }
 
-    public boolean setupGame(int numberOfPlayers, String expertMode){
+    public boolean setupGame(int numberOfPlayers, String expertMode) throws IOException {
+        boolean isExpert;
         if(numberOfPlayers<2 || numberOfPlayers >4){
             System.out.println("Player must be between 2 and 4");
             return false;
         }
-        if(expertMode.toLowerCase().equals("y")) Constants.setExpertMode(true);
-        else if(expertMode.toLowerCase().equals("n")) Constants.setExpertMode((false));
+        if(expertMode.equalsIgnoreCase("y")) isExpert = true;
+        else if(expertMode.equalsIgnoreCase("n")) isExpert = false;
         else {
             System.out.println("error, insert y or n");
             return false;
         }
-        Constants.setNumberOfPlayers(numberOfPlayers);
-        //send(new SetupGame(numberOfPlayers, expertMode));
+        send(new SetupGame(numberOfPlayers, isExpert));
         return true;
     }
 
@@ -82,8 +86,17 @@ public class Proxy_c implements Exit{
         }
         send(new CardMessage(card));
         tempObj = (Answer) inputStream.readObject();
-        if(tempObj.getMessage().equals("ok")) return true;
-        return false;
+        return tempObj.getMessage().equals("ok");
+    }
+
+    public boolean startActionPhase() throws IOException, ClassNotFoundException {
+        send(new GenericMessage("Ready for actionPhase"));
+        while(true) {
+            tempObj = (Answer) inputStream.readObject();
+            if(tempObj.getMessage().equals("ok it's your turn")){
+                return true;
+            }
+        }
     }
 
     public boolean moveStudent(int color, String where, int islandRef) throws IOException, ClassNotFoundException {
@@ -92,8 +105,8 @@ public class Proxy_c implements Exit{
             return false;
         }
         boolean inSchool;
-        if (where.toLowerCase().equals("school")) inSchool = true;
-        else if(where.toLowerCase().equals("island")) inSchool = false;
+        if (where.equalsIgnoreCase("school")) inSchool = true;
+        else if(where.equalsIgnoreCase("island")) inSchool = false;
         else {
             System.out.println("Error, try again");
             return false;
@@ -110,7 +123,8 @@ public class Proxy_c implements Exit{
     }
 
     public boolean moveMotherNature(int steps) throws IOException, ClassNotFoundException {
-        if(!checker.checkMoveMotherNature((MoveMotherNatureMessage) inputStream.readObject(), steps)) return false;
+        /*tempObj = (Answer) inputStream.readObject();
+        if(!checker.checkMoveMotherNature((MoveMotherNatureMessage) tempObj, steps)) return false;*/
         send(new MoveMotherNature(steps));
         tempObj = (Answer) inputStream.readObject();
         if (tempObj.getMessage().equals("ok")) return true;
@@ -119,7 +133,7 @@ public class Proxy_c implements Exit{
     }
 
     public boolean chooseCloud(int cloud) throws IOException, ClassNotFoundException {
-        if(!checker.checkCloud((IslandMessage) inputStream.readObject(), cloud)) return false;
+        //if(!checker.checkCloud((StudentMessage) inputStream.readObject(), cloud)) return false;
         send(new ChosenCloud(cloud));
         tempObj = (Answer) inputStream.readObject();
         if(tempObj.getMessage().equals("ok")) return true;
@@ -130,17 +144,14 @@ public class Proxy_c implements Exit{
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
         send(new CheckSpecial(special));
         tempObj = (SpecialMessage) inputStream.readObject();
-        if(tempObj.getMessage().equals("special accept")) return true;
-
-        return false;
+        return tempObj.getMessage().equals("ok");
     }
 
     public boolean useSpecial(int special, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException {
         if(!checker.checkSpecial(special, ref, color1, color2, (SpecialMessage) tempObj)) return false;
         send(new UseSpecial(special, ref, color1, color2));
         tempObj = (Answer) inputStream.readObject();
-        if(tempObj.getMessage().equals("ok")) return true;
-        return false;
+        return tempObj.getMessage().equals("ok");
     }
 
     //send message to the server
@@ -179,6 +190,21 @@ public class Proxy_c implements Exit{
 
     private void stopPing(){
         ping.interrupt();
+    }
+
+    public void actionHandler() throws IOException, ClassNotFoundException {
+        tempObj = (Answer) inputStream.readObject();
+        if(tempObj instanceof CardsMessage) cli.phaseHandler("PlayCard");
+
+    }
+
+    private Answer inputMessage() throws IOException, ClassNotFoundException {
+        tempObj = (Answer) inputStream.readObject();
+        //while true
+        //if answer instanceof viewUpdate chiama metodo view
+        //else return answer
+
+        return tempObj;
     }
 
 

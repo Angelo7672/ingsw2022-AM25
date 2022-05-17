@@ -1,19 +1,16 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.constants.Constants;
-import it.polimi.ingsw.constants.PlayerConstants;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class CLI implements Runnable {
+public class CLI implements Runnable, Exit {
 
-    private Proxy_c proxy;
-    private Scanner scanner;
+    private Entrance proxy;
+    private final Scanner scanner;
     private boolean active;
-    private PlayerConstants constants;
+    private final PlayerConstants constants;
 
 
     public CLI() {
@@ -23,32 +20,16 @@ public class CLI implements Runnable {
     }
 
     public void setup() throws IOException, ClassNotFoundException {
-        System.out.println(">Insert the server IP address: ");
+        /*System.out.println(">Insert the server IP address: ");
         System.out.print(">");
         String address = scanner.next();
         System.out.println(">Insert the server port: ");
         System.out.print(">");
-        int port = scanner.nextInt();
-        Constants.setAddress(address);
-        Constants.setPort(port);
+        int port = scanner.nextInt();*/
         proxy = new Proxy_c();
         if (!proxy.start()) {
             System.out.println("Some errors occurred, try again.");
             Client.main(null);
-        }
-        if(Constants.getNumberOfPlayers()==0){
-            while(true) {
-                try {
-                    System.out.println("Insert number of player");
-                    int numberOfPlayers = scanner.nextInt();
-                    System.out.println("Expert mode? [y/n]");
-                    String expertMode = scanner.next();
-                    if (proxy.setupGame(numberOfPlayers, expertMode)) break;
-                } catch (InputMismatchException e) {
-                    System.out.println("Mismatch error");
-                    Client.main(null);
-                }
-            }
         }
         while (true) {
             String nickname;
@@ -65,30 +46,43 @@ public class CLI implements Runnable {
         }
     }
 
+    @Override
+    public void setupGame(){
+        while(true) {
+            try {
+                System.out.println("Insert number of player");
+                int numberOfPlayers = scanner.nextInt();
+                System.out.println("Expert mode? [y/n]");
+                String expertMode = scanner.next();
+                if (proxy.setupGame(numberOfPlayers, expertMode)) break;
+            } catch (InputMismatchException | IOException e) {
+                System.out.println("Mismatch error");
+                Client.main(null);
+            }
+        }
+    }
+
     public void setActive(boolean active) {
         this.active = active;
     }
 
     public void turn() throws IOException, ClassNotFoundException {
         scanner.reset();
-        if (!constants.isSpecialUsed()) useSpecial();
+        if (!constants.isSpecialUsed() && constants.isActionPhaseStarted()) useSpecial();
         phaseHandler(constants.lastPhase());
     }
 
     public void phaseHandler(String phase) throws IOException, ClassNotFoundException {
-        switch (phase) {
-            case ("PlayCard"):
-                playCard();
-                break;
-            case ("MoveStudent"):
-                moveStudents();
-                break;
-            case ("MoveMother"):
-                moveMotherNature();
-                break;
-            case ("ChoseCloud"):
-                chooseCloud();
-                break;
+        if(phase.equals("PlayCard")) playCard();
+        else if(!constants.isActionPhaseStarted()) {
+            constants.setActionPhaseStarted(proxy.startActionPhase());
+        }
+        else {
+            switch (phase) {
+                case ("MoveStudent") -> moveStudents();
+                case ("MoveMother") -> moveMotherNature();
+                case ("ChoseCloud") -> chooseCloud();
+            }
         }
     }
 
@@ -113,8 +107,9 @@ public class CLI implements Runnable {
     }
 
     private boolean special(int special) throws IOException, ClassNotFoundException {
-        if (special == 2 || special == 4 || special == 6 || special == 8)
-            if(proxy.useSpecial(special, 0, null, null)) return true;
+        if (special == 2 || special == 4 || special == 6 || special == 8) {
+            return proxy.useSpecial(special, 0, null, null);
+        }
         else if (special == 1) {
             System.out.println("Which student do you want to move? Insert color");
             String color = scanner.next();
@@ -126,14 +121,14 @@ public class CLI implements Runnable {
                 System.out.println("In witch island? Insert the number");
                 island = scanner.nextInt();
             } while (island == -1);
-            if(proxy.useSpecial(special, island, color1, null)) return true;
+            return proxy.useSpecial(special, island, color1, null);
         } else if (special == 3 || special == 5) {
             int island =-1;
             do {
                 System.out.println("Which island? Insert the number");
                 island = scanner.nextInt();
             } while(island==-1);
-            if(proxy.useSpecial(special, island, null, null)) return true;
+            return proxy.useSpecial(special, island, null, null);
         } else if(special == 7){
             ArrayList<Integer> entranceStudents = new ArrayList<>();
             ArrayList<Integer> cardStudents = new ArrayList<>();
@@ -158,7 +153,7 @@ public class CLI implements Runnable {
             System.out.println("Which color?");
             String color = scanner.next();
             if(translateColor(color)==-1) return false;
-            if(proxy.useSpecial(special, translateColor(color), null, null)) return true;
+            return proxy.useSpecial(special, translateColor(color), null, null);
         } else if(special == 10){
             ArrayList<Integer> entranceStudents = new ArrayList<>();
             ArrayList<Integer> tableStudents = new ArrayList<>();
@@ -178,28 +173,28 @@ public class CLI implements Runnable {
                     if (answer.equalsIgnoreCase("n")) break;
                 }
             }
-            if(proxy.useSpecial(special, 0, entranceStudents, tableStudents)) return true;
+            return proxy.useSpecial(special, 0, entranceStudents, tableStudents);
         } else if(special==11){
             System.out.println("Which student do you want to move? Insert color");
             String color = scanner.next();
             if(translateColor(color)==-1) return false;
             ArrayList<Integer> color1 = new ArrayList<>();
             color1.add(translateColor(color));
-            if(proxy.useSpecial(special, -1, color1, null)) return true;
+            return proxy.useSpecial(special, -1, color1, null);
         } else if(special==12){
             System.out.println("Which color? Insert color");
             String color = scanner.next();
             if(translateColor(color)==-1) return false;
-            if(proxy.useSpecial(special, translateColor(color), null, null)) return true;
+            return proxy.useSpecial(special, translateColor(color), null, null);
         }
         return false;
     }
 
     public void playCard() throws IOException, ClassNotFoundException {
         System.out.println("Which card do you want to play? Insert the card number");
-        int card;
+        String card;
         try {
-            card = scanner.nextInt();
+            card = scanner.next();
         } catch (InputMismatchException e) {
             System.out.println("Error, try again");
             return;
@@ -226,9 +221,7 @@ public class CLI implements Runnable {
                 if (proxy.moveStudent(colorInt, where, islandRef)) finished = true;
             } catch (InputMismatchException e) {
                 System.out.println("Error, try again");
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         } while (!finished);
@@ -289,20 +282,14 @@ public class CLI implements Runnable {
     }
 
     private int translateColor(String color) {
-        switch (color.toLowerCase()) {
-            case ("green"):
-                return 0;
-            case ("red"):
-                return 1;
-            case ("yellow"):
-                return 2;
-            case ("pink"):
-                return 3;
-            case ("blue"):
-                return 4;
-            default:
-                return -1;
-        }
+        return switch (color.toLowerCase()) {
+            case ("green") -> 0;
+            case ("red") -> 1;
+            case ("yellow") -> 2;
+            case ("pink") -> 3;
+            case ("blue") -> 4;
+            default -> -1;
+        };
 
 
     }

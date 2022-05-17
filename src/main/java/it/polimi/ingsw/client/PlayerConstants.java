@@ -1,7 +1,8 @@
-package it.polimi.ingsw.constants;
+package it.polimi.ingsw.client;
 
 public class PlayerConstants {//Meglio farle attivare/disattivare da server
     private boolean cardPlayed;
+    private boolean actionPhaseStarted;
     private boolean studentMoved;
     private boolean specialUsed;
     private boolean motherMoved;
@@ -10,6 +11,7 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
 
     public PlayerConstants(){
         this.cardPlayed = true;
+        this.actionPhaseStarted = true;
         this.studentMoved = true;
         this.specialUsed = true;
         this.motherMoved = true;
@@ -23,6 +25,14 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
 
     public void setCardPlayed(boolean cardPlayed) {
         this.cardPlayed = cardPlayed;
+    }
+
+    public boolean isActionPhaseStarted() {
+        return actionPhaseStarted;
+    }
+
+    public void setActionPhaseStarted(boolean actionPhaseStarted) {
+        this.actionPhaseStarted = actionPhaseStarted;
     }
 
     public boolean isStudentMoved() {
@@ -65,6 +75,7 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
         this.endTurn = endTurn;
     }
 
+
     public String lastPhase(){
         if(!isCardPlayed()) return "PlayCard";
         if(!isStudentMoved()) return "MoveStudent";
@@ -75,10 +86,13 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
 
     public void resetAll(){
         this.cardPlayed = false;
+        this.actionPhaseStarted = false;
         this.studentMoved = false;
         this.specialUsed = false;
         this.motherMoved = false;
         this.cloudChosen = false;
         this.endTurn = false;
     }
+
+
 }

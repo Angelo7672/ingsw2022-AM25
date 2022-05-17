@@ -1,26 +1,41 @@
 package it.polimi.ingsw.server.Answer;
 
+import java.util.ArrayList;
+
 public class ConnectionMessage implements Answer{
-    private final String chosenNickname;
-    private final String Character;
+    private final ArrayList<String> chosenNickname;
+    private final ArrayList<String> remainingCharacter;
     private final String message;
+    private final boolean isExpert;
+    private final int numberOfPlayers;
 
-    public ConnectionMessage(String chosenNickname, String remainingCharacter, String message) {
+
+    public ConnectionMessage(ArrayList<String> chosenNickname, ArrayList<String> remainingCharacter, String message, boolean isExpert, int numberOfPlayers) {
         this.chosenNickname = chosenNickname;
-        this.Character = remainingCharacter;
+        this.remainingCharacter = remainingCharacter;
         this.message = message;
+        this.isExpert = isExpert;
+        this.numberOfPlayers = numberOfPlayers;
     }
 
-    public String getCharacter() {
-        return Character;
+    public ArrayList<String> getRemainingCharacter() {
+        return remainingCharacter;
     }
 
-    public String getChosenNickname() {
+    public ArrayList<String> getChosenNickname() {
         return chosenNickname;
     }
 
     @Override
     public String getMessage() {
         return message;
+    }
+
+    public boolean isExpert() {
+        return isExpert;
+    }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
     }
 }

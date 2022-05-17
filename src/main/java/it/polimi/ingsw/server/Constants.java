@@ -1,6 +1,6 @@
-package it.polimi.ingsw.constants;
+package it.polimi.ingsw.server;
 
-public class Constants {
+class Constants {
     private static String address;
     private static int port;
     private static boolean expertMode = false;

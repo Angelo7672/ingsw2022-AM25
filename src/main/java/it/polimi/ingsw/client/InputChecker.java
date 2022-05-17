@@ -15,10 +15,9 @@ public class InputChecker {
         return true;
     }
 
-    public boolean checkCard(CardsMessage message, int card){
-        if(message.getHand().size()>=card) return false;
-        if(!message.getPlayedCards().contains(message.getHand().get(card))) return false;
-        return true;
+    public boolean checkCard(CardsMessage message, String card){
+        //if(message.getHand().size()>=card) return false;
+        return !message.getPlayedCards().contains(card);
     }
 
     public boolean checkMoveStudent(SchoolMessage message, int color, boolean inSchool){
