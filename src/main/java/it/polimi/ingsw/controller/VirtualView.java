@@ -16,6 +16,7 @@ public class VirtualView
     private ArrayList<Cloud> clouds;
     private ArrayList<Hand> hands;
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
+    private ArrayList<String> playedCards;
 
 
 
@@ -25,6 +26,7 @@ public class VirtualView
         this.clouds = new ArrayList<>();
         this.islands = new ArrayList<>();
         this.specials = new ArrayList<>();
+        this.playedCards = new ArrayList<>();
 
 
         for(int i=0; i<numberOfPlayers; i++){
@@ -37,36 +39,10 @@ public class VirtualView
         }
 
     }
-
-    public void saveToFile(String fileName){
-        try{
-            ObjectOutputStream outputFile= new ObjectOutputStream(new FileOutputStream(fileName));
-            outputFile.writeObject(this);
-            outputFile.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public String getLastPlayedCard(int playerRef){
+        return hands.get(playerRef).lastPlayedCard;
     }
-    /*
-    //nel controller
-    String gameStateFile = "gameStateFile.bin";
 
-    public void restoreVirtualView(String fileName){
-        VirtualView virtualView;
-        try{
-            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
-            this.virtualView = (VirtualView) inputFile.readObject();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-    */
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
@@ -157,10 +133,10 @@ public class VirtualView
         public void setProfessors(int color, boolean newValue) {
             this.professors[color] = newValue;
         }
+
         public void setNickname(String nickname){
             this.nickname = nickname;
         }
-
         public void setWizard(String wizard) {
             this.wizard = wizard;
         }
@@ -219,6 +195,7 @@ public class VirtualView
         public void setLastCard(String lastPlayedCard) {
             this.lastPlayedCard=lastPlayedCard;
         }
+        public String getLastCard(){ return lastPlayedCard;}
 
         public void setNumberOfCards(int numberOfCards) {
             this.numberOfCards=numberOfCards;

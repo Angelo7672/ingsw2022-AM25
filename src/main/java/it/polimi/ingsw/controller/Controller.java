@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameManager;
 
+import java.io.*;
 import java.util.ArrayList;
 
 public class Controller implements ServerController{
@@ -67,6 +68,34 @@ public class Controller implements ServerController{
     @Override
     public void chooseCloud(int playerRef, int cloudRef){
         gameManager.chooseCloud(playerRef,cloudRef);
+    }
+
+    public void saveVirtualView(String fileName){
+        try{
+            //File gameStateFile = new File(fileName);
+            //gameStateFile.createNewFile();
+
+            ObjectOutputStream outputFile= new ObjectOutputStream(new FileOutputStream(fileName, false));
+            outputFile.writeObject(this.virtualView);
+            outputFile.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void restoreVirtualView(String fileName){
+        try{
+            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
+            this.virtualView = (VirtualView) inputFile.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 
