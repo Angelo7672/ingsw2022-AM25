@@ -82,6 +82,7 @@ public class Controller implements ServerController{
     }
 
     public String oneLastRide(){ return gameManager.oneLastRide(); }
+
     public void saveVirtualView(String fileName){
         try{
             //File gameStateFile = new File(fileName);
