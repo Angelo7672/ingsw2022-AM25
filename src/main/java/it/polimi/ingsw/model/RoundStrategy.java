@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.exception.NotAllowedException;
+
 import java.util.ArrayList;
 
 public abstract class RoundStrategy {
@@ -41,11 +43,11 @@ public abstract class RoundStrategy {
 
     protected boolean conquestIsland(int islandRef, int noColor, int playerRef){
         Team teamStronger = highInfluenceTeam(islandRef, noColor, playerRef);
-        Team teamWeaker = Team.NOONE;
+        Team teamWeaker = Team.NONE;
         int[] infoTower;    //in the first cell there is the number of towers built, in the second there is the previous owner of the towers
         boolean victory1 = false, victory2 = false;
 
-        if(teamStronger != Team.NOONE){
+        if(teamStronger != Team.NONE){
             infoTower = islandsManager.towerChange(islandRef,teamStronger);
             victory1 = islandsManager.checkVictory();
             victory2 = playerManager.removeTower(teamStronger,infoTower[0]);
@@ -91,7 +93,7 @@ public abstract class RoundStrategy {
         } else if (influenceTeamWHITE < influenceTeamGREY){
             if (influenceTeamBLACK < influenceTeamGREY) return Team.GREY;
         }
-        return Team.NOONE;
+        return Team.NONE;
     }
 
     public boolean moveMotherNature(int queueRef, int desiredMovement, int ref) {
@@ -154,8 +156,13 @@ public abstract class RoundStrategy {
 
     public String oneLastRide(){ return toString(playerManager.checkVictory()); }
 
-    public void chooseCloud(int playerRef,int cloudRef){
-        for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef, cloudsManager.removeStudents(cloudRef)[i]);
+    public void chooseCloud(int playerRef,int cloudRef) throws NotAllowedException {
+        int[] students;
+
+        try {
+            students = cloudsManager.removeStudents(cloudRef);
+            for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef,students[i]);
+        }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
     public void effect(){}
     public boolean effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){return false;}

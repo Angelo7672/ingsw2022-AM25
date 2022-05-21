@@ -106,7 +106,7 @@ public class RoundStrategyTest {
     void highInfluenceTeamTest(){
         Team teamStronger;
         teamStronger = round.highInfluenceTeam(0,0,0);
-        assertEquals(NOONE, teamStronger);
+        assertEquals(NONE, teamStronger);
 
         fastSetConqueror(0,0,0);
         teamStronger = round.highInfluenceTeam(0,0,0);
@@ -289,7 +289,7 @@ public class RoundStrategyTest {
         fastSetConqueror(0,0,0);
         if(islandsManager.getStudent(0,0)==2) { //influence white=2 stud black=0
             round.conquestIsland(0, 0, 1);
-            assertEquals(NOONE, islandsManager.getTowerTeam(0));
+            assertEquals(NONE, islandsManager.getTowerTeam(0));
         }
     }
 
@@ -301,7 +301,7 @@ public class RoundStrategyTest {
         fastSetConqueror(0,0,3);
         //influence white=2 stud black=0, block color 3
         round.conquestIsland(0,3,0);
-        assertEquals(NOONE,islandsManager.getTowerTeam(0));
+        assertEquals(NONE,islandsManager.getTowerTeam(0));
 
         //influence white=2 stud black=0, no block
         round.conquestIsland(0,-1,0);

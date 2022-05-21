@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.listeners.StudentsListener;
+import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;
 
@@ -44,14 +45,19 @@ public class CloudsManager{
     }
 
     // given the index of a cloud, it empties the cloud and returns the array of the students on the cloud
-    public int[] removeStudents(int cloudIndex) {
+    public int[] removeStudents(int cloudIndex) throws NotAllowedException {
         int[] students = new int[5];
+        boolean checker = false;
 
         for (int i = 0; i < 5; i++) {
+            if(clouds.get(cloudIndex).getColour(i) != 0) checker = true;
             students[i]=clouds.get(cloudIndex).getColour(i);
             clouds.get(cloudIndex).removeColour(i);
             this.studentsListener.notifyStudentsChange(3, cloudIndex, i,clouds.get(cloudIndex).getColour(i));
         }
+
+        if (!checker) throw new NotAllowedException();
+
         return students;
     }
 }

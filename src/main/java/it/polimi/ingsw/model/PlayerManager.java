@@ -1,29 +1,25 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.listeners.*;
+import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.*;
 
 public class PlayerManager  {
     private List<Player> players;
-    private List<Queue> queue;
     private int numberOfPlayer;
     private int[] professorPropriety;
 
     protected TowersListener towersListener;
     protected ProfessorsListener professorsListener;
-    protected PlayedCardListener playedCardListener;
     protected SpecialListener specialListener;
     protected CoinsListener coinsListener;
     protected StudentsListener studentsListener;
 
     public PlayerManager(int numberOfPlayer) {
         players = new ArrayList<>();
-        queue = new ArrayList<>();
         this.numberOfPlayer = numberOfPlayer;
         this.professorPropriety = new int[]{-1,-1,-1,-1,-1};    //-1 indicates that no one owns that professor
-        Random rnd = new Random();
-        int firstInQueue;
 
         if (numberOfPlayer == 2) {
             Player g1 = new Player(Team.WHITE, numberOfPlayer);
@@ -47,55 +43,16 @@ public class PlayerManager  {
             Player g4 = new Player(Team.BLACK, numberOfPlayer);
             players.add(g4);
         }
-        //The first player is chosen randomly, then queueForPlanificationPhase order the queue.
-        firstInQueue = rnd.nextInt(numberOfPlayer - 1);
-        Queue first = new Queue(firstInQueue,-1,-1);
-        queue.add(first);
     }
 
-    private Character stringToCharacter(String string){
-        if(string.equals("WIZARD")) return Character.WIZARD;
-        else if(string.equals("KING")) return Character.KING;
-        else if(string.equals("WITCH")) return Character.WITCH;
-        else if(string.equals("SAMURAI")) return Character.SAMURAI;
-        return Character.NONE;
+    public void playCard(int playerRef,Assistant card) throws NotAllowedException{
+        if(!players.get(playerRef).hand.remove(card)) throw new NotAllowedException();
     }
-
-
-    public void queueForPlanificationPhase(int numberOfPlayer){
-        int firstInQueue;
-
-        firstInQueue = readQueue(0);         //destroy the previous queue
-        while (!queue.isEmpty()) queue.remove(0);
-
-        Queue one = new Queue(0,-1,-1);
-        Queue two = new Queue(1,-1,-1);
-        queue.add(one);queue.add(two);
-        if(numberOfPlayer == 3){
-            Queue three = new Queue(2,-1,-1);
-            queue.add(three);
-        }else if(numberOfPlayer == 4){
-            Queue three = new Queue(2,-1,-1);
-            Queue four = new Queue(3,-1,-1);
-            queue.add(three);queue.add(four);
-        }
-        //The first player is the one who played first in the previous action phase, then proceeds clockwise. The distribution of players at the table is arranged clockwise in this order 1 2 3 4
-        if (firstInQueue != 0) Collections.rotate(queue,-firstInQueue);
-    }
-    public boolean playCard(int playerRef, int queueRef, Assistant card){
-
-        players.get(playerRef).hand.remove(card);
-        queue.get(queueRef).setValueCard(card.getValue());
-        queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
-        this.playedCardListener.notifyPlayedCard(playerRef, String.valueOf(card));
-        if(checkIfCardsFinished(playerRef)) return true;
-        return false;
-    }
-    private boolean checkIfCardsFinished(int playerRef){  //Check if the player has played his last card
+    public boolean checkIfCardsFinished(int playerRef){  //Check if the player has played his last card
         return players.get(playerRef).hand.isEmpty();
     }
     public Team checkVictory(){
-        Team winner = Team.NOONE;
+        Team winner = Team.NONE;
         int numberOfTowers = 9;
         int professors1 = 0, professors2;
 
@@ -104,14 +61,12 @@ public class PlayerManager  {
                 numberOfTowers = p.school.getTowers();
                 winner = p.getTeam();
                 professors1 = 0;
-                for(int i = 0; i < 5; i++) {
+                for(int i = 0; i < 5; i++)
                     if (p.school.getProfessor(i)) professors1++;
-                }
             } else if(p.school.getTowers() == numberOfTowers){  //if two players have the same number of towers, look at the professors
                 professors2 = 0;
-                for(int i = 0; i < 5; i++){
+                for(int i = 0; i < 5; i++)
                     if(p.school.getProfessor(i)) professors2++;
-                }
                 if(professors2 > professors1) {
                     numberOfTowers = p.school.getTowers();
                     winner = p.getTeam();
@@ -121,93 +76,92 @@ public class PlayerManager  {
         }
         return winner;
     }
-    public void inOrderForActionPhase(){
-        Collections.sort(queue, new Comparator<Queue>() {
-            @Override
-            public int compare(Queue q1, Queue q2) {
-                return q1.compareTo(q2);
-            }
-        });
-    }
-    public int readQueue(int queueRef){ return queue.get(queueRef).getPlayerRef(); }
-    public int readMaxMotherNatureMovement(int queueRef){ return queue.get(queueRef).getMaxMoveMotherNature(); }
 
-    public void transferStudent(int playerRef,int colour, boolean inSchool, boolean special){    //it is used to remove the student from the entrance
-        int studentTableofThisColour = -1;
+    public void transferStudent(int playerRef,int colour, boolean inSchool, boolean special) throws NotAllowedException{    //it is used to remove the student from the entrance
+        int studentTableofThisColour;
         int i;
         boolean stop = false;
 
         if(!inSchool){  //if inSchool is false, it's placed in a island
-            if(getStudentEntrance(playerRef, colour) > 0) {
-               removeStudentEntrance(playerRef,colour);
-            }
+            try { removeStudentEntrance(playerRef,colour);
+            }catch (NotAllowedException exception){ throw new NotAllowedException(); }
         } else if(inSchool && !special){   //if inSchool is true, it's placed on the table
-            if(getStudentEntrance(playerRef,colour) > 0) {
+            try {
                 removeStudentEntrance(playerRef,colour);
-                setStudentTable(playerRef,colour);
+                setStudentTable(playerRef,colour);  //POSSO ACCORPARE COSI' DUE ECCEZIONI?
                 players.get(playerRef).checkPosForCoin(colour);    //check the position, in case we have to give a coin to the player
-                studentTableofThisColour = getStudentTable(playerRef, colour);
+                studentTableofThisColour = getStudentTable(playerRef,colour);
                 for (i = 0; i < numberOfPlayer && !stop; i++) {
-                    if (i != playerRef && studentTableofThisColour <= getStudentTable(i, colour))
+                    if (i != playerRef && studentTableofThisColour <= getStudentTable(i,colour))
                         stop = true;  //if it finds someone with more or equals students at the table it stops
                     else if (i != playerRef && getProfessor(i,colour)) {
-                        removeProfessor(i, colour);    //otherwise check if the other had the professor
-                        setProfessor(playerRef, colour);
+                        removeProfessor(i,colour);    //otherwise check if the other had the professor
+                        setProfessor(playerRef,colour);
                         professorPropriety[colour] = playerRef;
                         stop = true;
                     }
                 }
                 if (i == numberOfPlayer) {    //if no one owned that professor
-                    setProfessor(playerRef, colour);
+                    setProfessor(playerRef,colour);
                     professorPropriety[colour] = playerRef;
                 }
-            }
+            }catch (NotAllowedException exception){ throw new NotAllowedException(); }
         } else if(inSchool && special){   //if special is true, card special is active
-            if(getStudentEntrance(playerRef,colour) > 0) {
+            try {
                 removeStudentEntrance(playerRef,colour);
-                setStudentTable(playerRef,colour);
+                setStudentTable(playerRef,colour);  //POSSO ACCORPARE COSI' DUE ECCEZIONI?
                 players.get(playerRef).checkPosForCoin(colour);    //check the position, in case we have to give a coin to the player
-                studentTableofThisColour = getStudentTable(playerRef, colour);
+                studentTableofThisColour = getStudentTable(playerRef,colour);
                 for (i = 0; i < numberOfPlayer && !stop; i++) {
-                    if (i != playerRef && studentTableofThisColour < getStudentTable(i, colour))
+                    if (i != playerRef && studentTableofThisColour < getStudentTable(i,colour))
                         stop = true;  //if it finds someone with more students at the table it stops
                     else if (i != playerRef && getProfessor(i,colour)) {
-                        removeProfessor(i, colour);    //otherwise check if the other had the professor
-                        setProfessor(playerRef, colour);
+                        removeProfessor(i,colour);    //otherwise check if the other had the professor
+                        setProfessor(playerRef,colour);
                         professorPropriety[colour] = playerRef;
                         stop = true;
                     }
                 }
                 if (i == numberOfPlayer) {    //if no one owned that professor
-                    setProfessor(playerRef, colour);
+                    setProfessor(playerRef,colour);
                     professorPropriety[colour] = playerRef;
                 }
-            }
+            }catch (NotAllowedException exception){ throw new NotAllowedException(); }
         }
-        this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
-        this.studentsListener.notifyStudentsChange(1, playerRef,colour, getStudentTable(playerRef, colour));
+        this.studentsListener.notifyStudentsChange(0,playerRef,colour,getStudentEntrance(playerRef,colour));
+        this.studentsListener.notifyStudentsChange(1,playerRef,colour,getStudentTable(playerRef,colour));
     }
 
     public void setStudentEntrance(int playerRef, int colour){
         players.get(playerRef).school.setStudentEntrance(colour);
         this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
     }
-
     public int getStudentEntrance(int playerRef, int colour){ return players.get(playerRef).school.getStudentEntrance(colour); }
-    public void removeStudentEntrance(int playerRef, int colour){
-        players.get(playerRef).school.removeStudentEntrance(colour);
-        this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
-
+    public void removeStudentEntrance(int playerRef, int colour) throws NotAllowedException{
+        try {
+            players.get(playerRef).school.removeStudentEntrance(colour);
+            this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
+        }catch (NotAllowedException exception){
+            throw new NotAllowedException();
+        }
     }
 
     public int getStudentTable(int playerRef, int colour){ return players.get(playerRef).school.getStudentTable(colour); }
-    public void setStudentTable(int playerRef, int colour){
-        players.get(playerRef).school.setStudentTable(colour);
-        this.studentsListener.notifyStudentsChange(1, playerRef,colour, getStudentTable(playerRef, colour));
+    public void setStudentTable(int playerRef, int colour) throws NotAllowedException{
+        try {
+            players.get(playerRef).school.setStudentTable(colour);
+            this.studentsListener.notifyStudentsChange(1, playerRef, colour, getStudentTable(playerRef, colour));
+        }catch (NotAllowedException exception){
+            throw new NotAllowedException();
+        }
     }
-    public void removeStudentTable(int playerRef, int colour){
-        players.get(playerRef).school.removeStudentTable(colour);
-        this.studentsListener.notifyStudentsChange(1, playerRef,colour, getStudentTable(playerRef, colour));
+    public void removeStudentTable(int playerRef, int colour) throws NotAllowedException{
+        try {
+            players.get(playerRef).school.removeStudentTable(colour);
+            this.studentsListener.notifyStudentsChange(1, playerRef,colour, getStudentTable(playerRef, colour));
+        }catch (NotAllowedException exception){
+            throw new NotAllowedException();
+        }
     }
 
     private void setProfessor(int playerRef, int colour){
@@ -218,7 +172,6 @@ public class PlayerManager  {
         players.get(playerRef).school.removeProfessor(colour);
         this.professorsListener.notifyProfessors(playerRef, colour,getProfessor(playerRef, colour));
     }
-
     public boolean getProfessor(int playerRef, int colour){ return players.get(playerRef).school.getProfessor(colour); }
     public int getProfessorPropriety(int color) { return professorPropriety[color]; }
 
@@ -232,7 +185,6 @@ public class PlayerManager  {
                 this.towersListener.notifyTowersChange(0, players.indexOf(p), p.school.getTowers());
             }
         }
-
         return victory;
     }
     public void placeTower(Team team, int numberOfTower){
@@ -240,8 +192,6 @@ public class PlayerManager  {
             if (p.getTeam().equals(team)) p.school.placeTower(numberOfTower);
             this.towersListener.notifyTowersChange(0, players.indexOf(p), p.school.getTowers());
         }
-
-
     }
     public int getTowers(int playerRef){ return players.get(playerRef).school.getTowers(); }
 
@@ -250,7 +200,6 @@ public class PlayerManager  {
     public void removeCoin(int playerRef, int cost){
         players.get(playerRef).removeCoin(cost);
         this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef));
-
     }
     public int getCoins(int playerRef){ return players.get(playerRef).getCoins(); }
 
@@ -263,44 +212,6 @@ public class PlayerManager  {
     public boolean checkStudentsTable(ArrayList<Integer> student, int playerRef){
         if(getStudentTable(playerRef,student.get(0))>=student.size()) return true;
         return false;
-    }
-
-    private class Queue implements Comparable<Queue> {   //it is used both in the planning phase and in the action phase
-        private int playerRef;
-        private Integer valueCard;
-        private int maxMoveMotherNature;
-
-        public Queue(int playerRef, Integer valueCard, int maxMoveMotherNature) {
-            this.playerRef = playerRef;
-            this.valueCard = valueCard;
-            this.maxMoveMotherNature = maxMoveMotherNature;
-        }
-
-        private int getPlayerRef() {
-            return playerRef;
-        }
-
-        private Integer getValueCard() {
-            return valueCard;
-        }
-
-        public int getMaxMoveMotherNature() {
-            return maxMoveMotherNature;
-        }
-
-        public void setValueCard(Integer valueCard) {
-            this.valueCard = valueCard;
-        }
-
-        public void setMaxMoveMotherNature(int maxMoveMotherNature) {
-            this.maxMoveMotherNature = maxMoveMotherNature;
-        }
-
-        @Override
-        public int compareTo(Queue o) {
-            return valueCard.compareTo(o.getValueCard());
-        }
-
     }
 
     private class Player {
@@ -345,12 +256,21 @@ public class PlayerManager  {
             private void removeProfessor(int colour) { professors[colour] = false; }
             private boolean getProfessor(int colour){ return professors[colour]; }
 
-            private void setStudentEntrance(int colour) { studentEntrance[colour]++; }
-            private void removeStudentEntrance(int colour) { if (studentEntrance[colour] > 0) studentEntrance[colour]--; }
+            private void setStudentEntrance(int colour) { studentEntrance[colour]++; }  //the exception is not needed because it is not the player who decides how many students to put
+            private void removeStudentEntrance(int colour) throws NotAllowedException {
+                if (studentEntrance[colour] > 0) studentEntrance[colour]--;
+                else throw new NotAllowedException();
+            }
             private int getStudentEntrance(int colour){ return studentEntrance[colour]; }
 
-            private void setStudentTable(int colour) { if (checkStudentTablePlus(colour)) studentsTable[colour]++; }
-            private void removeStudentTable(int colour){ if (checkStudentTableMinus(colour)) studentsTable[colour]--;}  //for special character
+            private void setStudentTable(int colour) throws NotAllowedException{
+                if (checkStudentTablePlus(colour)) studentsTable[colour]++;
+                else throw new NotAllowedException();
+            }
+            private void removeStudentTable(int colour) throws NotAllowedException{ //for special character
+                if (checkStudentTableMinus(colour)) studentsTable[colour]--;
+                else throw new NotAllowedException();
+            }
             private boolean checkStudentTablePlus(int colour) { return studentsTable[colour] <= 9; }    //Students at the table must be in range [0,10]
             private boolean checkStudentTableMinus(int colour) { return studentsTable[colour] != 0; }   //Students at the table must be in range [0,10]
             private int getStudentTable(int colour) { return studentsTable[colour]; }

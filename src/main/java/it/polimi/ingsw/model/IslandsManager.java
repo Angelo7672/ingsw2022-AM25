@@ -64,7 +64,7 @@ public class IslandsManager {
         int[] returnItem = new int[2];  //in the first cell there is the number of towers built, in the second there is the previous owner of the towers
 
         if(!islands.get(islandRef).getTowerTeam().equals(team)) { //if new team not equals old one
-            if (islands.get(islandRef).getTowerTeam().equals(Team.NOONE)) { //if old team is no one
+            if (islands.get(islandRef).getTowerTeam().equals(Team.NONE)) { //if old team is no one
                 islands.get(islandRef).setTowerTeam(team);
                 this.towersListener.notifyTowersChange(2, islandRef, getTowerValue(islandRef));
                 this.towersListener.notifyTowerColor(islandRef, islands.get(islandRef).getTowerTeam().getTeam());
@@ -150,7 +150,7 @@ public class IslandsManager {
         private Island(){
             this.students = new int[]{0,0,0,0,0};
             this.towerValue = 1;
-            this.towerTeam = Team.NOONE;
+            this.towerTeam = Team.NONE;
             inhibited = 0;
         }
 

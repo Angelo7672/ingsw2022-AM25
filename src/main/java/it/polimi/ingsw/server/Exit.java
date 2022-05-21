@@ -1,10 +1,9 @@
 package it.polimi.ingsw.server;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 public interface Exit {
     void start();
-    void goPlayCard(int ref, ArrayList<String> playedCardsInThisTurn);
+    void goPlayCard(int ref);
+    void unlockPlanningPhase(int ref);
     void startActionPhase(int ref);
+    void unlockActionPhase(int ref);
 }

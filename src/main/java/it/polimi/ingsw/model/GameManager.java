@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.listeners.*;
+import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;
 
@@ -10,26 +11,26 @@ public interface GameManager {
     boolean refreshStudentsCloud();
     void queueForPlanificationPhase();
     int readQueue(int pos);
-    boolean playCard(int playerRef, int queueRef, String card);
+    boolean playCard(int playerRef, int queueRef, String card) throws NotAllowedException;
 
     //Action Phase
     void inOrderForActionPhase();
     void useSpecial(int specialIndex, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2);
-    void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef);
-    boolean moveMotherNature(int queueRef, int desiredMovement);
-    void chooseCloud(int playerRef,int cloudRef);
+    void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException;
+    boolean moveMotherNature(int queueRef, int desiredMovement) throws NotAllowedException;
+    void chooseCloud(int playerRef,int cloudRef) throws NotAllowedException;
 
     //to be called at the end of the turn in which refreshCloudStudents gave true
     String oneLastRide();
 
     //to add the virtualView as a listener for model classes
-    public void setStudentsListener(StudentsListener listener);
-    public void setTowerListener(TowersListener listener);
-    public void setProfessorsListener(ProfessorsListener listener);
-    public void setPlayedCardListener(PlayedCardListener listener);
-    public void setSpecialListener(SpecialListener listener);
-    public void setCoinsListener(CoinsListener listener);
-    public void setIslandSizeListener(IslandSizeListener listener);
-    public void setMotherPositionListener(MotherPositionListener listener);
-    public void setInhibitedListener(InhibitedListener listener);
+    void setStudentsListener(StudentsListener listener);
+    void setTowerListener(TowersListener listener);
+    void setProfessorsListener(ProfessorsListener listener);
+    void setPlayedCardListener(PlayedCardListener listener);
+    void setSpecialListener(SpecialListener listener);
+    void setCoinsListener(CoinsListener listener);
+    void setIslandSizeListener(IslandSizeListener listener);
+    void setMotherPositionListener(MotherPositionListener listener);
+    void setInhibitedListener(InhibitedListener listener);
 }

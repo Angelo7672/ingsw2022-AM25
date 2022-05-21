@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.listeners.*;
+import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,10 +78,12 @@ public class Game implements GameManager{
 
     @Override
     public boolean moveMotherNature(int queueRef, int desiredMovement) {
-        boolean victory = false;
-        roundStrategies.get(indexSpecial).moveMotherNature(queueRef, desiredMovement, refSpecial);
+        boolean victory;
+
+        victory = roundStrategies.get(indexSpecial).moveMotherNature(queueRef, desiredMovement, refSpecial);
         setSpecial(0,-1);
         checkNoEntry(); //possiamo mettere un boolean in game per farlo attivare solo se si usa questo special nella partita
+
         return victory;
     }
 
@@ -93,8 +96,10 @@ public class Game implements GameManager{
     }
 
     @Override
-    public void chooseCloud(int playerRef, int cloudRef) {
-        roundStrategies.get(0).chooseCloud(playerRef, cloudRef);
+    public void chooseCloud(int playerRef, int cloudRef) throws NotAllowedException {
+        try{
+            roundStrategies.get(0).chooseCloud(playerRef, cloudRef);
+        }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
 
     @Override

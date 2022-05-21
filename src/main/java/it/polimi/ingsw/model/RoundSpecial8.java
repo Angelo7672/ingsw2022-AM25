@@ -48,7 +48,7 @@ public class RoundSpecial8 extends RoundStrategy{
         } else if (influenceTeamWHITE < influenceTeamGREY){
             if (influenceTeamBLACK < influenceTeamGREY) return Team.GREY;
         }
-        return Team.NOONE;
+        return Team.NONE;
     }
 
     @Override

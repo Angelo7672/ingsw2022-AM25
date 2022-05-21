@@ -1,24 +1,29 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameManager;
-
-import java.util.ArrayList;
+import it.polimi.ingsw.model.exception.NotAllowedException;
+import it.polimi.ingsw.server.ControllerServer;
 
 public class Controller implements ServerController{
     private String[] chosenAssistants;
+    private int currentUser;
     private VirtualView virtualView;
     private GameManager gameManager;
+    private RoundController roundController;
     private boolean expertMode;
-    private int numberOfPlayers;
+    private boolean end;
     private int[] specials;
 
 
-    public Controller(int numberOfPlayers, boolean isExpert){
-        this.numberOfPlayers = numberOfPlayers;
+    public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server){
         this.expertMode = isExpert;
         this.gameManager = new Game(isExpert, numberOfPlayers);
         this.virtualView = new VirtualView(numberOfPlayers, specials);
+        this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers);
+        roundController.start();
+        this.end = false;
 
         gameManager.setStudentsListener(virtualView);
         gameManager.setTowerListener(virtualView);
@@ -31,45 +36,54 @@ public class Controller implements ServerController{
         gameManager.setInhibitedListener(virtualView);
     }
 
+    public String eryantis(){
+        String winner = "NONE";
+
+        while (winner.equals("NONE")) {
+            roundController.planningPhase();
+            roundController.actionPhase();
+            if (end) {
+                winner = oneLastRide();
+                roundController.gameOver();
+            }
+        }
+        return winner;
+    }
 
     //Planning Phase
     @Override
-    public boolean refreshStudentsCloud(){ return gameManager.refreshStudentsCloud(); }
-    @Override
-    public void queueForPlanificationPhase(){ gameManager.queueForPlanificationPhase(); }
-    @Override
-    public int readQueue(int pos){ return gameManager.readQueue(pos); }
-    @Override
-    public ArrayList<String> getHand(int playerRef){
-        //metodo di virtula view per avere la mano di carte
+    public void playCard(int playerRef, String chosenAssistants) throws NotAllowedException {
+        try {
+            end = gameManager.playCard(playerRef,currentUser,chosenAssistants);
+        }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
-    @Override
-    public ArrayList<String> getPlayedCardsInThisTurn(){
-        //metodo di virtual view per avere tutte le last card di questo turno
-    }
-    @Override
-    public void playCard(int playerRef,int currentPlayer,String chosenAssistants){
-        gameManager.playCard(playerRef, currentPlayer, chosenAssistants);
-    }
-    public String oneLastRide(){ return gameManager.oneLastRide(); }
 
     //Action Phase
     @Override
-    public void inOrderForActionPhase(){ gameManager.inOrderForActionPhase(); }
-    @Override
-    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef){
-        gameManager.moveStudent(playerRef,colour,inSchool,islandRef);
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException {
+        try { gameManager.moveStudent(playerRef, colour, inSchool, islandRef);
+        }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
     @Override
-    public boolean moveMotherNature(int queueRef, int desiredMovement){
-        gameManager.moveMotherNature(queueRef,desiredMovement);
+    public void moveMotherNature(int desiredMovement) throws NotAllowedException,EndGameException {
+        try {
+            if(gameManager.moveMotherNature(currentUser,desiredMovement)) {
+                winner = oneLastRide();
+                throw new EndGameException();
+            }
+        }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
     @Override
-    public void chooseCloud(int playerRef, int cloudRef){
-        gameManager.chooseCloud(playerRef,cloudRef);
+    public void chooseCloud(int playerRef, int cloudRef) throws NotAllowedException {
+        try {
+            gameManager.chooseCloud(playerRef,cloudRef);
+        }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
 
+    public String oneLastRide(){ return gameManager.oneLastRide(); }
 
-
-
+    public int getCurrentUser() { return currentUser; }
+    public void setCurrentUser(int currentUser) { this.currentUser = currentUser; }
+    public void incrCurrentUser(){ currentUser++; }
+    public void setEnd(boolean end) { this.end = end; }
 }

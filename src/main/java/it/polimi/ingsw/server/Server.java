@@ -2,14 +2,12 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.ServerController;
+import it.polimi.ingsw.controller.exception.EndGameException;
+import it.polimi.ingsw.model.exception.NotAllowedException;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-    public class Server implements Entrance{
-        private int numberOfPlayer;
+    public class Server implements Entrance,ControllerServer{
+        private int numberOfPlayers;
         private boolean expertMode;
-        private int currentUser;
         private ServerController controller;
         private Exit proxy;
 
@@ -19,60 +17,69 @@ import java.util.ArrayList;
         }
 
         @Override
-        public void startGame(){ controller = new Controller(numberOfPlayer, expertMode); }
+        public void startGame(){ controller = new Controller(numberOfPlayers,expertMode,this); }
 
         @Override
-        public void userLogin(String nickname, String character, int playerRef){
+        public boolean userLogin(String nickname, String character, int playerRef){
             //metodo per andare a modificare nick-char in virtual view
             //mandare anche il team
         }
 
-        private void planningPhase(){   //OPPURE NEL CONTROLLER?
-            controller.refreshStudentsCloud();
-            controller.queueForPlanificationPhase();
-            for(int i = 0; i < numberOfPlayer; i++){
-                proxy.goPlayCard(controller.readQueue(i),controller.getPlayedCardsInThisTurn());
-                //TODO: aggiungere un locker
+        @Override
+        public void goPlayCard(int playerRef){ proxy.goPlayCard(playerRef); }
+        @Override
+        public void unlockPlanningPhase(int playerRef){ proxy.unlockPlanningPhase(playerRef); }
+        @Override
+        public boolean userPlayCard(int playerRef, String assistant){
+            try {
+                controller.playCard(playerRef,assistant);
+            }catch (NotAllowedException exception){ return false;}
+
+            return true;
+        }
+
+        @Override
+        public void startActionPhase(int playerRef){ proxy.startActionPhase(playerRef); }
+        @Override
+        public void unlockActionPhase(int playerRef){ proxy.unlockActionPhase(playerRef); }
+        @Override
+        public boolean userMoveStudent(int playerRef, int colour, boolean inSchool, int islandRef){
+            try {
+                controller.moveStudent(playerRef, colour, inSchool, islandRef);
+            }catch (NotAllowedException exception){ return false; }
+
+            return true;
+        }
+        @Override
+        public boolean userMoveMotherNature(int desiredMovement) throws EndGameException {
+            try {
+                controller.moveMotherNature(desiredMovement);
+            } catch (NotAllowedException exception) {
+                return false;
+            } catch (EndGameException endGameException){
+                throw new EndGameException();
             }
-        }
 
+            return true;
+        }
         @Override
-        public void userPlayCard(int playerRef, String assistant){
-            controller.playCard(playerRef,currentUser,assistant);
-        }
+        public boolean userChooseCloud(int playerRef, int cloudRef){
+            try {
+                controller.chooseCloud(playerRef,cloudRef);
+            }catch (NotAllowedException exception){ return false; }
 
-        private void actionPhase(){ //OPPURE NEL CONTROLLER
-            controller.inOrderForActionPhase();
-            for(int i = 0; i < numberOfPlayer; i++){
-                proxy.startActionPhase(controller.readQueue(i));
-                //TODO: aggiungere un locker
-            }
-        }
-
-        @Override
-        public void userMoveStudent(int playerRef, int colour, boolean inSchool, int islandRef){
-            controller.moveStudent(playerRef,colour,inSchool,islandRef);
-        }
-
-        @Override
-        public void userMoveMotherNature(int desideredMovement){
-            controller.moveMotherNature(currentUser,desideredMovement);
-        }
-
-        @Override
-        public void userChooseCloud(int playerRef, int cloudRef){
-            controller.chooseCloud(playerRef,cloudRef);
+            return true;
         }
 
 
 
 
         @Override
-        public void setNumberOfPlayer(int numberOfPlayer) { this.numberOfPlayer = numberOfPlayer; }
+        public void setNumberOfPlayer(int numberOfPlayer) { this.numberOfPlayers = numberOfPlayer; }
         @Override
         public void setExpertMode(boolean expertMode) { this.expertMode = expertMode; }
         @Override
-        public int getNumberOfPlayer() { return numberOfPlayer; }
+        public int getNumberOfPlayer() { return numberOfPlayers; }
         @Override
         public boolean isExpertMode() { return expertMode; }
 
