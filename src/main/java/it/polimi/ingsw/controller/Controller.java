@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 import it.polimi.ingsw.server.ControllerServer;
 
+import java.io.*;
+
 public class Controller implements ServerController{
     private String[] chosenAssistants;
     private int currentUser;
@@ -14,6 +16,7 @@ public class Controller implements ServerController{
     private RoundController roundController;
     private boolean expertMode;
     private boolean end;
+    private String winner;
     private int[] specials;
 
 
@@ -24,6 +27,7 @@ public class Controller implements ServerController{
         this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers);
         roundController.start();
         this.end = false;
+        this.winner = "NONE";
 
         gameManager.setStudentsListener(virtualView);
         gameManager.setTowerListener(virtualView);
@@ -36,9 +40,7 @@ public class Controller implements ServerController{
         gameManager.setInhibitedListener(virtualView);
     }
 
-    public String eryantis(){
-        String winner = "NONE";
-
+    public void eryantis(){
         while (winner.equals("NONE")) {
             roundController.planningPhase();
             roundController.actionPhase();
@@ -47,7 +49,6 @@ public class Controller implements ServerController{
                 roundController.gameOver();
             }
         }
-        return winner;
     }
 
     //Planning Phase
@@ -81,6 +82,35 @@ public class Controller implements ServerController{
     }
 
     public String oneLastRide(){ return gameManager.oneLastRide(); }
+    public void saveVirtualView(String fileName){
+        try{
+            //File gameStateFile = new File(fileName);
+            //gameStateFile.createNewFile();
+
+            ObjectOutputStream outputFile= new ObjectOutputStream(new FileOutputStream(fileName, false));
+            outputFile.writeObject(this.virtualView);
+            outputFile.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void restoreVirtualView(String fileName){
+        try{
+            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
+            this.virtualView = (VirtualView) inputFile.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public int getCurrentUser() { return currentUser; }
     public void setCurrentUser(int currentUser) { this.currentUser = currentUser; }
