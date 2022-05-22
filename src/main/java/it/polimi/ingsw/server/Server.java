@@ -6,8 +6,8 @@ import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
     public class Server implements Entrance,ControllerServer{
-        private int numberOfPlayers;
-        private boolean expertMode;
+        private int numberOfPlayers;    //penso si possa eliminare
+        private boolean expertMode;     //penso si possa eliminare
         private ServerController controller;
         private Exit proxy;
 
@@ -25,6 +25,7 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
             //mandare anche il team
         }
 
+        //Planning Phase
         @Override
         public void goPlayCard(int playerRef){ proxy.goPlayCard(playerRef); }
         @Override
@@ -38,6 +39,7 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
             return true;
         }
 
+        //Action Phase
         @Override
         public void startActionPhase(int playerRef){ proxy.startActionPhase(playerRef); }
         @Override

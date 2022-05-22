@@ -11,6 +11,7 @@ public class Game implements GameManager{
     private CloudsManager cloudsManager;
     private IslandsManager islandsManager;
     private PlayerManager playerManager;
+    private QueueManager queueManager;
     private Bag bag;
     private int numberOfPlayer;
     private int indexSpecial;
@@ -24,9 +25,11 @@ public class Game implements GameManager{
         this.cloudsManager = new CloudsManager(numberOfPlayer);
         this.islandsManager = new IslandsManager();
         this.playerManager = new PlayerManager(numberOfPlayer);
+        this.queueManager = new QueueManager(numberOfPlayer,this.playerManager);
         this.bag = new Bag();
         indexSpecial = 0;
         refSpecial = -1;
+
         if(numberOfPlayer == 2 || numberOfPlayer == 4){
             for(int j = 0; j < numberOfPlayer; j++)
                 for (int i = 0; i < 7; i++) playerManager.setStudentEntrance(j,bag.extraction());
@@ -34,10 +37,12 @@ public class Game implements GameManager{
             for(int j = 0; j < numberOfPlayer; j++)
                 for (int i = 0; i < 9; i++) playerManager.setStudentEntrance(j,bag.extraction());
         }
-        Round round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+
+        Round round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         roundStrategies.add(round);
+
         if(expertMode){
-            RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+            RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
             ArrayList<Integer> random = new ArrayList<>();
             for(int i=1; i<=12; i++) random.add(i); //riempio con numeri da 1 a 12
             Collections.shuffle(random); //mischio i numeri
@@ -163,7 +168,7 @@ public class Game implements GameManager{
     }
     @Override
     public void setPlayedCardListener(PlayedCardListener listener){
-        playerManager.playedCardListener=listener;
+        queueManager.playedCardListener=listener;
     }
     @Override
     public void setSpecialListener(SpecialListener listener){ this.specialListener =listener;}

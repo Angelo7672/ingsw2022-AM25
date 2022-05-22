@@ -15,7 +15,6 @@ public class Controller implements ServerController{
     private GameManager gameManager;
     private RoundController roundController;
     private boolean expertMode;
-    private boolean end;
     private String winner;
     private int[] specials;
 
@@ -25,9 +24,8 @@ public class Controller implements ServerController{
         this.gameManager = new Game(isExpert, numberOfPlayers);
         this.virtualView = new VirtualView(numberOfPlayers, specials);
         this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers);
-        roundController.start();
-        this.end = false;
         this.winner = "NONE";
+        roundController.start();    //non va qua!
 
         gameManager.setStudentsListener(virtualView);
         gameManager.setTowerListener(virtualView);
@@ -40,22 +38,11 @@ public class Controller implements ServerController{
         gameManager.setInhibitedListener(virtualView);
     }
 
-    public void eryantis(){
-        while (winner.equals("NONE")) {
-            roundController.planningPhase();
-            roundController.actionPhase();
-            if (end) {
-                winner = oneLastRide();
-                roundController.gameOver();
-            }
-        }
-    }
-
     //Planning Phase
     @Override
     public void playCard(int playerRef, String chosenAssistants) throws NotAllowedException {
         try {
-            end = gameManager.playCard(playerRef,currentUser,chosenAssistants);
+            roundController.setEnd(gameManager.playCard(playerRef,currentUser,chosenAssistants));
         }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
 
@@ -69,7 +56,7 @@ public class Controller implements ServerController{
     public void moveMotherNature(int desiredMovement) throws NotAllowedException,EndGameException {
         try {
             if(gameManager.moveMotherNature(currentUser,desiredMovement)) {
-                winner = oneLastRide();
+                oneLastRide();
                 throw new EndGameException();
             }
         }catch (NotAllowedException exception){ throw new NotAllowedException(); }
@@ -81,14 +68,14 @@ public class Controller implements ServerController{
         }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
 
-    public String oneLastRide(){ return gameManager.oneLastRide(); }
+    public void oneLastRide(){ winner = gameManager.oneLastRide(); }
 
     public void saveVirtualView(String fileName){
         try{
             //File gameStateFile = new File(fileName);
             //gameStateFile.createNewFile();
 
-            ObjectOutputStream outputFile= new ObjectOutputStream(new FileOutputStream(fileName, false));
+            ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(fileName, false));
             outputFile.writeObject(this.virtualView);
             outputFile.close();
 
@@ -109,12 +96,12 @@ public class Controller implements ServerController{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
+    }   //da chiedere
 
 
 
     public int getCurrentUser() { return currentUser; }
     public void setCurrentUser(int currentUser) { this.currentUser = currentUser; }
     public void incrCurrentUser(){ currentUser++; }
-    public void setEnd(boolean end) { this.end = end; }
+    public String getWinner() { return winner; }
 }

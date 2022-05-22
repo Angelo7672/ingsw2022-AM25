@@ -63,5 +63,5 @@ public class Proxy_s implements Exit {
 
     public void incrLimiter(){ this.limiter++; }
     public int getConnectionsAllowed() { return connectionsAllowed; }
-    public void setConnectionsAllowed(int connections_allowed) { this.connectionsAllowed = connections_allowed; }
+    public void setConnectionsAllowed(int connectionsAllowed) { this.connectionsAllowed = connectionsAllowed; }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.listeners.*;
+import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -134,10 +135,12 @@ public class VirtualView
             this.professors[color] = newValue;
         }
 
-        public void setNickname(String nickname){
+        public void setNickname(String nickname) throws NotAllowedException{
+            //controllare che nessun altro abbia scelto questo nickname, altrimenti lancia eccezione
             this.nickname = nickname;
         }
-        public void setWizard(String wizard) {
+        public void setWizard(String wizard) throws NotAllowedException {
+            //controllare che nessun altro abbia scelto questo personaggio, altrimenti lancia eccezione
             this.wizard = wizard;
         }
         public void setTeam(int team) {

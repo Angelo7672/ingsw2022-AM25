@@ -5,19 +5,20 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 import java.util.ArrayList;
 
 public abstract class RoundStrategy {
-
     public CloudsManager cloudsManager;
     public IslandsManager islandsManager;
     public PlayerManager playerManager;
+    private QueueManager queueManager;
     public Bag bag;
     public int numberOfPlayer;
 
-    public RoundStrategy(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
+    public RoundStrategy(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         this.numberOfPlayer=numberOfPlayer;
         this.bag = bag;
         this.cloudsManager = cloudsManager;
         this.islandsManager = islandsManager;
         this.playerManager = playerManager;
+        this.queueManager = queueManager;
     }
 
     private Assistant stringToAssistant(String string){
@@ -100,7 +101,7 @@ public abstract class RoundStrategy {
         int maxMovement;
         boolean victory = false;
 
-        maxMovement = playerManager.readMaxMotherNatureMovement(queueRef);
+        maxMovement = queueManager.readMaxMotherNatureMovement(queueRef);
         if (desiredMovement > 0 && desiredMovement <= maxMovement) {
             islandsManager.moveMotherNature(desiredMovement);
             if (islandsManager.getInhibited(islandsManager.getMotherPos())>0) {
@@ -136,13 +137,13 @@ public abstract class RoundStrategy {
     }
 
 
-    public void queueForPlanificationPhase(){ playerManager.queueForPlanificationPhase(numberOfPlayer); }
+    public void queueForPlanificationPhase(){ queueManager.queueForPlanificationPhase(); }
 
-    public boolean playCard(int playerRef, int queueRef, String card){ return playerManager.playCard(playerRef, queueRef, stringToAssistant(card)); }
+    public boolean playCard(int playerRef, int queueRef, String card){ return queueManager.playCard(playerRef, queueRef, stringToAssistant(card)); }
 
-    public void inOrderForActionPhase(){ playerManager.inOrderForActionPhase(); }
+    public void inOrderForActionPhase(){ queueManager.inOrderForActionPhase(); }
 
-    public int readQueue(int pos){ return playerManager.readQueue(pos); }
+    public int readQueue(int pos){ return queueManager.readQueue(pos); }
 
 
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef){

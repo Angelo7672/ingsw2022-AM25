@@ -6,14 +6,15 @@ public class RoundStrategyFactory {
     CloudsManager cloudsManager;
     IslandsManager islandsManager;
     PlayerManager playerManager;
+    QueueManager queueManager;
     Bag bag;
 
-    RoundStrategyFactory(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
-
+    RoundStrategyFactory(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager,QueueManager queueManager, Bag bag){
         this.numberOfPlayer = numberOfPlayer;
         this.cloudsManager = cloudsManager;
         this.islandsManager = islandsManager;
         this.playerManager = playerManager;
+        this.queueManager = queueManager;
         this.bag = bag;
     }
     public RoundStrategy getRoundStrategy(int i){

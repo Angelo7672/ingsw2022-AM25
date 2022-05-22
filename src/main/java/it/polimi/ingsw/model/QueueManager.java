@@ -53,7 +53,7 @@ public class QueueManager {
             this.playedCardListener.notifyPlayedCard(playerRef,String.valueOf(card));
             if(playerManager.checkIfCardsFinished(playerRef)) return true;
             return false;
-        }catch(NotAllowedException exceptione){ throw new NotAllowedException(); }
+        }catch(NotAllowedException exception){ throw new NotAllowedException(); }
     }
 
     public void inOrderForActionPhase(){
