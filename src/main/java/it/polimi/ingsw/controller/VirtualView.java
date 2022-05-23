@@ -18,37 +18,19 @@ public class VirtualView
     private ArrayList<Hand> hands;
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
     private ArrayList<String> playedCards;
+    private int numberOfPlayers;
 
 
 
-    public VirtualView(int numberOfPlayers, int[] specials ) {
+    public VirtualView(int numberOfPlayers) {
         this.schoolBoards = new ArrayList<>();
         this.hands = new ArrayList<>();
         this.clouds = new ArrayList<>();
         this.islands = new ArrayList<>();
         this.specials = new ArrayList<>();
         this.playedCards = new ArrayList<>();
+        this.numberOfPlayers=numberOfPlayers;
 
-
-        for(int i=0; i<numberOfPlayers; i++){
-            schoolBoards.add(new SchoolBoard());
-            if(numberOfPlayers==3) {
-                schoolBoards.get(i).setTowersNumber(6);
-                schoolBoards.get(i).setTeam(i);
-            } else if(numberOfPlayers==4){
-                if(i==0 || i== 2)
-                    schoolBoards.get(i).setTowersNumber(8);
-                else schoolBoards.get(i).setTowersNumber(0);
-                if(i==0 || i==1)
-                    schoolBoards.get(i).setTeam(0);
-                else schoolBoards.get(i).setTeam(1);
-            } else {
-                schoolBoards.get(i).setTowersNumber(8);
-                schoolBoards.get(i).setTeam(i);
-            }
-            hands.add(new Hand());
-            clouds.add(new Cloud());
-        }
         for(int i=0; i<12; i++){
             this.islands.add(new Island());
         }
@@ -86,6 +68,29 @@ public class VirtualView
         else{
             throw new NotAllowedException();
         }
+    }
+    public void addNewPlayer(String nickname, String character){
+        int player;
+        schoolBoards.add(new SchoolBoard(nickname,character));
+        hands.add(new Hand());
+        clouds.add(new Cloud());
+
+        player = schoolBoards.size()-1;
+        if(numberOfPlayers==3) {
+            schoolBoards.get(player).setTowersNumber(6);
+            schoolBoards.get(player).setTeam(player);
+        } else if(numberOfPlayers==4){
+            if(player==0 || player== 2)
+                schoolBoards.get(player).setTowersNumber(8);
+            else schoolBoards.get(player).setTowersNumber(0);
+            if(player==0 || player==1)
+                schoolBoards.get(player).setTeam(0);
+            else schoolBoards.get(player).setTeam(1);
+        } else {
+            schoolBoards.get(player).setTowersNumber(8);
+            schoolBoards.get(player).setTeam(player);
+        }
+
     }
 
 
@@ -165,10 +170,13 @@ public class VirtualView
         int towersNumber;
         boolean[] professors;
 
-        public SchoolBoard(){
-            studentsEntrance = new int[]{0, 0, 0, 0, 0};
-            studentsTable  = new int[]{0, 0, 0, 0, 0};
-            professors = new boolean[]{false, false, false, false, false};
+        public SchoolBoard(String nickname, String character){
+            this.nickname=nickname;
+            this.character=character;
+            this.studentsEntrance = new int[]{0, 0, 0, 0, 0};
+            this.studentsTable  = new int[]{0, 0, 0, 0, 0};
+            this.professors = new boolean[]{false, false, false, false, false};
+
         }
         
         public void setStudentsEntrance(int color, int newValue){

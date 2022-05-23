@@ -22,7 +22,7 @@ public class Controller implements ServerController{
     public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server){
         this.expertMode = isExpert;
         this.gameManager = new Game(isExpert, numberOfPlayers);
-        this.virtualView = new VirtualView(numberOfPlayers, specials);
+        this.virtualView = new VirtualView(numberOfPlayers);
         this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers);
         this.winner = "NONE";
         roundController.start();    //non va qua!
