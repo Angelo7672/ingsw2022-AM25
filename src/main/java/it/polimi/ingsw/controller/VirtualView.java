@@ -3,13 +3,13 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.listeners.*;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
-import java.io.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 //virtual View class listen to changes in model classes through specific listener interfaces
 public class VirtualView
         implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
-        MotherPositionListener, IslandSizeListener, CoinsListener, StudentsListener, InhibitedListener, Serializable
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, Serializable
 {
 
     private ArrayList<SchoolBoard> schoolBoards;
@@ -32,6 +32,20 @@ public class VirtualView
 
         for(int i=0; i<numberOfPlayers; i++){
             schoolBoards.add(new SchoolBoard());
+            if(numberOfPlayers==3) {
+                schoolBoards.get(i).setTowersNumber(6);
+                schoolBoards.get(i).setTeam(i);
+            } else if(numberOfPlayers==4){
+                if(i==0 || i== 2)
+                    schoolBoards.get(i).setTowersNumber(8);
+                else schoolBoards.get(i).setTowersNumber(0);
+                if(i==0 || i==1)
+                    schoolBoards.get(i).setTeam(0);
+                else schoolBoards.get(i).setTeam(1);
+            } else {
+                schoolBoards.get(i).setTowersNumber(8);
+                schoolBoards.get(i).setTeam(i);
+            }
             hands.add(new Hand());
             clouds.add(new Cloud());
         }
@@ -43,6 +57,37 @@ public class VirtualView
     public String getLastPlayedCard(int playerRef){
         return hands.get(playerRef).lastPlayedCard;
     }
+    public void setNickname(String nickname, int playerRef) throws NotAllowedException {
+        //throws an exception if the nickname is already in use
+        boolean isOk = true;
+        for(int i=0; i<schoolBoards.size(); i++){
+            if(schoolBoards.get(i).nickname == nickname){
+                isOk = false;
+            }
+        }
+        if (isOk=true) {
+            schoolBoards.get(playerRef).nickname = nickname;
+        }
+        else{
+            throw new NotAllowedException();
+        }
+    }
+    public void setCharacter(String character, int playerRef) throws NotAllowedException {
+        //throws an exception if the character is already in use
+        boolean isOk = true;
+        for(int i=0; i<schoolBoards.size(); i++){
+            if(schoolBoards.get(i).character == character){
+                isOk = false;
+            }
+        }
+        if (isOk=true) {
+            schoolBoards.get(playerRef).character = character;
+        }
+        else{
+            throw new NotAllowedException();
+        }
+    }
+
 
 
     @Override
@@ -81,8 +126,7 @@ public class VirtualView
     }
 
     @Override
-    public void notifyIslandSizeChange(int islandRef, int islandToDelete) {
-        islands.get(islandRef).increaseSize(islands.get(islandToDelete).getSize());
+    public void notifyIslandChange(int islandToDelete) {
         islands.remove(islandToDelete);
     }
 
@@ -109,17 +153,23 @@ public class VirtualView
     public void notifySpecial(int specialRef) { specials.add(specialRef);}
 
 
+
     //private class SchoolBoard keeps the state of each player's school board
     private class SchoolBoard {
         String nickname;
-        String wizard;
-        int team;
+        String character;
+        int team; //0: white, 1: black, 2:grey
 
-        int[] studentsEntrance = new int[]{0, 0, 0, 0, 0};
-        int[] studentsTable = new int[]{0, 0, 0, 0, 0};
+        int[] studentsEntrance;
+        int[] studentsTable;
         int towersNumber;
-        boolean[] professors = new boolean[]{false, false, false, false, false};
+        boolean[] professors;
 
+        public SchoolBoard(){
+            studentsEntrance = new int[]{0, 0, 0, 0, 0};
+            studentsTable  = new int[]{0, 0, 0, 0, 0};
+            professors = new boolean[]{false, false, false, false, false};
+        }
         
         public void setStudentsEntrance(int color, int newValue){
             this.studentsEntrance[color]=newValue;
@@ -127,7 +177,6 @@ public class VirtualView
         public void setStudentsTable(int color, int newValue) {
             this.studentsTable[color]=newValue;
         }
-
         public void setTowersNumber(int towersNumber) {
             this.towersNumber = towersNumber;
         }
@@ -135,33 +184,21 @@ public class VirtualView
             this.professors[color] = newValue;
         }
 
-        public void setNickname(String nickname) throws NotAllowedException{
-            //controllare che nessun altro abbia scelto questo nickname, altrimenti lancia eccezione
-            this.nickname = nickname;
-        }
-        public void setWizard(String wizard) throws NotAllowedException {
-            //controllare che nessun altro abbia scelto questo personaggio, altrimenti lancia eccezione
-            this.wizard = wizard;
-        }
         public void setTeam(int team) {
-            this.team = team;
+            this.team=team;
         }
     }
     private class Island{
-        int[] studentsIsland= new int[]{0,0,0,0,0};
+        int[] studentsIsland;
         boolean isMotherPosition;
         int towersNumber;
         int towersColor;
-        int size; //number of island tiles that forms the island
         int isInhibited;
 
-        public int getSize() {
-            return size;
+        public Island(){
+            studentsIsland=new int[]{0,0,0,0,0};
         }
 
-        public void increaseSize(int tilesToAdd){
-            this.size=+tilesToAdd;
-        }
         public void setTowersNumber(int towersNumber) {
             this.towersNumber = towersNumber;
         }
@@ -180,8 +217,11 @@ public class VirtualView
         }
     }
     private class Cloud {
-        int[] students = new int[]{0, 0, 0, 0, 0};
+        int[] students;
 
+        public Cloud(){
+            students = new int[]{0, 0, 0, 0, 0};
+        }
         public void setCloudStudents(int color, int newStudentsValue) {
             students[color]=newStudentsValue;
         }
@@ -190,6 +230,11 @@ public class VirtualView
         int numberOfCards;
         int coins;
         String lastPlayedCard;
+
+        public Hand(){
+            numberOfCards=10;
+            coins=1;
+        }
 
         public void setCoins(int coins) {
             this.coins=coins;

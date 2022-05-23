@@ -34,7 +34,7 @@ public class Controller implements ServerController{
         gameManager.setSpecialListener(virtualView);
         gameManager.setCoinsListener(virtualView);
         gameManager.setMotherPositionListener(virtualView);
-        gameManager.setIslandSizeListener(virtualView);
+        gameManager.setIslandListener(virtualView);
         gameManager.setInhibitedListener(virtualView);
     }
 

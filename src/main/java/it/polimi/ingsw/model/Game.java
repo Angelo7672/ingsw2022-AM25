@@ -177,7 +177,7 @@ public class Game implements GameManager{
         playerManager.coinsListener=listener;
     }
     @Override
-    public void setIslandSizeListener(IslandSizeListener listener){ islandsManager.islandSizeListener=listener;}
+    public void setIslandListener(IslandListener listener){ islandsManager.islandListener =listener;}
     @Override
     public void setMotherPositionListener(MotherPositionListener listener){ islandsManager.motherPositionListener=listener;}
     @Override

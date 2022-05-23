@@ -30,7 +30,7 @@ public interface GameManager {
     void setPlayedCardListener(PlayedCardListener listener);
     void setSpecialListener(SpecialListener listener);
     void setCoinsListener(CoinsListener listener);
-    void setIslandSizeListener(IslandSizeListener listener);
+    void setIslandListener(IslandListener listener);
     void setMotherPositionListener(MotherPositionListener listener);
     void setInhibitedListener(InhibitedListener listener);
 }

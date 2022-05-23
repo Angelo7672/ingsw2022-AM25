@@ -13,7 +13,7 @@ public class IslandsManager {
     protected StudentsListener studentListener;
     protected TowersListener towersListener;
     protected MotherPositionListener motherPositionListener;
-    protected IslandSizeListener islandSizeListener;
+    protected IslandListener islandListener;
     protected InhibitedListener inhibitedListener;
 
     public IslandsManager() {
@@ -29,6 +29,7 @@ public class IslandsManager {
 
         Random rand = new Random();
         motherPos = rand.nextInt(12);
+        this.motherPositionListener.notifyMotherPosition(motherPos);
 
         ArrayList<Integer> miniBag = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -105,7 +106,7 @@ public class IslandsManager {
             islands.get(pos).incTowerValue(islands.get(posTemp).getTowerValue()); //tower value increase
             this.towersListener.notifyTowersChange(1,pos, islands.get(pos).getTowerValue()+islands.get(pos).getTowerValue());
             islands.remove(posTemp); //island delete
-            this.islandSizeListener.notifyIslandSizeChange(pos, posTemp);
+            this.islandListener.notifyIslandChange(posTemp);
             if(motherPos == posTemp){
                 motherPos = pos;   //I move mother, if there was one, from the eliminated island
                 this.motherPositionListener.notifyMotherPosition(motherPos);
