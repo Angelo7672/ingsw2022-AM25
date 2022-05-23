@@ -34,15 +34,11 @@ public class Proxy_s implements Exit {
             System.out.println("Eryantis Server | Welcome!");
             System.out.println("Waiting for players ...");
             while (limiter < 4 && !stop) {
-                try {
-                    VirtualClient virtualClient = new VirtualClient(serverSocket.accept(), server, this, limiter);
-                    System.out.println("Connected players:" + limiter);
-                    user.add(virtualClient);
-                    executor.submit(virtualClient);
-                    if(limiter == connectionsAllowed) stop = true;
-                } catch (IOException e) {
-                    //CHE FACCIO?
-                }
+                VirtualClient virtualClient = new VirtualClient(serverSocket.accept(), server, this, limiter);
+                System.out.println("Connected players:" + limiter);
+                user.add(virtualClient);
+                executor.submit(virtualClient);
+                if(limiter == connectionsAllowed) stop = true;
             }
             System.out.println("ciao");
         } catch (IOException e) {

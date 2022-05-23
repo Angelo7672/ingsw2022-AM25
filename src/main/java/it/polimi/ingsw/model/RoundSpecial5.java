@@ -9,8 +9,8 @@ public class RoundSpecial5 extends RoundStrategy{
     ArrayList<Integer> null2;
 
 
-    public RoundSpecial5(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
-        super(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    public RoundSpecial5(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
+        super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         special = new Special5();
     }
 

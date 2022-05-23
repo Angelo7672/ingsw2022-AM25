@@ -4,8 +4,8 @@ public class RoundSpecial6 extends RoundStrategy{
 
     Special6 special;
 
-    public RoundSpecial6(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
-        super(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    public RoundSpecial6(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
+        super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         special = new Special6();
     }
 
@@ -14,7 +14,7 @@ public class RoundSpecial6 extends RoundStrategy{
         int maxMovement;
         boolean victory = false;
 
-        maxMovement = playerManager.readMaxMotherNatureMovement(queueRef); //da incrementare anche per scelta del giocatore
+        maxMovement = queueManager.readMaxMotherNatureMovement(queueRef); //da incrementare anche per scelta del giocatore
 
         if(desiredMovement > 0 && desiredMovement <= maxMovement){
             islandsManager.moveMotherNature(desiredMovement);

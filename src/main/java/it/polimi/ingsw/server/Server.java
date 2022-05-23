@@ -6,8 +6,6 @@ import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
     public class Server implements Entrance,ControllerServer{
-        private int numberOfPlayers;    //penso si possa eliminare
-        private boolean expertMode;     //penso si possa eliminare
         private ServerController controller;
         private Exit proxy;
 
@@ -17,7 +15,7 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
         }
 
         @Override
-        public void startGame(){ controller = new Controller(numberOfPlayers,expertMode,this); }
+        public void startGame(int numberOfPlayers, boolean expertMode){ controller = new Controller(numberOfPlayers,expertMode,this); }
 
         @Override
         public boolean userLogin(String nickname, String character, int playerRef){
@@ -76,14 +74,7 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 
 
 
-        @Override
-        public void setNumberOfPlayer(int numberOfPlayer) { this.numberOfPlayers = numberOfPlayer; }
-        @Override
-        public void setExpertMode(boolean expertMode) { this.expertMode = expertMode; }
-        @Override
-        public int getNumberOfPlayer() { return numberOfPlayers; }
-        @Override
-        public boolean isExpertMode() { return expertMode; }
+
 
         public static void main(String[] args) {
             Server server = new Server(2525);

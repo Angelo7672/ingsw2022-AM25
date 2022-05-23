@@ -6,8 +6,8 @@ public class RoundSpecial11 extends RoundStrategy{
 
     Special11 special;
 
-    public RoundSpecial11(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, Bag bag){
-        super(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    public RoundSpecial11(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
+        super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         special =new Special11();
         int[] extraction = {0,0,0,0,0};
         for(int i=0; i<4; i++){

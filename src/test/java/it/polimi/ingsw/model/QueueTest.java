@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class QueueTest {
+/*class QueueTest {
     @Test
     @DisplayName("First test: check queue initialization for first Planing Phase")
     void queueInit(){
@@ -421,4 +421,4 @@ class QueueTest {
                 ()->assertEquals(3,playerManager.readQueue(3),"The fourth player played EAGLE")
         );
     }
-}
+}*/

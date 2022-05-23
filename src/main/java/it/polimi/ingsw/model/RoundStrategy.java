@@ -8,7 +8,7 @@ public abstract class RoundStrategy {
     public CloudsManager cloudsManager;
     public IslandsManager islandsManager;
     public PlayerManager playerManager;
-    private QueueManager queueManager;
+    public QueueManager queueManager;
     public Bag bag;
     public int numberOfPlayer;
 

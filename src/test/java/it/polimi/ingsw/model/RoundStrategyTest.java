@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import static it.polimi.ingsw.model.Team.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RoundStrategyTest {
+/*public class RoundStrategyTest {
 
     private int numberOfPlayer=3;
     String[] playersInfo = {"Giorgio", "SAMURAI", "Marco", "KING", "Dino", "WIZARD"};
@@ -72,7 +72,7 @@ public class RoundStrategyTest {
         assertEquals(1,playerManager.getStudentTable(1,0));
     }
 
-    /*@Test
+    @Test
     @DisplayName("Test if conquestIsland change correctly the island's owner")
     void conquestIslandTest(){
 
@@ -99,7 +99,7 @@ public class RoundStrategyTest {
         assertEquals(WHITE,islandsManager.getTowerTeam(0));
         assertEquals(2,islandsManager.getTowerValue(0));
 
-    }*/
+    }
 
     @Test
     @DisplayName("test if highInfluenceTeam return the right team")
@@ -373,4 +373,4 @@ public class RoundStrategyTest {
 
 
 
-}
+}*/

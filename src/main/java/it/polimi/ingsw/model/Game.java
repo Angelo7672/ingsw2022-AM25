@@ -54,33 +54,26 @@ public class Game implements GameManager{
     public boolean refreshStudentsCloud() {
         return roundStrategies.get(0).refreshStudentsCloud();
     }
-
     @Override
     public void queueForPlanificationPhase() {
         roundStrategies.get(0).queueForPlanificationPhase();
     }
-
     @Override
-    public int readQueue(int pos) {
-        return roundStrategies.get(0).readQueue(pos);
-    }
-
-    @Override
-    public boolean playCard(int playerRef, int queRef, String card) {
-        return roundStrategies.get(0).playCard(playerRef, queRef, card);
-    }
+    public boolean playCard(int playerRef, int queRef, String card) { return roundStrategies.get(0).playCard(playerRef, queRef, card); }
 
     @Override
     public void inOrderForActionPhase() {
         roundStrategies.get(0).inOrderForActionPhase();
     }
-
     @Override
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) {
         roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
         setSpecial(0,-1);
     }
-
+    //to do before moveStudent
+    public void effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
+        roundStrategies.get(indexSpecial).effect(ref,color1, color2);
+    }
     @Override
     public boolean moveMotherNature(int queueRef, int desiredMovement) {
         boolean victory;
@@ -91,7 +84,6 @@ public class Game implements GameManager{
 
         return victory;
     }
-
     private void checkNoEntry(){
         int index=-1;
         for(int i=0; i<3; i++){
@@ -99,7 +91,6 @@ public class Game implements GameManager{
         }
         if(index!=-1) roundStrategies.get(index).effect();
     }
-
     @Override
     public void chooseCloud(int playerRef, int cloudRef) throws NotAllowedException {
         try{
@@ -108,14 +99,15 @@ public class Game implements GameManager{
     }
 
     @Override
+    public int readQueue(int pos) {
+        return roundStrategies.get(0).readQueue(pos);
+    }
+
+    @Override
     public String oneLastRide() {
         return roundStrategies.get(0).oneLastRide();
     }
 
-    //to do before moveStudent
-    public void effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
-        roundStrategies.get(indexSpecial).effect(ref,color1, color2);
-    }
 
     @Override
     public void useSpecial(int indexSpecial, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
@@ -164,22 +156,22 @@ public class Game implements GameManager{
     }
     @Override
     public void setProfessorsListener(ProfessorsListener listener){
-        playerManager.professorsListener=listener;
+        playerManager.professorsListener = listener;
     }
     @Override
     public void setPlayedCardListener(PlayedCardListener listener){
-        queueManager.playedCardListener=listener;
+        queueManager.playedCardListener = listener;
     }
     @Override
-    public void setSpecialListener(SpecialListener listener){ this.specialListener =listener;}
+    public void setSpecialListener(SpecialListener listener){ this.specialListener = listener;}
     @Override
     public void setCoinsListener(CoinsListener listener){
-        playerManager.coinsListener=listener;
+        playerManager.coinsListener = listener;
     }
     @Override
-    public void setIslandListener(IslandListener listener){ islandsManager.islandListener =listener;}
+    public void setIslandListener(IslandListener listener){ islandsManager.islandListener = listener;}
     @Override
-    public void setMotherPositionListener(MotherPositionListener listener){ islandsManager.motherPositionListener=listener;}
+    public void setMotherPositionListener(MotherPositionListener listener){ islandsManager.motherPositionListener = listener;}
     @Override
-    public void setInhibitedListener(InhibitedListener listener){ islandsManager.inhibitedListener=listener; }
+    public void setInhibitedListener(InhibitedListener listener){ islandsManager.inhibitedListener = listener; }
 }

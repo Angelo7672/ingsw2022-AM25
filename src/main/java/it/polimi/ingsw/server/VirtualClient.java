@@ -16,11 +16,20 @@ public class VirtualClient implements Runnable{
     private final Proxy_s proxy;
     private ObjectInputStream input;
     private ObjectOutputStream output;
-    private final int playerRef;    //penso si possa eliminare
+    private final int playerRef;
     private boolean clientInitialization;
+    private boolean gameSetupInitialization;
+    private GameSetup gameSetup;
+    private Object setupLocker;
     private boolean oneCardAtaTime;
     private boolean readyActionPhase;
     private boolean victory;
+    private Message tmp;
+    private Object planLocker;
+    private RoundPartOne roundPartOne;
+    private Object actionLocker;
+    private Object errorLocker;
+    private boolean error;
 
     public VirtualClient(Socket socket, Entrance server, Proxy_s proxy, int playerRef){
         this.socket = socket;
@@ -29,8 +38,18 @@ public class VirtualClient implements Runnable{
         this.playerRef = playerRef;
         this.victory = false;
         this.clientInitialization = true;
+        this.gameSetupInitialization = false;
+        this.setupLocker = new Object();
+        this.gameSetup = new GameSetup();
+        gameSetup.start();
         this.oneCardAtaTime = false;
         this.readyActionPhase = false;
+        this.planLocker = new Object();
+        this.roundPartOne = new RoundPartOne();
+        roundPartOne.start();
+        this.actionLocker = new Object();
+        this.errorLocker = new Object();
+        this.error = false;
         proxy.incrLimiter();
         try {
             input = new ObjectInputStream(socket.getInputStream());
@@ -42,54 +61,68 @@ public class VirtualClient implements Runnable{
 
     @Override
     public void run() {
-        Message tmp;
 
         try {
             this.socket.setSoTimeout(15000);    //come faccio a notificare lo spegnimento del socket?
             while (!victory){
-                try {
-                    tmp = (Message) input.readObject();
-                    if (tmp instanceof PingMessage) {
-                        try {
-                            this.socket.setSoTimeout(15000);
-                        }catch (SocketException socketException){
-                        //CHE FACCIO?
-                        }
+                tmp = (Message) input.readObject();
 
-                        //Thread a parte
-                    } else if (tmp instanceof CardMessage) {
-                        if(oneCardAtaTime) {
-                            oneCardAtaTime = false;
-                            planningPhase((CardMessage) tmp);
-                            notifyAll();    //da cambiare
-                        }
-                    } else if (tmp instanceof MoveStudent || tmp instanceof UseSpecial) {  //da sistemare
-                        if(readyActionPhase) {
-                            readyActionPhase = false;
-                            actionPhase(tmp);
-                            notifyAll();    //da cambiare
-                        }
+                if (tmp instanceof PingMessage) {
+                    this.socket.setSoTimeout(15000);    //reset timeout
 
-                        //solo una volta, ma penso serva comunque un thread
-                    } else if (clientInitialization) {
-                        if(tmp instanceof GenericMessage) {
-                            if (proxy.getConnectionsAllowed() == 1) gameSetting(tmp);
-                            loginClient(tmp);
-                            clientInitialization = false;   //only one execution
+
+                } else if(oneCardAtaTime) { //Planning Phase msg
+                    oneCardAtaTime = false;
+                    if (tmp instanceof CardMessage) {
+                        roundPartOne.setPlanningMsg(tmp);
+                        if(!error) planLocker.notify();
+                        else {
+                            error = false;
+                            errorLocker.notify();
                         }
                     }
-                }catch (IOException | ClassNotFoundException e){
-                    //CHE FACCIO?
+
+                } else if(readyActionPhase){
+                    if (tmp instanceof MoveStudent || tmp instanceof UseSpecial) {  //da sistemare
+
+                        readyActionPhase = false;
+                        actionPhase(tmp);
+                    }
+
+                } else if (clientInitialization) {  //login msg
+                    clientInitialization = false;
+                    if(tmp instanceof GenericMessage) {
+                        gameSetup.setSetupMsg(tmp);
+                        if (!error) setupLocker.notify();
+                        else {
+                            error = false;
+                            errorLocker.notify();
+                        }
+                    }
+                }else if (gameSetupInitialization){ //game setup msg
+                    gameSetupInitialization = false;
+                    if(tmp instanceof SetupGame){
+                        gameSetup.setSetupMsg(tmp);
+                        if(!error) setupLocker.notify();
+                        else {
+                            error = false;
+                            errorLocker.notify();
+                        }
+                    }
                 }
+
             }
         }catch (SocketException socketException){
+            //CHE FACCIO?
+        }catch (IOException | ClassNotFoundException e){
             //CHE FACCIO?
         }
     }
 
 
 
-
+    public void unlockPlanningPhase(){ oneCardAtaTime = true; }
+    public void unlockActionPhase(){ readyActionPhase = true; }
 
     //Message to client
     public void sendPlayCard(){
@@ -109,203 +142,198 @@ public class VirtualClient implements Runnable{
         }
     }
 
-    private class GameSetup() extends Thread{
 
-        private void gameSetting(Message msg){
-            Message tmp;
-            boolean checker = false;
 
-            if(((GenericMessage) msg).getMessage().equals("Ready for login!")) {
-                proxy.setConnectionsAllowed(0);
-                try {
+    private class GameSetup extends Thread{
+        Message setupMsg;
+
+        @Override
+        public void run(){
+            try{
+                setupLocker.wait();
+                synchronized (setupLocker){
+                    if (proxy.getConnectionsAllowed() == 1) gameSetting();
+                    loginClient();
+                }
+            }catch (InterruptedException e) { e.printStackTrace(); }
+        }
+
+        private void gameSetting(){
+            GenericMessage msg = (GenericMessage) setupMsg;
+
+            try {
+                if (msg.getMessage().equals("Ready for login!")) {
+                    proxy.setConnectionsAllowed(0);
                     output.writeObject(new SetupGameMessage());
                     output.flush();
-                    try {
-                        tmp = (Message) input.readObject();
-                        setupGame(tmp);
-                    }catch (IOException | ClassNotFoundException e){
-                        //CHE FACCIO?
+                    synchronized (setupLocker) {
+                        gameSetupInitialization = true;
+                        setupLocker.wait();
+                        setupGame();
                     }
-                }catch (IOException e) {
-                    //CHE FACCIO?
-                }
-            }else {
-                while (!checker) {
-                    try {
-                        output.writeObject(new GenericAnswer("error"));
-                        output.flush();
-                        try {
-                            tmp = (Message) input.readObject();
-                            if (tmp instanceof GenericMessage) {
-                                checker = true;
-                                gameSetting(tmp);
-                            }
-                        }catch (IOException | ClassNotFoundException e){
-                            //CHE FACCIO?
-                        }
-                    }catch (IOException e) {
-                        //CHE FACCIO?
+                } else {
+                    output.writeObject(new GenericAnswer("error"));
+                    output.flush();
+                    synchronized (errorLocker) {
+                        clientInitialization = true;
+                        error = true;
+                        errorLocker.wait();
+                        gameSetting();
                     }
                 }
-            }
+            }catch (IOException e) {
+            //CHE FACCIO?
+            }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
-        private void setupGame(Message msg){
-            Message tmp;
-            SetupGame res;
+        private void setupGame(){
+            SetupGame msg = (SetupGame) setupMsg;
 
-            if (msg instanceof SetupGame) {
-                res = (SetupGame) msg;
-                //fare check
-                proxy.setConnectionsAllowed(res.getPlayersNumber());
-                server.setNumberOfPlayer(res.getPlayersNumber());
-                server.setExpertMode(res.getExpertMode());
-                server.startGame();
+            if(msg.getPlayersNumber() >= 2 && msg.getPlayersNumber() <= 4) {
+                proxy.setConnectionsAllowed(msg.getPlayersNumber());
+                server.startGame(msg.getPlayersNumber(),msg.getExpertMode());
             }else {
                 try {
                     output.writeObject(new GenericAnswer("error"));
                     output.flush();
-                    try {
-                        tmp = (Message) input.readObject();
-                        setupGame(tmp);
-                    }catch (IOException | ClassNotFoundException e){
-                        //CHE FACCIO?
+                    synchronized (errorLocker) {
+                        gameSetupInitialization = true;
+                        error = true;
+                        errorLocker.wait();
+                        setupGame();
                     }
                 }catch (IOException e) {
                     //CHE FACCIO?
-                }
+                }catch (InterruptedException ex) { ex.printStackTrace(); }
             }
         }
-        private void loginClient(Message tmp){
-            boolean checker = false;
+        private void loginClient(){
+            GenericMessage msg = (GenericMessage) setupMsg;
 
-            if(((GenericMessage) tmp).getMessage().equals("Ready for login!")){
-                try {
+            try {
+                if (msg.getMessage().equals("Ready for login!")) {
                     output.writeObject(new GenericAnswer("Ready for login!"));
                     output.flush();
-                    try {
-                        tmp = (Message) input.readObject();
-                        setupConnection(tmp);
-                    }catch (IOException | ClassNotFoundException e){
-                        //CHE FACCIO?
+                    synchronized (setupLocker) {
+                        clientInitialization = true;
+                        setupLocker.wait();
+                        setupConnection();
                     }
-                }catch (IOException e) {
-                    //CHE FACCIO?
-                }
-            }else {
-                while (!checker) {
-                    try {
-                        output.writeObject(new GenericAnswer("error"));
-                        output.flush();
-                        try {
-                            tmp = (Message) input.readObject();
-                            if (tmp instanceof GenericMessage) {
-                                checker = true;
-                                loginClient(tmp);
-                            }
-                        }catch (IOException | ClassNotFoundException e){
-                            //CHE FACCIO?
-                        }
-                    }catch (IOException e) {
-                        //CHE FACCIO?
-                    }
-                }
-            }
-        }
-        private void setupConnection(Message msg) {
-            Message tmp;
-            SetupConnection login;
-            boolean checker;
-
-            if (msg instanceof SetupConnection) {
-                login = (SetupConnection) msg;
-                checker = server.userLogin(login.getNickname(),login.getCharacter(),playerRef);
-                if(checker){
-                    try {
-                        output.writeObject(new LoginMessage(server.getNumberOfPlayer(), server.isExpertMode(),/*TODO metodo che guarda team in virtual view*/));
-                        output.flush();
-                        //mandare un ok
-                        //arriva il "ready to start" generic
-                    } catch (IOException e) {
-                        //CHE FACCIO?
-                    }
-                }else{
-                    try {
-                        output.writeObject(new GenericAnswer("error"));
-                        output.flush();
-                        try {
-                            tmp = (Message) input.readObject();
-                            setupConnection(tmp);
-                        }catch (IOException | ClassNotFoundException e){
-                            //CHE FACCIO?
-                        }
-                    }catch (IOException e) {
-                        //CHE FACCIO?
-                    }
-                }
-            }else{
-                try {
+                } else {
                     output.writeObject(new GenericAnswer("error"));
                     output.flush();
-                    try {
-                        tmp = (Message) input.readObject();
-                        setupConnection(tmp);
-                    }catch (IOException | ClassNotFoundException e){
-                        //CHE FACCIO?
+                    synchronized (errorLocker) {
+                        clientInitialization = true;
+                        error = true;
+                        errorLocker.wait();
+                        loginClient();
                     }
-                }catch (IOException e) {
-                    //CHE FACCIO?
                 }
-            }
+            }catch (IOException e) {
+                //CHE FACCIO?
+            }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
+        private void setupConnection() {
+            SetupConnection msg = (SetupConnection) setupMsg;
+            boolean checker;
+
+            checker = server.userLogin(msg.getNickname(), msg.getCharacter(), playerRef);
+            try {
+                if (checker) {
+                    output.writeObject((new GenericAnswer("ok")));
+                    output.flush();
+                    synchronized (setupLocker){
+                        clientInitialization = true;
+                        setupLocker.wait();
+                        readyStart();
+                    }
+                } else {
+                    output.writeObject(new GenericAnswer("error"));
+                    output.flush();
+                    synchronized (errorLocker) {
+                        clientInitialization = true;
+                        error = true;
+                        errorLocker.wait();
+                        setupConnection();
+                    }
+                }
+            }catch (IOException e) {
+                //CHE FACCIO?
+            }catch (InterruptedException ex) { ex.printStackTrace(); }
+        }
+        private void readyStart(){
+            GenericMessage msg = (GenericMessage) setupMsg;
+
+            try {
+                if (!msg.getMessage().equals("Ready for play card")) {
+                    output.writeObject(new GenericAnswer("error"));
+                    output.flush();
+                    synchronized (errorLocker) {
+                        clientInitialization = true;
+                        error = true;
+                        errorLocker.wait();
+                        readyStart();
+                    }
+                }
+            }catch (IOException e) {
+                //CHE FACCIO?
+            }catch (InterruptedException ex) { ex.printStackTrace(); }
+        }
+
+        public void setSetupMsg(Message msg) { this.setupMsg = msg; }
     }
 
-    private class Round() extends Thread{
+    private class RoundPartOne extends Thread{
+        CardMessage planningMsg;
 
-        //Planning Phase
-        public void unlockPlanningPhase(){ oneCardAtaTime = true; }
-        private void planningPhase(CardMessage card) {
-            boolean checker;
-            Message tmp;
-
-            checker = server.userPlayCard(playerRef, card.getCard());
-            if(checker) {
-                try {
-                    output.writeObject(new GenericAnswer("ok"));
-                    output.flush();
-                } catch (IOException e){
-                    //CHE FACCIO?
-                }
-            }else{
-                try {
-                    output.writeObject(new GenericAnswer("move not allowed"));  //crea messaggio Move not allowed
-                    output.flush();
-                }catch (IOException e){
-                    //CHE FACCIO?
-                }
-                while (!checker) {
-                    try {
-                        tmp = (Message) input.readObject();
-                        if (tmp instanceof CardMessage) {
-                            checker = true;
-                            planningPhase((CardMessage) tmp);
-                        } else {
-                            try {
-                                output.writeObject(new GenericAnswer("error"));
-                                output.flush();
-                            } catch (IOException e) {
-                                //CHE FACCIO?
-                            }
-                        }
-                    }catch (IOException | ClassNotFoundException e) {
-                        //CHE FACCIO?
+        @Override
+        public void run(){
+            try {
+                planLocker.wait();
+                while (!victory) {
+                    synchronized (planLocker) {
+                        planningPhase();
+                        planLocker.wait();
                     }
                 }
-            }
+            } catch (InterruptedException e) { e.printStackTrace(); }
         }
 
-        //Action Phase
+        private void planningPhase() {
+            boolean checker;
+
+            try {
+                checker = server.userPlayCard(playerRef, planningMsg.getCard());
+                if(checker) {
+                    output.writeObject(new GenericAnswer("ok"));
+                    output.flush();
+                    //TODO: arriva il messaggio Ready for action phase
+                }else{
+                    output.writeObject(new MoveNotAllowedAnswer());
+                    output.flush();
+                    synchronized (errorLocker) {
+                        oneCardAtaTime = true;
+                        error = true;
+                        errorLocker.wait();
+                        planningPhase();
+                    }
+                }
+            }catch (IOException e) {
+            //CHE FACCIO?
+            }catch (InterruptedException ex) { ex.printStackTrace(); }
+        }
+
+        public void setPlanningMsg(Message msg) { this.planningMsg = (CardMessage) msg; }
+    }
+
+    private class RoundPartTwo extends Thread{
+        Message actionMsg;
+
+        @Override
+        public void run(){
+
+        }
+
         private void actionPhase(Message msg) {
-            Message tmp;
             UseSpecial special;
 
 
@@ -316,48 +344,29 @@ public class VirtualClient implements Runnable{
             if(msg instanceof ChosenCloud) chooseCloud(msg);
 
         }
-        public void unlockActionPhase(){ readyActionPhase = true; }
-        private void moveStudent(Message msg){
-            Message tmp;
-            MoveStudent studentMovement;
-            boolean checker;
-            boolean checker1 = false;
 
-            studentMovement = (MoveStudent) msg;
+        private void moveStudent(){
+            MoveStudent studentMovement = (MoveStudent) actionMsg;
+            boolean checker;
+
             checker = server.userMoveStudent(playerRef, studentMovement.getColor(), studentMovement.isInSchool(), studentMovement.getIslandRef());
-            if(checker) {
-                try {
+            try {
+                if (checker) {
                     output.writeObject(new GenericAnswer("ok"));
                     output.flush();
-                } catch (IOException e){
-                    //CHE FACCIO?
-                }
-            } else {
-                try {
-                    output.writeObject(new GenericAnswer("move not allowed"));
+                } else {
+                    output.writeObject(new MoveNotAllowedAnswer());
                     output.flush();
-                    while (!checker1) {
-                        try {
-                            tmp = (Message) input.readObject();
-                            if (tmp instanceof MoveStudent) {
-                                checker1 = true;
-                                moveStudent(tmp);
-                            } else {
-                                try {
-                                    output.writeObject(new GenericAnswer("error"));
-                                    output.flush();
-                                } catch (IOException e) {
-                                    //CHE FACCIO?
-                                }
-                            }
-                        } catch (IOException | ClassNotFoundException e) {
-                            //CHE FACCIO?
-                        }
+                    synchronized (errorLocker){
+                        readyActionPhase = true;
+                        error = true;
+                        errorLocker.wait();
+                        moveStudent();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
                     }
-                } catch (IOException e) {
-                    //CHE FACCIO?
                 }
-            }
+            }catch (IOException e) {
+                //CHE FACCIO?
+            }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void moveMotherNature(Message msg){
             MoveMotherNature motherMovement;
@@ -369,38 +378,24 @@ public class VirtualClient implements Runnable{
             try {
                 checker = server.userMoveMotherNature(motherMovement.getDesiredMovement());
                 if (checker) {
-                    try {
-                        output.writeObject(new GenericAnswer("ok"));
-                        output.flush();
-                    } catch (IOException e) {
-                        //CHE FACCIO?
-                    }
+                    output.writeObject(new GenericAnswer("ok"));
+                    output.flush();
                 } else {
-                    try {
-                        output.writeObject(new GenericAnswer("move not allowed"));
-                        output.flush();
-                        while (!checker1) {
-                            try {
-                                tmp = (Message) input.readObject();
-                                if (tmp instanceof MoveMotherNature) {
-                                    checker1 = true;
-                                    moveMotherNature(tmp);
-                                } else {
-                                    try {
-                                        output.writeObject(new GenericAnswer("error"));
-                                        output.flush();
-                                    } catch (IOException e) {
-                                        //CHE FACCIO?
-                                    }
-                                }
-                            } catch (IOException | ClassNotFoundException e) {
-                                //CHE FACCIO?
-                            }
+                    output.writeObject(new GenericAnswer("move not allowed"));
+                    output.flush();
+                    while (!checker1) {
+                        tmp = (Message) input.readObject();
+                        if (tmp instanceof MoveMotherNature) {
+                            checker1 = true;
+                            moveMotherNature(tmp);
+                        } else {
+                            output.writeObject(new GenericAnswer("error"));
+                            output.flush();
                         }
-                    }catch(IOException e){
-                        //CHE FACCIO?
                     }
                 }
+            } catch (IOException | ClassNotFoundException e) {
+                //CHE FACCIO?
             } catch (EndGameException endGameException) {
                 //TODO: game over blocca tutto
             }
@@ -425,28 +420,19 @@ public class VirtualClient implements Runnable{
                     output.writeObject(new GenericAnswer("move not allowed"));
                     output.flush();
                     while (!checker1) {
-                        try {
-                            tmp = (Message) input.readObject();
-                            if (tmp instanceof ChosenCloud) {
-                                checker1 = true;
-                                chooseCloud(tmp);
-                            } else {
-                                try {
-                                    output.writeObject(new GenericAnswer("error"));
-                                    output.flush();
-                                } catch (IOException e) {
-                                    //CHE FACCIO?
-                                }
-                            }
-                        } catch (IOException | ClassNotFoundException e) {
-                            //CHE FACCIO?
+                        tmp = (Message) input.readObject();
+                        if (tmp instanceof ChosenCloud) {
+                            checker1 = true;
+                            chooseCloud(tmp);
+                        } else {
+                            output.writeObject(new GenericAnswer("error"));
+                            output.flush();
                         }
                     }
-                } catch (IOException e) {
+                } catch (IOException | ClassNotFoundException e){
                     //CHE FACCIO?
                 }
             }
         }
-
     }
 }
