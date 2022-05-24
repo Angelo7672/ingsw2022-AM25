@@ -8,4 +8,5 @@ public interface ServerController {
     void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException;
     void moveMotherNature(int desiredMovement) throws NotAllowedException, EndGameException;
     void chooseCloud(int playerRef, int cloudRef) throws NotAllowedException;
+    void resumeTurn();
 }

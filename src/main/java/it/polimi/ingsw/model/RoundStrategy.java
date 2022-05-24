@@ -139,14 +139,16 @@ public abstract class RoundStrategy {
 
     public void queueForPlanificationPhase(){ queueManager.queueForPlanificationPhase(); }
 
-    public boolean playCard(int playerRef, int queueRef, String card){ return queueManager.playCard(playerRef, queueRef, stringToAssistant(card)); }
+    public boolean playCard(int playerRef, int queueRef, String card) throws NotAllowedException {
+        return queueManager.playCard(playerRef, queueRef, stringToAssistant(card));
+    }
 
     public void inOrderForActionPhase(){ queueManager.inOrderForActionPhase(); }
 
     public int readQueue(int pos){ return queueManager.readQueue(pos); }
 
 
-    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef){
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{
         if(!inSchool){
             playerManager.transferStudent(playerRef, colour, inSchool, false);
             islandsManager.incStudent(islandRef,colour);

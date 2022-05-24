@@ -70,6 +70,9 @@ public class Controller implements ServerController{
 
     public void oneLastRide(){ winner = gameManager.oneLastRide(); }
 
+    @Override
+    public void resumeTurn(){ roundController.notify(); }
+
     public void saveVirtualView(String fileName){
         try{
             //File gameStateFile = new File(fileName);

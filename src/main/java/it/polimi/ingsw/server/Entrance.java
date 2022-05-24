@@ -10,4 +10,5 @@ public interface Entrance {
     boolean userMoveStudent(int playerRef, int colour, boolean inSchool, int islandRef);
     boolean userMoveMotherNature(int desiredMovement) throws EndGameException;
     boolean userChooseCloud(int playerRef, int cloudRef);
+    void resumeTurn();
 }

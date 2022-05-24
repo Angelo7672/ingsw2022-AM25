@@ -27,6 +27,7 @@ public class VirtualClient implements Runnable{
     private Message tmp;
     private Object planLocker;
     private RoundPartOne roundPartOne;
+    private RoundPartTwo roundPartTwo;
     private Object actionLocker;
     private Object errorLocker;
     private boolean error;
@@ -48,6 +49,8 @@ public class VirtualClient implements Runnable{
         this.roundPartOne = new RoundPartOne();
         roundPartOne.start();
         this.actionLocker = new Object();
+        this.roundPartTwo = new RoundPartTwo();
+        roundPartTwo.start();
         this.errorLocker = new Object();
         this.error = false;
         proxy.incrLimiter();
@@ -82,11 +85,15 @@ public class VirtualClient implements Runnable{
                         }
                     }
 
-                } else if(readyActionPhase){
+                } else if(readyActionPhase){    //Action Phase msg
+                    readyActionPhase = false;
                     if (tmp instanceof MoveStudent || tmp instanceof UseSpecial) {  //da sistemare
-
-                        readyActionPhase = false;
-                        actionPhase(tmp);
+                        roundPartTwo.setActionMsg(tmp);
+                        if(!error) actionLocker.notify();
+                        else {
+                            error = false;
+                            errorLocker.notify();
+                        }
                     }
 
                 } else if (clientInitialization) {  //login msg
@@ -292,10 +299,12 @@ public class VirtualClient implements Runnable{
                 while (!victory) {
                     synchronized (planLocker) {
                         planningPhase();
+                        server.resumeTurn();
                         planLocker.wait();
                     }
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }
+
         }
 
         private void planningPhase() {
@@ -326,22 +335,67 @@ public class VirtualClient implements Runnable{
     }
 
     private class RoundPartTwo extends Thread{
-        Message actionMsg;
+        private Message actionMsg;
+        private int numberOfPlayer;
+        private boolean studentLocker;
+        private int studentCounter;
+        private boolean motherLocker;
+        private boolean cloudLocker;
+
+        public RoundPartTwo(){
+            this.numberOfPlayer = proxy.getConnectionsAllowed();
+            this.studentLocker = true;
+            this.studentCounter = 0;
+            this.motherLocker = false;
+            this.cloudLocker = false;
+        }
+
 
         @Override
         public void run(){
-
+            try {
+                actionLocker.wait();
+                while (!victory) {
+                    synchronized (actionLocker) {
+                        actionPhase();
+                        server.resumeTurn();
+                        actionLocker.wait();
+                    }
+                }
+            } catch (InterruptedException e) { e.printStackTrace(); }
         }
 
-        private void actionPhase(Message msg) {
-            UseSpecial special;
+        private void actionPhase() {
 
+            if(studentLocker) {
+                studentLocker = false;
+                if (actionMsg instanceof MoveStudent) {
+                    if (numberOfPlayer == 2 || numberOfPlayer == 4) {
+                        if (studentCounter < 3) moveStudent();
+                        else {
+                            //TODO: transfer complete alla fine di tutti gli studenti Generic Answer
+                            motherLocker = true;
+                        }
+                    } else if (numberOfPlayer == 3) {
+                        if (studentCounter < 4) moveStudent();
+                        else {
+                            //TODO: transfer complete alla fine di tutti gli studenti Generic Answer
+                            motherLocker = true;
+                        }
+                    }
+                    //TODO: special,
+                }
+            }
 
-            if(msg instanceof MoveStudent) moveStudent(msg);
-            //TODO: special, transfer complete alla fine di tutti gli studenti Generic Answer
-            if(msg instanceof MoveMotherNature) moveMotherNature(msg);
-            //TODO: special
-            if(msg instanceof ChosenCloud) chooseCloud(msg);
+            if(motherLocker) {
+                motherLocker = false;
+                if (actionMsg instanceof MoveMotherNature) moveMotherNature();
+            }
+
+            if(cloudLocker) {
+                cloudLocker = false;
+                if (actionMsg instanceof ChosenCloud) chooseCloud();
+            }
 
         }
 
@@ -354,6 +408,9 @@ public class VirtualClient implements Runnable{
                 if (checker) {
                     output.writeObject(new GenericAnswer("ok"));
                     output.flush();
+                    studentCounter++;
+                    studentLocker = true;
+                    actionPhase();
                 } else {
                     output.writeObject(new MoveNotAllowedAnswer());
                     output.flush();
@@ -361,78 +418,67 @@ public class VirtualClient implements Runnable{
                         readyActionPhase = true;
                         error = true;
                         errorLocker.wait();
-                        moveStudent();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
+                        studentLocker = true;
+                        actionPhase();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
                     }
                 }
             }catch (IOException e) {
                 //CHE FACCIO?
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
-        private void moveMotherNature(Message msg){
-            MoveMotherNature motherMovement;
-            Message tmp;
+        private void moveMotherNature(){
+            MoveMotherNature motherMovement = (MoveMotherNature) actionMsg;
             boolean checker;
-            boolean checker1 = false;
 
-            motherMovement = (MoveMotherNature) msg;
             try {
                 checker = server.userMoveMotherNature(motherMovement.getDesiredMovement());
                 if (checker) {
                     output.writeObject(new GenericAnswer("ok"));
                     output.flush();
+                    cloudLocker = true;
                 } else {
-                    output.writeObject(new GenericAnswer("move not allowed"));
+                    output.writeObject(new MoveNotAllowedAnswer());
                     output.flush();
-                    while (!checker1) {
-                        tmp = (Message) input.readObject();
-                        if (tmp instanceof MoveMotherNature) {
-                            checker1 = true;
-                            moveMotherNature(tmp);
-                        } else {
-                            output.writeObject(new GenericAnswer("error"));
-                            output.flush();
-                        }
+                    synchronized (errorLocker){
+                        readyActionPhase = true;
+                        error = true;
+                        errorLocker.wait();
+                        motherLocker = true;
+                        moveMotherNature();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
                     }
                 }
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException e) {
                 //CHE FACCIO?
+            }catch (InterruptedException ex) { ex.printStackTrace();
             } catch (EndGameException endGameException) {
                 //TODO: game over blocca tutto
             }
         }
-        private void chooseCloud(Message msg){
-            Message tmp;
-            ChosenCloud cloud;
+        private void chooseCloud(){
+            ChosenCloud cloud = (ChosenCloud) actionMsg;
             boolean checker;
-            boolean checker1 = false;
 
-            cloud = (ChosenCloud) msg;
             checker = server.userChooseCloud(playerRef,cloud.getCloud());
-            if(checker) {
-                try {
+            try {
+                if(checker) {
                     output.writeObject(new GenericAnswer("ok"));
                     output.flush();
-                } catch (IOException e) {
-                    //CHE FACCIO?
-                }
-            } else {
-                try {
-                    output.writeObject(new GenericAnswer("move not allowed"));
+                } else {
+                    output.writeObject(new MoveNotAllowedAnswer());
                     output.flush();
-                    while (!checker1) {
-                        tmp = (Message) input.readObject();
-                        if (tmp instanceof ChosenCloud) {
-                            checker1 = true;
-                            chooseCloud(tmp);
-                        } else {
-                            output.writeObject(new GenericAnswer("error"));
-                            output.flush();
-                        }
+                    synchronized (errorLocker){
+                        readyActionPhase = true;
+                        error = true;
+                        errorLocker.wait();
+                        cloudLocker = true;
+                        actionPhase();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
                     }
-                } catch (IOException | ClassNotFoundException e){
-                    //CHE FACCIO?
                 }
-            }
+            } catch (IOException e) {
+            //CHE FACCIO?
+            }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
+
+        public void setActionMsg(Message actionMsg) { this.actionMsg = actionMsg; }
     }
 }

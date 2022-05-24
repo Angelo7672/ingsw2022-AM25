@@ -71,6 +71,9 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
             return true;
         }
 
+        @Override
+        public void resumeTurn(){ controller.resumeTurn(); }
+
 
 
 
