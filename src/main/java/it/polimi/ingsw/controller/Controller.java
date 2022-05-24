@@ -101,6 +101,20 @@ public class Controller implements ServerController{
         }
     }   //da chiedere
 
+    public void clearFile(String fileName) {
+        try{
+            File file = new File(fileName);
+            if (file.exists()) {
+                RandomAccessFile raf = new RandomAccessFile(file, "rw");
+                raf.setLength(0);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     public int getCurrentUser() { return currentUser; }

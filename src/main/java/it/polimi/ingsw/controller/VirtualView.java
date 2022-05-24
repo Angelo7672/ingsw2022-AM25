@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.listeners.*;
-import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,36 +38,14 @@ public class VirtualView
     public String getLastPlayedCard(int playerRef){
         return hands.get(playerRef).lastPlayedCard;
     }
-    public void setNickname(String nickname, int playerRef) throws NotAllowedException {
-        //throws an exception if the nickname is already in use
-        boolean isOk = true;
-        for(int i=0; i<schoolBoards.size(); i++){
-            if(schoolBoards.get(i).nickname == nickname){
-                isOk = false;
-            }
-        }
-        if (isOk=true) {
-            schoolBoards.get(playerRef).nickname = nickname;
-        }
-        else{
-            throw new NotAllowedException();
-        }
+
+    public String getNickname(int playerRef){
+        return this.schoolBoards.get(playerRef).nickname;
     }
-    public void setCharacter(String character, int playerRef) throws NotAllowedException {
-        //throws an exception if the character is already in use
-        boolean isOk = true;
-        for(int i=0; i<schoolBoards.size(); i++){
-            if(schoolBoards.get(i).character == character){
-                isOk = false;
-            }
-        }
-        if (isOk=true) {
-            schoolBoards.get(playerRef).character = character;
-        }
-        else{
-            throw new NotAllowedException();
-        }
+    public String getCharacter(int playerRef){
+        return this.schoolBoards.get(playerRef).nickname;
     }
+
     public void addNewPlayer(String nickname, String character){
         int player;
         schoolBoards.add(new SchoolBoard(nickname,character));
