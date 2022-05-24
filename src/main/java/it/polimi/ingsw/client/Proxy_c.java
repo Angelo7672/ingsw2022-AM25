@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.Message.*;
 import it.polimi.ingsw.server.Answer.*;
+import it.polimi.ingsw.server.Answer.ViewMessage.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,17 +16,16 @@ public class Proxy_c implements Entrance{
     private final String address;
     private final int port;
     private ObjectOutputStream outputStream;
-    private ObjectInputStream inputStream;
     private Socket socket;
-    private final InputChecker checker;
     private Answer tempObj;
     private Thread ping;
-    private Exit cli;
+    private final Exit cli;
+    private View view;
 
     public Proxy_c() {
         this.address = "127.0.0.1";
         this.port = 2525;
-        checker = new InputChecker();
+        cli = new CLI();
     }
 
     public boolean start() throws IOException {
@@ -36,23 +36,29 @@ public class Proxy_c implements Entrance{
         }
         System.out.println("Connection established");
         outputStream = new ObjectOutputStream(socket.getOutputStream());
-        send(new GenericMessage("Ready for Login"));
+        send(new GenericMessage("Ready for Login!"));
         return true;
+    }
+    public void setup() throws IOException, ClassNotFoundException {
+        tempObj = receive();
+        if(tempObj instanceof SetupGameMessage) cli.setupGame();
+        else {
+            view = new View(((LoginMessage) tempObj).getNumberOfPlayer());
+            cli.view(view);
+        }
     }
 
     public boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
-        inputStream = new ObjectInputStream(socket.getInputStream());
-        ConnectionMessage message = (ConnectionMessage) inputStream.readObject();
-        if(message.getNumberOfPlayers()==0) cli.setupGame();
-        if(!checker.checkSetupConnection((ConnectionMessage) tempObj, nickname, character)) return false;
+        if(!character.equalsIgnoreCase("WIZARD")&&!character.equalsIgnoreCase("KING")
+            &&!character.equalsIgnoreCase("WITCH")&&!character.equalsIgnoreCase("SAMURAI")) return false;
         send(new SetupConnection(nickname, character));
-        tempObj = (Answer) inputStream.readObject();
+        tempObj = receive();
         if(!tempObj.getMessage().equalsIgnoreCase("ok")) return false;
         System.out.println("SetupConnection done");
         return true;
     }
 
-    public boolean setupGame(int numberOfPlayers, String expertMode) throws IOException {
+    public boolean setupGame(int numberOfPlayers, String expertMode) throws IOException, ClassNotFoundException {
         boolean isExpert;
         if(numberOfPlayers<2 || numberOfPlayers >4){
             System.out.println("Player must be between 2 and 4");
@@ -65,33 +71,35 @@ public class Proxy_c implements Entrance{
             return false;
         }
         send(new SetupGame(numberOfPlayers, isExpert));
+        tempObj = receive();
+        if(!tempObj.getMessage().equals("ok")) return false;
+        view=new View(numberOfPlayers);
+        cli.view(view);
         return true;
+
     }
 
-    public boolean clientWait() throws ClassNotFoundException, IOException {
-        send(new GenericMessage("Ready for play card"));
+    public boolean startPlanningPhase() throws ClassNotFoundException, IOException {
+        send(new GenericMessage("Ready for Planning Phase"));
         while(true) {
-            tempObj = (Answer) inputStream.readObject();
-            if(tempObj instanceof CardsMessage){
+            tempObj = receive();
+            if(tempObj.getMessage().equals("Play card!")){
                 return true;
             }
         }
     }
 
     public boolean playCard(String card) throws IOException, ClassNotFoundException {
-        if(!checker.checkCard((CardsMessage) tempObj, card)){
-            return false;
-        }
         send(new CardMessage(card));
-        tempObj = (Answer) inputStream.readObject();
+        tempObj = receive();
         return tempObj.getMessage().equals("ok");
     }
 
     public boolean startActionPhase() throws IOException, ClassNotFoundException {
-        send(new GenericMessage("Ready for actionPhase"));
+        send(new GenericMessage("Ready for Action Phase"));
         while(true) {
-            tempObj = (Answer) inputStream.readObject();
-            if(tempObj.getMessage().equals("ok it's your turn")){
+            tempObj = receive();
+            if(tempObj.getMessage().equals("Start your Action Phase!")){
                 return true;
             }
         }
@@ -99,41 +107,34 @@ public class Proxy_c implements Entrance{
 
     public boolean moveStudent(int color, String where, int islandRef) throws IOException, ClassNotFoundException {
         if(color < 0 || color > 4) {
-            System.out.println("Error, try again");
+            System.out.println("Error, insert a color");
             return false;
         }
         boolean inSchool;
         if (where.equalsIgnoreCase("school")) inSchool = true;
         else if(where.equalsIgnoreCase("island")) inSchool = false;
         else {
-            System.out.println("Error, try again");
-            return false;
-        }
-        if (!checker.checkMoveStudent((SchoolMessage) inputStream.readObject(), color, inSchool)){
-            System.out.println("Error, try again");
+            System.out.println("Error, insert school or island");
             return false;
         }
         send(new MoveStudent(color, inSchool, islandRef));
-        tempObj = (Answer) inputStream.readObject();
+        tempObj = receive();
         if(tempObj.getMessage().equals("transfer complete")) return true;
-        if(tempObj.getMessage().equals("error")) System.out.println("Error, try again");
+        if(tempObj.getMessage().equals("move not allowed")) System.out.println("Error, m5ove not allowed");
         return false;
     }
 
     public boolean moveMotherNature(int steps) throws IOException, ClassNotFoundException {
-        /*tempObj = (Answer) inputStream.readObject();
-        if(!checker.checkMoveMotherNature((MoveMotherNatureMessage) tempObj, steps)) return false;*/
         send(new MoveMotherNature(steps));
-        tempObj = (Answer) inputStream.readObject();
+        tempObj = receive();
         if (tempObj.getMessage().equals("ok")) return true;
         System.out.println("Error, try again");
         return false;
     }
 
     public boolean chooseCloud(int cloud) throws IOException, ClassNotFoundException {
-        //if(!checker.checkCloud((StudentMessage) inputStream.readObject(), cloud)) return false;
         send(new ChosenCloud(cloud));
-        tempObj = (Answer) inputStream.readObject();
+        tempObj = receive();
         if(tempObj.getMessage().equals("ok")) return true;
         System.out.println("Error, try again");
         return false;
@@ -141,18 +142,17 @@ public class Proxy_c implements Entrance{
 
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
         send(new CheckSpecial(special));
-        tempObj = (SpecialMessage) inputStream.readObject();
+        tempObj = (SpecialMessage) receive();
         return tempObj.getMessage().equals("ok");
     }
 
     public boolean useSpecial(int special, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException {
-        if(!checker.checkSpecial(special, ref, color1, color2, (SpecialMessage) tempObj)) return false;
         send(new UseSpecial(special, ref, color1, color2));
-        tempObj = (Answer) inputStream.readObject();
+        tempObj = receive();
         return tempObj.getMessage().equals("ok");
     }
 
-    //send message to the server
+    //send message to server
     public void send(Message message) throws IOException {
         try {
             outputStream.reset();
@@ -161,6 +161,30 @@ public class Proxy_c implements Entrance{
         } catch (IOException e){
 
         }
+    }
+    public Answer receive() throws IOException, ClassNotFoundException {
+        Answer tmp;
+        while (true) {
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+            tmp = (Answer) inputStream.readObject();
+            if(tmp instanceof NicknameMessage) view.setNickname((NicknameMessage)tmp);
+            else if(tmp instanceof WizardMessage) view.setWizard((WizardMessage)tmp);
+            else if(tmp instanceof LastCardMessage) view.setLastCard((LastCardMessage)tmp);
+            else if(tmp instanceof  NumberOfCardsMessage) view.setNumberOfCards((NumberOfCardsMessage)tmp);
+            else if(tmp instanceof SchoolStudentMessage) view.setStudents((SchoolStudentMessage)tmp);
+            else if(tmp instanceof ProfessorMessage) view.setProfessors((ProfessorMessage)tmp);
+            else if(tmp instanceof SchoolTowersMessage) view.setSchoolTowers((SchoolTowersMessage)tmp);
+            else if(tmp instanceof CoinsMessage) view.setCoins((CoinsMessage)tmp);
+            else if(tmp instanceof CloudStudentMessage) view.setClouds((CloudStudentMessage)tmp);
+            else if(tmp instanceof IslandStudentMessage) view.setStudentsIsland((IslandStudentMessage) tmp);
+            else if(tmp instanceof MotherPositionMessage) view.setMotherPosition((MotherPositionMessage)tmp);
+            else if(tmp instanceof IslandTowersNumberMessage) view.setIslandTowers((IslandTowersNumberMessage) tmp);
+            else if(tmp instanceof IslandTowersColorMessage) view.setTowersColor((IslandTowersColorMessage)tmp);
+            else if(tmp instanceof InhibitedIslandMessage) view.setInhibited((InhibitedIslandMessage)tmp);
+            else if(tmp instanceof UnifiedIsland) view.removeUnifiedIsland((UnifiedIsland) tmp);
+            else break;
+        }
+        return tmp;
     }
 
     private void startPing(){
@@ -188,21 +212,6 @@ public class Proxy_c implements Entrance{
 
     private void stopPing(){
         ping.interrupt();
-    }
-
-    public void actionHandler() throws IOException, ClassNotFoundException {
-        tempObj = (Answer) inputStream.readObject();
-        if(tempObj instanceof CardsMessage) cli.phaseHandler("PlayCard");
-
-    }
-
-    private Answer inputMessage() throws IOException, ClassNotFoundException {
-        tempObj = (Answer) inputStream.readObject();
-        //while true
-        //if answer instanceof viewUpdate chiama metodo view
-        //else return answer
-
-        return tempObj;
     }
 
 

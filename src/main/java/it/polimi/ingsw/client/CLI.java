@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -11,6 +13,7 @@ public class CLI implements Runnable, Exit {
     private final Scanner scanner;
     private boolean active;
     private final PlayerConstants constants;
+    private View view;
 
 
     public CLI() {
@@ -31,6 +34,11 @@ public class CLI implements Runnable, Exit {
             System.out.println("Some errors occurred, try again.");
             Client.main(null);
         }
+        proxy.setup();
+        setupConnection();
+    }
+
+    public void setupConnection() throws IOException, ClassNotFoundException {
         while (true) {
             String nickname;
             String character;
@@ -55,11 +63,16 @@ public class CLI implements Runnable, Exit {
                 System.out.println("Expert mode? [y/n]");
                 String expertMode = scanner.next();
                 if (proxy.setupGame(numberOfPlayers, expertMode)) break;
-            } catch (InputMismatchException | IOException e) {
+            } catch (InputMismatchException | IOException | ClassNotFoundException e) {
                 System.out.println("Mismatch error");
                 Client.main(null);
             }
         }
+    }
+
+    @Override
+    public void view(View view){
+        this.view = view;
     }
 
     public void setActive(boolean active) {
@@ -67,7 +80,6 @@ public class CLI implements Runnable, Exit {
     }
 
     public void turn() throws IOException, ClassNotFoundException {
-        scanner.reset();
         if (!constants.isSpecialUsed() && constants.isActionPhaseStarted()) useSpecial();
         phaseHandler(constants.lastPhase());
     }
@@ -265,7 +277,7 @@ public class CLI implements Runnable, Exit {
         }
         while (active) {
             try {
-                if (proxy.clientWait()) constants.resetAll();
+                if (proxy.startPlanningPhase()) constants.resetAll();
             } catch (ClassNotFoundException | IOException e) {
                 e.printStackTrace();
             }
@@ -290,7 +302,48 @@ public class CLI implements Runnable, Exit {
             case ("blue") -> 4;
             default -> -1;
         };
+    }
 
+    public void cli(){
+        System.out.print ('\f');
+        System.out.println("ISLANDS");
+        for (int i = 0; i < view.getIslandSize(); i++) {
+            System.out.println("Island "+(i+1)+": Students: Green " +view.getStudentsIsland(i)[0]+", Red " +view.getStudentsIsland(i)[1]+
+                    ", Yellow " +view.getStudentsIsland(i)[2]+", Pink " +view.getStudentsIsland(i)[3]+", Blue " +view.getStudentsIsland(i)[4]);
+            if(view.getInhibited(i)!=0) System.out.print("No Entry tiles: "+view.getInhibited(i)+". ");
+            System.out.println("Towers Team: "+view.getTowersColor(i)+". Towers value: "+view.getIslandTowers(i));
+            System.out.println();
+        }
+        System.out.println();
+        System.out.println("Mother Nature is on island "+view.getMotherPosition());//aggiungere
+        System.out.println();
 
+        System.out.println("SCHOOLS");
+        for (int i = 0; i < view.getIslandSize(); i++) {
+            System.out.print("Nickname: "+view.getNickname(i)+". Wizard: "+view.getWizard(i)+". Team:"+view.getTeam(i)+".");
+            System.out.println("Entrance students: Green " +view.getStudentsEntrance(i)[0]+", Red " +view.getStudentsEntrance(i)[1]+
+                    ", Yellow " +view.getStudentsEntrance(i)[2]+", Pink " +view.getStudentsEntrance(i)[3]+", Blue " +view.getStudentsEntrance(i)[4]);
+            System.out.println("Table students: Green " +view.getStudentsTable(i)[0]+", Red " +view.getStudentsTable(i)[1]+
+                    ", Yellow " +view.getStudentsTable(i)[2]+", Pink " +view.getStudentsTable(i)[3]+", Blue " +view.getStudentsTable(i)[4]);
+            System.out.println("Professor: Green " +view.getProfessors(i)[0]+", Red " +view.getProfessors(i)[1]+
+                    ", Yellow " +view.getProfessors(i)[2]+", Pink " +view.getProfessors(i)[3]+", Blue " +view.getProfessors(i)[4]);
+            System.out.println("Towers number: "+view.getSchoolTowers(i)+". Coins: "+view.getCoins(i));
+        }
+        System.out.println();
+        System.out.println("CLOUDS");
+        for (int i = 0; i < view.getNumberOfPlayers(); i++) {
+            System.out.println("Cloud "+(i+1)+": Students: Green " +view.getStudentsCloud(i)[0]+", Red " +view.getStudentsCloud(i)[1]+
+                    ", Yellow " +view.getStudentsCloud(i)[2]+", Pink " +view.getStudentsCloud(i)[3]+", Blue " +view.getStudentsCloud(i)[4]);
+        }
+        System.out.println();
+
+        System.out.println("LAST PLAYED CARDS");
+        for (int i = 0; i < view.getNumberOfPlayers(); i++) {
+            System.out.print(view.getNickname(i)+": "+view.getLastCard(i)+". ");
+        }
+        System.out.println();
+
+        System.out.println("YOUR CARDS");
+        System.out.print(view.getCards().toString());
     }
 }

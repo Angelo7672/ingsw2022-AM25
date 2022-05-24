@@ -6,9 +6,11 @@ import java.util.ArrayList;
 public interface Entrance {
     boolean start() throws IOException;
 
+    void setup()throws IOException, ClassNotFoundException;
+
     boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException ;
 
-    boolean setupGame(int numberOfPlayers, String expertMode) throws IOException;
+    boolean setupGame(int numberOfPlayers, String expertMode) throws IOException, ClassNotFoundException;
 
     boolean checkSpecial(int special)  throws IOException, ClassNotFoundException ;
 
@@ -24,5 +26,5 @@ public interface Entrance {
 
     boolean chooseCloud(int cloud) throws IOException, ClassNotFoundException;
 
-    boolean clientWait() throws ClassNotFoundException, IOException;
+    boolean startPlanningPhase() throws ClassNotFoundException, IOException;
 }

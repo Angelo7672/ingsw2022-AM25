@@ -1,13 +1,19 @@
 package it.polimi.ingsw.server.Answer;
 
-public class MotherNatureMessage {
-    private final int pose;
+public class MotherNatureMessage implements Answer{
+    private final int pos;
 
-    public MotherNatureMessage(int pose) {
-        this.pose = pose;
+
+    public MotherNatureMessage(int pos) {
+        this.pos = pos;
     }
 
-    public int getPose() {
-        return pose;
+    public int getPos() {
+        return pos;
+    }
+
+    @Override
+    public String getMessage() {
+        return null;
     }
 }

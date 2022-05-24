@@ -11,5 +11,5 @@ public class CardsMessage implements Answer{
 
     public ArrayList<String> getPlayedCards() { return playedCards; }
     @Override
-    public String getMessage() { return message; }
+    public String getMessage() { return null; }
 }
