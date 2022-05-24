@@ -114,7 +114,6 @@ public abstract class RoundStrategy {
         return victory;
     }
 
-
     public boolean refreshStudentsCloud(){
         boolean lastTurn = false;   //if true, the students are finished
 
@@ -136,9 +135,7 @@ public abstract class RoundStrategy {
         return lastTurn;
     }
 
-
     public void queueForPlanificationPhase(){ queueManager.queueForPlanificationPhase(); }
-
     public boolean playCard(int playerRef, int queueRef, String card) throws NotAllowedException {
         return queueManager.playCard(playerRef, queueRef, stringToAssistant(card));
     }
@@ -146,7 +143,6 @@ public abstract class RoundStrategy {
     public void inOrderForActionPhase(){ queueManager.inOrderForActionPhase(); }
 
     public int readQueue(int pos){ return queueManager.readQueue(pos); }
-
 
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{
         if(!inSchool){
@@ -162,18 +158,14 @@ public abstract class RoundStrategy {
     public void chooseCloud(int playerRef,int cloudRef) throws NotAllowedException {
         int[] students;
 
-        try {
-            students = cloudsManager.removeStudents(cloudRef);
-            for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef,students[i]);
-        }catch (NotAllowedException exception){ throw new NotAllowedException(); }
+        students = cloudsManager.removeStudents(cloudRef);
+        for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef,students[i]);
     }
     public void effect(){}
-    public boolean effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){return false;}
+    public boolean effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){ return false; }
     public int getStudents(int color){return -1;}
 
     abstract public int getCost();
     abstract public void increaseCost();
     abstract public String getName();
-
-
 }

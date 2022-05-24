@@ -41,9 +41,13 @@ public class Proxy_s implements Exit {
                 if(limiter == connectionsAllowed) stop = true;
             }
             System.out.println("ciao");
+
+            //thread per rispondere che si e' al completo
+
         } catch (IOException e) {
-             //port not available
-             //CHE FACCIO?
+            System.err.println(e.getMessage());
+            System.out.println("port not available");
+            server.exitError();
         }
     }
 

@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model;
 
-public class RoundSpecial2 extends RoundStrategy {
+import it.polimi.ingsw.model.exception.NotAllowedException;
 
+public class RoundSpecial2 extends RoundStrategy {
     Special2 special;
 
     public RoundSpecial2(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
@@ -10,7 +11,7 @@ public class RoundSpecial2 extends RoundStrategy {
     }
 
     @Override
-    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef){
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException {
         if(!inSchool){
             playerManager.transferStudent(playerRef, colour, inSchool, true);
             islandsManager.incStudent(islandRef,colour);
@@ -33,12 +34,8 @@ public class RoundSpecial2 extends RoundStrategy {
     }
 
     private class Special2 extends Special{
-
         public Special2(){
             super(2, "special2");
         }
-
     }
-
-
 }

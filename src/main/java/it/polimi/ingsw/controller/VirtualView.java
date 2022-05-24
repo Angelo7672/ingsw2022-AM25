@@ -8,8 +8,7 @@ import java.util.ArrayList;
 //virtual View class listen to changes in model classes through specific listener interfaces
 public class VirtualView
         implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
-        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, Serializable
-{
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, Serializable {
 
     private ArrayList<SchoolBoard> schoolBoards;
     private ArrayList<Island> islands;
@@ -18,8 +17,6 @@ public class VirtualView
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
     private ArrayList<String> playedCards;
     private int numberOfPlayers;
-
-
 
     public VirtualView(int numberOfPlayers) {
         this.schoolBoards = new ArrayList<>();
@@ -30,22 +27,13 @@ public class VirtualView
         this.playedCards = new ArrayList<>();
         this.numberOfPlayers=numberOfPlayers;
 
-        for(int i=0; i<12; i++){
+        for(int i=0; i<12; i++)
             this.islands.add(new Island());
-        }
-
-    }
-    public String getLastPlayedCard(int playerRef){
-        return hands.get(playerRef).lastPlayedCard;
     }
 
-    public String getNickname(int playerRef){
-        return this.schoolBoards.get(playerRef).nickname;
-    }
-    public String getCharacter(int playerRef){
-        return this.schoolBoards.get(playerRef).nickname;
-    }
-
+    public String getLastPlayedCard(int playerRef){ return hands.get(playerRef).lastPlayedCard; }
+    public String getNickname(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
+    public String getCharacter(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
     public void addNewPlayer(String nickname, String character){
         int player;
         schoolBoards.add(new SchoolBoard(nickname,character));
@@ -67,10 +55,7 @@ public class VirtualView
             schoolBoards.get(player).setTowersNumber(8);
             schoolBoards.get(player).setTeam(player);
         }
-
     }
-
-
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
@@ -168,7 +153,6 @@ public class VirtualView
         public void setProfessors(int color, boolean newValue) {
             this.professors[color] = newValue;
         }
-
         public void setTeam(int team) {
             this.team=team;
         }

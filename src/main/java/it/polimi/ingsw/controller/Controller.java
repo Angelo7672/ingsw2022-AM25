@@ -9,14 +9,13 @@ import it.polimi.ingsw.server.ControllerServer;
 import java.io.*;
 
 public class Controller implements ServerController{
-    private String[] chosenAssistants;
     private int currentUser;
     private VirtualView virtualView;
     private GameManager gameManager;
     private RoundController roundController;
     private boolean expertMode;
     private String winner;
-    private int[] specials;
+    private String fileName;
 
 
     public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server){
@@ -25,6 +24,7 @@ public class Controller implements ServerController{
         this.virtualView = new VirtualView(numberOfPlayers);
         this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers);
         this.winner = "NONE";
+        this.fileName = "";
         roundController.start();    //non va qua!
 
         gameManager.setStudentsListener(virtualView);
@@ -38,7 +38,16 @@ public class Controller implements ServerController{
         gameManager.setInhibitedListener(virtualView);
     }
 
+    @Override
+    public boolean userLoginNickname(String nickname, int playerRef){ return nickname.equals(virtualView.getNickname(playerRef)); }
+    @Override
+    public boolean userLoginCharacter(String character, int playerRef){ return character.equals(virtualView.getCharacter(playerRef)); }
+    @Override
+    public void addNewPlayer(String nickname, String character){ virtualView.addNewPlayer(nickname,character); }
+
     //Planning Phase
+    public String getLastPlayedCard(int playerRef){ return virtualView.getLastPlayedCard(playerRef); }
+
     @Override
     public void playCard(int playerRef, String chosenAssistants) throws NotAllowedException {
         try {
@@ -73,7 +82,7 @@ public class Controller implements ServerController{
     @Override
     public void resumeTurn(){ roundController.notify(); }
 
-    public void saveVirtualView(String fileName){
+    public void saveVirtualView(){
         try{
             //File gameStateFile = new File(fileName);
             //gameStateFile.createNewFile();
@@ -88,7 +97,7 @@ public class Controller implements ServerController{
             e.printStackTrace();
         }
     }
-    public void restoreVirtualView(String fileName){
+    public void restoreVirtualView(){
         try{
             ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
             this.virtualView = (VirtualView) inputFile.readObject();

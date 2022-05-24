@@ -57,9 +57,7 @@ public class VirtualClient implements Runnable{
         try {
             input = new ObjectInputStream(socket.getInputStream());
             output = new ObjectOutputStream(socket.getOutputStream());
-        }catch (IOException e) {
-            //CHE FACCIO?
-        }
+        }catch (IOException e) { clientConnectionExpired(e); }
     }
 
     @Override
@@ -73,17 +71,16 @@ public class VirtualClient implements Runnable{
                 if (tmp instanceof PingMessage) {
                     this.socket.setSoTimeout(15000);    //reset timeout
 
-
                 } else if(oneCardAtaTime) { //Planning Phase msg
                     oneCardAtaTime = false;
                     if (tmp instanceof CardMessage) {
                         roundPartOne.setPlanningMsg(tmp);
-                        if(!error) planLocker.notify();
+                        if (!error) planLocker.notify();
                         else {
                             error = false;
                             errorLocker.notify();
                         }
-                    }
+                    } // ne va fatto uno per ready action phase
 
                 } else if(readyActionPhase){    //Action Phase msg
                     readyActionPhase = false;
@@ -94,7 +91,7 @@ public class VirtualClient implements Runnable{
                             error = false;
                             errorLocker.notify();
                         }
-                    }
+                    } // ne va fatto uno per mother nature, per choose cloud, ready play card
 
                 } else if (clientInitialization) {  //login msg
                     clientInitialization = false;
@@ -117,16 +114,16 @@ public class VirtualClient implements Runnable{
                         }
                     }
                 }
-
             }
         }catch (SocketException socketException){
             //CHE FACCIO?
         }catch (IOException | ClassNotFoundException e){
-            //CHE FACCIO?
+            System.err.println(e.getMessage());
+            System.out.println("Client disconnected!");
+            //metodo per notificare tutti
+            server.exitError();
         }
     }
-
-
 
     public void unlockPlanningPhase(){ oneCardAtaTime = true; }
     public void unlockActionPhase(){ readyActionPhase = true; }
@@ -136,20 +133,14 @@ public class VirtualClient implements Runnable{
         try {
             output.writeObject(new PlayCard());
             output.flush();
-        }catch (IOException e){
-            //CHE FACCIO?
-        }
+        }catch (IOException e){ clientConnectionExpired(e); }
     }
     public void sendStartTurn(){
         try {
             output.writeObject(new StartTurn());
             output.flush();
-        }catch (IOException e){
-           //CHE FACCIO?
-        }
+        }catch (IOException e){ clientConnectionExpired(e); }
     }
-
-
 
     private class GameSetup extends Thread{
         Message setupMsg;
@@ -188,8 +179,7 @@ public class VirtualClient implements Runnable{
                         gameSetting();
                     }
                 }
-            }catch (IOException e) {
-            //CHE FACCIO?
+            }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void setupGame(){
@@ -208,8 +198,7 @@ public class VirtualClient implements Runnable{
                         errorLocker.wait();
                         setupGame();
                     }
-                }catch (IOException e) {
-                    //CHE FACCIO?
+                }catch (IOException e) { clientConnectionExpired(e);
                 }catch (InterruptedException ex) { ex.printStackTrace(); }
             }
         }
@@ -235,8 +224,7 @@ public class VirtualClient implements Runnable{
                         loginClient();
                     }
                 }
-            }catch (IOException e) {
-                //CHE FACCIO?
+            }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void setupConnection() {
@@ -263,8 +251,7 @@ public class VirtualClient implements Runnable{
                         setupConnection();
                     }
                 }
-            }catch (IOException e) {
-                //CHE FACCIO?
+            }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void readyStart(){
@@ -281,8 +268,7 @@ public class VirtualClient implements Runnable{
                         readyStart();
                     }
                 }
-            }catch (IOException e) {
-                //CHE FACCIO?
+            }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
@@ -304,7 +290,6 @@ public class VirtualClient implements Runnable{
                     }
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }
-
         }
 
         private void planningPhase() {
@@ -326,8 +311,7 @@ public class VirtualClient implements Runnable{
                         planningPhase();
                     }
                 }
-            }catch (IOException e) {
-            //CHE FACCIO?
+            }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
@@ -350,7 +334,6 @@ public class VirtualClient implements Runnable{
             this.cloudLocker = false;
         }
 
-
         @Override
         public void run(){
             try {
@@ -366,7 +349,6 @@ public class VirtualClient implements Runnable{
         }
 
         private void actionPhase() {
-
             if(studentLocker) {
                 studentLocker = false;
                 if (actionMsg instanceof MoveStudent) {
@@ -383,7 +365,6 @@ public class VirtualClient implements Runnable{
                             motherLocker = true;
                         }
                     }
-                    //TODO: special,
                 }
             }
 
@@ -422,8 +403,7 @@ public class VirtualClient implements Runnable{
                         actionPhase();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
                     }
                 }
-            }catch (IOException e) {
-                //CHE FACCIO?
+            }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void moveMotherNature(){
@@ -447,9 +427,8 @@ public class VirtualClient implements Runnable{
                         moveMotherNature();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
                     }
                 }
-            } catch (IOException e) {
-                //CHE FACCIO?
-            }catch (InterruptedException ex) { ex.printStackTrace();
+            } catch (IOException e) { clientConnectionExpired(e);
+            } catch (InterruptedException ex) { ex.printStackTrace();
             } catch (EndGameException endGameException) {
                 //TODO: game over blocca tutto
             }
@@ -474,11 +453,17 @@ public class VirtualClient implements Runnable{
                         actionPhase();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
                     }
                 }
-            } catch (IOException e) {
-            //CHE FACCIO?
-            }catch (InterruptedException ex) { ex.printStackTrace(); }
+            } catch (IOException e) { clientConnectionExpired(e);
+            } catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
         public void setActionMsg(Message actionMsg) { this.actionMsg = actionMsg; }
+    }
+
+    private void clientConnectionExpired(IOException e){
+        System.err.println(e.getMessage());
+        System.out.println("Client disconnected!");
+        //metodo per notificare tutti
+        server.exitError();
     }
 }

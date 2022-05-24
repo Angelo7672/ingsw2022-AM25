@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.ServerController;
+
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
@@ -19,8 +20,19 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 
         @Override
         public boolean userLogin(String nickname, String character, int playerRef){
-            //metodo per andare a modificare nick-char in virtual view
-            //mandare anche il team
+            String[] characters = new String[]{"WIZARD","KING","WITCH","SAMURAI"};
+            boolean checker = false;
+
+            for(int i = 0; i < playerRef; i++)
+                if(controller.userLoginNickname(nickname,i)) return false;
+            for(int i = 0; i < 4 && !checker; i++)
+                if(character.equals(characters[i])) checker = true;
+            if(!checker) return false;
+            for (int i = 0; i < playerRef; i++)
+                if(controller.userLoginCharacter(character,i)) return false;
+            controller.addNewPlayer(nickname,character);
+
+            return true;
         }
 
         //Planning Phase
@@ -74,9 +86,10 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
         @Override
         public void resumeTurn(){ controller.resumeTurn(); }
 
-
-
-
+        @Override
+        public void exitError(){
+            System.exit(-1);
+        }
 
 
         public static void main(String[] args) {

@@ -22,5 +22,4 @@ public abstract class Special {
     }
     public void effect(){}
     public void effect(int one, int two){}
-
 }

@@ -18,7 +18,6 @@ public class Game implements GameManager{
     private int refSpecial;
     protected SpecialListener specialListener;
 
-
     public Game(Boolean expertMode, int numberOfPlayer){
         roundStrategies = new ArrayList<>();
         this.numberOfPlayer = numberOfPlayer;
@@ -59,14 +58,14 @@ public class Game implements GameManager{
         roundStrategies.get(0).queueForPlanificationPhase();
     }
     @Override
-    public boolean playCard(int playerRef, int queRef, String card) { return roundStrategies.get(0).playCard(playerRef, queRef, card); }
+    public boolean playCard(int playerRef, int queRef, String card) throws NotAllowedException{ return roundStrategies.get(0).playCard(playerRef, queRef, card); }
 
     @Override
     public void inOrderForActionPhase() {
         roundStrategies.get(0).inOrderForActionPhase();
     }
     @Override
-    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) {
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{
         roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
         setSpecial(0,-1);
     }
@@ -92,11 +91,7 @@ public class Game implements GameManager{
         if(index!=-1) roundStrategies.get(index).effect();
     }
     @Override
-    public void chooseCloud(int playerRef, int cloudRef) throws NotAllowedException {
-        try{
-            roundStrategies.get(0).chooseCloud(playerRef, cloudRef);
-        }catch (NotAllowedException exception){ throw new NotAllowedException(); }
-    }
+    public void chooseCloud(int playerRef, int cloudRef) throws NotAllowedException { roundStrategies.get(0).chooseCloud(playerRef, cloudRef); }
 
     @Override
     public int readQueue(int pos) {
@@ -108,7 +103,6 @@ public class Game implements GameManager{
         return roundStrategies.get(0).oneLastRide();
     }
 
-
     @Override
     public void useSpecial(int indexSpecial, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
         if(affordSpecial(indexSpecial, playerRef)) {
@@ -118,7 +112,6 @@ public class Game implements GameManager{
                 setSpecial(0, -1);
             }
         }
-
     }
     public Boolean affordSpecial(int indexSpecial, int playerRef){
         if(playerManager.getCoins(playerRef) >= roundStrategies.get(indexSpecial).getCost()){

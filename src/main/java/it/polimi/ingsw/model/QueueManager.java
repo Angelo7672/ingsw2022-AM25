@@ -46,14 +46,13 @@ public class QueueManager {
     }
 
     public boolean playCard(int playerRef, int queueRef, Assistant card) throws NotAllowedException {
-        try {
-            playerManager.playCard(playerRef,card);
-            queue.get(queueRef).setValueCard(card.getValue());
-            queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
-            this.playedCardListener.notifyPlayedCard(playerRef,String.valueOf(card));
-            if(playerManager.checkIfCardsFinished(playerRef)) return true;
-            return false;
-        }catch(NotAllowedException exception){ throw new NotAllowedException(); }
+        playerManager.playCard(playerRef,card);
+        queue.get(queueRef).setValueCard(card.getValue());
+        queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
+        this.playedCardListener.notifyPlayedCard(playerRef,String.valueOf(card));
+        if(playerManager.checkIfCardsFinished(playerRef)) return true;
+
+        return false;
     }
 
     public void inOrderForActionPhase(){

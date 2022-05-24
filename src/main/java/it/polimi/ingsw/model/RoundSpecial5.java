@@ -3,11 +3,9 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 
 public class RoundSpecial5 extends RoundStrategy{
-
     Special5 special;
     ArrayList<Integer> null1;
     ArrayList<Integer> null2;
-
 
     public RoundSpecial5(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
@@ -62,14 +60,8 @@ public class RoundSpecial5 extends RoundStrategy{
         public void increaseNoEntry(){
             noEntry+=1;
         }
-
         public void decreaseNoEntry(){
             noEntry-=1;
         }
-
     }
-
-
-
-
 }

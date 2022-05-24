@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 public class RoundSpecial6 extends RoundStrategy{
-
     Special6 special;
 
     public RoundSpecial6(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
@@ -18,12 +17,8 @@ public class RoundSpecial6 extends RoundStrategy{
 
         if(desiredMovement > 0 && desiredMovement <= maxMovement){
             islandsManager.moveMotherNature(desiredMovement);
-            if(islandsManager.getInhibited(islandsManager.getMotherPos())>0){
-                islandsManager.decreaseInhibited(islandsManager.getMotherPos());
-            }
-            else {
-                victory = conquestIsland(islandsManager.getMotherPos(), -1, -1);
-            }
+            if(islandsManager.getInhibited(islandsManager.getMotherPos())>0) islandsManager.decreaseInhibited(islandsManager.getMotherPos());
+            else victory = conquestIsland(islandsManager.getMotherPos(), -1, -1);
         }
         return victory;
     }
@@ -73,13 +68,9 @@ public class RoundSpecial6 extends RoundStrategy{
         return special.getName();
     }
 
-
     private class Special6 extends Special {
-
         public Special6(){
             super(3, "special6");
         }
-
     }
-
 }

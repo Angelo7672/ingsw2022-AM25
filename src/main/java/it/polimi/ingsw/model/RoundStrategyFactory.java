@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-
 public class RoundStrategyFactory {
     int numberOfPlayer;
     CloudsManager cloudsManager;

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 public class RoundSpecial9 extends RoundStrategy{
-
     Special9 special;
 
     public RoundSpecial9(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
@@ -19,9 +18,8 @@ public class RoundSpecial9 extends RoundStrategy{
         int influenceTeamGREY = 0;
 
         for (int i = 0; i < 5; i++) {
-            if(i==noColor){
-                i++; //skip banned color
-            }
+            if(i==noColor) i++; //skip banned color
+
             studentOnIsland[i] = islandsManager.getStudent(islandRef, i);
             if (studentOnIsland[i] > 0) {
                 professorOwner = playerManager.getProfessorPropriety(i);
@@ -60,7 +58,6 @@ public class RoundSpecial9 extends RoundStrategy{
     public String getName(){
         return special.getName();
     }
-
 
     private class Special9 extends Special {
         public Special9(){

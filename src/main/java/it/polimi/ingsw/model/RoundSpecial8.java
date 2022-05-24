@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 public class RoundSpecial8 extends RoundStrategy{
-
     Special8 special;
 
     public RoundSpecial8(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
@@ -21,8 +20,6 @@ public class RoundSpecial8 extends RoundStrategy{
         if (playerRef == 0) influenceTeamWHITE += 2;
         else if (playerRef == 1) influenceTeamBLACK += 2;
         else if (playerRef == 2) influenceTeamGREY += 2;
-
-
 
         for (int i = 0; i < 5; i++) {
             studentOnIsland[i] = islandsManager.getStudent(islandRef, i);
@@ -65,10 +62,8 @@ public class RoundSpecial8 extends RoundStrategy{
     }
 
     private class Special8 extends Special {
-
         public Special8(){
             super(2, "special8");
         }
-
     }
 }

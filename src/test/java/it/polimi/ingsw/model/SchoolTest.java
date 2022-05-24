@@ -9,8 +9,7 @@ class SchoolTest {
     @DisplayName("First test: check school initialization for 4 players")
     void schoolInit(){
         int numberOfPlayer = 4;
-        String[] playerInfo = {"Giorgio","SAMURAI","Marco","KING","Dino","WIZARD","Gloria","WITCH"};
-        PlayerManager playerManager = new PlayerManager(numberOfPlayer,playerInfo);
+        PlayerManager playerManager = new PlayerManager(numberOfPlayer);
 
         //We want to check all the school boards
         //First Player
@@ -119,8 +118,7 @@ class SchoolTest {
     @DisplayName("Second test: make students move around the school")
     void schoolStudent(){
         int numberOfPlayer = 2;
-        String[] playerInfo = {"Giorgio","SAMURAI","Marco","KING"};
-        PlayerManager playerManager = new PlayerManager(numberOfPlayer,playerInfo);
+        PlayerManager playerManager = new PlayerManager(numberOfPlayer);
         int[] studentsGiorgio = new int[]{0,0,1,1,2,2,3,3,4,4};
         int[] studentsMarco = new int[]{0,0,0,0,0,3,3,3,4,4};
 
@@ -184,8 +182,7 @@ class SchoolTest {
     @DisplayName("Third test: control the movements of the towers with three players")
     void schoolTower(){
         int numberOfPlayer = 3;
-        String[] playerInfo = {"Giorgio","SAMURAI","Marco","KING","Dino","WIZARD"};
-        PlayerManager playerManager = new PlayerManager(numberOfPlayer,playerInfo);
+        PlayerManager playerManager = new PlayerManager(numberOfPlayer);
         boolean victory1,victory2,victory3,victory3_bis;
 
         //First Player
@@ -217,8 +214,7 @@ class SchoolTest {
     @DisplayName("Third-bis test: control the movements of the towers with four players")
     void schoolTowerBis(){
         int numberOfPlayer = 4;
-        String[] playerInfo = {"Giorgio","SAMURAI","Marco","KING","Dino","WIZARD","Gloria","WITCH"};
-        PlayerManager playerManager = new PlayerManager(numberOfPlayer,playerInfo);
+        PlayerManager playerManager = new PlayerManager(numberOfPlayer);
         boolean victory1,victory2;
 
         //WHITE Team

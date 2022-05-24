@@ -2,18 +2,15 @@ package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
 
-
 public class RoundSpecial1 extends RoundStrategy{
-
     Special1 special;
     
     public RoundSpecial1(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         this.special = new Special1();
         int[] extraction = {0,0,0,0,0};
-        for(int i=0; i<4; i++){
+        for(int i=0; i<4; i++)
             extraction[bag.extraction()]++;
-        }
         special.setup(extraction);
     }
 
@@ -44,26 +41,19 @@ public class RoundSpecial1 extends RoundStrategy{
         return special.getName();
     }
 
-
-
     private class Special1 extends Special {
-
         private int[] students= {0,0,0,0,0};
-
 
         private Special1(){
             super(1, "special1");
         }
 
         public void setup(int[] color){
-            for(int i=0; i<5;i++){
+            for(int i=0; i<5;i++)
                 students[i]+=color[i];
-            }
         }
 
-        public int getStudent(int color){
-            return students[color];
-        }
+        public int getStudent(int color){return students[color]; }
 
         @Override
         public void effect(int chosen, int extracted) {
@@ -73,7 +63,4 @@ public class RoundSpecial1 extends RoundStrategy{
             }
         }
     }
-
-
-
 }
