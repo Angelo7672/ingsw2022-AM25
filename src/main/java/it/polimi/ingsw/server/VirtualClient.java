@@ -21,6 +21,7 @@ public class VirtualClient implements Runnable{
     private boolean gameSetupInitialization;
     private GameSetup gameSetup;
     private Object setupLocker;
+    private Object objGame ;
     private boolean oneCardAtaTime;
     private boolean readyActionPhase;
     private boolean victory;
@@ -42,6 +43,7 @@ public class VirtualClient implements Runnable{
         this.gameSetupInitialization = false;
         this.setupLocker = new Object();
         this.gameSetup = new GameSetup();
+        this.objGame = new Object();
         gameSetup.start();
         this.oneCardAtaTime = false;
         this.readyActionPhase = false;
@@ -62,6 +64,7 @@ public class VirtualClient implements Runnable{
 
     @Override
     public void run() {
+        boolean first = true;
 
         try {
             this.socket.setSoTimeout(15000);    //come faccio a notificare lo spegnimento del socket?
@@ -75,10 +78,10 @@ public class VirtualClient implements Runnable{
                     oneCardAtaTime = false;
                     if (tmp instanceof CardMessage) {
                         roundPartOne.setPlanningMsg(tmp);
-                        if (!error) planLocker.notify();
+                        if (!error) synchronized(planLocker){ planLocker.notify(); }
                         else {
                             error = false;
-                            errorLocker.notify();
+                            synchronized(errorLocker){ errorLocker.notify(); }
                         }
                     } // ne va fatto uno per ready action phase
 
@@ -86,10 +89,10 @@ public class VirtualClient implements Runnable{
                     readyActionPhase = false;
                     if (tmp instanceof MoveStudent || tmp instanceof UseSpecial) {  //da sistemare
                         roundPartTwo.setActionMsg(tmp);
-                        if(!error) actionLocker.notify();
+                        if(!error) synchronized(actionLocker){ actionLocker.notify(); }
                         else {
                             error = false;
-                            errorLocker.notify();
+                            synchronized(errorLocker){ errorLocker.notify(); }
                         }
                     } // ne va fatto uno per mother nature, per choose cloud, ready play card
 
@@ -97,23 +100,26 @@ public class VirtualClient implements Runnable{
                     clientInitialization = false;
                     if(tmp instanceof GenericMessage) {
                         gameSetup.setSetupMsg(tmp);
-                        if (!error) setupLocker.notify();
+                        if(first){
+                            first = false;
+                            synchronized (objGame){ objGame.notify(); }
+                        }else if (!error) synchronized (setupLocker) { setupLocker.notify(); }
                         else {
                             error = false;
-                            errorLocker.notify();
+                            synchronized(errorLocker){ errorLocker.notify(); }
                         }
                     }
                 }else if (gameSetupInitialization){ //game setup msg
                     gameSetupInitialization = false;
                     if(tmp instanceof SetupGame){
                         gameSetup.setSetupMsg(tmp);
-                        if(!error) setupLocker.notify();
+                        if(!error) synchronized (setupLocker) {setupLocker.notify(); }
                         else {
                             error = false;
-                            errorLocker.notify();
+                            synchronized(errorLocker){ errorLocker.notify(); }
                         }
                     }
-                }
+                }else System.out.println("errore"); //ovviamente da cambiare
             }
         }catch (SocketException socketException){
             //CHE FACCIO?
@@ -148,10 +154,10 @@ public class VirtualClient implements Runnable{
         @Override
         public void run(){
             try{
-                setupLocker.wait();
-                synchronized (setupLocker){
-                    if (proxy.getConnectionsAllowed() == 1) gameSetting();
-                    loginClient();
+                synchronized (objGame){
+                    objGame.wait();
+                    if (proxy.isFirst()) gameSetting();
+                        loginClient();
                 }
             }catch (InterruptedException e) { e.printStackTrace(); }
         }
@@ -281,12 +287,11 @@ public class VirtualClient implements Runnable{
         @Override
         public void run(){
             try {
-                planLocker.wait();
                 while (!victory) {
                     synchronized (planLocker) {
+                        planLocker.wait();
                         planningPhase();
                         server.resumeTurn();
-                        planLocker.wait();
                     }
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }
@@ -337,12 +342,11 @@ public class VirtualClient implements Runnable{
         @Override
         public void run(){
             try {
-                actionLocker.wait();
                 while (!victory) {
                     synchronized (actionLocker) {
+                        actionLocker.wait();
                         actionPhase();
                         server.resumeTurn();
-                        actionLocker.wait();
                     }
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }
