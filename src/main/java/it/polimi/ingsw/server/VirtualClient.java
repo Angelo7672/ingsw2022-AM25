@@ -167,7 +167,7 @@ public class VirtualClient implements Runnable{
 
             try {
                 if (msg.getMessage().equals("Ready for login!")) {
-                    proxy.setConnectionsAllowed(0);
+                    //proxy.setConnectionsAllowed(0);
                     output.writeObject(new SetupGameMessage());
                     output.flush();
                     synchronized (setupLocker) {
@@ -282,7 +282,7 @@ public class VirtualClient implements Runnable{
     }
 
     private class RoundPartOne extends Thread{
-        CardMessage planningMsg;
+        Message planningMsg;
 
         @Override
         public void run(){
@@ -291,6 +291,9 @@ public class VirtualClient implements Runnable{
                     synchronized (planLocker) {
                         planLocker.wait();
                         planningPhase();
+                        oneCardAtaTime = true;
+                        planLocker.wait();  //wait ready for action phase msg
+                        readyForAction();
                         server.resumeTurn();
                     }
                 }
@@ -298,14 +301,14 @@ public class VirtualClient implements Runnable{
         }
 
         private void planningPhase() {
+            CardMessage cardMessage = (CardMessage) planningMsg;
             boolean checker;
 
             try {
-                checker = server.userPlayCard(playerRef, planningMsg.getCard());
+                checker = server.userPlayCard(playerRef, cardMessage.getCard());
                 if(checker) {
                     output.writeObject(new GenericAnswer("ok"));
                     output.flush();
-                    //TODO: arriva il messaggio Ready for action phase
                 }else{
                     output.writeObject(new MoveNotAllowedAnswer());
                     output.flush();
@@ -319,8 +322,25 @@ public class VirtualClient implements Runnable{
             }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
+        private void readyForAction(){
+            GenericMessage readyMsg = (GenericMessage) planningMsg;
 
-        public void setPlanningMsg(Message msg) { this.planningMsg = (CardMessage) msg; }
+            if (!readyMsg.getMessage().equals("Ready for action phase")){
+                try {
+                    output.writeObject(new GenericAnswer("error"));
+                    output.flush();
+                    synchronized (errorLocker) {
+                        oneCardAtaTime = true;
+                        error = true;
+                        errorLocker.wait();
+                        readyForAction();
+                    }
+                }catch (IOException e) { clientConnectionExpired(e);
+                }catch (InterruptedException ex) { ex.printStackTrace(); }
+            }
+        }
+
+        public void setPlanningMsg(Message msg) { this.planningMsg = msg; }
     }
 
     private class RoundPartTwo extends Thread{

@@ -36,7 +36,7 @@ public class Proxy_c implements Entrance{
         }
         System.out.println("Connection established");
         outputStream = new ObjectOutputStream(socket.getOutputStream());
-        send(new GenericMessage("Ready for Login!"));
+        send(new GenericMessage("Ready for login!"));
         return true;
     }
     public void setup() throws IOException, ClassNotFoundException {
