@@ -7,4 +7,5 @@ public interface Exit {
     void phaseHandler(String phase) throws IOException, ClassNotFoundException;
     void setupGame();
     void view(View view);
+    void cli();
 }

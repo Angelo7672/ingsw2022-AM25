@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public interface Entrance {
-    boolean start() throws IOException;
 
     void setup()throws IOException, ClassNotFoundException;
 

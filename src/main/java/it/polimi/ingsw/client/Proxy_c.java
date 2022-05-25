@@ -13,37 +13,25 @@ import java.util.ArrayList;
 
 
 public class Proxy_c implements Entrance{
-    private final String address;
-    private final int port;
+    private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
-    private Socket socket;
+    private final Socket socket;
     private Answer tempObj;
     private Thread ping;
     private final Exit cli;
     private View view;
 
-    public Proxy_c() {
-        this.address = "127.0.0.1";
-        this.port = 2525;
-        cli = new CLI();
+    public Proxy_c(Socket socket, Exit cli) throws IOException {
+        this.socket = socket;
+        this.cli = cli;
     }
 
-    public boolean start() throws IOException {
-        try {
-            socket = new Socket(address, port);
-        } catch (SocketException e) {
-            return false;
-        }
-        System.out.println("Connection established");
-        outputStream = new ObjectOutputStream(socket.getOutputStream());
-        send(new GenericMessage("Ready for login!"));
-        return true;
-    }
     public void setup() throws IOException, ClassNotFoundException {
+        send(new GenericMessage("Ready for login!"));
         tempObj = receive();
         if(tempObj instanceof SetupGameMessage) cli.setupGame();
-        else {
-            view = new View(((LoginMessage) tempObj).getNumberOfPlayer());
+        else if(tempObj instanceof LoginMessage){
+            view = new View(((LoginMessage) tempObj).getNumberOfPlayer(), ((LoginMessage) tempObj).isExpertMode());
             cli.view(view);
         }
     }
@@ -61,19 +49,17 @@ public class Proxy_c implements Entrance{
     public boolean setupGame(int numberOfPlayers, String expertMode) throws IOException, ClassNotFoundException {
         boolean isExpert;
         if(numberOfPlayers<2 || numberOfPlayers >4){
-            System.out.println("Player must be between 2 and 4");
             return false;
         }
         if(expertMode.equalsIgnoreCase("y")) isExpert = true;
         else if(expertMode.equalsIgnoreCase("n")) isExpert = false;
         else {
-            System.out.println("error, insert y or n");
             return false;
         }
         send(new SetupGame(numberOfPlayers, isExpert));
         tempObj = receive();
         if(!tempObj.getMessage().equals("ok")) return false;
-        view=new View(numberOfPlayers);
+        view = new View(numberOfPlayers, isExpert);
         cli.view(view);
         return true;
 
@@ -120,7 +106,7 @@ public class Proxy_c implements Entrance{
         send(new MoveStudent(color, inSchool, islandRef));
         tempObj = receive();
         if(tempObj.getMessage().equals("transfer complete")) return true;
-        if(tempObj.getMessage().equals("move not allowed")) System.out.println("Error, m5ove not allowed");
+        if(tempObj.getMessage().equals("move not allowed")) System.out.println("Error, move not allowed");
         return false;
     }
 
@@ -154,6 +140,7 @@ public class Proxy_c implements Entrance{
 
     //send message to server
     public void send(Message message) throws IOException {
+        outputStream = new ObjectOutputStream(socket.getOutputStream());
         try {
             outputStream.reset();
             outputStream.writeObject(message);
@@ -164,24 +151,69 @@ public class Proxy_c implements Entrance{
     }
     public Answer receive() throws IOException, ClassNotFoundException {
         Answer tmp;
+        inputStream = new ObjectInputStream(socket.getInputStream());
         while (true) {
-            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
             tmp = (Answer) inputStream.readObject();
-            if(tmp instanceof NicknameMessage) view.setNickname((NicknameMessage)tmp);
-            else if(tmp instanceof WizardMessage) view.setWizard((WizardMessage)tmp);
-            else if(tmp instanceof LastCardMessage) view.setLastCard((LastCardMessage)tmp);
-            else if(tmp instanceof  NumberOfCardsMessage) view.setNumberOfCards((NumberOfCardsMessage)tmp);
-            else if(tmp instanceof SchoolStudentMessage) view.setStudents((SchoolStudentMessage)tmp);
-            else if(tmp instanceof ProfessorMessage) view.setProfessors((ProfessorMessage)tmp);
-            else if(tmp instanceof SchoolTowersMessage) view.setSchoolTowers((SchoolTowersMessage)tmp);
-            else if(tmp instanceof CoinsMessage) view.setCoins((CoinsMessage)tmp);
-            else if(tmp instanceof CloudStudentMessage) view.setClouds((CloudStudentMessage)tmp);
-            else if(tmp instanceof IslandStudentMessage) view.setStudentsIsland((IslandStudentMessage) tmp);
-            else if(tmp instanceof MotherPositionMessage) view.setMotherPosition((MotherPositionMessage)tmp);
-            else if(tmp instanceof IslandTowersNumberMessage) view.setIslandTowers((IslandTowersNumberMessage) tmp);
-            else if(tmp instanceof IslandTowersColorMessage) view.setTowersColor((IslandTowersColorMessage)tmp);
-            else if(tmp instanceof InhibitedIslandMessage) view.setInhibited((InhibitedIslandMessage)tmp);
-            else if(tmp instanceof UnifiedIsland) view.removeUnifiedIsland((UnifiedIsland) tmp);
+            if(tmp instanceof NicknameMessage) {
+                view.setNickname((NicknameMessage)tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof WizardMessage) {
+                view.setWizard((WizardMessage)tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof LastCardMessage) {
+                view.setLastCard((LastCardMessage)tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof  NumberOfCardsMessage) {
+                view.setNumberOfCards((NumberOfCardsMessage)tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof SchoolStudentMessage) {
+                view.setStudents((SchoolStudentMessage)tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof ProfessorMessage) {
+                view.setProfessors((ProfessorMessage)tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof SchoolTowersMessage) {
+                view.setSchoolTowers((SchoolTowersMessage)tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof CoinsMessage) {
+                view.setCoins((CoinsMessage)tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof CloudStudentMessage) {
+                view.setClouds((CloudStudentMessage)tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof IslandStudentMessage) {
+                view.setStudentsIsland((IslandStudentMessage) tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof MotherPositionMessage) {
+                view.setMotherPosition((MotherPositionMessage)tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof IslandTowersNumberMessage) {
+                view.setIslandTowers((IslandTowersNumberMessage) tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof IslandTowersColorMessage) {
+                view.setTowersColor((IslandTowersColorMessage)tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof InhibitedIslandMessage) {
+                view.setInhibited((InhibitedIslandMessage)tmp);
+                cli.cli();
+            }
+            else if(tmp instanceof UnifiedIsland) {
+                view.removeUnifiedIsland((UnifiedIsland) tmp);
+                cli.cli();
+            }
             else break;
         }
         return tmp;

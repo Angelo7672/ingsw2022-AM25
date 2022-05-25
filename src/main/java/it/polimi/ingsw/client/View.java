@@ -8,23 +8,23 @@ import java.util.ArrayList;
 
 public class View {
 
-    int numberOfPlayers;
+    private final int numberOfPlayers;
     private ArrayList<SchoolBoard> schoolBoards;
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
     private ArrayList<Hand> hands;
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
-    private ArrayList<String> playedCards; //cose'è?
     private ArrayList<Assistant> cards;
+    private final boolean expertMode;
 
-    public View(int numberOfPlayers){
+    public View(int numberOfPlayers, boolean expertMode){
         this.numberOfPlayers = numberOfPlayers;
+        this.expertMode = expertMode;
         this.schoolBoards = new ArrayList<>();
         this.hands = new ArrayList<>();
         this.clouds = new ArrayList<>();
         this.islands = new ArrayList<>();
         this.specials = new ArrayList<>();
-        this.playedCards = new ArrayList<>();
         this.cards = new ArrayList<>();
 
         for(int i=0; i<numberOfPlayers; i++) {
@@ -122,6 +122,7 @@ public class View {
 
     public int getIslandSize(){return islands.size();}
     public int getNumberOfPlayers(){return numberOfPlayers;}
+    public boolean getExpertMode(){return expertMode;}
 
 
     private class SchoolBoard {
