@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 
 
@@ -24,6 +23,7 @@ public class Proxy_c implements Entrance{
     public Proxy_c(Socket socket, Exit cli) throws IOException {
         this.socket = socket;
         this.cli = cli;
+        outputStream = new ObjectOutputStream(socket.getOutputStream());
     }
 
     public void setup() throws IOException, ClassNotFoundException {
@@ -140,7 +140,7 @@ public class Proxy_c implements Entrance{
 
     //send message to server
     public void send(Message message) throws IOException {
-        outputStream = new ObjectOutputStream(socket.getOutputStream());
+        //outputStream = new ObjectOutputStream(socket.getOutputStream());
         try {
             outputStream.reset();
             outputStream.writeObject(message);

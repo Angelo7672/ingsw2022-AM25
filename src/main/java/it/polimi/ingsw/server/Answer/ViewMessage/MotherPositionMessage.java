@@ -3,20 +3,14 @@ package it.polimi.ingsw.server.Answer.ViewMessage;
 import it.polimi.ingsw.server.Answer.Answer;
 
 public class MotherPositionMessage implements Answer {
-    private final boolean motherPosition;
-    private final int islandRef;
+    private final int motherPosition;
 
-    public MotherPositionMessage(boolean motherPosition, int islandRef) {
+    public MotherPositionMessage(int motherPosition) {
         this.motherPosition = motherPosition;
-        this.islandRef = islandRef;
     }
 
-    public boolean isMotherPosition() {
+    public int getMotherPosition() {
         return motherPosition;
-    }
-
-    public int getIslandRef() {
-        return islandRef;
     }
 
     @Override

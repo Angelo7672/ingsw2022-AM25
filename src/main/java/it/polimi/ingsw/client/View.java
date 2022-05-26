@@ -58,7 +58,8 @@ public class View {
     public void setIslandTowers(IslandTowersNumberMessage msg) { islands.get(msg.getIslandRef()).setTowersNumber(msg.getTowersNumber());}
     public void setStudentsIsland(IslandStudentMessage msg) { islands.get(msg.getIslandRef()).setStudentsIsland(msg.getColor(), msg.getNewValue()); }
     public void setMotherPosition(MotherPositionMessage msg) {
-        islands.get(msg.getIslandRef()).setMotherPosition(msg.isMotherPosition());
+        islands.get(getMotherPosition()).setMotherPosition(false);
+        islands.get(msg.getMotherPosition()).setMotherPosition(true);
     }
     public void setTowersColor(IslandTowersColorMessage msg){ islands.get(msg.getIslandRef()).setTowersColor(msg.getColor()); }
     public void setInhibited(InhibitedIslandMessage msg) {
