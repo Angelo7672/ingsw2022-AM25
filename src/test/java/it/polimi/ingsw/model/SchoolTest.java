@@ -177,7 +177,7 @@ class SchoolTest {
                 ()->assertFalse(playerManager.getProfessor(0,3),"The professor is from Marco")
         );
     }*/
-
+/*
     @Test
     @DisplayName("Third test: control the movements of the towers with three players")
     void schoolTower(){
@@ -241,5 +241,5 @@ class SchoolTest {
                 ()->assertEquals(3,playerManager.getTowers(2),"We have add three towers"),
                 ()->assertEquals(3,playerManager.getTowers(3),"We have add three towers")
         );
-    }
+    }*/
 }

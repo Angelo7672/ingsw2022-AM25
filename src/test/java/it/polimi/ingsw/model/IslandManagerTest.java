@@ -9,7 +9,7 @@ import static it.polimi.ingsw.model.Team.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IslandManagerTest {
-
+/*
     @Test
     @DisplayName("Test if the island of Mother Nature and the one in front are empty")
     void setupIslandMotherTest() {
@@ -113,5 +113,5 @@ public class IslandManagerTest {
 
 
     }
-
+*/
 }

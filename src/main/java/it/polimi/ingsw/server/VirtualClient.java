@@ -25,7 +25,6 @@ public class VirtualClient implements Runnable{
     private boolean oneCardAtaTime;
     private boolean readyActionPhase;
     private boolean victory;
-    private Message tmp;
     private Object planLocker;
     private RoundPartOne roundPartOne;
     private RoundPartTwo roundPartTwo;
@@ -57,13 +56,14 @@ public class VirtualClient implements Runnable{
         this.error = false;
         proxy.incrLimiter();
         try {
-            input = new ObjectInputStream(socket.getInputStream());
-            output = new ObjectOutputStream(socket.getOutputStream());
+            this.input = new ObjectInputStream(socket.getInputStream());
+            this.output = new ObjectOutputStream(socket.getOutputStream());
         }catch (IOException e) { clientConnectionExpired(e); }
     }
 
     @Override
     public void run() {
+        Message tmp;
         boolean first = true;
 
         try {
@@ -113,7 +113,7 @@ public class VirtualClient implements Runnable{
                     gameSetupInitialization = false;
                     if(tmp instanceof SetupGame){
                         gameSetup.setSetupMsg(tmp);
-                        if(!error) synchronized (setupLocker) {setupLocker.notify(); }
+                        if(!error) synchronized (setupLocker) { setupLocker.notify(); }
                         else {
                             error = false;
                             synchronized(errorLocker){ errorLocker.notify(); }
@@ -127,7 +127,7 @@ public class VirtualClient implements Runnable{
             System.err.println(e.getMessage());
             System.out.println("Client disconnected!");
             //metodo per notificare tutti
-            server.exitError();
+            server.exitError();//chiudi anche tutti i thread
         }
     }
 
@@ -168,16 +168,14 @@ public class VirtualClient implements Runnable{
             try {
                 if (msg.getMessage().equals("Ready for login!")) {
                     //proxy.setConnectionsAllowed(0);
-                    output.writeObject(new SetupGameMessage());
-                    output.flush();
+                    send(new SetupGameMessage());
                     synchronized (setupLocker) {
                         gameSetupInitialization = true;
                         setupLocker.wait();
                         setupGame();
                     }
                 } else {
-                    output.writeObject(new GenericAnswer("error"));
-                    output.flush();
+                    send(new GenericAnswer("error"));
                     synchronized (errorLocker) {
                         clientInitialization = true;
                         error = true;
@@ -185,7 +183,6 @@ public class VirtualClient implements Runnable{
                         gameSetting();
                     }
                 }
-            }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void setupGame(){
@@ -196,15 +193,13 @@ public class VirtualClient implements Runnable{
                 server.startGame(msg.getPlayersNumber(),msg.getExpertMode());
             }else {
                 try {
-                    output.writeObject(new GenericAnswer("error"));
-                    output.flush();
+                    send(new GenericAnswer("error"));
                     synchronized (errorLocker) {
                         gameSetupInitialization = true;
                         error = true;
                         errorLocker.wait();
                         setupGame();
                     }
-                }catch (IOException e) { clientConnectionExpired(e);
                 }catch (InterruptedException ex) { ex.printStackTrace(); }
             }
         }
@@ -213,16 +208,14 @@ public class VirtualClient implements Runnable{
 
             try {
                 if (msg.getMessage().equals("Ready for login!")) {
-                    output.writeObject(new GenericAnswer("Ready for login!"));
-                    output.flush();
+                    send(new GenericAnswer("Ready for login!"));
                     synchronized (setupLocker) {
                         clientInitialization = true;
                         setupLocker.wait();
                         setupConnection();
                     }
                 } else {
-                    output.writeObject(new GenericAnswer("error"));
-                    output.flush();
+                    send(new GenericAnswer("error"));
                     synchronized (errorLocker) {
                         clientInitialization = true;
                         error = true;
@@ -230,7 +223,6 @@ public class VirtualClient implements Runnable{
                         loginClient();
                     }
                 }
-            }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void setupConnection() {
@@ -240,16 +232,14 @@ public class VirtualClient implements Runnable{
             checker = server.userLogin(msg.getNickname(), msg.getCharacter(), playerRef);
             try {
                 if (checker) {
-                    output.writeObject((new GenericAnswer("ok")));
-                    output.flush();
+                    send(new GenericAnswer("ok"));
                     synchronized (setupLocker){
                         clientInitialization = true;
                         setupLocker.wait();
                         readyStart();
                     }
                 } else {
-                    output.writeObject(new GenericAnswer("error"));
-                    output.flush();
+                    send(new GenericAnswer("error"));
                     synchronized (errorLocker) {
                         clientInitialization = true;
                         error = true;
@@ -257,7 +247,6 @@ public class VirtualClient implements Runnable{
                         setupConnection();
                     }
                 }
-            }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void readyStart(){
@@ -265,8 +254,7 @@ public class VirtualClient implements Runnable{
 
             try {
                 if (!msg.getMessage().equals("Ready for play card")) {
-                    output.writeObject(new GenericAnswer("error"));
-                    output.flush();
+                    send(new GenericAnswer("error"));
                     synchronized (errorLocker) {
                         clientInitialization = true;
                         error = true;
@@ -274,7 +262,6 @@ public class VirtualClient implements Runnable{
                         readyStart();
                     }
                 }
-            }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
@@ -348,6 +335,7 @@ public class VirtualClient implements Runnable{
         private int numberOfPlayer;
         private boolean studentLocker;
         private int studentCounter;
+        private boolean studentAlt;
         private boolean motherLocker;
         private boolean cloudLocker;
 
@@ -355,6 +343,7 @@ public class VirtualClient implements Runnable{
             this.numberOfPlayer = proxy.getConnectionsAllowed();
             this.studentLocker = true;
             this.studentCounter = 0;
+            this.studentAlt = false;
             this.motherLocker = false;
             this.cloudLocker = false;
         }
@@ -377,31 +366,36 @@ public class VirtualClient implements Runnable{
                 studentLocker = false;
                 if (actionMsg instanceof MoveStudent) {
                     if (numberOfPlayer == 2 || numberOfPlayer == 4) {
-                        if (studentCounter < 3) moveStudent();
-                        else {
-                            //TODO: transfer complete alla fine di tutti gli studenti Generic Answer
-                            motherLocker = true;
+                        if (studentCounter < 3) {
+                            moveStudent();
+                            if (studentCounter == 3) {
+                                send(new GenericAnswer("transfer complete"));
+                                studentLocker = false;
+                                motherLocker = true;
+                            }
                         }
                     } else if (numberOfPlayer == 3) {
-                        if (studentCounter < 4) moveStudent();
-                        else {
-                            //TODO: transfer complete alla fine di tutti gli studenti Generic Answer
-                            motherLocker = true;
+                        if (studentCounter < 4) {
+                            moveStudent();
+                            if (studentCounter == 3) {
+                                send(new GenericAnswer("transfer complete"));
+                                studentLocker = false;
+                                motherLocker = true;
+                            }
                         }
                     }
                 }
             }
 
-            if(motherLocker) {
-                motherLocker = false;
-                if (actionMsg instanceof MoveMotherNature) moveMotherNature();
-            }
+                if(motherLocker) {
+                    motherLocker = false;
+                    if (actionMsg instanceof MoveMotherNature) moveMotherNature();
+                }
 
-            if(cloudLocker) {
-                cloudLocker = false;
-                if (actionMsg instanceof ChosenCloud) chooseCloud();
-            }
-
+                if(cloudLocker) {
+                    cloudLocker = false;
+                    if (actionMsg instanceof ChosenCloud) chooseCloud();
+                }
         }
 
         private void moveStudent(){
@@ -411,14 +405,12 @@ public class VirtualClient implements Runnable{
             checker = server.userMoveStudent(playerRef, studentMovement.getColor(), studentMovement.isInSchool(), studentMovement.getIslandRef());
             try {
                 if (checker) {
-                    output.writeObject(new GenericAnswer("ok"));
-                    output.flush();
+                    send(new GenericAnswer("ok"));
                     studentCounter++;
                     studentLocker = true;
                     actionPhase();
                 } else {
-                    output.writeObject(new MoveNotAllowedAnswer());
-                    output.flush();
+                    send(new MoveNotAllowedAnswer());
                     synchronized (errorLocker){
                         readyActionPhase = true;
                         error = true;
@@ -427,7 +419,6 @@ public class VirtualClient implements Runnable{
                         actionPhase();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
                     }
                 }
-            }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void moveMotherNature(){
@@ -437,12 +428,10 @@ public class VirtualClient implements Runnable{
             try {
                 checker = server.userMoveMotherNature(motherMovement.getDesiredMovement());
                 if (checker) {
-                    output.writeObject(new GenericAnswer("ok"));
-                    output.flush();
+                    send(new GenericAnswer("ok"));
                     cloudLocker = true;
                 } else {
-                    output.writeObject(new MoveNotAllowedAnswer());
-                    output.flush();
+                    send(new MoveNotAllowedAnswer());
                     synchronized (errorLocker){
                         readyActionPhase = true;
                         error = true;
@@ -451,7 +440,6 @@ public class VirtualClient implements Runnable{
                         moveMotherNature();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
                     }
                 }
-            } catch (IOException e) { clientConnectionExpired(e);
             } catch (InterruptedException ex) { ex.printStackTrace();
             } catch (EndGameException endGameException) {
                 //TODO: game over blocca tutto
@@ -464,11 +452,9 @@ public class VirtualClient implements Runnable{
             checker = server.userChooseCloud(playerRef,cloud.getCloud());
             try {
                 if(checker) {
-                    output.writeObject(new GenericAnswer("ok"));
-                    output.flush();
+                    send(new GenericAnswer("ok"));
                 } else {
-                    output.writeObject(new MoveNotAllowedAnswer());
-                    output.flush();
+                    send(new MoveNotAllowedAnswer());
                     synchronized (errorLocker){
                         readyActionPhase = true;
                         error = true;
@@ -477,11 +463,18 @@ public class VirtualClient implements Runnable{
                         actionPhase();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
                     }
                 }
-            } catch (IOException e) { clientConnectionExpired(e);
             } catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
         public void setActionMsg(Message actionMsg) { this.actionMsg = actionMsg; }
+    }
+
+    private void send(Answer serverAnswer){
+        try {
+            output.reset();
+            output.writeObject(serverAnswer);
+            output.flush();
+        }catch (IOException e){ clientConnectionExpired(e); }
     }
 
     private void clientConnectionExpired(IOException e){
