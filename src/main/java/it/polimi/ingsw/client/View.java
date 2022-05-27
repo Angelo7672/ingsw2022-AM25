@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.Assistant;
+import it.polimi.ingsw.server.Answer.ViewMessage.UnifiedIsland;
 import it.polimi.ingsw.server.Answer.ViewMessage.*;
 
 import java.util.ArrayList;

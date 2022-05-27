@@ -48,11 +48,15 @@ public class CLI implements Runnable, Exit {
     @Override
     public void setupGame(){
         while(true) {
+            int numberOfPlayers;
+            String expertMode;
             try {
                 System.out.println("Insert number of player");
-                int numberOfPlayers = scanner.nextInt();
+                numberOfPlayers = scanner.nextInt();
+                do{
                 System.out.println("Expert mode? [y/n]");
-                String expertMode = scanner.next();
+                expertMode = scanner.next();
+                }while(expertMode==null);
                 if (proxy.setupGame(numberOfPlayers, expertMode)) break;
                 else System.out.println("Error, try again");
             } catch (InputMismatchException e) {

@@ -61,6 +61,7 @@ public class Proxy_c implements Entrance{
         if(!tempObj.getMessage().equals("ok")) return false;
         view = new View(numberOfPlayers, isExpert);
         cli.view(view);
+        send(new GenericMessage("Ready for login!"));
         return true;
 
     }
