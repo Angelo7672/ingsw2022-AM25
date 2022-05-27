@@ -6,7 +6,7 @@ import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
-    public class Server implements Entrance,ControllerServer{
+public class Server implements Entrance,ControllerServer{
         private ServerController controller;
         private Exit proxy;
 
@@ -85,6 +85,33 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 
         @Override
         public void resumeTurn(){ controller.resumeTurn(); }
+
+        @Override
+        public void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue){ proxy.studentsChangeInSchool(color, place, componentRef, newStudentsValue); }
+        @Override
+        public void studentChangeOnIsland(int islandRef, int color, int newStudentsValue){ proxy.studentChangeOnIsland(islandRef, color, newStudentsValue); }
+        @Override
+        public void studentChangeOnCloud(int cloudRef, int color, int newStudentsValue){ proxy.studentChangeOnCloud(cloudRef, color, newStudentsValue); }
+        @Override
+        public void professorChangePropriety(int playerRef, int color, boolean newProfessorValue){ proxy.professorChangePropriety(playerRef, color, newProfessorValue);}
+        @Override
+        public void motherChangePosition(int newMotherPosition){ proxy.motherChangePosition(newMotherPosition); }
+        @Override
+        public void lastCardPlayedFromAPlayer(int playerRef, String assistantCard){ proxy.lastCardPlayedFromAPlayer(playerRef, assistantCard); }
+        @Override
+        public void numberOfCoinsChangeForAPlayer(int playerRef, int newCoinsValue){ proxy.numberOfCoinsChangeForAPlayer(playerRef, newCoinsValue); }
+        @Override
+        public void dimensionOfAnIslandIsChange(int islandToDelete){ proxy.dimensionOfAnIslandIsChange(islandToDelete); }
+        @Override
+        public void towersChangeInSchool(int playerRef, int towersNumber){ proxy.towersChangeInSchool(playerRef, towersNumber); }
+        @Override
+        public void towersChangeOnIsland(int islandRef, int towersNumber){ proxy.towersChangeOnIsland(islandRef, towersNumber); }
+        @Override
+        public void towerChangeColorOnIsland(int islandRef, int newColor){ proxy.towerChangeColorOnIsland(islandRef, newColor); }
+        @Override
+        public void islandInhibited(int islandRef, int isInhibited){ proxy.islandInhibited(islandRef, isInhibited); }
+        @Override
+        public void setSpecial(int specialRef){ proxy.setSpecial(specialRef); }
 
         @Override
         public void exitError(){

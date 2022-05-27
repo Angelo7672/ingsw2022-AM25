@@ -17,15 +17,12 @@ public class IslandStudentMessage implements Answer {
     public String getMessage() {
         return null;
     }
-
     public int getColor() {
         return color;
     }
-
     public int getIslandRef() {
         return islandRef;
     }
-
     public int getNewValue() {
         return newValue;
     }

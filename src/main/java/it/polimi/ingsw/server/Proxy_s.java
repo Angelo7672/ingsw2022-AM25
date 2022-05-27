@@ -74,6 +74,73 @@ public class Proxy_s implements Exit {
     @Override
     public void unlockActionPhase(int ref){ user.get(ref).unlockActionPhase(); }
 
+    @Override
+    public void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue){
+        for (VirtualClient client:user)
+            client.studentsChangeInSchool(color, place, componentRef, newStudentsValue);
+    }
+    @Override
+    public void studentChangeOnIsland(int islandRef, int color, int newStudentsValue){
+        for (VirtualClient client:user)
+            client.studentChangeOnIsland(islandRef, color, newStudentsValue);
+    }
+    @Override
+    public void studentChangeOnCloud(int cloudRef, int color, int newStudentsValue){
+        for (VirtualClient client:user)
+            client.studentChangeOnCloud(cloudRef, color, newStudentsValue);
+    }
+    @Override
+    public void professorChangePropriety(int playerRef, int color, boolean newProfessorValue){
+        for (VirtualClient client:user)
+            client.professorChangePropriety(playerRef, color, newProfessorValue);
+    }
+    @Override
+    public void motherChangePosition(int newMotherPosition){
+        for (VirtualClient client:user)
+            client.motherChangePosition(newMotherPosition);
+    }
+    @Override
+    public void lastCardPlayedFromAPlayer(int playerRef, String assistantCard){
+        for (VirtualClient client:user)
+            client.lastCardPlayedFromAPlayer(playerRef, assistantCard);
+    }
+    @Override
+    public void numberOfCoinsChangeForAPlayer(int playerRef, int newCoinsValue){
+        for (VirtualClient client:user)
+            client.numberOfCoinsChangeForAPlayer(playerRef, newCoinsValue);
+    }
+    @Override
+    public void dimensionOfAnIslandIsChange(int islandToDelete){
+        for (VirtualClient client:user)
+            client.dimensionOfAnIslandIsChange(islandToDelete);
+    }
+    @Override
+    public void towersChangeInSchool(int playerRef, int towersNumber){
+        for (VirtualClient client:user)
+            client.towersChangeInSchool(playerRef,towersNumber);
+    }
+    @Override
+    public void towersChangeOnIsland(int islandRef, int towersNumber){
+        for (VirtualClient client:user)
+            client.towersChangeOnIsland(islandRef, towersNumber);
+    }
+    @Override
+    public void towerChangeColorOnIsland(int islandRef, int newColor){
+        for (VirtualClient client:user)
+            client.towerChangeColorOnIsland(islandRef, newColor);
+    }
+    @Override
+    public void islandInhibited(int islandRef, int isInhibited){
+        for (VirtualClient client:user)
+            client.islandInhibited(islandRef, isInhibited);
+    }
+    @Override
+    public void setSpecial(int specialRef){
+        for (VirtualClient client:user)
+            client.setSpecial(specialRef);
+    }
+
+
     public void incrLimiter(){ this.limiter++; }
     public boolean isFirst() {
         boolean tmp = first;

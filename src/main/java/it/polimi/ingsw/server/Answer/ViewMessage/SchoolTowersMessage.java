@@ -14,11 +14,9 @@ public class SchoolTowersMessage implements Answer {
     public int getPlayerRef() {
         return playerRef;
     }
-
     public int getTowers() {
         return towers;
     }
-
     @Override
     public String getMessage() {
         return null;

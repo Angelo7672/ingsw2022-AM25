@@ -17,15 +17,12 @@ public class CloudStudentMessage implements Answer {
     public String getMessage() {
         return null;
     }
-
     public int getCloudRef() {
         return cloudRef;
     }
-
     public int getColor() {
         return color;
     }
-
     public int getNewValue() {
         return newValue;
     }

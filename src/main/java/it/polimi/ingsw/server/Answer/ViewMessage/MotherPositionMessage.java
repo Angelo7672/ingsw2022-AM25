@@ -9,12 +9,7 @@ public class MotherPositionMessage implements Answer {
         this.motherPosition = motherPosition;
     }
 
-    public int getMotherPosition() {
-        return motherPosition;
-    }
-
+    public int getMotherPosition() { return motherPosition; }
     @Override
-    public String getMessage() {
-        return null;
-    }
+    public String getMessage() { return null; }
 }

@@ -6,7 +6,7 @@ public class IslandTowersNumberMessage implements Answer {
     private final int islandRef;
     private final int towersNumber;
 
-    public IslandTowersNumberMessage(int islandRef, int towersNumber, int towersColor) {
+    public IslandTowersNumberMessage(int islandRef, int towersNumber) {
         this.islandRef = islandRef;
         this.towersNumber = towersNumber;
     }
@@ -15,11 +15,9 @@ public class IslandTowersNumberMessage implements Answer {
     public String getMessage() {
         return null;
     }
-
     public int getIslandRef() {
         return islandRef;
     }
-
     public int getTowersNumber() {
         return towersNumber;
     }

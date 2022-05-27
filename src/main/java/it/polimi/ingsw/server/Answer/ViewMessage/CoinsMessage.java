@@ -14,11 +14,9 @@ public class CoinsMessage implements Answer {
     public int getCoin() {
         return coin;
     }
-
     public int getPlayerRef() {
         return playerRef;
     }
-
     @Override
     public String getMessage() {
         return null;

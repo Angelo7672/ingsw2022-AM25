@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.listeners.*;
+import it.polimi.ingsw.server.ControllerServer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,16 +17,18 @@ public class VirtualView
     private ArrayList<Hand> hands;
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
     private ArrayList<String> playedCards;
+    private ControllerServer server;
     private int numberOfPlayers;
 
-    public VirtualView(int numberOfPlayers) {
+    public VirtualView(int numberOfPlayers, ControllerServer server) {
         this.schoolBoards = new ArrayList<>();
         this.hands = new ArrayList<>();
         this.clouds = new ArrayList<>();
         this.islands = new ArrayList<>();
         this.specials = new ArrayList<>();
         this.playedCards = new ArrayList<>();
-        this.numberOfPlayers=numberOfPlayers;
+        this.server = server;
+        this.numberOfPlayers = numberOfPlayers;
 
         for(int i=0; i<12; i++)
             this.islands.add(new Island());
@@ -61,63 +64,69 @@ public class VirtualView
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
         if(place==0){
             schoolBoards.get(componentRef).setStudentsEntrance(color, newStudentsValue);
-        }
-        else if(place==1){
+            server.studentsChangeInSchool(color, "Entrance", componentRef, newStudentsValue);
+        } else if(place==1){
             schoolBoards.get(componentRef).setStudentsTable(componentRef, newStudentsValue);
-        }
-        else if(place==2){
+            server.studentsChangeInSchool(color, "Table", componentRef, newStudentsValue);
+        } else if(place==2){
             islands.get(componentRef).setStudentsIsland(color, newStudentsValue);
-        }
-        else if(place==3){
+            server.studentChangeOnIsland(componentRef, color, newStudentsValue);
+        } else if(place==3){
             clouds.get(componentRef).setCloudStudents(color, newStudentsValue);
+            server.studentChangeOnCloud(componentRef, color, newStudentsValue);
         }
     }
-
     @Override
     public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
         schoolBoards.get(playerRef).setProfessors(color, newProfessorValue);
+        server.professorChangePropriety(playerRef, color, newProfessorValue);
     }
-
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
         islands.get(newMotherPosition).setMotherPosition(true);
+        server.motherChangePosition(newMotherPosition);
     }
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
         hands.get(playerRef).setLastCard(assistantCard);
         hands.get(playerRef).setNumberOfCards(hands.get(playerRef).numberOfCards--);
+        server.lastCardPlayedFromAPlayer(playerRef, assistantCard);
     }
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
         hands.get(playerRef).setCoins(newCoinsValue);
+        server.numberOfCoinsChangeForAPlayer(playerRef, newCoinsValue);
     }
-
     @Override
     public void notifyIslandChange(int islandToDelete) {
         islands.remove(islandToDelete);
+        server.dimensionOfAnIslandIsChange(islandToDelete);
     }
-
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
         if (place == 0) {
             schoolBoards.get(componentRef).setTowersNumber(towersNumber);
+            server.towersChangeInSchool(componentRef, towersNumber);
         } else if (place == 1) {
             islands.get(componentRef).setTowersNumber(towersNumber);
+            server.towersChangeOnIsland(componentRef, towersNumber);
         }
     }
-
     @Override
     public void notifyTowerColor(int islandRef, int newColor) {
         islands.get(islandRef).setTowersColor(newColor);
+        server.towerChangeColorOnIsland(islandRef, newColor);
     }
-
     @Override
     public void notifyInhibited(int islandRef, int isInhibited) {
         islands.get(islandRef).setInhibited(isInhibited);
+        server.islandInhibited(islandRef, isInhibited);
     }
-
     @Override
-    public void notifySpecial(int specialRef) { specials.add(specialRef);}
+    public void notifySpecial(int specialRef) {
+        specials.add(specialRef);
+        server.setSpecial(specialRef);
+    }
 
 
 

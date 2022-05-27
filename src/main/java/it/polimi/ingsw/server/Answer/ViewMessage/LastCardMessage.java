@@ -15,11 +15,9 @@ public class LastCardMessage implements Answer {
     public String getMessage() {
         return null;
     }
-
     public String getCard() {
         return card;
     }
-
     public int getPlayerRef() {
         return playerRef;
     }

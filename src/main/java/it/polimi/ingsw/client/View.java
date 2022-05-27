@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.Assistant;
-import it.polimi.ingsw.server.Answer.UnifiedIsland;
 import it.polimi.ingsw.server.Answer.ViewMessage.*;
 
 import java.util.ArrayList;
@@ -70,8 +69,8 @@ public class View {
     }
 
     public void setStudents(SchoolStudentMessage msg){
-        if(msg.getMessage().equalsIgnoreCase("Entrance")) schoolBoards.get(msg.getPlayerRef()).setStudentsEntrance(msg.getColor(), msg.getNewValue());
-        else if (msg.getMessage().equalsIgnoreCase("Table")) schoolBoards.get(msg.getPlayerRef()).setStudentsTable(msg.getColor(), msg.getNewValue());
+        if(msg.getMessage().equalsIgnoreCase("Entrance")) schoolBoards.get(msg.getComponentRef()).setStudentsEntrance(msg.getColor(), msg.getNewValue());
+        else if (msg.getMessage().equalsIgnoreCase("Table")) schoolBoards.get(msg.getComponentRef()).setStudentsTable(msg.getColor(), msg.getNewValue());
     }
     public void setSchoolTowers(SchoolTowersMessage msg){ schoolBoards.get(msg.getPlayerRef()).setTowersNumber(msg.getTowers());}
     public void setProfessors(ProfessorMessage msg){ schoolBoards.get(msg.getPlayerRef()).setProfessors(msg.getColor(), msg.isProfessor());}

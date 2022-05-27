@@ -15,11 +15,9 @@ public class InhibitedIslandMessage implements Answer {
     public String getMessage() {
         return null;
     }
-
     public int getIslandRef() {
         return islandRef;
     }
-
     public int getInhibited() {
         return Inhibited;
     }

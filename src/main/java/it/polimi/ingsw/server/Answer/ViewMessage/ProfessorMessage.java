@@ -17,15 +17,12 @@ public class ProfessorMessage implements Answer {
     public String getMessage() {
         return null;
     }
-
     public int getPlayerRef() {
         return playerRef;
     }
-
     public boolean isProfessor() {
         return professor;
     }
-
     public int getColor() {
         return color;
     }
