@@ -24,6 +24,7 @@ public class Proxy_c implements Entrance{
         this.socket = socket;
         this.cli = cli;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
+        inputStream = new ObjectInputStream(socket.getInputStream());
     }
 
     public void setup() throws IOException, ClassNotFoundException {
@@ -152,7 +153,6 @@ public class Proxy_c implements Entrance{
     }
     public Answer receive() throws IOException, ClassNotFoundException {
         Answer tmp;
-        inputStream = new ObjectInputStream(socket.getInputStream());
         while (true) {
             tmp = (Answer) inputStream.readObject();
             if(tmp instanceof NicknameMessage) {
