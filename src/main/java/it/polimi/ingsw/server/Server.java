@@ -16,7 +16,7 @@ public class Server implements Entrance,ControllerServer{
         }
 
         @Override
-        public void startGame(int numberOfPlayers, boolean expertMode){ controller = new Controller(numberOfPlayers,expertMode,this); }
+        public void startController(int numberOfPlayers, boolean expertMode){ controller = new Controller(numberOfPlayers,expertMode,this); }
 
         @Override
         public boolean userLogin(String nickname, String character, int playerRef){

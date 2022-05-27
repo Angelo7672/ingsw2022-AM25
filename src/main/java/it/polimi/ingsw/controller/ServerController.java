@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
 public interface ServerController {
+    void startGame();
     boolean userLoginNickname(String nickname,int playerRef);
     boolean userLoginCharacter(String character, int playerRef);
     void addNewPlayer(String nickname, String character);

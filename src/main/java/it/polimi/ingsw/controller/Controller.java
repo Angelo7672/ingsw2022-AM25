@@ -13,6 +13,7 @@ public class Controller implements ServerController{
     private VirtualView virtualView;
     private GameManager gameManager;
     private RoundController roundController;
+    private int numberOfPlayers;
     private boolean expertMode;
     private String winner;
     private String fileName;
@@ -20,12 +21,11 @@ public class Controller implements ServerController{
 
     public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server){
         this.expertMode = isExpert;
-        this.gameManager = new Game(isExpert, numberOfPlayers);
+        this.numberOfPlayers = numberOfPlayers;
         this.virtualView = new VirtualView(numberOfPlayers, server);
         this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers);
         this.winner = "NONE";
         this.fileName = "";
-        roundController.start();    //non va qua!
 
         gameManager.setStudentsListener(virtualView);
         gameManager.setTowerListener(virtualView);
@@ -36,6 +36,12 @@ public class Controller implements ServerController{
         gameManager.setMotherPositionListener(virtualView);
         gameManager.setIslandListener(virtualView);
         gameManager.setInhibitedListener(virtualView);
+    }
+
+    @Override
+    public void startGame(){
+        this.gameManager = new Game(expertMode, numberOfPlayers);
+        roundController.start();
     }
 
     @Override

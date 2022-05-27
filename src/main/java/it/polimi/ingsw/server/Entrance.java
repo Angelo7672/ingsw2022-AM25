@@ -3,7 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.controller.exception.EndGameException;
 
 public interface Entrance {
-    void startGame(int numberOfPlayers, boolean expertMode);
+    void startController(int numberOfPlayers, boolean expertMode);
     boolean userLogin(String nickname, String character, int playerRef);
 
     boolean userPlayCard(int playerRef, String assistant);

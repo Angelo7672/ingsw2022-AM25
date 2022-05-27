@@ -206,8 +206,10 @@ public class VirtualClient implements Runnable{
             SetupGame msg = (SetupGame) setupMsg;
 
             if(msg.getPlayersNumber() >= 2 && msg.getPlayersNumber() <= 4) {
+                send(new GenericAnswer("ok"));
                 proxy.setConnectionsAllowed(msg.getPlayersNumber());
-                server.startGame(msg.getPlayersNumber(),msg.getExpertMode());
+                server.startController(msg.getPlayersNumber(),msg.getExpertMode());
+                System.out.println("ciao3");
             }else {
                 try {
                     send(new GenericAnswer("error"));
