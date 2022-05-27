@@ -1,8 +1,9 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.GUI.GUI;
+
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class Client {
@@ -26,6 +27,8 @@ public class Client {
             CLI cli = new CLI(socket);
             cli.run();
         }
-
+        else if (graph.equalsIgnoreCase("GUI")) {
+            GUI.main(args);
+        }
     }
 }

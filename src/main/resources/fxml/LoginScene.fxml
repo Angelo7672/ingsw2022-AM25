@@ -1,11 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxml.StartMenu">
+<AnchorPane prefHeight="600" prefWidth="500" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.LoginSceneController">
    <children>
-      <TextField layoutX="214.0" layoutY="327.0" />
-      <Label layoutX="214.0" layoutY="300.0" text="Insert your nickname" />
+      <TextField layoutX="53.0" layoutY="170.0" prefHeight="26.0" prefWidth="215.0" />
+      <Label layoutX="53.0" layoutY="144.0" text="Insert your nickname" />
+      <Accordion layoutX="37.0" layoutY="31.0" />
+      <Label layoutX="142.0" layoutY="225.0" textFill="#d1611c" />
+      <Label layoutX="53.0" layoutY="207.0" text="This nickname is already in use" textFill="#c7571a" />
+      <Button layoutX="219.0" layoutY="494.0" mnemonicParsing="false" text="Next" />
+      <ImageView fitHeight="134.0" fitWidth="99.0" layoutX="53.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/character_wizard.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="134.0" fitWidth="99.0" layoutX="151.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/character_witch.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="134.0" fitWidth="99.0" layoutX="250.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/character_samurai.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="134.0" fitWidth="99.0" layoutX="345.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/character_king.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
