@@ -26,10 +26,14 @@ public class CLI implements Runnable, Exit {
 
     public void setup() throws IOException, ClassNotFoundException {
         proxy.setup();
-        setupConnection();
     }
 
-    public void setupConnection() throws IOException, ClassNotFoundException {
+    public void setupConnection(ArrayList<String> chosenCharacters) throws IOException, ClassNotFoundException {
+        ArrayList<String> availableCharacters = new ArrayList<>();
+        if(!chosenCharacters.contains("WIZARD")) availableCharacters.add("WIZARD");
+        if(!chosenCharacters.contains("KING")) availableCharacters.add("KING");
+        if(!chosenCharacters.contains("WITCH")) availableCharacters.add("WITCH");
+        if(!chosenCharacters.contains("SAMURAI")) availableCharacters.add("SAMURAI");
         while (true) {
             String nickname;
             String character;
@@ -38,8 +42,12 @@ public class CLI implements Runnable, Exit {
                 nickname = scanner.next();
             } while (nickname == null);
             do {
-                System.out.println("Insert your character: ");
+                System.out.println("Choose a character: "+availableCharacters.toString());
                 character = scanner.next();
+                if (!availableCharacters.contains(character)) {
+                    System.out.println("Error, choose an available character");
+                    character=null;
+                }
             } while (character == null);
             if (proxy.setupConnection(nickname, character)) break;
         }

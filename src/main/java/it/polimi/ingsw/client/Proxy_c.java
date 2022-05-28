@@ -30,22 +30,27 @@ public class Proxy_c implements Entrance{
     public void setup() throws IOException, ClassNotFoundException {
         send(new GenericMessage("Ready for login!"));
         tempObj = receive();
-        if(tempObj instanceof SetupGameMessage) cli.setupGame();
-        else if(tempObj instanceof LoginMessage){
-            view = new View(((LoginMessage) tempObj).getNumberOfPlayer(), ((LoginMessage) tempObj).isExpertMode());
-            cli.view(view);
+        if(tempObj instanceof SetupGameMessage){
+            cli.setupGame();
+            tempObj = receive();
         }
+        cli.setupConnection(((LoginMessage) tempObj).getCharacterAlreadyChosen());
+        send(new GenericMessage("Ready to start"));
+        tempObj = receive();
+    }
+
+    private void startGame(StartGameMessage msg){
+        view = new View(msg.getNumberOfPlayers(), msg.isExpertMode());
+        cli.view(view);
     }
 
     public boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
-        if(!character.equalsIgnoreCase("WIZARD")&&!character.equalsIgnoreCase("KING")
-            &&!character.equalsIgnoreCase("WITCH")&&!character.equalsIgnoreCase("SAMURAI")) return false;
+        /*if(!character.equalsIgnoreCase("WIZARD")&&!character.equalsIgnoreCase("KING")
+            &&!character.equalsIgnoreCase("WITCH")&&!character.equalsIgnoreCase("SAMURAI")) {
+            return false;
+        }*/
         send(new SetupConnection(nickname, character));
-        System.out.println(tempObj.getMessage());
         tempObj = receive();
-        System.out.println(tempObj.getMessage());
-        tempObj = receive();
-        System.out.println(tempObj.getMessage());
         if(!tempObj.getMessage().equals("ok")) return false;
         System.out.println("SetupConnection done");
         return true;
@@ -215,6 +220,11 @@ public class Proxy_c implements Entrance{
             else if(tmp instanceof UnifiedIsland) {
                 view.removeUnifiedIsland((UnifiedIsland) tmp);
                 cli.cli();
+            }
+            else if(tmp instanceof StartGameMessage) {
+                startGame((StartGameMessage)tmp);
+                cli.cli();
+                return null;
             }
             else break;
         }
