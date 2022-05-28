@@ -6,25 +6,24 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.net.Socket;
 
 public class GUI extends Application {
 
     private Entrance proxy;
     private View view;
-    private final Socket socket;
+    //private final Socket socket;
     private LoginSceneController loginSceneController;
 
+    /*
     public GUI(Socket socket) throws IOException {
         this.socket = socket;
         //proxy = new Proxy_c(socket,this);
         this.loginSceneController = new LoginSceneController();
-    }
+    }*/
 
     public static void main(String[] args){
         launch();
@@ -34,7 +33,7 @@ public class GUI extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResource("/fxml/LoginScene.fxml"));
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
+        //stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
         Scene loginScene = new Scene(root);
         stage.setScene(loginScene);
         stage.setTitle("Eryantis");
