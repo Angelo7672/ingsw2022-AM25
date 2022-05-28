@@ -7,13 +7,15 @@
  */
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.listeners.BagListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class Bag {
     private List<Colour> bag;
+    protected BagListener bagListener;
 
     private enum Colour {GREEN, RED, YELLOW, PINK, BLUE }
 
@@ -31,11 +33,26 @@ public class Bag {
     public int extraction(){
         Colour tmp;
 
-        if(bag.get(0).equals(Colour.GREEN)){ bag.remove(0); return 0; }
-        else if(bag.get(0).equals(Colour.RED)){ bag.remove(0); return 1; }
-        else if(bag.get(0).equals(Colour.YELLOW)){ bag.remove(0); return 2; }
-        else if(bag.get(0).equals(Colour.PINK)){ bag.remove(0); return 3; }
-        else if(bag.get(0).equals(Colour.BLUE)){ bag.remove(0); return 4; }
+        if(bag.get(0).equals(Colour.GREEN)){
+            this.bagListener.notifyBagExtraction(0);
+            bag.remove(0);
+            return 0; }
+        else if(bag.get(0).equals(Colour.RED)){
+            this.bagListener.notifyBagExtraction(1);
+            bag.remove(0);
+            return 1; }
+        else if(bag.get(0).equals(Colour.YELLOW)){
+            this.bagListener.notifyBagExtraction(2);
+            bag.remove(0);
+            return 2; }
+        else if(bag.get(0).equals(Colour.PINK)){
+            this.bagListener.notifyBagExtraction(3);
+            bag.remove(0);
+            return 3; }
+        else if(bag.get(0).equals(Colour.BLUE)){
+            this.bagListener.notifyBagExtraction(4);
+            bag.remove(0);
+            return 4; }
 
         return -1;  //if it returns -1 something is wrong
     }

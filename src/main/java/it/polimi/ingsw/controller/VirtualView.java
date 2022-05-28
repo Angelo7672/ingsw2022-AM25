@@ -9,7 +9,8 @@ import java.util.ArrayList;
 //virtual View class listen to changes in model classes through specific listener interfaces
 public class VirtualView
         implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
-        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, Serializable {
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, BagListener,
+        QueueListener, Serializable {
 
     private ArrayList<SchoolBoard> schoolBoards;
     private ArrayList<Island> islands;
@@ -17,8 +18,11 @@ public class VirtualView
     private ArrayList<Hand> hands;
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
     private ArrayList<String> playedCards;
+    private int[] bag;
+    private ArrayList<Integer> queue;
     private ControllerServer server;
     private int numberOfPlayers;
+
 
     public VirtualView(int numberOfPlayers, ControllerServer server) {
         this.schoolBoards = new ArrayList<>();
@@ -27,6 +31,8 @@ public class VirtualView
         this.islands = new ArrayList<>();
         this.specials = new ArrayList<>();
         this.playedCards = new ArrayList<>();
+        this.bag=new int[]{24, 24, 24, 24, 24};
+        this.queue=new ArrayList<>();
         this.server = server;
         this.numberOfPlayers = numberOfPlayers;
 
@@ -128,6 +134,15 @@ public class VirtualView
         server.setSpecial(specialRef);
     }
 
+    @Override
+    public void notifyBagExtraction(int color) {
+        bag[color]--;
+    }
+
+    @Override
+    public void notifyQueue(ArrayList<Integer> queue) {
+        this.queue=queue;
+    }
 
 
     //private class SchoolBoard keeps the state of each player's school board
@@ -224,5 +239,4 @@ public class VirtualView
             this.numberOfCards=numberOfCards;
         }
     }
-
 }
