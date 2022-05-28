@@ -20,6 +20,7 @@ public class VirtualClient implements Runnable{
     private final int playerRef;
     private boolean clientInitialization;
     private boolean gameSetupInitialization;
+    private boolean loginInitialization;
     private GameSetup gameSetup;
     private Object setupLocker;
     private Object objGame ;
@@ -41,6 +42,7 @@ public class VirtualClient implements Runnable{
         this.victory = false;
         this.clientInitialization = true;
         this.gameSetupInitialization = false;
+        this.loginInitialization = false;
         this.setupLocker = new Object();
         this.gameSetup = new GameSetup();
         this.objGame = new Object();
@@ -99,12 +101,24 @@ public class VirtualClient implements Runnable{
 
                 } else if (clientInitialization) {  //login msg
                     clientInitialization = false;
-                    if(tmp instanceof GenericMessage) {
+                    if (tmp instanceof GenericMessage) {
                         gameSetup.setSetupMsg(tmp);
-                        if(first){
+                        if (first) {
                             first = false;
-                            synchronized (objGame){ objGame.notify(); }
-                        }else if (!error) synchronized (setupLocker) { setupLocker.notify(); }
+                            synchronized (objGame) {
+                                objGame.notify();
+                            }
+                        } else if (!error) synchronized (setupLocker) { setupLocker.notify(); }
+                        else {
+                            error = false;
+                            synchronized (errorLocker) { errorLocker.notify(); }
+                        }
+                    }
+                }else if(loginInitialization){  //nickname and character msg
+                    loginInitialization = false;
+                    if(tmp instanceof SetupConnection){
+                        gameSetup.setSetupMsg(tmp);
+                        if(!error) synchronized (setupLocker) { setupLocker.notify(); }
                         else {
                             error = false;
                             synchronized(errorLocker){ errorLocker.notify(); }
@@ -120,7 +134,7 @@ public class VirtualClient implements Runnable{
                             synchronized(errorLocker){ errorLocker.notify(); }
                         }
                     }
-                }else System.out.println("errore"); //ovviamente da cambiare
+                }else System.out.println("errore!"); //ovviamente da cambiare
             }
         }catch (SocketException socketException){
             //CHE FACCIO?
@@ -207,9 +221,9 @@ public class VirtualClient implements Runnable{
 
             try {
                 if (msg.getPlayersNumber() >= 2 && msg.getPlayersNumber() <= 4) {
-                    send(new GenericAnswer("ok"));
                     proxy.setConnectionsAllowed(msg.getPlayersNumber());
                     server.startController(msg.getPlayersNumber(),msg.getExpertMode());
+                    send(new GenericAnswer("ok"));
                     synchronized (setupLocker) {
                         clientInitialization = true;
                         setupLocker.wait();
@@ -230,9 +244,9 @@ public class VirtualClient implements Runnable{
 
             try {
                 if (msg.getMessage().equals("Ready for login!")) {
-                    send(new GenericAnswer("Ready for login!"));
+                    send(new LoginMessage(server.alreadyChosenCharacters()));
                     synchronized (setupLocker) {
-                        clientInitialization = true;
+                        loginInitialization = true;
                         setupLocker.wait();
                         setupConnection();
                     }
@@ -263,7 +277,7 @@ public class VirtualClient implements Runnable{
                 } else {
                     send(new GenericAnswer("error"));
                     synchronized (errorLocker) {
-                        clientInitialization = true;
+                        loginInitialization = true;
                         error = true;
                         errorLocker.wait();
                         setupConnection();

@@ -42,6 +42,14 @@ public class VirtualView
 
     public String getLastPlayedCard(int playerRef){ return hands.get(playerRef).lastPlayedCard; }
     public String getNickname(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
+    public ArrayList<String> getAlreadyChosenCharacters(){
+        ArrayList<String> chosenCharacters = new ArrayList<>();
+
+        for(SchoolBoard player:schoolBoards)
+            chosenCharacters.add(player.nickname);
+
+        return chosenCharacters;
+    }
     public String getCharacter(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
     public void addNewPlayer(String nickname, String character){
         int player;

@@ -1,23 +1,19 @@
 package it.polimi.ingsw.server.Answer;
 
+import java.util.ArrayList;
+
 public class LoginMessage implements Answer{
     private final String message;
-    private final int numberOfPlayer;
-    private final boolean expertMode;
-    private final String team;
+    ArrayList<String> characterAlreadyChosen;
 
-    public LoginMessage(int numberOfPlayer, boolean expertMode, String team){
+    public LoginMessage(ArrayList<String> characterAlreadyChosen){
         this.message = "Login!";
-        this.numberOfPlayer = numberOfPlayer;
-        this.expertMode = expertMode;
-        this.team = team;
+        this.characterAlreadyChosen = characterAlreadyChosen;
     }
 
     @Override
     public String getMessage() {
         return message;
     }
-    public int getNumberOfPlayer() { return numberOfPlayer; }
-    public boolean isExpertMode() { return expertMode; }
-    public String getTeam() { return team; }
+    public ArrayList<String> getCharacterAlreadyChosen() { return characterAlreadyChosen; }
 }

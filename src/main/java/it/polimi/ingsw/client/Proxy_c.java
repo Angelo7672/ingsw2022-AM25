@@ -41,22 +41,24 @@ public class Proxy_c implements Entrance{
         if(!character.equalsIgnoreCase("WIZARD")&&!character.equalsIgnoreCase("KING")
             &&!character.equalsIgnoreCase("WITCH")&&!character.equalsIgnoreCase("SAMURAI")) return false;
         send(new SetupConnection(nickname, character));
+        System.out.println(tempObj.getMessage());
         tempObj = receive();
-        if(!tempObj.getMessage().equalsIgnoreCase("ok")) return false;
+        System.out.println(tempObj.getMessage());
+        tempObj = receive();
+        System.out.println(tempObj.getMessage());
+        if(!tempObj.getMessage().equals("ok")) return false;
         System.out.println("SetupConnection done");
         return true;
     }
 
     public boolean setupGame(int numberOfPlayers, String expertMode) throws IOException, ClassNotFoundException {
         boolean isExpert;
-        if(numberOfPlayers<2 || numberOfPlayers >4){
-            return false;
-        }
+
+        if(numberOfPlayers<2 || numberOfPlayers >4) return false;
         if(expertMode.equalsIgnoreCase("y")) isExpert = true;
         else if(expertMode.equalsIgnoreCase("n")) isExpert = false;
-        else {
-            return false;
-        }
+        else return false;
+
         send(new SetupGame(numberOfPlayers, isExpert));
         tempObj = receive();
         if(!tempObj.getMessage().equals("ok")) return false;
@@ -64,7 +66,6 @@ public class Proxy_c implements Entrance{
         cli.view(view);
         send(new GenericMessage("Ready for login!"));
         return true;
-
     }
 
     public boolean startPlanningPhase() throws ClassNotFoundException, IOException {

@@ -3,9 +3,12 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
+import java.util.ArrayList;
+
 public interface ServerController {
     void startGame();
     boolean userLoginNickname(String nickname,int playerRef);
+    ArrayList<String> alreadyChosenCharacters();
     boolean userLoginCharacter(String character, int playerRef);
     void addNewPlayer(String nickname, String character);
     void playCard(int playerRef,String chosenAssistants) throws NotAllowedException;

@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 import it.polimi.ingsw.server.ControllerServer;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Controller implements ServerController{
     private int currentUser;
@@ -48,6 +49,8 @@ public class Controller implements ServerController{
 
     @Override
     public boolean userLoginNickname(String nickname, int playerRef){ return nickname.equals(virtualView.getNickname(playerRef)); }
+    @Override
+    public ArrayList<String> alreadyChosenCharacters(){ return virtualView.getAlreadyChosenCharacters(); }
     @Override
     public boolean userLoginCharacter(String character, int playerRef){ return character.equals(virtualView.getCharacter(playerRef)); }
     @Override

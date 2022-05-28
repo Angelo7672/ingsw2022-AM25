@@ -6,6 +6,8 @@ import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
+import java.util.ArrayList;
+
 public class Server implements Entrance,ControllerServer{
         private ServerController controller;
         private Exit proxy;
@@ -20,6 +22,8 @@ public class Server implements Entrance,ControllerServer{
         @Override
         public void startGame(){ controller.startGame(); }
 
+        @Override
+        public ArrayList<String> alreadyChosenCharacters(){ return controller.alreadyChosenCharacters(); }
         @Override
         public boolean userLogin(String nickname, String character, int playerRef){
             String[] characters = new String[]{"WIZARD","KING","WITCH","SAMURAI"};

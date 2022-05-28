@@ -2,9 +2,12 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.exception.EndGameException;
 
+import java.util.ArrayList;
+
 public interface Entrance {
     void startController(int numberOfPlayers, boolean expertMode);
     void startGame();
+    ArrayList<String> alreadyChosenCharacters();
     boolean userLogin(String nickname, String character, int playerRef);
 
     boolean userPlayCard(int playerRef, String assistant);

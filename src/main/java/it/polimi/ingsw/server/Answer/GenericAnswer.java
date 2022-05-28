@@ -8,7 +8,5 @@ public class GenericAnswer implements Answer{
     }
 
     @Override
-    public String getMessage() {
-        return message;
-    }
+    public String getMessage() { return message; }
 }
