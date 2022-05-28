@@ -114,7 +114,7 @@ public abstract class RoundStrategy {
         return victory;
     }
 
-    public boolean refreshStudentsCloud(){
+    public boolean refreshStudentsCloud(){  //Poi da cambiare e mettere tutto in cloudManager
         boolean lastTurn = false;   //if true, the students are finished
 
         if(numberOfPlayer == 2 || numberOfPlayer ==4 ) {

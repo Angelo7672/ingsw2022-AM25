@@ -71,7 +71,6 @@ public class VirtualClient implements Runnable{
             this.socket.setSoTimeout(15000);    //come faccio a notificare lo spegnimento del socket?
             while (!victory){
                 tmp = (Message) input.readObject();
-                System.out.println("casa");
 
                 if (tmp instanceof PingMessage) {
                     this.socket.setSoTimeout(15000);    //reset timeout
@@ -102,7 +101,6 @@ public class VirtualClient implements Runnable{
                     clientInitialization = false;
                     if(tmp instanceof GenericMessage) {
                         gameSetup.setSetupMsg(tmp);
-                        System.out.println("ciao2");
                         if(first){
                             first = false;
                             synchronized (objGame){ objGame.notify(); }
@@ -211,13 +209,10 @@ public class VirtualClient implements Runnable{
                 if (msg.getPlayersNumber() >= 2 && msg.getPlayersNumber() <= 4) {
                     send(new GenericAnswer("ok"));
                     proxy.setConnectionsAllowed(msg.getPlayersNumber());
-                    //server.startController(msg.getPlayersNumber(),msg.getExpertMode());
-                    System.out.println("ciao");
+                    server.startController(msg.getPlayersNumber(),msg.getExpertMode());
                     synchronized (setupLocker) {
-                        System.out.println("ciao1");
                         clientInitialization = true;
                         setupLocker.wait();
-                        System.out.println("ciao3");
                     }
                 } else {
                     send(new GenericAnswer("error"));

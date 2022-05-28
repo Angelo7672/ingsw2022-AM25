@@ -21,21 +21,15 @@ public class Game implements GameManager{
     public Game(Boolean expertMode, int numberOfPlayer){
         roundStrategies = new ArrayList<>();
         this.numberOfPlayer = numberOfPlayer;
-        this.cloudsManager = new CloudsManager(numberOfPlayer);
-        this.islandsManager = new IslandsManager();
-        this.playerManager = new PlayerManager(numberOfPlayer);
-        this.queueManager = new QueueManager(numberOfPlayer,this.playerManager);
         this.bag = new Bag();
+        this.cloudsManager = new CloudsManager(numberOfPlayer);
+        this.playerManager = new PlayerManager(numberOfPlayer,this.bag);
+        this.islandsManager = new IslandsManager();
+        this.queueManager = new QueueManager(numberOfPlayer,this.playerManager);
+
         indexSpecial = 0;
         refSpecial = -1;
 
-        if(numberOfPlayer == 2 || numberOfPlayer == 4){
-            for(int j = 0; j < numberOfPlayer; j++)
-                for (int i = 0; i < 7; i++) playerManager.setStudentEntrance(j,bag.extraction());
-        }else if(numberOfPlayer == 3){
-            for(int j = 0; j < numberOfPlayer; j++)
-                for (int i = 0; i < 9; i++) playerManager.setStudentEntrance(j,bag.extraction());
-        }
 
         Round round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         roundStrategies.add(round);

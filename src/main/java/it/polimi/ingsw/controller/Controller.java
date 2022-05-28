@@ -27,6 +27,12 @@ public class Controller implements ServerController{
         this.winner = "NONE";
         this.fileName = "";
 
+
+    }
+
+    @Override
+    public void startGame(){
+        this.gameManager = new Game(expertMode, numberOfPlayers);
         gameManager.setStudentsListener(virtualView);
         gameManager.setTowerListener(virtualView);
         gameManager.setProfessorsListener(virtualView);
@@ -36,11 +42,7 @@ public class Controller implements ServerController{
         gameManager.setMotherPositionListener(virtualView);
         gameManager.setIslandListener(virtualView);
         gameManager.setInhibitedListener(virtualView);
-    }
-
-    @Override
-    public void startGame(){
-        this.gameManager = new Game(expertMode, numberOfPlayers);
+        //in questo punto andra' initializeGame
         roundController.start();
     }
 

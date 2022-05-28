@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SchoolTest {
-    @Test
+    /*@Test
     @DisplayName("First test: check school initialization for 4 players")
     void schoolInit(){
         int numberOfPlayer = 4;

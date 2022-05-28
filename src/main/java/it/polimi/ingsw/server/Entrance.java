@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.exception.EndGameException;
 
 public interface Entrance {
     void startController(int numberOfPlayers, boolean expertMode);
+    void startGame();
     boolean userLogin(String nickname, String character, int playerRef);
 
     boolean userPlayCard(int playerRef, String assistant);

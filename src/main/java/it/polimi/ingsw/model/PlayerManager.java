@@ -16,7 +16,7 @@ public class PlayerManager  {
     protected CoinsListener coinsListener;
     protected StudentsListener studentsListener;
 
-    public PlayerManager(int numberOfPlayer) {
+    public PlayerManager(int numberOfPlayer, Bag bag) {
         players = new ArrayList<>();
         this.numberOfPlayer = numberOfPlayer;
         this.professorPropriety = new int[]{-1,-1,-1,-1,-1};    //-1 indicates that no one owns that professor
@@ -42,6 +42,14 @@ public class PlayerManager  {
             players.add(g3);
             Player g4 = new Player(Team.BLACK, numberOfPlayer);
             players.add(g4);
+        }
+
+        if(numberOfPlayer == 2 || numberOfPlayer == 4){
+            for(int j = 0; j < numberOfPlayer; j++)
+                for (int i = 0; i < 7; i++) setStudentEntrance(j,bag.extraction());
+        }else if(numberOfPlayer == 3){
+            for(int j = 0; j < numberOfPlayer; j++)
+                for (int i = 0; i < 9; i++) setStudentEntrance(j,bag.extraction());
         }
     }
 
