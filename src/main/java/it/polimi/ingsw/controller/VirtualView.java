@@ -140,8 +140,14 @@ public class VirtualView
     }
 
     @Override
-    public void notifyQueue(ArrayList<Integer> queue) {
-        this.queue=queue;
+    public void notifyQueue(int playerRef) {
+        queue.add(playerRef);
+    }
+
+    @Override
+    public void notifyResetQueue() {
+        for(int i=0; i< queue.size(); i++)
+            queue.remove(i);
     }
 
 

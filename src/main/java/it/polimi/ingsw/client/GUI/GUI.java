@@ -10,13 +10,15 @@ import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.net.Socket;
 
 public class GUI extends Application {
 
     private Entrance proxy;
     private View view;
-    //private final Socket socket;
+    private Socket socket;
     private LoginSceneController loginSceneController;
+    private MainSceneController mainSceneController;
 
     /*
     public GUI(Socket socket) throws IOException {
@@ -28,6 +30,13 @@ public class GUI extends Application {
     public static void main(String[] args){
         launch();
     }
+    public void GUIsetup(Socket socket){
+        this.socket=socket;
+        //proxy=new Proxy_c();
+        this.loginSceneController=new LoginSceneController(this);
+        this.mainSceneController=new MainSceneController(this);
+    }
+
 
     @Override
     public void start(Stage stage) throws IOException {

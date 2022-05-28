@@ -21,7 +21,9 @@ public class LoginSceneController {
     Button witch;
     Button samurai;
 
-
+    public LoginSceneController(GUI gui){
+        this.gui = gui;
+    }
     public void nicknameSet(ActionEvent e){
         this.currentNickname = e.getSource().toString();
     }

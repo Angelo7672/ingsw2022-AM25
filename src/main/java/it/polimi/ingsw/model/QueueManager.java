@@ -10,6 +10,7 @@ public class QueueManager {
     private PlayerManager playerManager;
     private int numberOfPlayer;
     protected PlayedCardListener playedCardListener;
+    protected QueueListener queueListener;
 
     public QueueManager(int numberOfPlayer,PlayerManager playerManager) {
         this.playerManager = playerManager;
@@ -44,8 +45,9 @@ public class QueueManager {
         //The first player is the one who played first in the previous action phase, then proceeds clockwise. The distribution of players at the table is arranged clockwise in this order 1 2 3 4
         if (firstInQueue != 0) Collections.rotate(queue,-firstInQueue);
 
+        this.queueListener.notifyResetQueue();
         for(Queue q:queue){
-            //fai qui il fire di playerRef
+            this.queueListener.notifyQueue(q.getPlayerRef());
         }
 
     }
@@ -68,8 +70,9 @@ public class QueueManager {
             }
         });
 
+        this.queueListener.notifyResetQueue();
         for(Queue q:queue){
-            //fai qui il fire di playerRef
+            this.queueListener.notifyQueue(q.getPlayerRef());
         }
     }
 
