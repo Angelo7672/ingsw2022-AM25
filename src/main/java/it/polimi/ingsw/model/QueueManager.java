@@ -43,6 +43,11 @@ public class QueueManager {
         }
         //The first player is the one who played first in the previous action phase, then proceeds clockwise. The distribution of players at the table is arranged clockwise in this order 1 2 3 4
         if (firstInQueue != 0) Collections.rotate(queue,-firstInQueue);
+
+        for(Queue q:queue){
+            //fai qui il fire di playerRef
+        }
+
     }
 
     public boolean playCard(int playerRef, int queueRef, Assistant card) throws NotAllowedException {
@@ -56,12 +61,16 @@ public class QueueManager {
     }
 
     public void inOrderForActionPhase(){
-        Collections.sort(queue, new Comparator<Queue>() {
+        Collections.sort(queue, new Comparator<Queue>() {   //mettere lmabda
             @Override
             public int compare(Queue q1, Queue q2) {
                 return q1.compareTo(q2);
             }
         });
+
+        for(Queue q:queue){
+            //fai qui il fire di playerRef
+        }
     }
 
     public int readQueue(int queueRef){ return queue.get(queueRef).getPlayerRef(); }
