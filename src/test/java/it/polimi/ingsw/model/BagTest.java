@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BagTest {
-    @Test
+    /*@Test
     @DisplayName("First test: check if all 130 numbers drawn are compatible with the legend")
     void bagInit(){
         Bag bag = new Bag();
@@ -33,7 +33,7 @@ class BagTest {
                 ()->assertNotEquals(cavia,cavia3,"The probability that they are equal is low")       //tre abbiamo un problema
         );
     }
-     */
+
 
     @Test
     @DisplayName("Third test: extracts 130 students and check the victory")
@@ -48,5 +48,5 @@ class BagTest {
         tmp = bag.extraction();
         assertTrue(bag.checkVictory(),"The bag be empty");
     }
-
+*/
 }

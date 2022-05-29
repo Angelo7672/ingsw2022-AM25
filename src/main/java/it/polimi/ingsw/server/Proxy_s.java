@@ -30,7 +30,7 @@ public class Proxy_s implements Exit {
             System.out.println("port not available");
             server.exitError();
         }
-        this.connectionsAllowed = 4;
+        this.connectionsAllowed = -1;
         this.user = new ArrayList<>();
         this.executor = Executors.newCachedThreadPool(); //Create threads when needed, but re-use existing ones as much as possible
         this.limiter = 0;
@@ -46,16 +46,19 @@ public class Proxy_s implements Exit {
             System.out.println("Eryantis Server | Welcome!");
             System.out.println("Waiting for players ...");
             VirtualClient firstClient = new VirtualClient(serverSocket.accept(), server, this, limiter);
-            System.out.println("Connected players:" + limiter);
+            System.out.println("Connected players: " + limiter);
             user.add(firstClient);
             executor.submit(firstClient);
-            while (limiter < 4 && !stop) {
+            VirtualClient secondClient = new VirtualClient(serverSocket.accept(), server, this, limiter);   //There must be two players to play
+            System.out.println("Connected players: " + limiter);
+            user.add(secondClient);
+            if(connectionsAllowed == -1) synchronized (this) { this.wait(); }
+            while (limiter < connectionsAllowed) {
                 VirtualClient virtualClient = new VirtualClient(serverSocket.accept(), server, this, limiter);
-                System.out.println("Connected players:" + limiter);
+                System.out.println("Connected players: " + limiter);
                 user.add(virtualClient);
-                if(limiter == connectionsAllowed) stop = true;
             }
-            if(connectionsAllowed < limiter){
+            /*if(connectionsAllowed < limiter){
                 if(limiter - connectionsAllowed == 1){
                     user.get(2).closeSocket();
                     user.remove(2);
@@ -66,7 +69,7 @@ public class Proxy_s implements Exit {
                     user.get(2).closeSocket();
                     user.remove(2);
                 }
-            }
+            }*/
             for(int i = 1; i < connectionsAllowed; i++)
                 executor.submit(user.get(i));
             System.out.println("ciao");
@@ -78,7 +81,7 @@ public class Proxy_s implements Exit {
         } catch (IOException e) {
             System.err.println(e.getMessage());
             server.exitError();
-        }
+        }catch (InterruptedException ex){ ex.printStackTrace(); }
     }
 
     @Override

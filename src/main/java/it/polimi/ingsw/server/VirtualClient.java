@@ -227,6 +227,7 @@ public class VirtualClient implements Runnable{
                 if (msg.getPlayersNumber() >= 2 && msg.getPlayersNumber() <= 4) {
                     proxy.setConnectionsAllowed(msg.getPlayersNumber());
                     server.startController(msg.getPlayersNumber(),msg.getExpertMode());
+                    synchronized (proxy){ proxy.notify(); }
                     send(new GenericAnswer("ok"));
                     synchronized (setupLocker) {
                         clientInitialization = true;
