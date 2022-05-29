@@ -26,18 +26,18 @@ public class CLI implements Runnable, Exit {
 
     public void setup() throws IOException, ClassNotFoundException {
         if(proxy.first()) setupGame();
-        ArrayList<String> chosenCharacters = proxy.getChosenCharacters();
-        setupConnection(chosenCharacters);
+        setupConnection();
         view = proxy.startView();
     }
 
-    public void setupConnection(ArrayList<String> chosenCharacters) throws IOException, ClassNotFoundException {
+    public void setupConnection() throws IOException, ClassNotFoundException {
+        while (true) {
+            ArrayList<String> chosenCharacters = proxy.getChosenCharacters();
         ArrayList<String> availableCharacters = new ArrayList<>();
         if(!chosenCharacters.contains("WIZARD")) availableCharacters.add("WIZARD");
         if(!chosenCharacters.contains("KING")) availableCharacters.add("KING");
         if(!chosenCharacters.contains("WITCH")) availableCharacters.add("WITCH");
         if(!chosenCharacters.contains("SAMURAI")) availableCharacters.add("SAMURAI");
-        while (true) {
             String nickname;
             String character;
             do {
@@ -56,6 +56,7 @@ public class CLI implements Runnable, Exit {
                 System.out.println("SetupConnection done");
                 break;
             }
+            else System.out.println("Error, try again");
         }
     }
 
@@ -358,6 +359,13 @@ public class CLI implements Runnable, Exit {
         System.out.println();
 
         System.out.println("YOUR CARDS");
-        System.out.print("\t"+view.getCards().toString());
+        System.out.println("\t"+view.getCards().toString());
+
+        if(view.getExpertMode()){
+            System.out.println("SPECIALS");
+            for(int i=0; i<3; i++){
+                System.out.println("\t"+view.getSpecialName(i)+": costo "+view.getSpecialCost(i));
+            }
+        }
     }
 }

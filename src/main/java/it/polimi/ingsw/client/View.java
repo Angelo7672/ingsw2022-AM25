@@ -13,7 +13,7 @@ public class View {
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
     private ArrayList<Hand> hands;
-    private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
+    private ArrayList<Special> specials; //specials keeps the 3 special character for the game
     private ArrayList<Assistant> cards;
     private final boolean expertMode;
 
@@ -30,7 +30,6 @@ public class View {
         for(int i=0; i<numberOfPlayers; i++) {
             hands.add(new Hand());
             clouds.add(new Cloud());
-
         }
         for(int i=0; i<12; i++){
             this.islands.add(new Island());
@@ -53,6 +52,12 @@ public class View {
         }
         cards.add(Assistant.LION); cards.add(Assistant.GOOSE); cards.add(Assistant.CAT); cards.add(Assistant.EAGLE); cards.add(Assistant.FOX);
         cards.add(Assistant.LION); cards.add(Assistant.OCTOPUS); cards.add(Assistant.DOG); cards.add(Assistant.ELEPHANT); cards.add(Assistant.TURTLE);
+
+        if(expertMode){
+            for (int i=0; i<3; i++){
+                specials.add(new Special(0, ""));
+            }
+        }
     }
 
     public void setIslandTowers(IslandTowersNumberMessage msg) { islands.get(msg.getIslandRef()).setTowersNumber(msg.getTowersNumber());}
@@ -87,9 +92,11 @@ public class View {
     }
     public void setNumberOfCards(NumberOfCardsMessage msg){hands.get(msg.getPlayerRef()).setNumberOfCards(msg.getNumberOfCards());}
 
-    public void setSpecials(ArrayList<Integer> specials){
+    public void setSpecials(ArrayList<Special> specials){
         this.specials = specials;
     }
+    public void setSpecialCost(int cost, int special){specials.get(special).setCost(cost);}
+    public void setSpecialName(String name, int special){specials.get(special).setName(name);}
 
     public void setCards(Assistant card){cards.remove(card);}
 
@@ -124,6 +131,9 @@ public class View {
     public int getIslandSize(){return islands.size();}
     public int getNumberOfPlayers(){return numberOfPlayers;}
     public boolean getExpertMode(){return expertMode;}
+
+    public int getSpecialCost(int special){return specials.get(special).getCost();}
+    public String getSpecialName(int special){return specials.get(special).getName();}
 
 
     private class SchoolBoard {
@@ -252,6 +262,31 @@ public class View {
         public String getLastCard(){ return lastPlayedCard;}
         public int getCoins(){ return coins;}
         public int getNumberOfCards(){ return numberOfCards; }
+    }
+
+    private class Special{
+        private int cost;
+        private String name;
+
+        private Special(int cost, String name) {
+            this.cost = cost;
+            this.name = name;
+        }
+
+        public int getCost() {
+            return cost;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setCost(int cost){
+            this.cost = cost;
+        }
+        public void setName(String name){
+            this.name=name;
+        }
     }
 
 }

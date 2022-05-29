@@ -33,8 +33,11 @@ public class Proxy_c implements Entrance{
         return tempObj instanceof SetupGameMessage;
     }
 
-    public ArrayList<String> getChosenCharacters(){
-        return ((LoginMessage) tempObj).getCharacterAlreadyChosen();
+    public ArrayList<String> getChosenCharacters() throws IOException, ClassNotFoundException {
+        if(tempObj == null) tempObj = receive();
+        LoginMessage msg = (LoginMessage) tempObj;
+        tempObj = null;
+        return (msg.getCharacterAlreadyChosen());
     }
 
     public View startView() throws IOException, ClassNotFoundException {

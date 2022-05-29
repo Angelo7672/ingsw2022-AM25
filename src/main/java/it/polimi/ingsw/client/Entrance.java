@@ -7,7 +7,7 @@ public interface Entrance {
 
     boolean first() throws IOException, ClassNotFoundException;
 
-    ArrayList<String> getChosenCharacters();
+    ArrayList<String> getChosenCharacters() throws IOException, ClassNotFoundException;
 
     View startView()throws IOException, ClassNotFoundException;
 
