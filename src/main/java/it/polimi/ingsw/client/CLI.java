@@ -25,7 +25,10 @@ public class CLI implements Runnable, Exit {
     }
 
     public void setup() throws IOException, ClassNotFoundException {
-        proxy.setup();
+        if(proxy.first()) setupGame();
+        ArrayList<String> chosenCharacters = proxy.getChosenCharacters();
+        setupConnection(chosenCharacters);
+        view = proxy.startView();
     }
 
     public void setupConnection(ArrayList<String> chosenCharacters) throws IOException, ClassNotFoundException {
@@ -49,11 +52,13 @@ public class CLI implements Runnable, Exit {
                     character=null;
                 }
             } while (character == null);
-            if (proxy.setupConnection(nickname, character)) break;
+            if (proxy.setupConnection(nickname, character)) {
+                System.out.println("SetupConnection done");
+                break;
+            }
         }
     }
 
-    @Override
     public void setupGame(){
         while(true) {
             int numberOfPlayers;
@@ -76,11 +81,6 @@ public class CLI implements Runnable, Exit {
                 System.out.println("class error");
             }
         }
-    }
-
-    @Override
-    public void view(View view){
-        this.view = view;
     }
 
     public void setActive(boolean active) {
@@ -225,6 +225,7 @@ public class CLI implements Runnable, Exit {
     public void moveStudents() {
         boolean finished = false;
         do {
+            String accepted;
             String color;
             String where;
             int islandRef = -1;
@@ -238,10 +239,10 @@ public class CLI implements Runnable, Exit {
                     System.out.println("which island? insert the number");
                     islandRef = scanner.nextInt();
                 }
-                if (proxy.moveStudent(colorInt, where, islandRef)) finished = true;
-            } catch (InputMismatchException e) {
-                System.out.println("Error, try again");
-            } catch (IOException | ClassNotFoundException e) {
+                accepted = proxy.moveStudent(colorInt, where, islandRef);
+                if (accepted.equals("transfer complete")) finished = true;
+                System.out.println(accepted);
+            } catch (InputMismatchException | IOException | ClassNotFoundException e) {
                 System.out.println("Error, try again");
             }
         } while (!finished);
@@ -260,6 +261,7 @@ public class CLI implements Runnable, Exit {
             return;
         }
         if (proxy.moveMotherNature(steps)) constants.setMotherMoved(true);
+        else System.out.println("Error, try again");
     }
 
     public void chooseCloud() throws IOException, ClassNotFoundException {
@@ -274,6 +276,7 @@ public class CLI implements Runnable, Exit {
             return;
         }
         if (proxy.chooseCloud(cloud)) constants.setCloudChosen(true);
+        else System.out.println("Error, try again");
     }
 
     @Override

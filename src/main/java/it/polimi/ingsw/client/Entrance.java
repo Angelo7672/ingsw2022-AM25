@@ -5,7 +5,11 @@ import java.util.ArrayList;
 
 public interface Entrance {
 
-    void setup()throws IOException, ClassNotFoundException;
+    boolean first() throws IOException, ClassNotFoundException;
+
+    ArrayList<String> getChosenCharacters();
+
+    View startView()throws IOException, ClassNotFoundException;
 
     boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException ;
 
@@ -19,7 +23,7 @@ public interface Entrance {
 
     boolean startActionPhase() throws IOException, ClassNotFoundException;
 
-    boolean moveStudent(int colorInt, String where, int islandRef) throws IOException, ClassNotFoundException;
+    String moveStudent(int colorInt, String where, int islandRef) throws IOException, ClassNotFoundException;
 
     boolean moveMotherNature(int steps) throws IOException, ClassNotFoundException ;
 

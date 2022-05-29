@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 
 public class Proxy_c implements Entrance{
-    private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
+    private final ObjectInputStream inputStream;
+    private final ObjectOutputStream outputStream;
     private final Socket socket;
     private Answer tempObj;
     private Thread ping;
@@ -27,33 +27,30 @@ public class Proxy_c implements Entrance{
         inputStream = new ObjectInputStream(socket.getInputStream());
     }
 
-    public void setup() throws IOException, ClassNotFoundException {
+    public boolean first() throws IOException, ClassNotFoundException {
         send(new GenericMessage("Ready for login!"));
         tempObj = receive();
-        if(tempObj instanceof SetupGameMessage){
-            cli.setupGame();
-            tempObj = receive();
-        }
-        cli.setupConnection(((LoginMessage) tempObj).getCharacterAlreadyChosen());
-        send(new GenericMessage("Ready to start"));
-        tempObj = receive();
+        return tempObj instanceof SetupGameMessage;
     }
 
-    private void startGame(StartGameMessage msg){
+    public ArrayList<String> getChosenCharacters(){
+        return ((LoginMessage) tempObj).getCharacterAlreadyChosen();
+    }
+
+    public View startView() throws IOException, ClassNotFoundException {
+        send(new GenericMessage("Ready to start"));
+        tempObj = receive();
+        return view;
+    }
+
+    private void view(StartGameMessage msg){
         view = new View(msg.getNumberOfPlayers(), msg.isExpertMode());
-        cli.view(view);
     }
 
     public boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
-        /*if(!character.equalsIgnoreCase("WIZARD")&&!character.equalsIgnoreCase("KING")
-            &&!character.equalsIgnoreCase("WITCH")&&!character.equalsIgnoreCase("SAMURAI")) {
-            return false;
-        }*/
         send(new SetupConnection(nickname, character));
         tempObj = receive();
-        if(!tempObj.getMessage().equals("ok")) return false;
-        System.out.println("SetupConnection done");
-        return true;
+        return tempObj.getMessage().equals("ok");
     }
 
     public boolean setupGame(int numberOfPlayers, String expertMode) throws IOException, ClassNotFoundException {
@@ -67,9 +64,8 @@ public class Proxy_c implements Entrance{
         send(new SetupGame(numberOfPlayers, isExpert));
         tempObj = receive();
         if(!tempObj.getMessage().equals("ok")) return false;
-        view = new View(numberOfPlayers, isExpert);
-        cli.view(view);
         send(new GenericMessage("Ready for login!"));
+        tempObj = receive();
         return true;
     }
 
@@ -99,39 +95,27 @@ public class Proxy_c implements Entrance{
         }
     }
 
-    public boolean moveStudent(int color, String where, int islandRef) throws IOException, ClassNotFoundException {
-        if(color < 0 || color > 4) {
-            System.out.println("Error, insert a color");
-            return false;
-        }
+    public String moveStudent(int color, String where, int islandRef) throws IOException, ClassNotFoundException {
+        if(color < 0 || color > 4) return "Error, insert a color";
         boolean inSchool;
         if (where.equalsIgnoreCase("school")) inSchool = true;
         else if(where.equalsIgnoreCase("island")) inSchool = false;
-        else {
-            System.out.println("Error, insert school or island");
-            return false;
-        }
+        else return "Error, insert school or island";
         send(new MoveStudent(color, inSchool, islandRef));
         tempObj = receive();
-        if(tempObj.getMessage().equals("transfer complete")) return true;
-        if(tempObj.getMessage().equals("move not allowed")) System.out.println("Error, move not allowed");
-        return false;
+        return tempObj.getMessage();
     }
 
     public boolean moveMotherNature(int steps) throws IOException, ClassNotFoundException {
         send(new MoveMotherNature(steps));
         tempObj = receive();
-        if (tempObj.getMessage().equals("ok")) return true;
-        System.out.println("Error, try again");
-        return false;
+        return tempObj.getMessage().equals("ok");
     }
 
     public boolean chooseCloud(int cloud) throws IOException, ClassNotFoundException {
         send(new ChosenCloud(cloud));
         tempObj = receive();
-        if(tempObj.getMessage().equals("ok")) return true;
-        System.out.println("Error, try again");
-        return false;
+        return tempObj.getMessage().equals("ok");
     }
 
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
@@ -222,7 +206,7 @@ public class Proxy_c implements Entrance{
                 cli.cli();
             }
             else if(tmp instanceof StartGameMessage) {
-                startGame((StartGameMessage)tmp);
+                view((StartGameMessage)tmp);
                 cli.cli();
                 return null;
             }
