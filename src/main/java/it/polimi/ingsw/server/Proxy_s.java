@@ -1,7 +1,11 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.server.Answer.SoldOutAnswer;
+
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -10,6 +14,7 @@ import java.util.concurrent.Executors;
 public class Proxy_s implements Exit {
     private final int port;
     private final Entrance server;
+    private ServerSocket serverSocket;
     private int connectionsAllowed;
     private List<VirtualClient> user;
     private final ExecutorService executor;
@@ -20,6 +25,11 @@ public class Proxy_s implements Exit {
     public Proxy_s(int port,Entrance server) {
         this.port = port;
         this.server = server;
+        try { serverSocket = new ServerSocket(port);
+        }catch (IOException e){
+            System.out.println("port not available");
+            server.exitError();
+        }
         this.connectionsAllowed = 4;
         this.user = new ArrayList<>();
         this.executor = Executors.newCachedThreadPool(); //Create threads when needed, but re-use existing ones as much as possible
@@ -30,9 +40,9 @@ public class Proxy_s implements Exit {
 
     @Override
     public void start() {
-        ServerSocket serverSocket;
+        SoldOut soldOut = new SoldOut();
+
         try {
-            serverSocket = new ServerSocket(port);
             System.out.println("Eryantis Server | Welcome!");
             System.out.println("Waiting for players ...");
             VirtualClient firstClient = new VirtualClient(serverSocket.accept(), server, this, limiter);
@@ -46,20 +56,27 @@ public class Proxy_s implements Exit {
                 if(limiter == connectionsAllowed) stop = true;
             }
             if(connectionsAllowed < limiter){
-                if(limiter - connectionsAllowed == 1) user.remove(2);
+                if(limiter - connectionsAllowed == 1){
+                    user.get(2).closeSocket();
+                    user.remove(2);
+                }
                 else if(limiter - connectionsAllowed == 2){
-                    user.remove(2); user.remove(3);
+                    user.get(3).closeSocket();
+                    user.remove(3);
+                    user.get(2).closeSocket();
+                    user.remove(2);
                 }
             }
             for(int i = 1; i < connectionsAllowed; i++)
                 executor.submit(user.get(i));
             System.out.println("ciao");
 
-            //thread per rispondere che si e' al completo
+            soldOut.start();
+
+            server.startGame();
 
         } catch (IOException e) {
             System.err.println(e.getMessage());
-            System.out.println("port not available");
             server.exitError();
         }
     }
@@ -149,4 +166,21 @@ public class Proxy_s implements Exit {
     }
     public int getConnectionsAllowed() { return connectionsAllowed; }
     public void setConnectionsAllowed(int connectionsAllowed) { this.connectionsAllowed = connectionsAllowed; }
+
+    private class SoldOut extends Thread{
+        @Override
+        public void run(){
+            while(true){
+                try {
+                    Socket socket = serverSocket.accept();
+                    ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
+                    output.reset();
+                    output.writeObject(new SoldOutAnswer());
+                    output.flush();
+                    socket.close();
+                    System.out.println("A client tried to connect, but there were no connections available!");
+                }catch (IOException e) { e.printStackTrace(); }
+            }
+        }
+    }
 }

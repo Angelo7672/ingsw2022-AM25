@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 import java.util.ArrayList;
 
 public interface GameManager {
+    void initializeGame();
+
     //Planification Phase
     boolean refreshStudentsCloud();
     void queueForPlanificationPhase();

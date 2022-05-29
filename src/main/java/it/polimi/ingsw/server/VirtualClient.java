@@ -17,6 +17,7 @@ public class VirtualClient implements Runnable{
     private final Proxy_s proxy;
     private ObjectInputStream input;
     private ObjectOutputStream output;
+    private boolean connectionExpired;
     private final int playerRef;
     private boolean clientInitialization;
     private boolean gameSetupInitialization;
@@ -38,6 +39,7 @@ public class VirtualClient implements Runnable{
         this.socket = socket;
         this.server = server;
         this.proxy = proxy;
+        this.connectionExpired = false;
         this.playerRef = playerRef;
         this.victory = false;
         this.clientInitialization = true;
@@ -70,12 +72,14 @@ public class VirtualClient implements Runnable{
         boolean first = true;
 
         try {
-            this.socket.setSoTimeout(15000);    //come faccio a notificare lo spegnimento del socket?
-            while (!victory){
+            //this.socket.setSoTimeout(15000);    //come faccio a notificare lo spegnimento del socket?
+            while (!victory || !connectionExpired){
                 tmp = (Message) input.readObject();
 
                 if (tmp instanceof PingMessage) {
-                    this.socket.setSoTimeout(15000);    //reset timeout
+                    /*this.socket.setSoTimeout(15000);    //reset timeout
+                    send(new PongAnswer());
+                     */
 
                 } else if(oneCardAtaTime) { //Planning Phase msg
                     oneCardAtaTime = false;
@@ -137,12 +141,13 @@ public class VirtualClient implements Runnable{
                 }else System.out.println("errore!"); //ovviamente da cambiare
             }
         }catch (SocketException socketException){
-            //CHE FACCIO?
+            clientConnectionExpired(socketException);
         }catch (IOException | ClassNotFoundException e){
             System.err.println(e.getMessage());
             System.out.println("Client disconnected!");
+            connectionExpired = true;
             //metodo per notificare tutti
-            server.exitError();//chiudi anche tutti i thread
+            server.exitError();
         }
     }
 
@@ -198,7 +203,6 @@ public class VirtualClient implements Runnable{
 
             try {
                 if (msg.getMessage().equals("Ready for login!")) {
-                    //proxy.setConnectionsAllowed(0);
                     send(new SetupGameMessage());
                     synchronized (setupLocker) {
                         gameSetupInitialization = true;
@@ -265,7 +269,7 @@ public class VirtualClient implements Runnable{
             SetupConnection msg = (SetupConnection) setupMsg;
             boolean checker;
 
-            checker = server.userLogin(msg.getNickname(), msg.getCharacter(), playerRef);
+            checker = server.userLogin(msg.getNickname(), msg.getCharacter());
             try {
                 if (checker) {
                     send(new GenericAnswer("ok"));
@@ -516,7 +520,15 @@ public class VirtualClient implements Runnable{
     private void clientConnectionExpired(IOException e){
         System.err.println(e.getMessage());
         System.out.println("Client disconnected!");
+        connectionExpired = true;
         //metodo per notificare tutti
         server.exitError();
+    }
+
+    public void closeSocket(){
+        try {
+            send(new DisconnectedAnswer());
+            this.socket.close();
+        }catch (IOException e){ clientConnectionExpired(e); }
     }
 }

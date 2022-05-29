@@ -25,17 +25,15 @@ public class Server implements Entrance,ControllerServer{
         @Override
         public ArrayList<String> alreadyChosenCharacters(){ return controller.alreadyChosenCharacters(); }
         @Override
-        public boolean userLogin(String nickname, String character, int playerRef){
+        public boolean userLogin(String nickname, String character){
             String[] characters = new String[]{"WIZARD","KING","WITCH","SAMURAI"};
             boolean checker = false;
 
-            for(int i = 0; i < playerRef; i++)
-                if(controller.userLoginNickname(nickname,i)) return false;
+            if(!controller.userLoginNickname(nickname)) return false;
             for(int i = 0; i < 4 && !checker; i++)
                 if(character.equals(characters[i])) checker = true;
             if(!checker) return false;
-            for (int i = 0; i < playerRef; i++)
-                if(controller.userLoginCharacter(character,i)) return false;
+            if(!controller.userLoginCharacter(character)) return false;
             controller.addNewPlayer(nickname,character);
 
             return true;

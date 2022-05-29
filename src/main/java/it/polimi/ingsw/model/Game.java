@@ -30,7 +30,6 @@ public class Game implements GameManager{
         indexSpecial = 0;
         refSpecial = -1;
 
-
         Round round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         roundStrategies.add(round);
 
@@ -41,6 +40,13 @@ public class Game implements GameManager{
             Collections.shuffle(random); //mischio i numeri
             for(int i=0; i<3; i++) roundStrategies.add(roundStrategyFactor.getRoundStrategy(random.get(i))); //aggiungo lo special estratto
         }
+    }
+
+    @Override
+    public void initializeGame(){
+        bag.bagInitialize();
+        playerManager.initializeSchool();
+        islandsManager.islandsInitialize();
     }
 
     @Override

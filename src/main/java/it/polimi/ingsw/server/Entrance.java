@@ -8,7 +8,7 @@ public interface Entrance {
     void startController(int numberOfPlayers, boolean expertMode);
     void startGame();
     ArrayList<String> alreadyChosenCharacters();
-    boolean userLogin(String nickname, String character, int playerRef);
+    boolean userLogin(String nickname, String character);
 
     boolean userPlayCard(int playerRef, String assistant);
 

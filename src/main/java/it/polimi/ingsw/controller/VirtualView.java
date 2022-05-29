@@ -40,17 +40,28 @@ public class VirtualView
             this.islands.add(new Island());
     }
 
-    public String getLastPlayedCard(int playerRef){ return hands.get(playerRef).lastPlayedCard; }
-    public String getNickname(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
     public ArrayList<String> getAlreadyChosenCharacters(){
         ArrayList<String> chosenCharacters = new ArrayList<>();
 
         for(SchoolBoard player:schoolBoards)
-            chosenCharacters.add(player.nickname);
+            chosenCharacters.add(player.character);
 
         return chosenCharacters;
     }
+    public boolean checkNewNickname(String newNickname){
+        for(SchoolBoard player:schoolBoards)
+            if(player.nickname.equals(newNickname)) return false;
+        return true;
+    }
+    public boolean checkNewCharacter(String newCharacter){
+        for(SchoolBoard player:schoolBoards)
+            if(player.character.equals(newCharacter)) return false;
+        return true;
+    }
+
     public String getCharacter(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
+    public String getLastPlayedCard(int playerRef){ return hands.get(playerRef).lastPlayedCard; }
+    public String getNickname(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
     public void addNewPlayer(String nickname, String character){
         int player;
         schoolBoards.add(new SchoolBoard(nickname,character));

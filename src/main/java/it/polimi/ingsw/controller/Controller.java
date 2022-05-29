@@ -19,7 +19,6 @@ public class Controller implements ServerController{
     private String winner;
     private String fileName;
 
-
     public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server){
         this.expertMode = isExpert;
         this.numberOfPlayers = numberOfPlayers;
@@ -27,8 +26,6 @@ public class Controller implements ServerController{
         this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers);
         this.winner = "NONE";
         this.fileName = "";
-
-
     }
 
     @Override
@@ -43,16 +40,16 @@ public class Controller implements ServerController{
         gameManager.setMotherPositionListener(virtualView);
         gameManager.setIslandListener(virtualView);
         gameManager.setInhibitedListener(virtualView);
-        //in questo punto andra' initializeGame
+        gameManager.initializeGame();
         roundController.start();
     }
 
     @Override
-    public boolean userLoginNickname(String nickname, int playerRef){ return nickname.equals(virtualView.getNickname(playerRef)); }
-    @Override
     public ArrayList<String> alreadyChosenCharacters(){ return virtualView.getAlreadyChosenCharacters(); }
     @Override
-    public boolean userLoginCharacter(String character, int playerRef){ return character.equals(virtualView.getCharacter(playerRef)); }
+    public boolean userLoginNickname(String nickname){ return virtualView.checkNewNickname(nickname); }
+    @Override
+    public boolean userLoginCharacter(String character){ return virtualView.checkNewCharacter(character); }
     @Override
     public void addNewPlayer(String nickname, String character){ virtualView.addNewPlayer(nickname,character); }
 
@@ -61,8 +58,7 @@ public class Controller implements ServerController{
 
     @Override
     public void playCard(int playerRef, String chosenAssistants) throws NotAllowedException {
-        try {
-            roundController.setEnd(gameManager.playCard(playerRef,currentUser,chosenAssistants));
+        try { roundController.setEnd(gameManager.playCard(playerRef,currentUser,chosenAssistants));
         }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
 

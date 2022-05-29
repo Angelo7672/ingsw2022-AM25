@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 import java.util.*;
 
 public class PlayerManager  {
+    private Bag bag;
     private List<Player> players;
     private int numberOfPlayer;
     private int[] professorPropriety;
@@ -17,7 +18,8 @@ public class PlayerManager  {
     protected StudentsListener studentsListener;
 
     public PlayerManager(int numberOfPlayer, Bag bag) {
-        players = new ArrayList<>();
+        this.bag = bag;
+        this.players = new ArrayList<>();
         this.numberOfPlayer = numberOfPlayer;
         this.professorPropriety = new int[]{-1,-1,-1,-1,-1};    //-1 indicates that no one owns that professor
 
@@ -43,7 +45,9 @@ public class PlayerManager  {
             Player g4 = new Player(Team.BLACK, numberOfPlayer);
             players.add(g4);
         }
+    }
 
+    public void initializeSchool(){
         if(numberOfPlayer == 2 || numberOfPlayer == 4){
             for(int j = 0; j < numberOfPlayer; j++)
                 for (int i = 0; i < 7; i++) setStudentEntrance(j,bag.extraction());

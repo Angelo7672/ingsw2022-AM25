@@ -19,8 +19,9 @@ public class Bag {
 
     private enum Colour {GREEN, RED, YELLOW, PINK, BLUE }
 
-    public Bag() {
-        this.bag = new ArrayList<>();
+    public Bag() { this.bag = new ArrayList<>(); }
+
+    public void bagInitialize(){
         for (int i = 0; i < 24; i++) bag.add(Colour.GREEN);
         for (int i = 0; i < 24; i++) bag.add(Colour.RED);
         for (int i = 0; i < 24; i++) bag.add(Colour.YELLOW);
@@ -31,8 +32,6 @@ public class Bag {
     }
 
     public int extraction(){
-        Colour tmp;
-
         if(bag.get(0).equals(Colour.GREEN)){
             this.bagListener.notifyBagExtraction(0);
             bag.remove(0);

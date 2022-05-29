@@ -26,7 +26,9 @@ public class IslandsManager {
         islands.add(i4); islands.add(i5); islands.add(i6);
         islands.add(i7); islands.add(i8); islands.add(i9);
         islands.add(i10); islands.add(i11); islands.add(i12);
+    }
 
+    public void islandsInitialize(){
         Random rand = new Random();
         motherPos = rand.nextInt(12);
         this.motherPositionListener.notifyMotherPosition(motherPos);
@@ -48,7 +50,6 @@ public class IslandsManager {
     public void incStudent(int island, int color){
         islands.get(island).incStudents(color);
         this.studentListener.notifyStudentsChange(2,island, color, getStudent(island, color));
-
     }
 
     public void moveMotherNature(int steps) {
