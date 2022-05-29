@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class Controller implements ServerController{
     private int currentUser;
+    private ControllerServer server;
     private VirtualView virtualView;
     private GameManager gameManager;
     private RoundController roundController;
@@ -22,6 +23,7 @@ public class Controller implements ServerController{
     public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server){
         this.expertMode = isExpert;
         this.numberOfPlayers = numberOfPlayers;
+        this.server = server;
         this.virtualView = new VirtualView(numberOfPlayers, server);
         this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers);
         this.winner = "NONE";
@@ -30,6 +32,10 @@ public class Controller implements ServerController{
 
     @Override
     public void startGame(){
+        for(int i = 0; i < numberOfPlayers; i++)
+            server.sendGameInfo(numberOfPlayers, expertMode);
+        for(int i = 0; i < numberOfPlayers; i++)
+            server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
         this.gameManager = new Game(expertMode, numberOfPlayers);
         gameManager.setStudentsListener(virtualView);
         gameManager.setTowerListener(virtualView);

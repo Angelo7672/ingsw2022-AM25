@@ -72,14 +72,13 @@ public class VirtualClient implements Runnable{
         boolean first = true;
 
         try {
-            //this.socket.setSoTimeout(15000);    //come faccio a notificare lo spegnimento del socket?
+            this.socket.setSoTimeout(15000);
             while (!victory || !connectionExpired){
                 tmp = (Message) input.readObject();
 
                 if (tmp instanceof PingMessage) {
-                    /*this.socket.setSoTimeout(15000);    //reset timeout
+                    this.socket.setSoTimeout(15000);    //reset timeout
                     send(new PongAnswer());
-                     */
 
                 } else if(oneCardAtaTime) { //Planning Phase msg
                     oneCardAtaTime = false;
@@ -167,7 +166,9 @@ public class VirtualClient implements Runnable{
             output.flush();
         }catch (IOException e){ clientConnectionExpired(e); }
     }
-
+    
+    public void sendGameInfo(int numberOfPlayers, boolean expertMode){ send(new InfoGameAnswer(numberOfPlayers,expertMode)); }
+    public void sendUserInfo(int playerRef, String nickname, String character){ send(new UserInfoAnswer(playerRef,nickname,character)); }
     public void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue){ send(new SchoolStudentMessage(color,place,componentRef,newStudentsValue)); }
     public void studentChangeOnIsland(int islandRef, int color, int newStudentsValue){ send(new IslandStudentMessage(islandRef,color,newStudentsValue)); }
     public void studentChangeOnCloud(int cloudRef, int color, int newStudentsValue){ send(new CloudStudentMessage(cloudRef,color,newStudentsValue)); }
@@ -294,7 +295,7 @@ public class VirtualClient implements Runnable{
             GenericMessage msg = (GenericMessage) setupMsg;
 
             try {
-                if (!msg.getMessage().equals("Ready for play card")) {
+                if (!msg.getMessage().equals("Ready for Planning Phase")) {
                     send(new GenericAnswer("error"));
                     synchronized (errorLocker) {
                         clientInitialization = true;
@@ -302,7 +303,7 @@ public class VirtualClient implements Runnable{
                         errorLocker.wait();
                         readyStart();
                     }
-                }
+                }else proxy.thisClientIsReady();
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
@@ -353,7 +354,7 @@ public class VirtualClient implements Runnable{
         private void readyForAction(){
             GenericMessage readyMsg = (GenericMessage) planningMsg;
 
-            if (!readyMsg.getMessage().equals("Ready for action phase")){
+            if (!readyMsg.getMessage().equals("Ready for Action Phase")){
                 try {
                     output.writeObject(new GenericAnswer("error"));
                     output.flush();

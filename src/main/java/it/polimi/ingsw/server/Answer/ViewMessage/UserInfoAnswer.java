@@ -2,21 +2,24 @@ package it.polimi.ingsw.server.Answer.ViewMessage;
 
 import it.polimi.ingsw.server.Answer.Answer;
 
-public class NicknameMessage implements Answer {
+public class UserInfoAnswer implements Answer {
     private final int playerRef;
     private final String nickname;
+    private final String character;
 
-    public NicknameMessage(int playerRef, String nickname) {
+    public UserInfoAnswer(int playerRef, String nickname, String character){
         this.playerRef = playerRef;
         this.nickname = nickname;
+        this.character = character;
     }
 
     @Override
     public String getMessage() {
-        return nickname;
+        return null;
     }
-
     public int getPlayerRef() {
         return playerRef;
     }
+    public String getNickname() { return nickname; }
+    public String getCharacter() { return character; }
 }

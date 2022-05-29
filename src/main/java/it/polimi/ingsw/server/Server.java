@@ -22,6 +22,7 @@ public class Server implements Entrance,ControllerServer{
         @Override
         public void startGame(){ controller.startGame(); }
 
+
         @Override
         public ArrayList<String> alreadyChosenCharacters(){ return controller.alreadyChosenCharacters(); }
         @Override
@@ -90,6 +91,10 @@ public class Server implements Entrance,ControllerServer{
         @Override
         public void resumeTurn(){ controller.resumeTurn(); }
 
+        @Override
+        public void sendGameInfo(int numberOfPlayers, boolean expertMode){ proxy.sendGameInfo(numberOfPlayers, expertMode); }
+        @Override
+        public void sendUserInfo(int playerRef, String nickname, String character){ proxy.sendUserInfo(playerRef, nickname, character);}
         @Override
         public void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue){ proxy.studentsChangeInSchool(color, place, componentRef, newStudentsValue); }
         @Override

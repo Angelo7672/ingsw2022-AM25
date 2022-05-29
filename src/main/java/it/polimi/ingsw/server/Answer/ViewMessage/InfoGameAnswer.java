@@ -1,10 +1,12 @@
-package it.polimi.ingsw.server.Answer;
+package it.polimi.ingsw.server.Answer.ViewMessage;
 
-public class StartGameMessage implements Answer{
+import it.polimi.ingsw.server.Answer.Answer;
+
+public class InfoGameAnswer implements Answer {
     private final int numberOfPlayers;
     private final boolean isExpertMode;
 
-    public StartGameMessage(int numberOfPlayers, boolean isExpertMode) {
+    public InfoGameAnswer(int numberOfPlayers, boolean isExpertMode) {
         this.numberOfPlayers = numberOfPlayers;
         this.isExpertMode = isExpertMode;
     }
@@ -13,11 +15,9 @@ public class StartGameMessage implements Answer{
     public String getMessage() {
         return null;
     }
-
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }
-
     public boolean isExpertMode() {
         return isExpertMode;
     }

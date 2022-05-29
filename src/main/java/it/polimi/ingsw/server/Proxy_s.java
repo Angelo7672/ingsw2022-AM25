@@ -19,7 +19,7 @@ public class Proxy_s implements Exit {
     private List<VirtualClient> user;
     private final ExecutorService executor;
     private int limiter;
-    private boolean stop;
+    private int clientReady;
     private boolean first;
 
     public Proxy_s(int port,Entrance server) {
@@ -34,7 +34,7 @@ public class Proxy_s implements Exit {
         this.user = new ArrayList<>();
         this.executor = Executors.newCachedThreadPool(); //Create threads when needed, but re-use existing ones as much as possible
         this.limiter = 0;
-        this.stop = false;
+        this.clientReady = 0;
         this.first = true;
     }
 
@@ -72,10 +72,10 @@ public class Proxy_s implements Exit {
             }*/
             for(int i = 1; i < connectionsAllowed; i++)
                 executor.submit(user.get(i));
-            System.out.println("ciao");
 
             soldOut.start();
 
+            synchronized (this){ this.wait(); }
             server.startGame();
 
         } catch (IOException e) {
@@ -94,6 +94,16 @@ public class Proxy_s implements Exit {
     @Override
     public void unlockActionPhase(int ref){ user.get(ref).unlockActionPhase(); }
 
+    @Override
+    public void sendGameInfo(int numberOfPlayers, boolean expertMode){
+        for (VirtualClient client:user)
+            client.sendGameInfo(numberOfPlayers, expertMode);
+    }
+    @Override
+    public void sendUserInfo(int playerRef, String nickname, String character){
+        for (VirtualClient client:user)
+            client.sendUserInfo(playerRef,nickname, character);
+    }
     @Override
     public void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue){
         for (VirtualClient client:user)
@@ -166,6 +176,10 @@ public class Proxy_s implements Exit {
         boolean tmp = first;
         first = false;
         return tmp;
+    }
+    public void thisClientIsReady(){
+        clientReady++;
+        if(clientReady == connectionsAllowed) synchronized (this){ this.notify(); }
     }
     public int getConnectionsAllowed() { return connectionsAllowed; }
     public void setConnectionsAllowed(int connectionsAllowed) { this.connectionsAllowed = connectionsAllowed; }

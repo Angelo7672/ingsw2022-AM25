@@ -7,6 +7,8 @@ public interface Exit {
     void startActionPhase(int ref);
     void unlockActionPhase(int ref);
 
+    void sendGameInfo(int numberOfPlayers, boolean expertMode);
+    void sendUserInfo(int playerRef, String nickname, String character);
     void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue);
     void studentChangeOnIsland(int islandRef, int color, int newStudentsValue);
     void studentChangeOnCloud(int cloudRef, int color, int newStudentsValue);
