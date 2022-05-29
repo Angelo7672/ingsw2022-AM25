@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.GUI.GUI;
+import it.polimi.ingsw.client.GUI.GUIManager;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -28,7 +28,7 @@ public class Client {
             cli.run();
         }
         else if (graph.equalsIgnoreCase("GUI")) {
-            GUI.main(args);
+            GUIManager gui = new GUIManager(socket, args);
         }
     }
 }

@@ -40,6 +40,8 @@ public class Controller implements ServerController{
         gameManager.setMotherPositionListener(virtualView);
         gameManager.setIslandListener(virtualView);
         gameManager.setInhibitedListener(virtualView);
+        gameManager.setBagListener(virtualView);
+        gameManager.setQueueListener(virtualView);
         gameManager.initializeGame();
         roundController.start();
     }

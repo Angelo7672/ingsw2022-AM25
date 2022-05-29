@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -8,33 +7,52 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600" prefWidth="500" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.LoginSceneController">
+<AnchorPane fx:id="loginScene" prefHeight="600" prefWidth="500" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.LoginSceneController">
    <children>
-      <TextField layoutX="53.0" layoutY="170.0" prefHeight="26.0" prefWidth="215.0" />
-      <Label layoutX="53.0" layoutY="144.0" text="Insert your nickname" />
-      <Accordion layoutX="37.0" layoutY="31.0" />
-      <Label layoutX="142.0" layoutY="225.0" textFill="#d1611c" />
-      <Label layoutX="53.0" layoutY="207.0" text="This nickname is already in use" textFill="#c7571a" />
-      <Button layoutX="219.0" layoutY="494.0" mnemonicParsing="false" text="Next" />
-      <ImageView fitHeight="134.0" fitWidth="99.0" layoutX="53.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="275.0" fitWidth="511.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../graphics/character_wizard.png" />
+            <Image url="@../graphics/eriantys_banner2.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="134.0" fitWidth="99.0" layoutX="151.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../graphics/character_witch.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="134.0" fitWidth="99.0" layoutX="250.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../graphics/character_samurai.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="134.0" fitWidth="99.0" layoutX="345.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../graphics/character_king.png" />
-         </image>
-      </ImageView>
+      <TextField fx:id="nicknameBox" layoutX="34.0" layoutY="309.0" prefHeight="26.0" prefWidth="215.0" />
+      <Label fx:id="insertNickname" layoutX="38.0" layoutY="282.0" text="Insert your nickname" />
+      <Button fx:id="next" layoutX="219.0" layoutY="532.0" mnemonicParsing="false" onAction="#nextPressed" text="Next" />
+      <Button fx:id="wizard" layoutX="34.0" layoutY="369.0" mnemonicParsing="false" onAction="#setCharacter" prefHeight="133.0" prefWidth="71.0">
+         <graphic>
+            <ImageView fx:id="wizard_image" fitHeight="136.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/character_wizard.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="witch" layoutX="142.0" layoutY="369.0" mnemonicParsing="false" onAction="#setCharacter" prefHeight="133.0" prefWidth="71.0">
+         <graphic>
+            <ImageView fx:id="witch_image" fitHeight="136.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/character_witch.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="samurai" layoutX="251.0" layoutY="369.0" mnemonicParsing="false" onAction="#setCharacter" prefHeight="133.0" prefWidth="71.0">
+         <graphic>
+            <ImageView fx:id="samurai_image" fitHeight="136.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/character_samurai.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="king" layoutX="363.0" layoutY="369.0" mnemonicParsing="false" onAction="#setCharacter" prefHeight="133.0" prefWidth="71.0">
+         <graphic>
+            <ImageView fx:id="king_image" fitHeight="136.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/character_king.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label fx:id="insertNickname1" layoutX="34.0" layoutY="344.0" text="Choose your character" />
    </children>
 </AnchorPane>

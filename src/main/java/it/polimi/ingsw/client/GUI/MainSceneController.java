@@ -18,8 +18,7 @@ public class MainSceneController {
     private ArrayList<Label> islands;
     private ArrayList<Label> schoolBoards;
 
-    public MainSceneController(GUI gui){
-        this.gui=gui;
+    public MainSceneController(){
     }
 
 }

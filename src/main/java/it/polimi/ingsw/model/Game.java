@@ -167,4 +167,13 @@ public class Game implements GameManager{
     public void setMotherPositionListener(MotherPositionListener listener){ islandsManager.motherPositionListener = listener;}
     @Override
     public void setInhibitedListener(InhibitedListener listener){ islandsManager.inhibitedListener = listener; }
+
+    @Override
+    public void setBagListener(BagListener listener) {
+        bag.bagListener=listener;
+    }
+    @Override
+    public void setQueueListener(QueueListener listener) {
+        queueManager.queueListener=listener;
+    }
 }

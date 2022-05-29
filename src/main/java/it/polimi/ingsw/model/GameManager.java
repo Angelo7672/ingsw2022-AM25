@@ -34,4 +34,6 @@ public interface GameManager {
     void setIslandListener(IslandListener listener);
     void setMotherPositionListener(MotherPositionListener listener);
     void setInhibitedListener(InhibitedListener listener);
+    void setBagListener(BagListener listener);
+    void setQueueListener(QueueListener listener);
 }
