@@ -2,11 +2,11 @@ package it.polimi.ingsw.server.Answer.ViewMessage;
 
 import it.polimi.ingsw.server.Answer.Answer;
 
-public class InfoGameAnswer implements Answer {
+public class GameInfoAnswer implements Answer {
     private final int numberOfPlayers;
     private final boolean isExpertMode;
 
-    public InfoGameAnswer(int numberOfPlayers, boolean isExpertMode) {
+    public GameInfoAnswer(int numberOfPlayers, boolean isExpertMode) {
         this.numberOfPlayers = numberOfPlayers;
         this.isExpertMode = isExpertMode;
     }

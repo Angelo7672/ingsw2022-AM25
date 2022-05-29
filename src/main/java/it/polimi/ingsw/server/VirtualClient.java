@@ -167,7 +167,7 @@ public class VirtualClient implements Runnable{
         }catch (IOException e){ clientConnectionExpired(e); }
     }
     
-    public void sendGameInfo(int numberOfPlayers, boolean expertMode){ send(new InfoGameAnswer(numberOfPlayers,expertMode)); }
+    public void sendGameInfo(int numberOfPlayers, boolean expertMode){ send(new GameInfoAnswer(numberOfPlayers,expertMode)); }
     public void sendUserInfo(int playerRef, String nickname, String character){ send(new UserInfoAnswer(playerRef,nickname,character)); }
     public void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue){ send(new SchoolStudentMessage(color,place,componentRef,newStudentsValue)); }
     public void studentChangeOnIsland(int islandRef, int color, int newStudentsValue){ send(new IslandStudentMessage(islandRef,color,newStudentsValue)); }
