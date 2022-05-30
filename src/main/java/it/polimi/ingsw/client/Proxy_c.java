@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 
 
@@ -47,10 +46,6 @@ public class Proxy_c implements Entrance{
         send(new GenericMessage("Ready to start"));
         tempObj = receive();
         return view;
-    }
-
-    private void view(GameInfoAnswer msg){
-        view = new View(msg.getNumberOfPlayers(), msg.isExpertMode());
     }
 
     public boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
@@ -208,35 +203,35 @@ public class Proxy_c implements Entrance{
                 cli.cli();
             }
             else if(tmp instanceof GameInfoAnswer) {
-                view((GameInfoAnswer)tmp);
-                cli.cli();
+                view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(),((GameInfoAnswer) tmp).isExpertMode());
                 return null;
             }
             else if(tmp instanceof PongAnswer){
                 socket.setSoTimeout(15000);
-                startPing();
             }
             else break;
         }
         return tmp;
     }
 
-    public void startPing() {
+    private void startPing() {
         ping = new Thread(() -> {
+        while (true) {
             try {
                 Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            try {
                 send(new PingMessage());
             } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                Thread.currentThread().interrupt();
+                System.err.println("io");
+            } catch (InterruptedException e){
+
             }
+        }
         });
         ping.start();
+    }
+
+    private void stopPing(){
+        ping.interrupt();
     }
 
 }

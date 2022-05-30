@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class CLI implements Runnable, Exit {
 
-    private Entrance proxy;
+    private final Entrance proxy;
     private final Scanner scanner;
     private boolean active;
     private final PlayerConstants constants;
@@ -74,12 +74,12 @@ public class CLI implements Runnable, Exit {
                 if (proxy.setupGame(numberOfPlayers, expertMode)) break;
                 else System.out.println("Error, try again");
             } catch (InputMismatchException e) {
-                System.out.println("Mismatch error");
+                System.err.println("Mismatch error");
                 setupGame();
             } catch (IOException e) {
-                System.out.println("io");
+                System.err.println("io");
             } catch (ClassNotFoundException e) {
-                System.out.println("class error");
+                System.err.println("class error");
             }
         }
     }
@@ -212,12 +212,12 @@ public class CLI implements Runnable, Exit {
     }
 
     public void playCard() throws IOException, ClassNotFoundException {
-        System.out.println("Which card do you want to play? Insert the card number");
+        System.out.println("Which card do you want to play?");
         String card;
         try {
             card = scanner.next();
         } catch (InputMismatchException e) {
-            System.out.println("Error, try again");
+            System.err.println("Error, try again");
             return;
         }
         if (proxy.playCard(card)) constants.setCardPlayed(true);
@@ -244,7 +244,7 @@ public class CLI implements Runnable, Exit {
                 if (accepted.equals("transfer complete")) finished = true;
                 System.out.println(accepted);
             } catch (InputMismatchException | IOException | ClassNotFoundException e) {
-                System.out.println("Error, try again");
+                System.err.println("Error, try again");
             }
         } while (!finished);
         constants.setStudentMoved(true);
@@ -258,7 +258,7 @@ public class CLI implements Runnable, Exit {
                 steps = scanner.nextInt();
             } while (steps <= 0);
         }catch (InputMismatchException e){
-            System.out.println("error, try again");
+            System.err.println("error, try again");
             return;
         }
         if (proxy.moveMotherNature(steps)) constants.setMotherMoved(true);
@@ -273,7 +273,7 @@ public class CLI implements Runnable, Exit {
                 cloud = scanner.nextInt();
             } while (cloud == -1);
         }catch (InputMismatchException e){
-            System.out.println("error, try again");
+            System.err.println("error, try again");
             return;
         }
         if (proxy.chooseCloud(cloud)) constants.setCloudChosen(true);
@@ -284,25 +284,16 @@ public class CLI implements Runnable, Exit {
     public void run() {
         try {
             setup();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        while (active) {
-            try {
+            while (active) {
                 if (proxy.startPlanningPhase()) constants.resetAll();
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
-            }
-            while (!constants.isEndTurn()) {
-                try {
+                while (!constants.isEndTurn()) {
                     turn();
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
                 }
             }
+        } catch (IOException | ClassNotFoundException e) {
+        System.err.println("io / class in run");
         }
         scanner.close();
-
     }
 
     private int translateColor(String color) {
@@ -318,13 +309,6 @@ public class CLI implements Runnable, Exit {
 
     @Override
     public void cli(){
-        /*try {
-            view = proxy.startView(); //ritorna view
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }*/
         System.out.print('\f');
         System.out.println("ISLANDS");
         for (int i = 0; i < view.getIslandSize(); i++) {
