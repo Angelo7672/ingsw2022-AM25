@@ -290,7 +290,6 @@ public class VirtualClient implements Runnable{
             GenericMessage msg = (GenericMessage) setupMsg;
 
             try {
-                System.out.println(msg.getMessage());
                 if (!msg.getMessage().equals("Ready to start")) {
                     send(new GenericAnswer("error"));
                     synchronized (errorLocker) {

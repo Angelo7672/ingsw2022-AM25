@@ -22,7 +22,6 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public void startGame(){ controller.startGame(); }
 
-
     @Override
     public ArrayList<String> alreadyChosenCharacters(){ return controller.alreadyChosenCharacters(); }
     @Override

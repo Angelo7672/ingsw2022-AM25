@@ -31,8 +31,7 @@ public class Controller implements ServerController{
 
     @Override
     public void startGame(){
-        for(int i = 0; i < numberOfPlayers; i++)
-            server.sendGameInfo(numberOfPlayers, expertMode);
+        server.sendGameInfo(numberOfPlayers, expertMode);   //at every client
         for(int i = 0; i < numberOfPlayers; i++)
             server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
         this.gameManager = new Game(expertMode, numberOfPlayers);
