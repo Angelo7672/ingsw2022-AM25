@@ -281,7 +281,8 @@ public class VirtualClient implements Runnable{
                         readyStart();
                     }
                 } else {
-                    send(new GenericAnswer("error"));
+                    //send(new GenericAnswer("error"));
+                    send(new LoginMessage(server.alreadyChosenCharacters()));
                     synchronized (errorLocker) {
                         loginInitialization = true;
                         error = true;

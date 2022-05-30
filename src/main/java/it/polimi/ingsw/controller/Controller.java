@@ -25,7 +25,6 @@ public class Controller implements ServerController{
         this.numberOfPlayers = numberOfPlayers;
         this.server = server;
         this.virtualView = new VirtualView(numberOfPlayers, server);
-        this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers);
         this.winner = "NONE";
         this.fileName = "";
     }
@@ -49,6 +48,7 @@ public class Controller implements ServerController{
         gameManager.setBagListener(virtualView);
         gameManager.setQueueListener(virtualView);
         gameManager.initializeGame();
+        this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers);
         roundController.start();
     }
 
@@ -59,7 +59,12 @@ public class Controller implements ServerController{
     @Override
     public boolean userLoginCharacter(String character){ return virtualView.checkNewCharacter(character); }
     @Override
-    public void addNewPlayer(String nickname, String character){ virtualView.addNewPlayer(nickname,character); }
+    public void addNewPlayer(String nickname, String character){
+        String nicknameLimited; //nickname limited 10 characters
+
+        nicknameLimited = nickname.substring(Math.min(nickname.length(), 10));
+        virtualView.addNewPlayer(nicknameLimited,character);
+    }
 
     //Planning Phase
     public String getLastPlayedCard(int playerRef){ return virtualView.getLastPlayedCard(playerRef); }
