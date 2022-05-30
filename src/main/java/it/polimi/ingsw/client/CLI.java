@@ -27,7 +27,7 @@ public class CLI implements Runnable, Exit {
     public void setup() throws IOException, ClassNotFoundException {
         if(proxy.first()) setupGame();
         setupConnection();
-        //view = proxy.startView();
+        view = proxy.startView();
     }
 
     public void setupConnection() throws IOException, ClassNotFoundException {
@@ -318,13 +318,13 @@ public class CLI implements Runnable, Exit {
 
     @Override
     public void cli(){
-        try {
+        /*try {
             view = proxy.startView(); //ritorna view
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
         System.out.print('\f');
         System.out.println("ISLANDS");
         for (int i = 0; i < view.getIslandSize(); i++) {

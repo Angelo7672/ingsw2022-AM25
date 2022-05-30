@@ -106,9 +106,7 @@ public class VirtualClient implements Runnable{
                         gameSetup.setSetupMsg(tmp);
                         if (first) {
                             first = false;
-                            synchronized (objGame) {
-                                objGame.notify();
-                            }
+                            synchronized (objGame) { objGame.notify(); }
                         } else if (!error) synchronized (setupLocker) { setupLocker.notify(); }
                         else {
                             error = false;
@@ -292,7 +290,8 @@ public class VirtualClient implements Runnable{
             GenericMessage msg = (GenericMessage) setupMsg;
 
             try {
-                if (!msg.getMessage().equals("Ready for Planning Phase")) {
+                System.out.println(msg.getMessage());
+                if (!msg.getMessage().equals("Ready to start")) {
                     send(new GenericAnswer("error"));
                     synchronized (errorLocker) {
                         clientInitialization = true;
@@ -300,7 +299,10 @@ public class VirtualClient implements Runnable{
                         errorLocker.wait();
                         readyStart();
                     }
-                }else proxy.thisClientIsReady();
+                }else{
+                    proxy.thisClientIsReady();
+                    oneCardAtaTime = true;  //controlla bene, questo fa ricevere il ready for play card
+                }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
@@ -316,23 +318,42 @@ public class VirtualClient implements Runnable{
                 while (!victory) {
                     synchronized (planLocker) {
                         planLocker.wait();
-                        planningPhase();
-                        oneCardAtaTime = true;
-                        planLocker.wait();  //wait ready for action phase msg
+                        readyPlanningPhase();
                         readyForAction();
                         server.resumeTurn();
                     }
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }
         }
+        private void readyPlanningPhase(){
+            GenericMessage msg = (GenericMessage) planningMsg;
 
+            try {
+                if (!msg.getMessage().equals("Ready for Planning Phase")) {
+                    send(new GenericAnswer("error"));
+                    synchronized (errorLocker) {
+                        oneCardAtaTime = true;
+                        error = true;
+                        errorLocker.wait();
+                        readyPlanningPhase();
+                    }
+                }else{
+                    synchronized (planLocker){ planLocker.wait(); }
+                    planningPhase();
+                }
+            }catch (InterruptedException ex) { ex.printStackTrace(); }
+        }
         private void planningPhase() {
             CardMessage cardMessage = (CardMessage) planningMsg;
             boolean checker;
 
             try {
                 checker = server.userPlayCard(playerRef, cardMessage.getCard());
-                if(checker) send(new GenericAnswer("ok"));
+                if(checker){
+                    send(new GenericAnswer("ok"));
+                    oneCardAtaTime = true;
+                    synchronized (planLocker){ planLocker.wait(); }  //wait ready for action phase msg
+                }
                 else{
                     send(new MoveNotAllowedAnswer());
                     synchronized (errorLocker) {
