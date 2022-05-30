@@ -59,12 +59,7 @@ public class Controller implements ServerController{
     @Override
     public boolean userLoginCharacter(String character){ return virtualView.checkNewCharacter(character); }
     @Override
-    public void addNewPlayer(String nickname, String character){
-        String nicknameLimited; //nickname limited 10 characters
-
-        nicknameLimited = nickname.substring(Math.min(nickname.length(), 10));
-        virtualView.addNewPlayer(nicknameLimited,character);
-    }
+    public void addNewPlayer(String nickname, String character){ virtualView.addNewPlayer(nickname,character); }
 
     //Planning Phase
     public String getLastPlayedCard(int playerRef){ return virtualView.getLastPlayedCard(playerRef); }

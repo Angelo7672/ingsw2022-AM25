@@ -89,18 +89,16 @@ public class VirtualClient implements Runnable{
                             error = false;
                             synchronized(errorLocker){ errorLocker.notify(); }
                         }
-                    } // ne va fatto uno per ready action phase
+                    }
 
-                } else if(readyActionPhase){    //Action Phase msg
+                } else if(readyActionPhase) {    //Action Phase msg
                     readyActionPhase = false;
-                    if (tmp instanceof MoveStudent || tmp instanceof UseSpecial) {  //da sistemare
-                        roundPartTwo.setActionMsg(tmp);
-                        if(!error) synchronized(actionLocker){ actionLocker.notify(); }
-                        else {
-                            error = false;
-                            synchronized(errorLocker){ errorLocker.notify(); }
-                        }
-                    } // ne va fatto uno per mother nature, per choose cloud, ready play card
+                    roundPartTwo.setActionMsg(tmp);
+                    if (!error) synchronized (actionLocker) { actionLocker.notify(); }
+                    else {
+                        error = false;
+                        synchronized (errorLocker) { errorLocker.notify(); }
+                    }
 
                 } else if (clientInitialization) {  //login msg
                     clientInitialization = false;
@@ -182,8 +180,6 @@ public class VirtualClient implements Runnable{
     public void towerChangeColorOnIsland(int islandRef, int newColor){ send(new IslandTowersColorMessage(islandRef,newColor)); }
     public void islandInhibited(int islandRef, int isInhibited){ send(new InhibitedIslandMessage(islandRef,isInhibited)); }
     public void setSpecial(int specialRef){ send(new SetSpecialAnswer(specialRef)); }
-
-
 
     private class GameSetup extends Thread{
         Message setupMsg;
@@ -336,12 +332,9 @@ public class VirtualClient implements Runnable{
 
             try {
                 checker = server.userPlayCard(playerRef, cardMessage.getCard());
-                if(checker) {
-                    output.writeObject(new GenericAnswer("ok"));
-                    output.flush();
-                }else{
-                    output.writeObject(new MoveNotAllowedAnswer());
-                    output.flush();
+                if(checker) send(new GenericAnswer("ok"));
+                else{
+                    send(new MoveNotAllowedAnswer());
                     synchronized (errorLocker) {
                         oneCardAtaTime = true;
                         error = true;
@@ -349,25 +342,22 @@ public class VirtualClient implements Runnable{
                         planningPhase();
                     }
                 }
-            }catch (IOException e) { clientConnectionExpired(e);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void readyForAction(){
             GenericMessage readyMsg = (GenericMessage) planningMsg;
 
-            if (!readyMsg.getMessage().equals("Ready for Action Phase")){
-                try {
-                    output.writeObject(new GenericAnswer("error"));
-                    output.flush();
+            try {
+                if (!readyMsg.getMessage().equals("Ready for Action Phase")) {
+                    send(new GenericAnswer("error"));
                     synchronized (errorLocker) {
                         oneCardAtaTime = true;
                         error = true;
                         errorLocker.wait();
                         readyForAction();
                     }
-                }catch (IOException e) { clientConnectionExpired(e);
-                }catch (InterruptedException ex) { ex.printStackTrace(); }
-            }
+                }
+            }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
         public void setPlanningMsg(Message msg) { this.planningMsg = msg; }
@@ -407,38 +397,17 @@ public class VirtualClient implements Runnable{
         private void actionPhase() {
             if(studentLocker) {
                 studentLocker = false;
-                if (actionMsg instanceof MoveStudent) {
-                    if (numberOfPlayer == 2 || numberOfPlayer == 4) {
-                        if (studentCounter < 3) {
-                            moveStudent();
-                            if (studentCounter == 3) {
-                                send(new GenericAnswer("transfer complete"));
-                                studentLocker = false;
-                                motherLocker = true;
-                            }
-                        }
-                    } else if (numberOfPlayer == 3) {
-                        if (studentCounter < 4) {
-                            moveStudent();
-                            if (studentCounter == 3) {
-                                send(new GenericAnswer("transfer complete"));
-                                studentLocker = false;
-                                motherLocker = true;
-                            }
-                        }
-                    }
-                }
+                if (actionMsg instanceof MoveStudent) moveStudent();
+                else send(new GenericAnswer("error"));
+            } else if(motherLocker) {
+                motherLocker = false;
+                if (actionMsg instanceof MoveMotherNature) moveMotherNature();
+                else send(new GenericAnswer("error"));
+            } else if(cloudLocker) {
+                cloudLocker = false;
+                if (actionMsg instanceof ChosenCloud) chooseCloud();
+                else send(new GenericAnswer("error"));
             }
-
-                if(motherLocker) {
-                    motherLocker = false;
-                    if (actionMsg instanceof MoveMotherNature) moveMotherNature();
-                }
-
-                if(cloudLocker) {
-                    cloudLocker = false;
-                    if (actionMsg instanceof ChosenCloud) chooseCloud();
-                }
         }
 
         private void moveStudent(){
@@ -448,10 +417,34 @@ public class VirtualClient implements Runnable{
             checker = server.userMoveStudent(playerRef, studentMovement.getColor(), studentMovement.isInSchool(), studentMovement.getIslandRef());
             try {
                 if (checker) {
-                    send(new GenericAnswer("ok"));
                     studentCounter++;
-                    studentLocker = true;
-                    actionPhase();
+                    if (numberOfPlayer == 2 || numberOfPlayer == 4) {
+                        if (studentCounter == 3) {
+                            studentCounter = 0;
+                            motherLocker = true;
+                            readyActionPhase = true;
+                            send(new GenericAnswer("transfer complete"));
+                            synchronized (actionLocker){ actionLocker.wait(); }
+                        }else if (studentCounter < 3) {
+                            readyActionPhase = true;
+                            send(new GenericAnswer("ok"));
+                            synchronized (actionLocker){ actionLocker.wait(); } //attenzione potrebbe arrivare lo special
+                            moveStudent();
+                        }
+                    } else if (numberOfPlayer == 3) {
+                        if (studentCounter == 3) {
+                            studentCounter = 0;
+                            motherLocker = true;
+                            readyActionPhase = true;
+                            send(new GenericAnswer("transfer complete"));
+                            synchronized (actionLocker){ actionLocker.wait(); }
+                        }else if (studentCounter < 4) {
+                            readyActionPhase = true;
+                            send(new GenericAnswer("ok"));
+                            synchronized (actionLocker){ actionLocker.wait(); } //attenzione potrebbe arrivare lo special
+                            moveStudent();
+                        }
+                    }
                 } else {
                     send(new MoveNotAllowedAnswer());
                     synchronized (errorLocker){
@@ -459,7 +452,7 @@ public class VirtualClient implements Runnable{
                         error = true;
                         errorLocker.wait();
                         studentLocker = true;
-                        actionPhase();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
+                        actionPhase();
                     }
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
@@ -471,16 +464,17 @@ public class VirtualClient implements Runnable{
             try {
                 checker = server.userMoveMotherNature(motherMovement.getDesiredMovement());
                 if (checker) {
-                    send(new GenericAnswer("ok"));
                     cloudLocker = true;
+                    readyActionPhase = true;
+                    send(new GenericAnswer("ok"));
+                    synchronized (actionLocker){ actionLocker.wait(); }
                 } else {
-                    send(new MoveNotAllowedAnswer());
+                    send(new MoveNotAllowedAnswer());   //controlla dove va a controllare motherMaxMove (special)
                     synchronized (errorLocker){
                         readyActionPhase = true;
                         error = true;
                         errorLocker.wait();
-                        motherLocker = true;
-                        moveMotherNature();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
+                        moveMotherNature();
                     }
                 }
             } catch (InterruptedException ex) { ex.printStackTrace();
@@ -496,17 +490,34 @@ public class VirtualClient implements Runnable{
             try {
                 if(checker) {
                     send(new GenericAnswer("ok"));
+                    readyActionPhase = true;
+                    synchronized (actionLocker){ actionLocker.wait(); }
+                    readyPlanningPhase();
                 } else {
                     send(new MoveNotAllowedAnswer());
                     synchronized (errorLocker){
                         readyActionPhase = true;
                         error = true;
                         errorLocker.wait();
-                        cloudLocker = true;
-                        actionPhase();  //bisogna essere sicuri che sia MoveStudent, forse serve una portineria interna
+                        chooseCloud();
                     }
                 }
             } catch (InterruptedException ex) { ex.printStackTrace(); }
+        }
+        private void readyPlanningPhase(){
+            GenericMessage readyMsg = (GenericMessage) actionMsg;
+
+            try {
+                if (!readyMsg.getMessage().equals("Ready for Planning Phase")) {
+                    send(new GenericAnswer("error"));
+                    synchronized (errorLocker) {
+                        readyActionPhase = true;
+                        error = true;
+                        errorLocker.wait();
+                        readyPlanningPhase();
+                    }
+                }
+            }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
         public void setActionMsg(Message actionMsg) { this.actionMsg = actionMsg; }

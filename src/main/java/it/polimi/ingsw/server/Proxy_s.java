@@ -102,7 +102,7 @@ public class Proxy_s implements Exit {
     @Override
     public void sendUserInfo(int playerRef, String nickname, String character){
         for (VirtualClient client:user)
-            client.sendUserInfo(playerRef,nickname, character);
+            client.sendUserInfo(playerRef, nickname, character);
     }
     @Override
     public void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue){

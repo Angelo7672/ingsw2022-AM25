@@ -12,7 +12,6 @@ public class SetupConnection implements  Message{
     public String getNickname() {
         return nickname;
     }
-
     public String getCharacter(){
         return character;
     }

@@ -46,10 +46,12 @@ public class Proxy_c implements Entrance{
     public View startView() throws IOException, ClassNotFoundException {
         send(new GenericMessage("Ready to start"));
         tempObj = receive();
+        System.out.println("Ecco dove e' il problema!");
         return view;
     }
 
     private void view(GameInfoAnswer msg){
+        System.out.println("Ormai e' troppo tardi!");
         view = new View(msg.getNumberOfPlayers(), msg.isExpertMode());
     }
 
@@ -209,6 +211,7 @@ public class Proxy_c implements Entrance{
             }
             else if(tmp instanceof GameInfoAnswer) {
                 view((GameInfoAnswer)tmp);
+                System.out.println("cane");
                 cli.cli();
                 return null;
             }
