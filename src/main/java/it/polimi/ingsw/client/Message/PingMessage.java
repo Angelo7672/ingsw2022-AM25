@@ -3,8 +3,8 @@ package it.polimi.ingsw.client.Message;
 public class PingMessage implements Message {
     private String message;
 
-    public PingMessage(String message){
-        this.message = message;
+    public PingMessage(){
+        this.message = "ping";
     }
 
     private String getMessage(){

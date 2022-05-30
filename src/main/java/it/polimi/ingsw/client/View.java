@@ -80,8 +80,10 @@ public class View {
     }
     public void setSchoolTowers(SchoolTowersMessage msg){ schoolBoards.get(msg.getPlayerRef()).setTowersNumber(msg.getTowers());}
     public void setProfessors(ProfessorMessage msg){ schoolBoards.get(msg.getPlayerRef()).setProfessors(msg.getColor(), msg.isProfessor());}
-    public void setNickname(NicknameMessage msg) { schoolBoards.get(msg.getPlayerRef()).setNickname(msg.getMessage());}
-    public void setWizard(WizardMessage msg){ schoolBoards.get(msg.getPlayerRef()).setWizard(msg.getMessage());}
+    public void setUserInfo(UserInfoAnswer msg) {
+        schoolBoards.get(msg.getPlayerRef()).setNickname(msg.getNickname());
+        schoolBoards.get(msg.getPlayerRef()).setWizard(msg.getCharacter());
+    }
 
     public void setClouds(CloudStudentMessage msg){ clouds.get(msg.getCloudRef()).setCloudStudents(msg.getColor(), msg.getNewValue()); }
 

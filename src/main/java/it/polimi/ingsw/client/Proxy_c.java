@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 
@@ -16,15 +17,17 @@ public class Proxy_c implements Entrance{
     private final ObjectOutputStream outputStream;
     private final Socket socket;
     private Answer tempObj;
-    private Thread ping;
     private final Exit cli;
     private View view;
+    private Thread ping;
 
     public Proxy_c(Socket socket, Exit cli) throws IOException {
         this.socket = socket;
         this.cli = cli;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
+        startPing();
+        socket.setSoTimeout(15000);
     }
 
     public boolean first() throws IOException, ClassNotFoundException {
@@ -46,7 +49,7 @@ public class Proxy_c implements Entrance{
         return view;
     }
 
-    private void view(StartGameMessage msg){
+    private void view(GameInfoAnswer msg){
         view = new View(msg.getNumberOfPlayers(), msg.isExpertMode());
     }
 
@@ -148,12 +151,8 @@ public class Proxy_c implements Entrance{
         Answer tmp;
         while (true) {
             tmp = (Answer) inputStream.readObject();
-            if(tmp instanceof NicknameMessage) {
-                view.setNickname((NicknameMessage)tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof WizardMessage) {
-                view.setWizard((WizardMessage)tmp);
+            if(tmp instanceof UserInfoAnswer) {
+                view.setUserInfo((UserInfoAnswer)tmp);
                 cli.cli();
             }
             else if(tmp instanceof LastCardMessage) {
@@ -208,43 +207,37 @@ public class Proxy_c implements Entrance{
                 view.removeUnifiedIsland((UnifiedIsland) tmp);
                 cli.cli();
             }
-            else if(tmp instanceof StartGameMessage) {
-                view((StartGameMessage)tmp);
+            else if(tmp instanceof GameInfoAnswer) {
+                view((GameInfoAnswer)tmp);
                 cli.cli();
                 return null;
+            }
+            else if(tmp instanceof PongAnswer){
+                socket.setSoTimeout(15000);
+                startPing();
             }
             else break;
         }
         return tmp;
     }
 
-    private void startPing(){
+    public void startPing() {
         ping = new Thread(() -> {
-
-            int counter=0;
-            while(true){
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                PingMessage message = new PingMessage("ping #"+counter);
-                try {
-                    send(message);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    Thread.currentThread().interrupt();
-                }
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+                send(new PingMessage());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                Thread.currentThread().interrupt();
             }
         });
         ping.start();
     }
-
-    private void stopPing(){
-        ping.interrupt();
-    }
-
 
 }
 
