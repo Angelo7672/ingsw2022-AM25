@@ -17,8 +17,10 @@ public class Game implements GameManager{
     private int indexSpecial;
     private int refSpecial;
     protected SpecialListener specialListener;
+    private boolean expertMode;
 
     public Game(Boolean expertMode, int numberOfPlayer){
+        this.expertMode = expertMode;
         roundStrategies = new ArrayList<>();
         this.numberOfPlayer = numberOfPlayer;
         this.bag = new Bag();
@@ -79,7 +81,7 @@ public class Game implements GameManager{
 
         victory = roundStrategies.get(indexSpecial).moveMotherNature(queueRef, desiredMovement, refSpecial);
         setSpecial(0,-1);
-        checkNoEntry(); //possiamo mettere un boolean in game per farlo attivare solo se si usa questo special nella partita
+        if(expertMode) checkNoEntry(); //possiamo mettere un boolean in game per farlo attivare solo se si usa questo special nella partita
 
         return victory;
     }
