@@ -93,7 +93,7 @@ public class Proxy_c implements Exit{
         send(new GenericMessage("Ready for Action Phase"));
         while(true) {
             tempObj = receive();
-            if(((GenericAnswer)tempObj).getMessage().equals("Start your Action Phase!")){
+            if(((StartTurn)tempObj).getMessage().equals("Start your Action Phase!")){
                 return true;
             }
         }
@@ -170,6 +170,9 @@ public class Proxy_c implements Exit{
             else if(tmp instanceof IslandTowersColorMessage) {view.setTowersColor((IslandTowersColorMessage)tmp);}
             else if(tmp instanceof InhibitedIslandMessage) {view.setInhibited((InhibitedIslandMessage)tmp);}
             else if(tmp instanceof UnifiedIsland) {view.removeUnifiedIsland((UnifiedIsland) tmp);}
+            else if(tmp instanceof SetSpecialAnswer) {
+
+            }
             else if(tmp instanceof GameInfoAnswer) {
                 view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(),((GameInfoAnswer) tmp).isExpertMode());
                 return null;

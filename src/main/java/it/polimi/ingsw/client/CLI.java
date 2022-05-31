@@ -1,10 +1,13 @@
 package it.polimi.ingsw.client;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class CLI implements Runnable {
@@ -47,7 +50,7 @@ public class CLI implements Runnable {
             } while (nickname == null);
             do {
                 System.out.println("Choose a character: "+availableCharacters.toString());
-                character = scanner.next();
+                character = scanner.next().toUpperCase(Locale.ROOT);
                 if (!availableCharacters.contains(character)) {
                     System.out.println("Error, choose an available character");
                     character=null;
@@ -389,6 +392,8 @@ public class CLI implements Runnable {
                 if(view.getNoEntry(i)!=-1) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
             }
         }
+        System.out.println();
+        System.out.println();
     }
 
     private boolean specialArray(String name){
