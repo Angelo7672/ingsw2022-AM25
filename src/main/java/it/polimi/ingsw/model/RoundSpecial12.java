@@ -13,7 +13,7 @@ public class RoundSpecial12 extends RoundStrategy{
     }
 
     @Override
-    public boolean effect(int color, ArrayList<Integer> null1, ArrayList<Integer> null2){
+    public boolean effect(int color){
         for (int i = 0; i < numberOfPlayer; i++) {
             try {
                 if (playerManager.getStudentTable(i, color) >= 3) {

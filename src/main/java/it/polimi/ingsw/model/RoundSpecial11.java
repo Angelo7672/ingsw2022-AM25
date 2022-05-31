@@ -18,12 +18,12 @@ public class RoundSpecial11 extends RoundStrategy{
     }
 
     @Override
-    public boolean effect(int playerRef, ArrayList<Integer> color1, ArrayList<Integer> null2){
-        if(special.checkStudents(color1)) {
-            try { playerManager.setStudentTable(playerRef, color1.get(0));
+    public boolean effect(int playerRef, int color){
+        if(getStudents(color)>0) {
+            try { playerManager.setStudentTable(playerRef, color);
             }catch (NotAllowedException notAllowedException){ return false; }
             int extracted = bag.extraction();
-            special.effect(color1.get(0), extracted);
+            special.effect(color, extracted);
             return true;
         }
         return false;
@@ -61,12 +61,6 @@ public class RoundSpecial11 extends RoundStrategy{
         public void effect(int chosen, int extracted) {
             students[chosen]--;
             students[extracted]++;
-        }
-
-        public boolean checkStudents(ArrayList<Integer> students){
-            for(int i=0; i<students.size(); i++)
-                if(getStudent(students.get(i))==0) return false;
-            return true;
         }
     }
 }

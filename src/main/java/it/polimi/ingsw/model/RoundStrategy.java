@@ -162,6 +162,8 @@ public abstract class RoundStrategy {
         for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef,students[i]);
     }
     public void effect(){}
+    public boolean effect(int ref){return false;}
+    public boolean effect(int ref, int color){return false;}
     public boolean effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){ return false; }
     public int getStudents(int color){return -1;}
 

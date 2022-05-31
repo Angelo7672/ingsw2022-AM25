@@ -20,7 +20,7 @@ public class Proxy_c implements Exit{
     private View view;
     private Thread ping;
 
-    public Proxy_c(Socket socket) throws IOException, SocketException {
+    public Proxy_c(Socket socket) throws IOException{
         this.socket = socket;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
@@ -28,10 +28,12 @@ public class Proxy_c implements Exit{
         socket.setSoTimeout(15000);
     }
 
-    public boolean first() throws IOException, ClassNotFoundException {
+    public String first() throws IOException, ClassNotFoundException {
         send(new GenericMessage("Ready for login!"));
         tempObj = receive();
-        return tempObj instanceof SetupGameMessage;
+        if(tempObj instanceof SoldOutAnswer) return ((SoldOutAnswer) tempObj).getMessage();
+        else if(tempObj instanceof SetupGameMessage) return "SetupGame";
+        else return "Not first";
     }
 
     public ArrayList<String> getChosenCharacters() throws IOException, ClassNotFoundException {
@@ -177,8 +179,10 @@ public class Proxy_c implements Exit{
                 view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(),((GameInfoAnswer) tmp).isExpertMode());
                 return null;
             }
-            else if(tmp instanceof PongAnswer){//socket.setSoTimeout(15000);
-                 }
+            else if(tmp instanceof PongAnswer){socket.setSoTimeout(15000);}
+            else if(tmp instanceof SoldOutAnswer){
+                System.out.println("sold out");
+            }
             else break;
         }
         return tmp;

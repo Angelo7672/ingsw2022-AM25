@@ -4,7 +4,6 @@ import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Locale;
@@ -29,7 +28,15 @@ public class CLI implements Runnable {
     }
 
     public void setup() throws IOException, ClassNotFoundException {
-        if(proxy.first()) setupGame();
+        System.out.println("Waiting for server...");
+        String result = proxy.first();
+        if(result.equals("SetupGame")) {
+            while(!setupGame()) System.out.println("Error, try again");
+        }
+        else  if (result.equals("Server Sold Out")){
+            System.out.println(result);
+            return;
+        }
         setupConnection();
         view = proxy.startView();
     }
@@ -64,7 +71,7 @@ public class CLI implements Runnable {
         }
     }
 
-    public void setupGame(){
+    public boolean setupGame(){
         while(true) {
             int numberOfPlayers;
             String expertMode;
@@ -75,11 +82,10 @@ public class CLI implements Runnable {
                 System.out.println("Expert mode? [y/n]");
                 expertMode = scanner.next();
                 }while(expertMode==null);
-                if (proxy.setupGame(numberOfPlayers, expertMode)) break;
+                if (proxy.setupGame(numberOfPlayers, expertMode)) return true;
                 else System.out.println("Error, try again");
             } catch (InputMismatchException e) {
-                System.err.println("Mismatch error");
-                setupGame();
+                return false;
             } catch (IOException e) {
                 System.err.println("io");
             } catch (ClassNotFoundException e) {
@@ -104,6 +110,7 @@ public class CLI implements Runnable {
             constants.setActionPhaseStarted(proxy.startActionPhase());
         }
         else {
+
             switch (phase) {
                 case ("MoveStudent") -> moveStudents();
                 case ("MoveMother") -> moveMotherNature();
@@ -122,6 +129,7 @@ public class CLI implements Runnable {
                 System.out.println("Which special do you want to use? Insert number");
                 special = scanner.nextInt();
             } while (special == -1);
+            special = special-1;
             if(!proxy.checkSpecial(special)) {
                 System.out.println("Error, special not present");
                 useSpecial();
@@ -147,6 +155,7 @@ public class CLI implements Runnable {
                 System.out.println("In witch island? Insert the number");
                 island = scanner.nextInt();
             } while (island == -1);
+            island = island-1;
             return proxy.useSpecial(special, island, color1, null);
         } else if (special == 3 || special == 5) {
             int island =-1;
@@ -154,6 +163,7 @@ public class CLI implements Runnable {
                 System.out.println("Which island? Insert the number");
                 island = scanner.nextInt();
             } while(island==-1);
+            island = island-1;
             return proxy.useSpecial(special, island, null, null);
         } else if(special == 7){
             ArrayList<Integer> entranceStudents = new ArrayList<>();
@@ -244,8 +254,9 @@ public class CLI implements Runnable {
                 System.out.println("Where do you want to move the student? School or Island");
                 where = scanner.next();
                 if (where.equalsIgnoreCase("island")) {
-                    System.out.println("which island? insert the number");
+                    System.out.println("Which island? insert the number");
                     islandRef = scanner.nextInt();
+                    islandRef = islandRef-1;
                 }
                 accepted = proxy.moveStudent(colorInt, where, islandRef);
                 if (accepted.equals("transfer complete")) finished = true;
@@ -261,7 +272,7 @@ public class CLI implements Runnable {
         int steps = -1;
         try {
             do {
-                System.out.println("How many steps?");
+                System.out.println("How many steps do you want to move Mother Nature?");
                 steps = scanner.nextInt();
             } while (steps <= 0);
         }catch (InputMismatchException e){
@@ -284,6 +295,7 @@ public class CLI implements Runnable {
             System.err.println("error, try again");
             return;
         }
+        cloud = cloud-1;
         String result = proxy.chooseCloud(cloud);
         if (result.equalsIgnoreCase("ok")) constants.setCloudChosen(true);
         else System.out.println(result);

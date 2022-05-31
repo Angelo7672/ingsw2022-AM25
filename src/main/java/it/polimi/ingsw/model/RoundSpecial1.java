@@ -15,11 +15,11 @@ public class RoundSpecial1 extends RoundStrategy{
     }
 
     @Override
-    public boolean effect(int islandRef, ArrayList<Integer> color1, ArrayList<Integer> color2){
-        if(getStudents(color1.get(0))>0){
+    public boolean effect(int islandRef, int color){
+        if(getStudents(color)>0){
             int extracted = bag.extraction();
-            special.effect(color1.get(0), extracted);
-            islandsManager.incStudent(islandRef, color1.get(0));
+            special.effect(color, extracted);
+            islandsManager.incStudent(islandRef, color);
             return true;
         }
         return false;

@@ -71,9 +71,9 @@ public class Game implements GameManager{
         roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
         setSpecial(0,-1);
     }
-    //to do before moveStudent
+
     public void effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
-        roundStrategies.get(indexSpecial).effect(ref,color1, color2);
+        roundStrategies.get(indexSpecial).effect(ref, color1, color2);
     }
     @Override
     public boolean moveMotherNature(int queueRef, int desiredMovement) {
@@ -109,10 +109,12 @@ public class Game implements GameManager{
     public void useSpecial(int indexSpecial, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, ref);
-            if(findName(indexSpecial)) {
-                effect(ref, color1, color2);
-                setSpecial(0, -1);
+            switch (findName(indexSpecial)) {
+                case(1): roundStrategies.get(indexSpecial).effect(ref);
+                case(2): roundStrategies.get(indexSpecial).effect(ref, color1.get(0));
+                case(3): roundStrategies.get(indexSpecial).effect(ref, color1, color2); break;
             }
+            setSpecial(0, -1);
         }
     }
     public Boolean affordSpecial(int indexSpecial, int playerRef){
@@ -124,19 +126,19 @@ public class Game implements GameManager{
         return false;
     }
     public void setSpecial(int indexSpecial, int refSpecial){
-        this.indexSpecial=indexSpecial;
+        this.indexSpecial = indexSpecial;
         this.refSpecial = refSpecial;
         this.specialListener.notifySpecial(indexSpecial);
     }
 
-    public boolean findName(int index){
-        if(roundStrategies.get(index).getName().equals("special1")) return true;
-        if(roundStrategies.get(index).getName().equals("special5")) return true;
-        if(roundStrategies.get(index).getName().equals("special7")) return true;
-        if(roundStrategies.get(index).getName().equals("special10")) return true;
-        if(roundStrategies.get(index).getName().equals("special11")) return true;
-        if(roundStrategies.get(index).getName().equals("special12")) return true;
-        return false;
+    public int findName(int index){
+        if(roundStrategies.get(index).getName().equals("special1")) return 2;
+        if(roundStrategies.get(index).getName().equals("special5")) return 1;
+        if(roundStrategies.get(index).getName().equals("special7")) return 3;
+        if(roundStrategies.get(index).getName().equals("special10")) return 3;
+        if(roundStrategies.get(index).getName().equals("special11")) return 2;
+        if(roundStrategies.get(index).getName().equals("special12")) return 1;
+        return -1;
     }
     @Override
     public void setStudentsListener(StudentsListener listener){

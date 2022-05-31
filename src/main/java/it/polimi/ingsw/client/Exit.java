@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public interface Exit {
 
-    boolean first() throws IOException, ClassNotFoundException;
+    String first() throws IOException, ClassNotFoundException;
 
     ArrayList<String> getChosenCharacters() throws IOException, ClassNotFoundException;
 

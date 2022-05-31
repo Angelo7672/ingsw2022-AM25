@@ -13,7 +13,7 @@ public class RoundSpecial5 extends RoundStrategy{
     }
 
     @Override
-    public boolean effect(int islandRef, ArrayList<Integer>null1, ArrayList<Integer> null2){
+    public boolean effect(int islandRef){
         if(special.getNoEntry()>0){
             islandsManager.increaseInhibited(islandRef);
             special.decreaseNoEntry();
