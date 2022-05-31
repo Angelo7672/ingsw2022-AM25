@@ -41,7 +41,7 @@ public class IslandsManager {
         Collections.shuffle(miniBag);
         for(int i = 0; i < 12 && !miniBag.isEmpty(); i++) {
             if (i != motherPos && i != circularArray(motherPos, 6)){
-                islands.get(i).incStudents(miniBag.get(0));
+                incStudent(i,miniBag.get(0));
                 miniBag.remove(0);
             }
         }

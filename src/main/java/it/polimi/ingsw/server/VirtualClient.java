@@ -26,6 +26,7 @@ public class VirtualClient implements Runnable{
     private Object setupLocker;
     private Object objGame ;
     private boolean oneCardAtaTime;
+    private boolean readyPlanningPhase;
     private boolean readyActionPhase;
     private boolean victory;
     private Object planLocker;
@@ -49,6 +50,7 @@ public class VirtualClient implements Runnable{
         this.gameSetup = new GameSetup();
         this.objGame = new Object();
         gameSetup.start();
+        this.readyPlanningPhase = false;
         this.oneCardAtaTime = false;
         this.readyActionPhase = false;
         this.planLocker = new Object();
@@ -79,6 +81,17 @@ public class VirtualClient implements Runnable{
                 if (tmp instanceof PingMessage) {
                     this.socket.setSoTimeout(15000);    //reset timeout
                     send(new PongAnswer());
+
+                }else if(readyPlanningPhase) { //Planning Phase msg
+                    readyPlanningPhase = false;
+                    if (tmp instanceof GenericMessage) {
+                        roundPartOne.setPlanningMsg(tmp);
+                        if (!error) synchronized(planLocker){ planLocker.notify(); }
+                        else {
+                            error = false;
+                            synchronized(errorLocker){ errorLocker.notify(); }
+                        }
+                    }
 
                 } else if(oneCardAtaTime) { //Planning Phase msg
                     oneCardAtaTime = false;
@@ -300,7 +313,7 @@ public class VirtualClient implements Runnable{
                     }
                 }else{
                     proxy.thisClientIsReady();
-                    oneCardAtaTime = true;  //controlla bene, questo fa ricevere il ready for play card
+                    readyPlanningPhase = true;  //controlla bene, questo fa ricevere il ready for play card
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }

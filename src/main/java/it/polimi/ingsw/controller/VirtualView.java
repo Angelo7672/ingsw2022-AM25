@@ -213,6 +213,13 @@ public class VirtualView
         int towersColor;
         int isInhibited;
 
+        public Island() {
+            this.studentsIsland = new int[]{0,0,0,0,0};
+            this.isMotherPosition = false;
+            this.towersNumber = 1;
+            this.towersColor = -1;
+            this.isInhibited = 0;
+        }
 
         public void setTowersNumber(int towersNumber) {
             this.towersNumber = towersNumber;
