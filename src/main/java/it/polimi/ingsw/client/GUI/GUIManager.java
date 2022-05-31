@@ -1,33 +1,34 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.client.Exit;
-import it.polimi.ingsw.client.Proxy_c;
 import javafx.fxml.FXMLLoader;
-
-import java.io.IOException;
-import java.net.Socket;
 
 //it's the class between the socket and the GUI, it manages the connection and the messages exchange
 // and istantiates the controllers
-public class GUIManager implements  Exit{
-    Socket socket = new Socket();
-    Proxy_c proxy;
+
+public class GUIManager {
+   //Socket socket = new Socket();
+    //Proxy_c proxy;
     LoginSceneController loginSceneController;
     FXMLLoader currentScene;
 
-
+/*
     public GUIManager(Socket socket, String[] args) throws IOException {
         this.socket=socket;
-        this.proxy=new Proxy_c(socket);
+        this.proxy=new Proxy_c(socket, (Exit) this);
         GUI.main(args);
-
+        gui.run();
     }
 
+    /*
     public void setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
         Boolean ok = proxy.setupConnection(nickname, character);
         System.out.println(ok);
     }
 
+    @Override
+    public void cli() {
+
+    }
     /*
     @Override
     public void setupGame() {

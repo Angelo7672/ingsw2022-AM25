@@ -17,7 +17,7 @@ public class Bag {
     private List<Colour> bag;
     protected BagListener bagListener;
 
-    private enum Colour {GREEN, RED, YELLOW, PINK, BLUE }
+    public enum Colour {GREEN, RED, YELLOW, PINK, BLUE }
 
     public Bag() { this.bag = new ArrayList<>(); }
 
@@ -29,6 +29,7 @@ public class Bag {
         for (int i = 0; i < 24; i++) bag.add(Colour.BLUE);
 
         Collections.shuffle(bag);
+        this.bagListener.notifyBag(bag);
     }
 
     public int extraction(){
@@ -69,5 +70,6 @@ public class Bag {
             else if(color==4) bag.add(Colour.BLUE);
         }
         Collections.shuffle(bag);
+        this.bagListener.notifyBag(bag);
     }
 }
