@@ -22,16 +22,16 @@ public abstract class RoundStrategy {
     }
 
     private Assistant stringToAssistant(String string){
-        if(string.equals("LION")) return Assistant.LION;
-        else if(string.equals("GOOSE")) return Assistant.GOOSE;
-        else if(string.equals("CAT")) return Assistant.CAT;
-        else if(string.equals("EAGLE")) return Assistant.EAGLE;
-        else if(string.equals("FOX")) return Assistant.FOX;
-        else if(string.equals("LIZARD")) return Assistant.LIZARD;
-        else if(string.equals("OCTOPUS")) return Assistant.OCTOPUS;
-        else if(string.equals("DOG")) return Assistant.DOG;
-        else if(string.equals("ELEPHANT")) return Assistant.ELEPHANT;
-        else if(string.equals("TURTLE")) return Assistant.TURTLE;
+        if(string.equalsIgnoreCase("LION")) return Assistant.LION;
+        else if(string.equalsIgnoreCase("GOOSE")) return Assistant.GOOSE;
+        else if(string.equalsIgnoreCase("CAT")) return Assistant.CAT;
+        else if(string.equalsIgnoreCase("EAGLE")) return Assistant.EAGLE;
+        else if(string.equalsIgnoreCase("FOX")) return Assistant.FOX;
+        else if(string.equalsIgnoreCase("LIZARD")) return Assistant.LIZARD;
+        else if(string.equalsIgnoreCase("OCTOPUS")) return Assistant.OCTOPUS;
+        else if(string.equalsIgnoreCase("DOG")) return Assistant.DOG;
+        else if(string.equalsIgnoreCase("ELEPHANT")) return Assistant.ELEPHANT;
+        else if(string.equalsIgnoreCase("TURTLE")) return Assistant.TURTLE;
         return Assistant.NONE;
     }
 

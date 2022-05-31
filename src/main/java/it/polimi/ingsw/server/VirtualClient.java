@@ -106,6 +106,7 @@ public class VirtualClient implements Runnable{
 
                 } else if(readyActionPhase) {    //Action Phase msg
                     readyActionPhase = false;
+                    System.out.println("action"+playerRef);
                     roundPartTwo.setActionMsg(tmp);
                     if (!error) synchronized (actionLocker) { actionLocker.notify(); }
                     else {
@@ -428,18 +429,37 @@ public class VirtualClient implements Runnable{
         }
 
         private void actionPhase() {
+            boolean go = true;
+
             if(studentLocker) {
                 studentLocker = false;
-                if (actionMsg instanceof MoveStudent) moveStudent();
-                else send(new GenericAnswer("error"));
-            } else if(motherLocker) {
+                while (go){
+                    if (actionMsg instanceof MoveStudent){
+                        moveStudent();
+                        go = false;
+                    }
+                    else send(new GenericAnswer("error"));
+                }
+                go = true;
+            } if(motherLocker) {
                 motherLocker = false;
-                if (actionMsg instanceof MoveMotherNature) moveMotherNature();
-                else send(new GenericAnswer("error"));
-            } else if(cloudLocker) {
+                while(go) {
+                    if (actionMsg instanceof MoveMotherNature){
+                        moveMotherNature();
+                        go = false;
+                    }
+                    else send(new GenericAnswer("error"));
+                }
+                go = true;
+            } if(cloudLocker) {
                 cloudLocker = false;
-                if (actionMsg instanceof ChosenCloud) chooseCloud();
-                else send(new GenericAnswer("error"));
+                while (go) {
+                    if (actionMsg instanceof ChosenCloud){
+                        chooseCloud();
+                        go = false;
+                    }
+                    else send(new GenericAnswer("error"));
+                }
             }
         }
 
@@ -448,6 +468,7 @@ public class VirtualClient implements Runnable{
             boolean checker;
 
             checker = server.userMoveStudent(playerRef, studentMovement.getColor(), studentMovement.isInSchool(), studentMovement.getIslandRef());
+            System.out.println("ciao"+playerRef);
             try {
                 if (checker) {
                     studentCounter++;
@@ -457,10 +478,12 @@ public class VirtualClient implements Runnable{
                             motherLocker = true;
                             readyActionPhase = true;
                             send(new GenericAnswer("transfer complete"));
+                            System.out.println("transfer complete");
                             synchronized (actionLocker){ actionLocker.wait(); }
                         }else if (studentCounter < 3) {
                             readyActionPhase = true;
                             send(new GenericAnswer("ok"));
+                            System.out.println("ok");
                             synchronized (actionLocker){ actionLocker.wait(); } //attenzione potrebbe arrivare lo special
                             moveStudent();
                         }
@@ -484,8 +507,7 @@ public class VirtualClient implements Runnable{
                         readyActionPhase = true;
                         error = true;
                         errorLocker.wait();
-                        studentLocker = true;
-                        actionPhase();
+                        moveStudent();
                     }
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }

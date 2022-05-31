@@ -86,8 +86,7 @@ public class Controller implements ServerController{
     }
     @Override
     public void chooseCloud(int playerRef, int cloudRef) throws NotAllowedException {
-        try {
-            gameManager.chooseCloud(playerRef,cloudRef);
+        try { gameManager.chooseCloud(playerRef,cloudRef);
         }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
 

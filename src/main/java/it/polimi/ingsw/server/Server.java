@@ -31,7 +31,7 @@ public class Server implements Entrance,ControllerServer{
 
         if(!controller.userLoginNickname(nickname)) return false;
         for(int i = 0; i < 4 && !checker; i++)
-            if(character.equals(characters[i])) checker = true;
+            if(character.equalsIgnoreCase(characters[i])) checker = true;
         if(!checker) return false;
         if(!controller.userLoginCharacter(character)) return false;
         controller.addNewPlayer(nickname,character);
