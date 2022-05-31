@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class CLI implements Runnable, Exit {
+public class CLI implements Runnable {
 
-    private final Entrance proxy;
+    private final Exit proxy;
     private final Scanner scanner;
     private boolean active;
     private final PlayerConstants constants;
@@ -95,6 +95,7 @@ public class CLI implements Runnable, Exit {
     }
 
     public void phaseHandler(String phase) throws IOException, ClassNotFoundException {
+        cli();
         if(phase.equals("PlayCard")) playCard();
         else if(!constants.isActionPhaseStarted()) {
             constants.setActionPhaseStarted(proxy.startActionPhase());
@@ -221,7 +222,9 @@ public class CLI implements Runnable, Exit {
             System.err.println("Error, try again");
             return;
         }
-        if (proxy.playCard(card)) constants.setCardPlayed(true);
+        String result =proxy.playCard(card);
+        if (!result.equalsIgnoreCase("ok")) System.out.println(result);
+        else constants.setCardPlayed(true);
     }
 
     public void moveStudents() {
@@ -262,8 +265,9 @@ public class CLI implements Runnable, Exit {
             System.err.println("error, try again");
             return;
         }
-        if (proxy.moveMotherNature(steps)) constants.setMotherMoved(true);
-        else System.out.println("Error, try again");
+        String result = proxy.moveMotherNature(steps);
+        if (result.equalsIgnoreCase("ok")) constants.setMotherMoved(true);
+        else System.out.println(result);
     }
 
     public void chooseCloud() throws IOException, ClassNotFoundException {
@@ -277,8 +281,9 @@ public class CLI implements Runnable, Exit {
             System.err.println("error, try again");
             return;
         }
-        if (proxy.chooseCloud(cloud)) constants.setCloudChosen(true);
-        else System.out.println("Error, try again");
+        String result = proxy.chooseCloud(cloud);
+        if (result.equalsIgnoreCase("ok")) constants.setCloudChosen(true);
+        else System.out.println(result);
     }
 
     @Override
@@ -288,7 +293,6 @@ public class CLI implements Runnable, Exit {
             while (active) {
                 if (proxy.startPlanningPhase()) constants.resetAll();
                 while (!constants.isEndTurn()) {
-                    cli();
                     turn();
                 }
             }
@@ -309,18 +313,17 @@ public class CLI implements Runnable, Exit {
         };
     }
 
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
-    String  UNDERLINE = "\u001B[4m";
-
     public void cli(){
+        String ANSI_RESET = "\u001B[0m";
+        String ANSI_BLACK = "\u001B[30m";
+        String ANSI_RED = "\u001B[31m";
+        String ANSI_GREEN = "\u001B[32m";
+        String ANSI_YELLOW = "\u001B[33m";
+        String ANSI_BLUE = "\u001B[34m";
+        String ANSI_PURPLE = "\u001B[35m";
+        String ANSI_CYAN = "\u001B[36m";
+        String ANSI_WHITE = "\u001B[37m";
+        String  UNDERLINE = "\u001B[4m";
         System.out.println(System.lineSeparator().repeat(100));
         /*System.out.print("\033[H\033[2J");
         System.out.flush();*/
@@ -346,11 +349,11 @@ public class CLI implements Runnable, Exit {
             if(view.getTeam(i).equals("BLACK")) System.out.println(ANSI_BLACK+view.getTeam(i) + "."+ANSI_RESET);
             if(view.getTeam(i).equals("GREY")) System.out.println(ANSI_WHITE+view.getTeam(i) + "."+ANSI_RESET);
 
-            System.out.println("\t"+"Entrance students:" +ANSI_GREEN + " Green " + view.getStudentsEntrance(i)[0] + ANSI_RED  + ", Red " + view.getStudentsEntrance(i)[1] +
+            System.out.println("\t"+"Entrance students:" + ANSI_GREEN + " Green " + view.getStudentsEntrance(i)[0] + ANSI_RED  + ", Red " + view.getStudentsEntrance(i)[1] +
                     ANSI_YELLOW + ", Yellow " + view.getStudentsEntrance(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsEntrance(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsEntrance(i)[4]+ANSI_RESET);
-            System.out.println("\t"+"Table students:" +ANSI_GREEN + " Green " + ANSI_RED  + ", Red " + view.getStudentsTable(i)[1] +
+            System.out.println("\t"+"Table students:" + ANSI_GREEN + " Green " + view.getStudentsTable(i)[0] + ANSI_RED  + ", Red " + view.getStudentsTable(i)[1] +
                     ANSI_YELLOW + ", Yellow " + view.getStudentsTable(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsTable(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsTable(i)[4]+ANSI_RESET);
-            System.out.println("\t"+"Professor: Green " +ANSI_GREEN+ view.getProfessors(i)[0] + ANSI_RED  + ", Red " + view.getProfessors(i)[1] +
+            System.out.println("\t"+"Professor: " + ANSI_GREEN + "Green "+ view.getProfessors(i)[0] + ANSI_RED  + ", Red " + view.getProfessors(i)[1] +
                     ANSI_YELLOW + ", Yellow " + view.getProfessors(i)[2] +ANSI_PURPLE + ", Pink " + view.getProfessors(i)[3] + ANSI_BLUE+ ", Blue " + view.getProfessors(i)[4]+ANSI_RESET);
             System.out.print("\t"+"Towers number: " + view.getSchoolTowers(i) + ".");
             if (view.getExpertMode()) System.out.print(" Coins: " + view.getCoins(i));

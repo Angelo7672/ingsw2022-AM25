@@ -11,10 +11,6 @@ public class NumberOfCardsMessage implements Answer {
         this.playerRef = playerRef;
     }
 
-    @Override
-    public String getMessage() {
-        return null;
-    }
 
     public int getNumberOfCards() {
         return numberOfCards;

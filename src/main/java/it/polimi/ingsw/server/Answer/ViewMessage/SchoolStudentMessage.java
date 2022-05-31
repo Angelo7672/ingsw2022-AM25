@@ -15,7 +15,6 @@ public class SchoolStudentMessage implements Answer {
         this.newValue = newValue;
     }
 
-    @Override
     public String getMessage() {
         return place;
     }

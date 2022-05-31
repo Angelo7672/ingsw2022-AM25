@@ -12,7 +12,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 
-public class Proxy_c implements Entrance{
+public class Proxy_c implements Exit{
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
     private final Socket socket;
@@ -50,7 +50,9 @@ public class Proxy_c implements Entrance{
     public boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
         send(new SetupConnection(nickname, character));
         tempObj = receive();
-        return tempObj.getMessage().equals("ok");
+        if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
+        else return false;
+
     }
 
     public boolean setupGame(int numberOfPlayers, String expertMode) throws IOException, ClassNotFoundException {
@@ -63,7 +65,7 @@ public class Proxy_c implements Entrance{
 
         send(new SetupGame(numberOfPlayers, isExpert));
         tempObj = receive();
-        if(!tempObj.getMessage().equals("ok")) return false;
+        if(!((GenericAnswer)tempObj).getMessage().equals("ok")) return false;
         send(new GenericMessage("Ready for login!"));
         tempObj = receive();
         return true;
@@ -73,23 +75,25 @@ public class Proxy_c implements Entrance{
         send(new GenericMessage("Ready for Planning Phase"));
         while(true) {
             tempObj = receive();
-            if(tempObj.getMessage().equals("Play card!")){
+            if(((PlayCard)tempObj).getMessage().equals("Play card!")){
                 return true;
             }
         }
     }
 
-    public boolean playCard(String card) throws IOException, ClassNotFoundException {
+    public String playCard(String card) throws IOException, ClassNotFoundException {
         send(new CardMessage(card));
         tempObj = receive();
-        return tempObj.getMessage().equals("ok");
+        if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage();
+        if(tempObj instanceof MoveNotAllowedAnswer) return ((MoveNotAllowedAnswer) tempObj).getMessage();
+        return "Error, try again";
     }
 
     public boolean startActionPhase() throws IOException, ClassNotFoundException {
         send(new GenericMessage("Ready for Action Phase"));
         while(true) {
             tempObj = receive();
-            if(tempObj.getMessage().equals("Start your Action Phase!")){
+            if(((GenericAnswer)tempObj).getMessage().equals("Start your Action Phase!")){
                 return true;
             }
         }
@@ -103,31 +107,38 @@ public class Proxy_c implements Entrance{
         else return "Error, insert school or island";
         send(new MoveStudent(color, inSchool, islandRef));
         tempObj = receive();
-        return tempObj.getMessage();
+        if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage();
+        if(tempObj instanceof MoveNotAllowedAnswer) return ((MoveNotAllowedAnswer) tempObj).getMessage();
+        return "Error, try again";
+
     }
 
-    public boolean moveMotherNature(int steps) throws IOException, ClassNotFoundException {
+    public String moveMotherNature(int steps) throws IOException, ClassNotFoundException {
         send(new MoveMotherNature(steps));
         tempObj = receive();
-        return tempObj.getMessage().equals("ok");
+        if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage();
+        if(tempObj instanceof MoveNotAllowedAnswer) return ((MoveNotAllowedAnswer) tempObj).getMessage();
+        return "Error, try again";
     }
 
-    public boolean chooseCloud(int cloud) throws IOException, ClassNotFoundException {
+    public String chooseCloud(int cloud) throws IOException, ClassNotFoundException {
         send(new ChosenCloud(cloud));
         tempObj = receive();
-        return tempObj.getMessage().equals("ok");
+        if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage();
+        if(tempObj instanceof MoveNotAllowedAnswer) return ((MoveNotAllowedAnswer) tempObj).getMessage();
+        return "Error, try again";
     }
 
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
         send(new CheckSpecial(special));
         tempObj = (SpecialMessage) receive();
-        return tempObj.getMessage().equals("ok");
+        return ((SpecialMessage)tempObj).getMessage().equals("ok");
     }
 
     public boolean useSpecial(int special, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException {
         send(new UseSpecial(special, ref, color1, color2));
         tempObj = receive();
-        return tempObj.getMessage().equals("ok");
+        return ((GenericAnswer)tempObj).getMessage().equals("ok");
     }
 
     //send message to server

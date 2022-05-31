@@ -13,10 +13,6 @@ public class ProfessorMessage implements Answer {
         this.color = color;
     }
 
-    @Override
-    public String getMessage() {
-        return null;
-    }
     public int getPlayerRef() {
         return playerRef;
     }

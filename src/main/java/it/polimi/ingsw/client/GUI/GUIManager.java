@@ -1,6 +1,11 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.client.Exit;
+import it.polimi.ingsw.client.Proxy_c;
 import javafx.fxml.FXMLLoader;
+
+import java.io.IOException;
+import java.net.Socket;
 
 //it's the class between the socket and the GUI, it manages the connection and the messages exchange
 // and istantiates the controllers
@@ -14,7 +19,7 @@ public class GUIManager {
 /*
     public GUIManager(Socket socket, String[] args) throws IOException {
         this.socket=socket;
-        this.proxy=new Proxy_c(socket, (Exit) this);
+        this.proxy=new Proxy_c(socket);
         GUI.main(args);
         gui.run();
     }
@@ -25,10 +30,7 @@ public class GUIManager {
         System.out.println(ok);
     }
 
-    @Override
-    public void cli() {
 
-    }
     /*
     @Override
     public void setupGame() {

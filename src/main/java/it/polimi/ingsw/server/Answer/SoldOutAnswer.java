@@ -5,7 +5,6 @@ public class SoldOutAnswer implements Answer{
 
     public SoldOutAnswer(){ this.message = "Server Sold Out"; }
 
-    @Override
     public String getMessage() {
         return message;
     }

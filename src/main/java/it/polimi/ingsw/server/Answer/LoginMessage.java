@@ -11,7 +11,6 @@ public class LoginMessage implements Answer{
         this.characterAlreadyChosen = characterAlreadyChosen;
     }
 
-    @Override
     public String getMessage() {
         return message;
     }

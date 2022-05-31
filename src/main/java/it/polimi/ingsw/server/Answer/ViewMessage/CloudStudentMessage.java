@@ -13,10 +13,6 @@ public class CloudStudentMessage implements Answer {
         this.newValue = newValue;
     }
 
-    @Override
-    public String getMessage() {
-        return null;
-    }
     public int getCloudRef() {
         return cloudRef;
     }

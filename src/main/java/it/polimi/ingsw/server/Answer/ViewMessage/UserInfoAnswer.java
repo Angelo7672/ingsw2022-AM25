@@ -12,11 +12,6 @@ public class UserInfoAnswer implements Answer {
         this.nickname = nickname;
         this.character = character;
     }
-
-    @Override
-    public String getMessage() {
-        return null;
-    }
     public int getPlayerRef() {
         return playerRef;
     }

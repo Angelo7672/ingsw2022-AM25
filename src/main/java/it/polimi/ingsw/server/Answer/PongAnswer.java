@@ -5,7 +5,6 @@ public class PongAnswer implements Answer{
 
     public PongAnswer(){ this.message = "pong"; }
 
-    @Override
     public String getMessage() {
         return message;
     }

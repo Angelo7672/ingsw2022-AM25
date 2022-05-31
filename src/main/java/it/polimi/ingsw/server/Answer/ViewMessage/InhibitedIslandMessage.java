@@ -10,11 +10,6 @@ public class InhibitedIslandMessage implements Answer {
         this.islandRef = islandRef;
         Inhibited = inhibited;
     }
-
-    @Override
-    public String getMessage() {
-        return null;
-    }
     public int getIslandRef() {
         return islandRef;
     }

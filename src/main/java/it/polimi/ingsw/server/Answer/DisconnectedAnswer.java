@@ -5,7 +5,6 @@ public class DisconnectedAnswer implements Answer{
 
     public DisconnectedAnswer(){ this.message = "Socket Close"; }
 
-    @Override
     public String getMessage() {
         return message;
     }

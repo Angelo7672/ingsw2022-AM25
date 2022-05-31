@@ -10,6 +10,5 @@ public class MotherPositionMessage implements Answer {
     }
 
     public int getMotherPosition() { return motherPosition; }
-    @Override
-    public String getMessage() { return null; }
+
 }

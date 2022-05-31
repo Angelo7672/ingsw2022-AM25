@@ -12,8 +12,5 @@ public class UnifiedIsland implements Answer{
     public int getUnifiedIsland() {
         return unifiedIsland;
     }
-    @Override
-    public String getMessage() {
-        return null;
-    }
+
 }

@@ -7,6 +7,5 @@ public class GenericAnswer implements Answer{
         this.message = message;
     }
 
-    @Override
     public String getMessage() { return message; }
 }

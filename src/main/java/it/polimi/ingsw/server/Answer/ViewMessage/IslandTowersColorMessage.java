@@ -17,8 +17,5 @@ public class IslandTowersColorMessage implements Answer {
     public int getIslandRef() {
         return islandRef;
     }
-    @Override
-    public String getMessage() {
-        return null;
-    }
+
 }

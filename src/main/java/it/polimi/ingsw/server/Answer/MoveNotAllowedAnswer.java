@@ -7,7 +7,6 @@ public class MoveNotAllowedAnswer implements Answer{
         this.message = "move not allowed";
     }
 
-    @Override
     public String getMessage() {
         return message;
     }

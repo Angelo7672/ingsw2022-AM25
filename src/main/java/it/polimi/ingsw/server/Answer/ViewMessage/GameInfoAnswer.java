@@ -11,10 +11,6 @@ public class GameInfoAnswer implements Answer {
         this.isExpertMode = isExpertMode;
     }
 
-    @Override
-    public String getMessage() {
-        return null;
-    }
     public int getNumberOfPlayers() {
         return numberOfPlayers;
     }

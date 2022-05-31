@@ -9,9 +9,5 @@ public class SetSpecialAnswer implements Answer{
         this.specialRef = specialRef;
     }
 
-    @Override
-    public String getMessage() {
-        return null;
-    }
     public int getSpecialRef() { return specialRef; }
 }

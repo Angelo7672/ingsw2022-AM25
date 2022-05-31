@@ -13,10 +13,6 @@ public class IslandStudentMessage implements Answer {
         this.newValue = newValue;
     }
 
-    @Override
-    public String getMessage() {
-        return null;
-    }
     public int getColor() {
         return color;
     }

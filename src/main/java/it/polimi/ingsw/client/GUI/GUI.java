@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.Socket;
 
-public class GUI extends Application implements Exit, TowersListener  {
+public class GUI extends Application implements TowersListener  {
 
     private View view;
     private Socket socket;

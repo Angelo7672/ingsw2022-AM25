@@ -7,7 +7,6 @@ public class PlayCard implements Answer{
         this.message = "Play card!";
     }
 
-    @Override
     public String getMessage() {
         return message;
     }

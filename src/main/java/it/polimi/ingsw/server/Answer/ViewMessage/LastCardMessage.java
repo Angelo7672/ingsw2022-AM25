@@ -11,10 +11,6 @@ public class LastCardMessage implements Answer {
         this.card = card;
     }
 
-    @Override
-    public String getMessage() {
-        return null;
-    }
     public String getCard() {
         return card;
     }

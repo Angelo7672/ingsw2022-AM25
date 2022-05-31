@@ -17,8 +17,4 @@ public class SchoolTowersMessage implements Answer {
     public int getTowers() {
         return towers;
     }
-    @Override
-    public String getMessage() {
-        return null;
-    }
 }

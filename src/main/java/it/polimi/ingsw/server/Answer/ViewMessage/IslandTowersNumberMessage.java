@@ -11,10 +11,6 @@ public class IslandTowersNumberMessage implements Answer {
         this.towersNumber = towersNumber;
     }
 
-    @Override
-    public String getMessage() {
-        return null;
-    }
     public int getIslandRef() {
         return islandRef;
     }

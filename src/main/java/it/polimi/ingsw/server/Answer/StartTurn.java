@@ -7,7 +7,6 @@ public class StartTurn implements Answer{
         this.message = "Start your Action Phase!";
     }
 
-    @Override
     public String getMessage() {
         return message;
     }
