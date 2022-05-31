@@ -90,7 +90,7 @@ public class CLI implements Runnable {
     }
 
     public void turn() throws IOException, ClassNotFoundException {
-        if (!constants.isSpecialUsed() && constants.isActionPhaseStarted()) useSpecial();
+        if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) useSpecial();
         phaseHandler(constants.lastPhase());
     }
 
