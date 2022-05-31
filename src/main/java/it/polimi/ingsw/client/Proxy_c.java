@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 
@@ -16,13 +17,11 @@ public class Proxy_c implements Entrance{
     private final ObjectOutputStream outputStream;
     private final Socket socket;
     private Answer tempObj;
-    private final Exit cli;
     private View view;
     private Thread ping;
 
-    public Proxy_c(Socket socket, Exit cli) throws IOException {
+    public Proxy_c(Socket socket) throws IOException, SocketException {
         this.socket = socket;
-        this.cli = cli;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
         startPing();
@@ -142,7 +141,7 @@ public class Proxy_c implements Entrance{
 
         }
     }
-    public Answer receive() throws IOException, ClassNotFoundException {
+    public Answer receive() throws IOException, ClassNotFoundException{
         Answer tmp;
         while (true) {
             tmp = (Answer) inputStream.readObject();
@@ -164,7 +163,8 @@ public class Proxy_c implements Entrance{
                 view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(),((GameInfoAnswer) tmp).isExpertMode());
                 return null;
             }
-            else if(tmp instanceof PongAnswer){socket.setSoTimeout(15000);}
+            else if(tmp instanceof PongAnswer){//socket.setSoTimeout(15000);
+                 }
             else break;
         }
         return tmp;

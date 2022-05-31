@@ -18,7 +18,7 @@ public class GUIManager implements  Exit{
 
     public GUIManager(Socket socket, String[] args) throws IOException {
         this.socket=socket;
-        this.proxy=new Proxy_c(socket, (Exit) this);
+        this.proxy=new Proxy_c(socket);
         GUI.main(args);
 
     }
@@ -28,10 +28,6 @@ public class GUIManager implements  Exit{
         System.out.println(ok);
     }
 
-    @Override
-    public void cli() {
-
-    }
     /*
     @Override
     public void setupGame() {

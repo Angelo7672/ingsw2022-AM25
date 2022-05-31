@@ -35,20 +35,19 @@ public class View {
             this.islands.add(new Island());
         }
         if(numberOfPlayers==2){
-            for(int i=0; i<numberOfPlayers; i++){
-                schoolBoards.add(new SchoolBoard(8,i));
-            }
+            schoolBoards.add(new SchoolBoard(8,"WHITE"));
+            schoolBoards.add(new SchoolBoard(8,"BLACK"));
         }
         if(numberOfPlayers==3){
-            for(int i=0; i<numberOfPlayers; i++){
-                schoolBoards.add(new SchoolBoard(6,i));
-            }
+            schoolBoards.add(new SchoolBoard(6,"WHITE"));
+            schoolBoards.add(new SchoolBoard(6,"BLACK"));
+            schoolBoards.add(new SchoolBoard(6,"GREY"));
         }
         if(numberOfPlayers==4){
-            schoolBoards.add(new SchoolBoard(8,0));
-            schoolBoards.add(new SchoolBoard(0,0));
-            schoolBoards.add(new SchoolBoard(8,1));
-            schoolBoards.add(new SchoolBoard(0,1));
+            schoolBoards.add(new SchoolBoard(8,"WHITE"));
+            schoolBoards.add(new SchoolBoard(0,"WHITE"));
+            schoolBoards.add(new SchoolBoard(8,"BLACK"));
+            schoolBoards.add(new SchoolBoard(0,"BLACK"));
         }
         cards.add(Assistant.LION); cards.add(Assistant.GOOSE); cards.add(Assistant.CAT); cards.add(Assistant.EAGLE); cards.add(Assistant.FOX);
         cards.add(Assistant.LION); cards.add(Assistant.OCTOPUS); cards.add(Assistant.DOG); cards.add(Assistant.ELEPHANT); cards.add(Assistant.TURTLE);
@@ -99,6 +98,8 @@ public class View {
     }
     public void setSpecialCost(int cost, int special){specials.get(special).setCost(cost);}
     public void setSpecialName(String name, int special){specials.get(special).setName(name);}
+    public void setSpecialStudents(int color, int newValue, int special){specials.get(special).setStudents(color, newValue);}
+    public void setNoEntry(int noEntry, int special){specials.get(special).setNoEntry(noEntry);}
 
     public void setCards(Assistant card){cards.remove(card);}
 
@@ -118,7 +119,7 @@ public class View {
     public String getWizard(int playerRef){return schoolBoards.get(playerRef).getWizard();}
     public int[] getStudentsEntrance(int playerRef){return schoolBoards.get(playerRef).getEntranceStudent();}
     public int[] getStudentsTable(int playerRef){return schoolBoards.get(playerRef).getTableStudent();}
-    public int getTeam(int playerRef){return schoolBoards.get(playerRef).getTeam();}
+    public String getTeam(int playerRef){return schoolBoards.get(playerRef).getTeam();}
     public int getSchoolTowers(int playerRef){ return schoolBoards.get(playerRef).getTowers();}
     public boolean[] getProfessors(int playerRef){ return schoolBoards.get(playerRef).getProfessors();}
 
@@ -136,18 +137,20 @@ public class View {
 
     public int getSpecialCost(int special){return specials.get(special).getCost();}
     public String getSpecialName(int special){return specials.get(special).getName();}
+    public int[]  getSpecialStudents(int special){return specials.get(special).getStudents();}
+    public int getNoEntry(int special){return specials.get(special).getNoEntry();}
 
 
     private class SchoolBoard {
         String nickname;
         String wizard;
-        int team;
+        final String team;
         int[] studentsEntrance;
         int[] studentsTable;
         int towersNumber;
         boolean[] professors;
 
-        SchoolBoard(int towersNumber, int team){
+        SchoolBoard(int towersNumber, String team){
             studentsEntrance = new int[]{0, 0, 0, 0, 0};
             studentsTable = new int[]{0, 0, 0, 0, 0};
             professors = new boolean[]{false, false, false, false, false};
@@ -192,7 +195,7 @@ public class View {
         public String getWizard(){
             return wizard;
         }
-        public int getTeam(){
+        public String getTeam(){
             return team;
         }
     }
@@ -205,6 +208,7 @@ public class View {
 
         public Island(){
             studentsIsland=new int[]{0,0,0,0,0};
+            towersColor = -1;
         }
 
         public void setTowersNumber(int towersNumber) {
@@ -269,18 +273,24 @@ public class View {
     private class Special{
         private int cost;
         private String name;
+        private int[]  students;
+        private int noEntry;
 
         private Special(int cost, String name) {
             this.cost = cost;
             this.name = name;
+            students = new int[]{0, 0, 0, 0, 0};
         }
 
         public int getCost() {
             return cost;
         }
-
         public String getName() {
             return name;
+        }
+        public int[] getStudents(){ return students;}
+        public int getNoEntry(){
+            return noEntry;
         }
 
         public void setCost(int cost){
@@ -288,6 +298,13 @@ public class View {
         }
         public void setName(String name){
             this.name=name;
+        }
+        public void setStudents(int color, int newStudentsValue) {
+            students[color]=newStudentsValue;
+        }
+
+        public void setNoEntry(int noEntry) {
+            this.noEntry = noEntry;
         }
     }
 

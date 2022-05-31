@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -16,12 +17,12 @@ public class CLI implements Runnable, Exit {
     private final Socket socket;
 
 
-    public CLI(Socket socket) throws IOException {
+    public CLI(Socket socket) throws IOException{
         this.socket = socket;
         scanner = new Scanner(System.in);
         active = true;
         constants = new PlayerConstants();
-        proxy = new Proxy_c(socket,this);
+        proxy = new Proxy_c(socket);
     }
 
     public void setup() throws IOException, ClassNotFoundException {
@@ -308,58 +309,89 @@ public class CLI implements Runnable, Exit {
         };
     }
 
-    @Override
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
+    String  UNDERLINE = "\u001B[4m";
+
     public void cli(){
         System.out.println(System.lineSeparator().repeat(100));
         /*System.out.print("\033[H\033[2J");
         System.out.flush();*/
-        System.out.println("ISLANDS");
+        System.out.println(UNDERLINE+"ISLANDS"+ANSI_RESET);
         for (int i = 0; i < view.getIslandSize(); i++) {
-            System.out.println("\t"+"Island " + (i + 1) + ": Students: Green " + view.getStudentsIsland(i)[0] + ", Red " + view.getStudentsIsland(i)[1] +
-                    ", Yellow " + view.getStudentsIsland(i)[2] + ", Pink " + view.getStudentsIsland(i)[3] + ", Blue " + view.getStudentsIsland(i)[4]);
+            System.out.println("\t"+"Island " + (i + 1) + ": Students:" + ANSI_GREEN +" Green "+ view.getStudentsIsland(i)[0 ] + ANSI_RED  + ", Red " + view.getStudentsIsland(i)[1] +
+                    ANSI_YELLOW +", Yellow " + view.getStudentsIsland(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsIsland(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsIsland(i)[4]+ANSI_RESET);
             if (view.getInhibited(i) != 0) System.out.print("\t"+"\t"+"\t"+"  No Entry tiles: " + view.getInhibited(i) + ". ");
-            System.out.println("\t"+"\t"+"\t"+"  Towers Team: " + view.getTowersColor(i) + ". Towers value: " + view.getIslandTowers(i));
+            if(view.getTowersColor(i)==0) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + "WHITE" + ANSI_RESET);
+            else if(view.getTowersColor(i)==1) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + ANSI_BLACK+ "BALCK" + ANSI_RESET);
+            else if(view.getTowersColor(i)==2) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + ANSI_WHITE+ "GREY" + ANSI_RESET);
+            else if(view.getTowersColor(i)==-1) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + "NO ONE" + ANSI_RESET);
+            System.out.println(". Towers value: " + view.getIslandTowers(i));
         }
         System.out.println();
-        System.out.println("Mother Nature is on island " + view.getMotherPosition());//aggiungere
+        System.out.println(UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + view.getMotherPosition());//aggiungere
         System.out.println();
 
-        System.out.println("SCHOOLS");
+        System.out.println(UNDERLINE+"SCHOOLS"+ANSI_RESET);
         for (int i = 0; i < view.getNumberOfPlayers(); i++) {
-            System.out.println("\t"+"Nickname: " + view.getNickname(i) + ". Wizard: " + view.getWizard(i) + ". Team:" + view.getTeam(i) + ".");
-            System.out.println("\t"+"Entrance students: Green " + view.getStudentsEntrance(i)[0] + ", Red " + view.getStudentsEntrance(i)[1] +
-                    ", Yellow " + view.getStudentsEntrance(i)[2] + ", Pink " + view.getStudentsEntrance(i)[3] + ", Blue " + view.getStudentsEntrance(i)[4]);
-            System.out.println("\t"+"Table students: Green " + view.getStudentsTable(i)[0] + ", Red " + view.getStudentsTable(i)[1] +
-                    ", Yellow " + view.getStudentsTable(i)[2] + ", Pink " + view.getStudentsTable(i)[3] + ", Blue " + view.getStudentsTable(i)[4]);
-            System.out.println("\t"+"Professor: Green " + view.getProfessors(i)[0] + ", Red " + view.getProfessors(i)[1] +
-                    ", Yellow " + view.getProfessors(i)[2] + ", Pink " + view.getProfessors(i)[3] + ", Blue " + view.getProfessors(i)[4]);
+            System.out.print("\t"+"Nickname: " + view.getNickname(i) + ". Wizard: " + view.getWizard(i)+ ". Team: ");
+            if(view.getTeam(i).equals("WHITE")) System.out.println(view.getTeam(i) + ".");
+            if(view.getTeam(i).equals("BLACK")) System.out.println(ANSI_BLACK+view.getTeam(i) + "."+ANSI_RESET);
+            if(view.getTeam(i).equals("GREY")) System.out.println(ANSI_WHITE+view.getTeam(i) + "."+ANSI_RESET);
+
+            System.out.println("\t"+"Entrance students:" +ANSI_GREEN + " Green " + view.getStudentsEntrance(i)[0] + ANSI_RED  + ", Red " + view.getStudentsEntrance(i)[1] +
+                    ANSI_YELLOW + ", Yellow " + view.getStudentsEntrance(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsEntrance(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsEntrance(i)[4]+ANSI_RESET);
+            System.out.println("\t"+"Table students:" +ANSI_GREEN + " Green " + ANSI_RED  + ", Red " + view.getStudentsTable(i)[1] +
+                    ANSI_YELLOW + ", Yellow " + view.getStudentsTable(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsTable(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsTable(i)[4]+ANSI_RESET);
+            System.out.println("\t"+"Professor: Green " +ANSI_GREEN+ view.getProfessors(i)[0] + ANSI_RED  + ", Red " + view.getProfessors(i)[1] +
+                    ANSI_YELLOW + ", Yellow " + view.getProfessors(i)[2] +ANSI_PURPLE + ", Pink " + view.getProfessors(i)[3] + ANSI_BLUE+ ", Blue " + view.getProfessors(i)[4]+ANSI_RESET);
             System.out.print("\t"+"Towers number: " + view.getSchoolTowers(i) + ".");
             if (view.getExpertMode()) System.out.print(" Coins: " + view.getCoins(i));
             System.out.println();
             System.out.println();
         }
-        System.out.println("CLOUDS");
+        System.out.println(UNDERLINE+"CLOUDS"+ANSI_RESET);
         for (int i = 0; i < view.getNumberOfPlayers(); i++) {
-            System.out.println("\t"+"Cloud " + (i + 1) + ": Students: Green " + view.getStudentsCloud(i)[0] + ", Red " + view.getStudentsCloud(i)[1] +
-                    ", Yellow " + view.getStudentsCloud(i)[2] + ", Pink " + view.getStudentsCloud(i)[3] + ", Blue " + view.getStudentsCloud(i)[4]);
+            System.out.println("\t"+"Cloud " + (i + 1) + ": Students:" +ANSI_GREEN + " Green " + view.getStudentsCloud(i)[0] + ANSI_RED + ", Red " + view.getStudentsCloud(i)[1] +
+                    ANSI_YELLOW + ", Yellow " + view.getStudentsCloud(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsCloud(i)[3] + ANSI_BLUE+ ", Blue " + view.getStudentsCloud(i)[4]+ANSI_RESET);
         }
         System.out.println();
 
-        System.out.println("LAST PLAYED CARDS");
+        System.out.println(UNDERLINE+"LAST PLAYED CARDS"+ANSI_RESET);
         System.out.print("\t");
         for (int i = 0; i < view.getNumberOfPlayers(); i++) {
             System.out.print(view.getNickname(i) + ": " + view.getLastCard(i) + ". ");
         }
         System.out.println();
 
-        System.out.println("YOUR CARDS");
-        System.out.println("\t"+view.getCards().toString());
+        System.out.println(UNDERLINE+"YOUR CARDS"+ANSI_RESET);
+        for (int i = 0; i < view.getCards().size(); i++) {
+            System.out.println("\t"+view.getCards().get(i).name()+" value: "+view.getCards().get(i).getValue()+
+                    " movement: "+view.getCards().get(i).getMovement());
+        }
 
         if(view.getExpertMode()){
-            System.out.println("SPECIALS");
+            System.out.println(UNDERLINE+"SPECIALS"+ANSI_RESET);
             for(int i=0; i<3; i++){
-                System.out.println("\t"+view.getSpecialName(i)+": costo "+view.getSpecialCost(i));
+                System.out.print("\t"+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
+                if(specialArray(view.getSpecialName(i))) System.out.println(". Students: "+ ANSI_GREEN +" Green "+ view.getSpecialStudents(i)[0] + ANSI_RED  + ", Red " + view.getSpecialStudents(i)[1] +
+                        ANSI_YELLOW +", Yellow " + view.getSpecialStudents(i)[2] + ANSI_PURPLE + ", Pink " + view.getSpecialStudents(i)[3] + ANSI_BLUE + ", Blue " + view.getSpecialStudents(i)[4]+ANSI_RESET);
+                if(view.getNoEntry(i)!=-1) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
             }
         }
+    }
+
+    private boolean specialArray(String name){
+        if(name.equalsIgnoreCase("special1")) return true;
+        if(name.equalsIgnoreCase("special7")) return true;
+        if(name.equalsIgnoreCase("special8")) return true;
+        return false;
     }
 }
