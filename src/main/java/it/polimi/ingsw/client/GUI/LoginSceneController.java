@@ -1,7 +1,10 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.client.Proxy_c;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -12,11 +15,12 @@ import java.io.IOException;
 
 public class LoginSceneController {
 
-    private GUIManager guiManager;
+    private GUI gui;
     private Stage stage;
     private Scene scene;
     private String currentNickname;
-    private String currentCharacter = "wizard";
+    private String currentCharacter;
+    private Proxy_c proxy;
 
     @FXML private TextField nicknameBox;
     @FXML private AnchorPane loginScene;
@@ -26,13 +30,8 @@ public class LoginSceneController {
     @FXML private Button king;
     @FXML private Button next;
 
-    /*
-    public LoginSceneController(GUIManager guiManager){
-        this.guiManager=guiManager;
-    }*/
 
     public void setCharacter(ActionEvent e){
-
         if(e.getSource()== wizard)
             this.currentCharacter="wizard";
         else if(e.getSource()==samurai)
@@ -44,11 +43,21 @@ public class LoginSceneController {
     }
 
     public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
-        //guiManager.setupConnection(currentNickname, currentCharacter);
         this.currentNickname =nicknameBox.getText();
         System.out.println(currentNickname +", "+ currentCharacter);
-        //guiManager.setupConnection(currentNickname, currentCharacter);
-    }/*
+        //gui.setupConnection(currentNickname, currentCharacter);
+        switchScene();
+    }
+    public void setGui(GUI gui) {
+        this.gui=gui;
+    }
+
+    public void setProxy(Proxy_c proxy) {
+        this.proxy=proxy;
+    }
+    /*
+
+
 
     public void printNicknameMessage(){
         this.nicknameMessage.setText("The nickname is already taken");
@@ -67,15 +76,13 @@ public class LoginSceneController {
         //witch
         //king
     }
-
-    public void switchScene(ActionEvent event) throws IOException {
+*/
+    public void switchScene() throws IOException {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResource("/fxml/MainScene.fxml"));
-        Scene startMenu = new Scene(root, 500, 500);
+        Scene startMenu = new Scene(root);
         stage.setScene(startMenu);
-        stage.setTitle("Eryantis");
-        stage.setResizable(false);
         stage.show();
-    }*/
+    }
 }

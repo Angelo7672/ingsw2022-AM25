@@ -1,10 +1,12 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.listeners.*;
+import it.polimi.ingsw.model.Bag;
 import it.polimi.ingsw.server.ControllerServer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 //virtual View class listen to changes in model classes through specific listener interfaces
 public class VirtualView
@@ -18,7 +20,7 @@ public class VirtualView
     private ArrayList<Hand> hands;
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
     private ArrayList<String> playedCards;
-    private int[] bag;
+    private List<Bag.Colour> bag;
     private ArrayList<Integer> queue;
     private ControllerServer server;
     private int numberOfPlayers;
@@ -31,7 +33,6 @@ public class VirtualView
         this.islands = new ArrayList<>();
         this.specials = new ArrayList<>();
         this.playedCards = new ArrayList<>();
-        this.bag=new int[]{24, 24, 24, 24, 24};
         this.queue=new ArrayList<>();
         this.server = server;
         this.numberOfPlayers = numberOfPlayers;
@@ -155,8 +156,13 @@ public class VirtualView
 
     @Override
     public void notifyBagExtraction(int color) {
-        bag[color]--;
+        //bag[color]--;
     }
+
+    public void notifyBag(List<Bag.Colour> bag) {
+        this.bag=bag;
+    }
+
 
     @Override
     public void notifyQueue(int playerRef) {

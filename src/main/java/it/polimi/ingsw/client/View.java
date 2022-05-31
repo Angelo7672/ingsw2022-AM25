@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.controller.listeners.*;
 import it.polimi.ingsw.model.Assistant;
 import it.polimi.ingsw.server.Answer.ViewMessage.UnifiedIsland;
 import it.polimi.ingsw.server.Answer.ViewMessage.*;
@@ -16,6 +17,17 @@ public class View {
     private ArrayList<Special> specials; //specials keeps the 3 special character for the game
     private ArrayList<Assistant> cards;
     private final boolean expertMode;
+    private TowersListener towersListener;
+    private CoinsListener coinsListener;
+    private InhibitedListener inhibitedListener;
+    private IslandListener islandListener;
+    private MotherPositionListener motherPositionListener;
+    private PlayedCardListener playedCardListener;
+    private ProfessorsListener professorsListener;
+    private QueueListener queueListener;
+    private SpecialListener specialListener;
+    private StudentsListener studentsListener;
+    private BagListener bagListener;
 
     public View(int numberOfPlayers, boolean expertMode){
         this.numberOfPlayers = numberOfPlayers;

@@ -1,10 +1,9 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.GUI.GUIManager;
+import it.polimi.ingsw.client.GUI.GUI;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.Scanner;
 
 public class Client {
@@ -29,7 +28,11 @@ public class Client {
             cli.run();
         }
         else if (graph.equalsIgnoreCase("GUI")) {
-            GUIManager gui = new GUIManager(socket, args);
+            GUI gui = new GUI();
+            gui.setSocket(socket);
+            //gui.setProxy(new Proxy_c(socket, gui));
+            gui.main(null);
+
         }
     }
 }

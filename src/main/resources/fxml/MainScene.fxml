@@ -16,7 +16,7 @@
             <Image url="@../graphics/island2.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="103.0" fitWidth="95.0" layoutX="169.0" layoutY="197.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="103.0" fitWidth="95.0" layoutX="183.0" layoutY="198.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/island3.png" />
          </image>
@@ -71,7 +71,7 @@
             <Image url="@../graphics/schoolboard.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="114.0" fitWidth="329.0" layoutX="311.0" layoutY="486.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="114.0" fitWidth="329.0" layoutX="294.0" layoutY="475.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/schoolboard.png" />
          </image>
@@ -84,6 +84,31 @@
       <ImageView fitHeight="114.0" fitWidth="329.0" layoutX="-52.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
          <image>
             <Image url="@../graphics/schoolboard.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="77.0" fitWidth="46.0" layoutX="574.0" layoutY="475.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/assistants/assistant%20(1).png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="77.0" fitWidth="46.0" layoutX="622.0" layoutY="475.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/assistants/assistant%20(1).png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="77.0" fitWidth="46.0" layoutX="669.0" layoutY="475.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/assistants/assistant%20(1).png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="77.0" fitWidth="46.0" layoutX="715.0" layoutY="475.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/assistants/assistant%20(1).png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="77.0" fitWidth="46.0" layoutX="761.0" layoutY="475.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/assistants/assistant%20(1).png" />
          </image>
       </ImageView>
 
