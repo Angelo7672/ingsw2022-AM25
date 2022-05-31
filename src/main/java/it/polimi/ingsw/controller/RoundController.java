@@ -35,8 +35,9 @@ public class RoundController extends Thread{
             server.goPlayCard(gameManager.readQueue(controller.getCurrentUser()));
             try { this.wait();
             } catch (InterruptedException e) { e.printStackTrace(); }
+            System.out.println("carta");
         }
-        controller.saveVirtualView();
+        //controller.saveVirtualView();
     }
 
     private synchronized void actionPhase(){
@@ -46,7 +47,7 @@ public class RoundController extends Thread{
             server.startActionPhase(gameManager.readQueue(controller.getCurrentUser()));
             try { this.wait();
             } catch (InterruptedException e) { e.printStackTrace(); }
-            controller.saveVirtualView();
+            //controller.saveVirtualView();
         }
     }
 

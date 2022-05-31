@@ -94,7 +94,7 @@ public class Controller implements ServerController{
     public void oneLastRide(){ winner = gameManager.oneLastRide(); }
 
     @Override
-    public void resumeTurn(){ roundController.notify(); }
+    public void resumeTurn(){ synchronized(roundController) {roundController.notify();} }
 
     public void saveVirtualView(){
         try{

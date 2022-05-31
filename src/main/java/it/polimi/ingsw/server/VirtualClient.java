@@ -363,7 +363,7 @@ public class VirtualClient implements Runnable{
                 checker = server.userPlayCard(playerRef, cardMessage.getCard());
                 if(checker){
                     send(new GenericAnswer("ok"));
-                    oneCardAtaTime = true;
+                    readyPlanningPhase = true;  //dai un nome migliore
                     synchronized (planLocker){ planLocker.wait(); }  //wait ready for action phase msg
                 }
                 else{
