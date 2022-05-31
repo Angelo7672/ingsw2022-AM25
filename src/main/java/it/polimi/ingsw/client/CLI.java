@@ -287,6 +287,7 @@ public class CLI implements Runnable, Exit {
             while (active) {
                 if (proxy.startPlanningPhase()) constants.resetAll();
                 while (!constants.isEndTurn()) {
+                    cli();
                     turn();
                 }
             }
@@ -309,7 +310,9 @@ public class CLI implements Runnable, Exit {
 
     @Override
     public void cli(){
-        System.out.print('\f');
+        System.out.println(System.lineSeparator().repeat(100));
+        /*System.out.print("\033[H\033[2J");
+        System.out.flush();*/
         System.out.println("ISLANDS");
         for (int i = 0; i < view.getIslandSize(); i++) {
             System.out.println("\t"+"Island " + (i + 1) + ": Students: Green " + view.getStudentsIsland(i)[0] + ", Red " + view.getStudentsIsland(i)[1] +

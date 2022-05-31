@@ -146,69 +146,25 @@ public class Proxy_c implements Entrance{
         Answer tmp;
         while (true) {
             tmp = (Answer) inputStream.readObject();
-            if(tmp instanceof UserInfoAnswer) {
-                view.setUserInfo((UserInfoAnswer)tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof LastCardMessage) {
-                view.setLastCard((LastCardMessage)tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof  NumberOfCardsMessage) {
-                view.setNumberOfCards((NumberOfCardsMessage)tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof SchoolStudentMessage) {
-                view.setStudents((SchoolStudentMessage)tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof ProfessorMessage) {
-                view.setProfessors((ProfessorMessage)tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof SchoolTowersMessage) {
-                view.setSchoolTowers((SchoolTowersMessage)tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof CoinsMessage) {
-                view.setCoins((CoinsMessage)tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof CloudStudentMessage) {
-                view.setClouds((CloudStudentMessage)tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof IslandStudentMessage) {
-                view.setStudentsIsland((IslandStudentMessage) tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof MotherPositionMessage) {
-                view.setMotherPosition((MotherPositionMessage)tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof IslandTowersNumberMessage) {
-                view.setIslandTowers((IslandTowersNumberMessage) tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof IslandTowersColorMessage) {
-                view.setTowersColor((IslandTowersColorMessage)tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof InhibitedIslandMessage) {
-                view.setInhibited((InhibitedIslandMessage)tmp);
-                cli.cli();
-            }
-            else if(tmp instanceof UnifiedIsland) {
-                view.removeUnifiedIsland((UnifiedIsland) tmp);
-                cli.cli();
-            }
+            if(tmp instanceof UserInfoAnswer) {view.setUserInfo((UserInfoAnswer)tmp);}
+            else if(tmp instanceof LastCardMessage) {view.setLastCard((LastCardMessage)tmp);}
+            else if(tmp instanceof  NumberOfCardsMessage) {view.setNumberOfCards((NumberOfCardsMessage)tmp);}
+            else if(tmp instanceof SchoolStudentMessage) {view.setStudents((SchoolStudentMessage)tmp);}
+            else if(tmp instanceof ProfessorMessage) {view.setProfessors((ProfessorMessage)tmp);}
+            else if(tmp instanceof SchoolTowersMessage) {view.setSchoolTowers((SchoolTowersMessage)tmp);}
+            else if(tmp instanceof CoinsMessage) {view.setCoins((CoinsMessage)tmp);}
+            else if(tmp instanceof CloudStudentMessage) {view.setClouds((CloudStudentMessage)tmp);}
+            else if(tmp instanceof IslandStudentMessage) {view.setStudentsIsland((IslandStudentMessage) tmp);}
+            else if(tmp instanceof MotherPositionMessage) {view.setMotherPosition((MotherPositionMessage)tmp);}
+            else if(tmp instanceof IslandTowersNumberMessage) {view.setIslandTowers((IslandTowersNumberMessage) tmp);}
+            else if(tmp instanceof IslandTowersColorMessage) {view.setTowersColor((IslandTowersColorMessage)tmp);}
+            else if(tmp instanceof InhibitedIslandMessage) {view.setInhibited((InhibitedIslandMessage)tmp);}
+            else if(tmp instanceof UnifiedIsland) {view.removeUnifiedIsland((UnifiedIsland) tmp);}
             else if(tmp instanceof GameInfoAnswer) {
                 view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(),((GameInfoAnswer) tmp).isExpertMode());
                 return null;
             }
-            else if(tmp instanceof PongAnswer){
-                socket.setSoTimeout(15000);
-            }
+            else if(tmp instanceof PongAnswer){socket.setSoTimeout(15000);}
             else break;
         }
         return tmp;

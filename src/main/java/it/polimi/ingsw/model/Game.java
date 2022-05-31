@@ -36,8 +36,8 @@ public class Game implements GameManager{
         if(expertMode){
             RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
             ArrayList<Integer> random = new ArrayList<>();
-            for(int i=1; i<=12; i++) random.add(i); //riempio con numeri da 1 a 12
-            Collections.shuffle(random); //mischio i numeri
+            for(int i=1; i<=12; i++) random.add(i);
+            Collections.shuffle(random);
             for(int i=0; i<3; i++) roundStrategies.add(roundStrategyFactor.getRoundStrategy(random.get(i))); //aggiungo lo special estratto
         }
     }
