@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.exception.NotAllowedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,22 +9,23 @@ import java.util.ArrayList;
 import static it.polimi.ingsw.model.Team.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-/*public class RoundStrategyTest {
+public class RoundStrategyTest {
 
-    private int numberOfPlayer=3;
+    /*private int numberOfPlayer=3;
     String[] playersInfo = {"Giorgio", "SAMURAI", "Marco", "KING", "Dino", "WIZARD"};
     private CloudsManager cloudsManager = new CloudsManager(numberOfPlayer);
     private IslandsManager islandsManager = new IslandsManager();
-    private PlayerManager playerManager = new PlayerManager(numberOfPlayer);
     private Bag bag= new Bag();
-    RoundStrategy round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    private PlayerManager playerManager = new PlayerManager(numberOfPlayer, bag);
+    private QueueManager queueManager = new QueueManager(numberOfPlayer, playerManager);
+    RoundStrategy round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
     private ArrayList<Integer> color1 = new ArrayList<>();
     private ArrayList<Integer> color2 = new ArrayList<>();
 
     @Test
     @DisplayName("Test if RoundStrategyFactory return the right strategy")
     void roundStrategyFactory(){
-        RoundStrategyFactory factory = new RoundStrategyFactory(numberOfPlayer,cloudsManager,islandsManager,playerManager,bag);
+        RoundStrategyFactory factory = new RoundStrategyFactory(numberOfPlayer,cloudsManager,islandsManager,playerManager,queueManager, bag);
         RoundStrategy round = factory.getRoundStrategy(1);
         assertEquals("special1", round.getName());
         round = factory.getRoundStrategy(2);
@@ -51,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
     }
 
-    void fastSetConqueror(int playerRef, int islandRef, int color){
+    void fastSetConqueror(int playerRef, int islandRef, int color) throws NotAllowedException {
         islandsManager.incStudent(islandRef,color);
         islandsManager.incStudent(islandRef,color);
         playerManager.setStudentEntrance(playerRef,color);
@@ -62,7 +64,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("Test if moveStudent transfer student correctly")
-    void moveStudentTest(){
+    void moveStudentTest() throws NotAllowedException {
         playerManager.setStudentEntrance(1,0);
         playerManager.setStudentEntrance(1,0);
         int islandStudent = islandsManager.getStudent(0,0);
@@ -74,7 +76,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("Test if conquestIsland change correctly the island's owner")
-    void conquestIslandTest(){
+    void conquestIslandTest() throws NotAllowedException {
 
         fastSetConqueror(1,0,0);
         //TeamWeaker = NOONE TeamStronger = BLACK
@@ -91,11 +93,11 @@ import static org.junit.jupiter.api.Assertions.*;
         assertEquals(1, islandsManager.getTowerValue(0));
 
         //adjacent islands getting unify
-        assertEquals(NOONE,islandsManager.getTowerTeam(1));
+        assertEquals(NONE,islandsManager.getTowerTeam(1));
         fastSetConqueror(0,1,0);
         fastSetConqueror(0,1,0);
         round.conquestIsland(1,-1,0);
-        assertEquals(NOONE,islandsManager.getTowerTeam(1));
+        assertEquals(NONE,islandsManager.getTowerTeam(1));
         assertEquals(WHITE,islandsManager.getTowerTeam(0));
         assertEquals(2,islandsManager.getTowerValue(0));
 
@@ -103,7 +105,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("test if highInfluenceTeam return the right team")
-    void highInfluenceTeamTest(){
+    void highInfluenceTeamTest() throws NotAllowedException {
         Team teamStronger;
         teamStronger = round.highInfluenceTeam(0,0,0);
         assertEquals(NONE, teamStronger);
@@ -120,7 +122,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("Test if movement of mother nature is correct")
-    void moveMotherNatureTest(){
+    void moveMotherNatureTest() throws NotAllowedException {
         //if island is inhibited
         round.queueForPlanificationPhase();
         islandsManager.increaseInhibited(islandsManager.circularArray(islandsManager.getMotherPos(), 1));
@@ -159,7 +161,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
     @DisplayName("Test if RoundSpecial1's effect is correct")
     void effectRoundSpecial1Test(){
-        RoundStrategy round = new RoundSpecial1(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial1(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         int studentsNumber = islandsManager.getStudent(0,0);
         color1.add(0);
         if(round.getStudents(0)<=0){
@@ -175,8 +177,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("Test if RoundSpecial2's moveStudent is correct")
-    void moveStudentSpecial2Test(){
-        RoundStrategy round = new RoundSpecial2(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    void moveStudentSpecial2Test() throws NotAllowedException {
+        RoundStrategy round = new RoundSpecial2(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         fastSetConqueror(0,0,0);
         playerManager.setStudentEntrance(1,0);
         playerManager.setStudentEntrance(1,0);
@@ -187,8 +189,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("Test if RoundSpecial3' moveMotherNature is correct")
-    void moveMotherNatureSpecial3Test(){
-        RoundStrategy round = new RoundSpecial3(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    void moveMotherNatureSpecial3Test() throws NotAllowedException {
+        RoundStrategy round = new RoundSpecial3(numberOfPlayer, cloudsManager, islandsManager, playerManager,queueManager, bag);
         round.queueForPlanificationPhase();
         int motherPos = islandsManager.getMotherPos();
         islandsManager.increaseInhibited(islandsManager.circularArray(islandsManager.getMotherPos(), 1));
@@ -206,8 +208,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("Test if RoundSpecial4's moveMotherNature is correct")
-    void moveMotherNatureSpecial4Test(){
-        RoundStrategy round = new RoundSpecial4(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    void moveMotherNatureSpecial4Test() throws NotAllowedException {
+        RoundStrategy round = new RoundSpecial4(numberOfPlayer, cloudsManager, islandsManager, playerManager,queueManager, bag);
         round.queueForPlanificationPhase();
         round.playCard(0,0,"LION"); round.playCard(1,1,"GOOSE"); round.playCard(2, 2,"CAT");
         int motherPos = islandsManager.getMotherPos();
@@ -218,8 +220,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("Test if roundSpecial5's effect is correct")
-    void effectRoundSpecial5Test(){
-        RoundStrategy round = new RoundSpecial5(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    void effectRoundSpecial5Test() throws NotAllowedException {
+        RoundStrategy round = new RoundSpecial5(numberOfPlayer, cloudsManager, islandsManager, playerManager,queueManager, bag);
         round.queueForPlanificationPhase();
         round.playCard(0,0,"LION"); round.playCard(1,1,"GOOSE"); round.playCard(2, 2,"CAT");
         round.moveMotherNature(0,1,-1);
@@ -229,8 +231,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("Test if RoundSpecial6's highInfluenceTeam is correct")
-    void highInfluenceTeamSpecial6(){
-        RoundStrategy round = new RoundSpecial6(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    void highInfluenceTeamSpecial6() throws NotAllowedException {
+        RoundStrategy round = new RoundSpecial6(numberOfPlayer, cloudsManager, islandsManager, playerManager,queueManager, bag);
 
         fastSetConqueror(0,0,0);
         round.conquestIsland(0,0,0);
@@ -253,7 +255,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
     @DisplayName("Test if RoundSpecial7's effect is correct")
     void effectRoundSpecial7Test() {
-        RoundStrategy round = new RoundSpecial7(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+        RoundStrategy round = new RoundSpecial7(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         color1.add(0);
         color2.add(1);
         boolean done = round.effect(0, color1,color2);
@@ -283,8 +285,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("Test if RoundSpecial8's highInfluenceTeam is correct")
-    void highInfluenceTeamSpecial8(){
-        RoundStrategy round = new RoundSpecial8(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    void highInfluenceTeamSpecial8() throws NotAllowedException {
+        RoundStrategy round = new RoundSpecial8(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
 
         fastSetConqueror(0,0,0);
         if(islandsManager.getStudent(0,0)==2) { //influence white=2 stud black=0
@@ -295,8 +297,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("Test if RoundSpecial9's highInfluenceTeam is correct")
-    void highInfluenceTeamSpecial9(){
-        RoundStrategy round = new RoundSpecial9(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    void highInfluenceTeamSpecial9() throws NotAllowedException {
+        RoundStrategy round = new RoundSpecial9(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
 
         fastSetConqueror(0,0,3);
         //influence white=2 stud black=0, block color 3
@@ -311,8 +313,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("Test if RoundSpecial10's effect is correct")
-    void effectRoundSpecial10Test() {
-        RoundStrategy round = new RoundSpecial10(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    void effectRoundSpecial10Test() throws NotAllowedException {
+        RoundStrategy round = new RoundSpecial10(numberOfPlayer, cloudsManager, islandsManager, playerManager,queueManager, bag);
         color1.add(0);
         color2.add(1);
         boolean done = round.effect(0, color1,color2);
@@ -334,7 +336,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
     @DisplayName("Test if RoundSpecial11's effect is correct")
     void effectRoundSpecial11Test() {
-            RoundStrategy round = new RoundSpecial11(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+            RoundStrategy round = new RoundSpecial11(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
             color1.add(0);
             boolean done = false;
             if (round.getStudents(0) > 0) {
@@ -354,8 +356,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     @DisplayName("Test if RoundSpecial12's effect is correct")
-    void effectRoundSpecial12Test() {
-        RoundStrategy round = new RoundSpecial12(numberOfPlayer, cloudsManager, islandsManager, playerManager, bag);
+    void effectRoundSpecial12Test() throws NotAllowedException {
+        RoundStrategy round = new RoundSpecial12(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager,  bag);
         playerManager.setStudentTable(0,0);
         playerManager.setStudentTable(0,0);
         playerManager.setStudentTable(1,0);
@@ -372,5 +374,5 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 
-
-}*/
+*/
+}

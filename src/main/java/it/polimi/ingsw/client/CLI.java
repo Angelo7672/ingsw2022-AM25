@@ -98,28 +98,8 @@ public class CLI implements Runnable {
         this.active = active;
     }
 
-    public void turn() throws IOException, ClassNotFoundException {
-        if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) useSpecial();
-        phaseHandler(constants.lastPhase());
-    }
-
-    public void phaseHandler(String phase) throws IOException, ClassNotFoundException {
-        cli();
-        if(phase.equals("PlayCard")) playCard();
-        else if(!constants.isActionPhaseStarted()) {
-            constants.setActionPhaseStarted(proxy.startActionPhase());
-        }
-        else {
-
-            switch (phase) {
-                case ("MoveStudent") -> moveStudents();
-                case ("MoveMother") -> moveMotherNature();
-                case ("ChoseCloud") -> chooseCloud();
-            }
-        }
-    }
-
     public void useSpecial() throws IOException, ClassNotFoundException {
+        cli();
         System.out.println("Do you want to use a special card? [y/n]");
         String answer = scanner.next();
         if (answer.equalsIgnoreCase("n")) return;
@@ -227,6 +207,7 @@ public class CLI implements Runnable {
     }
 
     public void playCard() throws IOException, ClassNotFoundException {
+        cli();
         System.out.println("Which card do you want to play?");
         String card;
         try {
@@ -243,6 +224,7 @@ public class CLI implements Runnable {
     public void moveStudents() {
         boolean finished = false;
         do {
+            cli();
             String accepted;
             String color;
             String where;
@@ -261,6 +243,7 @@ public class CLI implements Runnable {
                 accepted = proxy.moveStudent(colorInt, where, islandRef);
                 if (accepted.equals("transfer complete")) finished = true;
                 System.out.println(accepted);
+                System.out.println("acceped");
             } catch (InputMismatchException | IOException | ClassNotFoundException e) {
                 System.err.println("Error, try again");
             }
@@ -269,6 +252,7 @@ public class CLI implements Runnable {
     }
 
     public void moveMotherNature() throws IOException, ClassNotFoundException {
+        cli();
         int steps = -1;
         try {
             do {
@@ -285,10 +269,11 @@ public class CLI implements Runnable {
     }
 
     public void chooseCloud() throws IOException, ClassNotFoundException {
+        cli();
         int cloud = -1;
         try{
             do {
-                System.out.println("Which cloud do you want)");
+                System.out.println("Which cloud do you want?");
                 cloud = scanner.nextInt();
             } while (cloud == -1);
         }catch (InputMismatchException e){
@@ -297,7 +282,9 @@ public class CLI implements Runnable {
         }
         cloud = cloud-1;
         String result = proxy.chooseCloud(cloud);
-        if (result.equalsIgnoreCase("ok")) constants.setCloudChosen(true);
+        if (result.equalsIgnoreCase("ok")) {
+            constants.setCloudChosen(true);
+        }
         else System.out.println(result);
     }
 
@@ -307,7 +294,8 @@ public class CLI implements Runnable {
             setup();
             while (active) {
                 if (proxy.startPlanningPhase()) constants.resetAll();
-                while (!constants.isEndTurn()) {
+                while (!constants.isCloudChosen()) {
+                    System.out.println("turn");
                     turn();
                 }
             }
@@ -315,6 +303,26 @@ public class CLI implements Runnable {
         System.err.println("io / class in run");
         }
         scanner.close();
+    }
+
+    public void turn() throws IOException, ClassNotFoundException {
+        if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) useSpecial();
+        phaseHandler(constants.lastPhase());
+    }
+
+    public void phaseHandler(String phase) throws IOException, ClassNotFoundException {
+        if(phase.equals("PlayCard")) playCard();
+        else if(!constants.isActionPhaseStarted()) {
+            constants.setActionPhaseStarted(proxy.startActionPhase());
+        }
+        else {
+
+            switch (phase) {
+                case ("MoveStudent") -> moveStudents();
+                case ("MoveMother") -> moveMotherNature();
+                case ("ChoseCloud") -> chooseCloud();
+            }
+        }
     }
 
     private int translateColor(String color) {
@@ -359,7 +367,7 @@ public class CLI implements Runnable {
 
         System.out.println(UNDERLINE+"SCHOOLS"+ANSI_RESET);
         for (int i = 0; i < view.getNumberOfPlayers(); i++) {
-            System.out.print("\t"+"Nickname: " + view.getNickname(i) + ". Wizard: " + view.getWizard(i)+ ". Team: ");
+            System.out.print("\t"+"Nickname: " + view.getNickname(i) + ". Character: " + view.getCharacter(i)+ ". Team: ");
             if(view.getTeam(i).equals("WHITE")) System.out.println(view.getTeam(i) + ".");
             if(view.getTeam(i).equals("BLACK")) System.out.println(ANSI_BLACK+view.getTeam(i) + "."+ANSI_RESET);
             if(view.getTeam(i).equals("GREY")) System.out.println(ANSI_WHITE+view.getTeam(i) + "."+ANSI_RESET);

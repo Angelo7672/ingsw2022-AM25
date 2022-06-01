@@ -158,7 +158,9 @@ public class Proxy_c implements Exit{
         Answer tmp;
         while (true) {
             tmp = (Answer) inputStream.readObject();
-            if(tmp instanceof UserInfoAnswer) {view.setUserInfo((UserInfoAnswer)tmp);}
+            if(tmp instanceof UserInfoAnswer) {
+                view.setUserInfo((UserInfoAnswer)tmp);
+            }
             else if(tmp instanceof LastCardMessage) {view.setLastCard((LastCardMessage)tmp);}
             else if(tmp instanceof  NumberOfCardsMessage) {view.setNumberOfCards((NumberOfCardsMessage)tmp);}
             else if(tmp instanceof SchoolStudentMessage) {view.setStudents((SchoolStudentMessage)tmp);}

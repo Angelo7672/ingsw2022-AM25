@@ -93,7 +93,7 @@ public class View {
     public void setProfessors(ProfessorMessage msg){ schoolBoards.get(msg.getPlayerRef()).setProfessors(msg.getColor(), msg.isProfessor());}
     public void setUserInfo(UserInfoAnswer msg) {
         schoolBoards.get(msg.getPlayerRef()).setNickname(msg.getNickname());
-        schoolBoards.get(msg.getPlayerRef()).setWizard(msg.getCharacter());
+        schoolBoards.get(msg.getPlayerRef()).setCharacter(msg.getCharacter());
     }
 
     public void setClouds(CloudStudentMessage msg){ clouds.get(msg.getCloudRef()).setCloudStudents(msg.getColor(), msg.getNewValue()); }
@@ -128,7 +128,7 @@ public class View {
     public int getInhibited(int islandRef){ return islands.get(islandRef).isInhibited; }
 
     public String getNickname(int playerRef){ return schoolBoards.get(playerRef).getNickname();}
-    public String getWizard(int playerRef){return schoolBoards.get(playerRef).getWizard();}
+    public String getCharacter(int playerRef){return schoolBoards.get(playerRef).getCharacter();}
     public int[] getStudentsEntrance(int playerRef){return schoolBoards.get(playerRef).getEntranceStudent();}
     public int[] getStudentsTable(int playerRef){return schoolBoards.get(playerRef).getTableStudent();}
     public String getTeam(int playerRef){return schoolBoards.get(playerRef).getTeam();}
@@ -155,7 +155,7 @@ public class View {
 
     private class SchoolBoard {
         String nickname;
-        String wizard;
+        String character;
         final String team;
         int[] studentsEntrance;
         int[] studentsTable;
@@ -185,8 +185,8 @@ public class View {
         public void setNickname(String nickname) {
             this.nickname = nickname;
         }
-        public void setWizard(String wizard) {
-            this.wizard = wizard;
+        public void setCharacter(String character) {
+            this.character = character;
         }
 
         public int getTowers() {
@@ -204,8 +204,8 @@ public class View {
         public String getNickname(){
             return nickname;
         }
-        public String getWizard(){
-            return wizard;
+        public String getCharacter(){
+            return character;
         }
         public String getTeam(){
             return team;
