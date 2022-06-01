@@ -62,7 +62,7 @@ public class View {
             schoolBoards.add(new SchoolBoard(0,"BLACK"));
         }
         cards.add(Assistant.LION); cards.add(Assistant.GOOSE); cards.add(Assistant.CAT); cards.add(Assistant.EAGLE); cards.add(Assistant.FOX);
-        cards.add(Assistant.LION); cards.add(Assistant.OCTOPUS); cards.add(Assistant.DOG); cards.add(Assistant.ELEPHANT); cards.add(Assistant.TURTLE);
+        cards.add(Assistant.LIZARD); cards.add(Assistant.OCTOPUS); cards.add(Assistant.DOG); cards.add(Assistant.ELEPHANT); cards.add(Assistant.TURTLE);
 
         if(expertMode){
             for (int i=0; i<3; i++){
@@ -292,6 +292,7 @@ public class View {
             this.cost = cost;
             this.name = name;
             students = new int[]{0, 0, 0, 0, 0};
+            noEntry = 4;
         }
 
         public int getCost() {
