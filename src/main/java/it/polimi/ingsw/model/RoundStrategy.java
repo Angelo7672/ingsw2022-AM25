@@ -21,20 +21,6 @@ public abstract class RoundStrategy {
         this.queueManager = queueManager;
     }
 
-    private Assistant stringToAssistant(String string){
-        if(string.equalsIgnoreCase("LION")) return Assistant.LION;
-        else if(string.equalsIgnoreCase("GOOSE")) return Assistant.GOOSE;
-        else if(string.equalsIgnoreCase("CAT")) return Assistant.CAT;
-        else if(string.equalsIgnoreCase("EAGLE")) return Assistant.EAGLE;
-        else if(string.equalsIgnoreCase("FOX")) return Assistant.FOX;
-        else if(string.equalsIgnoreCase("LIZARD")) return Assistant.LIZARD;
-        else if(string.equalsIgnoreCase("OCTOPUS")) return Assistant.OCTOPUS;
-        else if(string.equalsIgnoreCase("DOG")) return Assistant.DOG;
-        else if(string.equalsIgnoreCase("ELEPHANT")) return Assistant.ELEPHANT;
-        else if(string.equalsIgnoreCase("TURTLE")) return Assistant.TURTLE;
-        return Assistant.NONE;
-    }
-
     private String toString(Team team){
         if(team.equals(Team.WHITE)) return "WHITE";
         else if(team.equals(Team.BLACK)) return "BLACK";
@@ -136,9 +122,7 @@ public abstract class RoundStrategy {
     }
 
     public void queueForPlanificationPhase(){ queueManager.queueForPlanificationPhase(); }
-    public boolean playCard(int playerRef, int queueRef, String card) throws NotAllowedException {
-        return queueManager.playCard(playerRef, queueRef, stringToAssistant(card));
-    }
+
 
     public void inOrderForActionPhase(){ queueManager.inOrderForActionPhase(); }
 

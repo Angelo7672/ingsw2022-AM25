@@ -36,7 +36,7 @@ public class RoundController extends Thread{
             try { this.wait();
             } catch (InterruptedException e) { e.printStackTrace(); }
         }
-        //controller.saveVirtualView();
+        //controller.saveGame();
     }
 
     private synchronized void actionPhase(){
@@ -46,7 +46,7 @@ public class RoundController extends Thread{
             server.startActionPhase(gameManager.readQueue(controller.getCurrentUser()));
             try { this.wait();
             } catch (InterruptedException e) { e.printStackTrace(); }
-            //controller.saveVirtualView();
+            //controller.saveGame();
         }
     }
 

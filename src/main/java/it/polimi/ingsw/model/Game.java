@@ -51,6 +51,20 @@ public class Game implements GameManager{
         islandsManager.islandsInitialize();
     }
 
+    private Assistant stringToAssistant(String string){
+        if(string.equalsIgnoreCase("LION")) return Assistant.LION;
+        else if(string.equalsIgnoreCase("GOOSE")) return Assistant.GOOSE;
+        else if(string.equalsIgnoreCase("CAT")) return Assistant.CAT;
+        else if(string.equalsIgnoreCase("EAGLE")) return Assistant.EAGLE;
+        else if(string.equalsIgnoreCase("FOX")) return Assistant.FOX;
+        else if(string.equalsIgnoreCase("LIZARD")) return Assistant.LIZARD;
+        else if(string.equalsIgnoreCase("OCTOPUS")) return Assistant.OCTOPUS;
+        else if(string.equalsIgnoreCase("DOG")) return Assistant.DOG;
+        else if(string.equalsIgnoreCase("ELEPHANT")) return Assistant.ELEPHANT;
+        else if(string.equalsIgnoreCase("TURTLE")) return Assistant.TURTLE;
+        return Assistant.NONE;
+    }
+
     @Override
     public boolean refreshStudentsCloud() {
         return roundStrategies.get(0).refreshStudentsCloud();
@@ -60,7 +74,14 @@ public class Game implements GameManager{
         roundStrategies.get(0).queueForPlanificationPhase();
     }
     @Override
-    public boolean playCard(int playerRef, int queRef, String card) throws NotAllowedException{ return roundStrategies.get(0).playCard(playerRef, queRef, card); }
+    public boolean playCard(int playerRef, int queueRef, String card, ArrayList<String> alreadyPlayedCard) throws NotAllowedException {
+        ArrayList<Assistant> alreadyPlayedAssistant = new ArrayList<>();
+
+        for (String assistant:alreadyPlayedCard)
+            alreadyPlayedAssistant.add(stringToAssistant(assistant));
+
+        return queueManager.playCard(playerRef, queueRef, stringToAssistant(card), alreadyPlayedAssistant);
+    }
 
     @Override
     public void inOrderForActionPhase() {

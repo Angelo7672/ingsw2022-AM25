@@ -57,8 +57,24 @@ public class PlayerManager  {
         }
     }
 
-    public void playCard(int playerRef,Assistant card) throws NotAllowedException{
+    public void playCard(int playerRef, Assistant card, ArrayList<Assistant> alreadyPlayedAssistant) throws NotAllowedException{
+        int i = 0;
+
         if(!players.get(playerRef).hand.remove(card)) throw new NotAllowedException();
+        else {
+            for (Assistant alreadyPlayedCard:alreadyPlayedAssistant) {
+                if (alreadyPlayedCard.equals(card)) {
+                    if (players.get(playerRef).hand.size() > alreadyPlayedAssistant.size()) throw new NotAllowedException();    //if the player has more cards than cards played, he definitely has one card different to play
+                    else {
+                        if(i > 0) throw new NotAllowedException();  //there is almost one card different
+                        if(!(players.get(playerRef).hand.containsAll(alreadyPlayedAssistant) &&
+                                alreadyPlayedAssistant.containsAll(players.get(playerRef).hand)))
+                            throw new NotAllowedException(); //if already played card list is different from hand list throw exception
+                    }
+                }
+                i++;
+            }
+        }
     }
     public boolean checkIfCardsFinished(int playerRef){  //Check if the player has played his last card
         return players.get(playerRef).hand.isEmpty();

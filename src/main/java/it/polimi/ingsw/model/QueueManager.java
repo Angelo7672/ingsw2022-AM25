@@ -52,8 +52,8 @@ public class QueueManager {
 
     }
 
-    public boolean playCard(int playerRef, int queueRef, Assistant card) throws NotAllowedException {
-        playerManager.playCard(playerRef,card);
+    public boolean playCard(int playerRef, int queueRef, Assistant card, ArrayList<Assistant> alreadyPlayedAssistant) throws NotAllowedException {
+        playerManager.playCard(playerRef,card,alreadyPlayedAssistant);
         queue.get(queueRef).setValueCard(card.getValue());
         queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
         this.playedCardListener.notifyPlayedCard(playerRef,String.valueOf(card));

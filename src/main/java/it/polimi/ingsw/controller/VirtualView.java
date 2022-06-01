@@ -22,7 +22,7 @@ public class VirtualView
     private ArrayList<Integer> queue;
     private ControllerServer server;
     private int numberOfPlayers;
-
+    private String fileName;
 
     public VirtualView(int numberOfPlayers, ControllerServer server) {
         this.schoolBoards = new ArrayList<>();
@@ -35,9 +35,55 @@ public class VirtualView
         this.bag=new ArrayList<>();
         this.server = server;
         this.numberOfPlayers = numberOfPlayers;
+        this.fileName = "saveGame.txt";
 
         for(int i=0; i<12; i++)
             this.islands.add(new Island());
+    }
+
+    public void saveVirtualView(){
+        try{
+            clearFile();
+            File gameStateFile = new File(fileName);
+
+            ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(fileName, false));
+
+            outputFile.writeObject(this.schoolBoards);
+            outputFile.writeObject(this.islands);
+            outputFile.writeObject(this.clouds);
+            outputFile.writeObject(this.hands);
+            outputFile.writeObject(this.specials);
+            outputFile.writeObject(this.bag);
+            outputFile.writeObject(this.playedCards);
+            outputFile.writeObject(this.queue);
+            outputFile.close();
+        } catch (FileNotFoundException e) { e.printStackTrace();
+        } catch (IOException e) { e.printStackTrace(); }
+    }
+    public void restoreVirtualView(){
+        try{
+            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
+            this.schoolBoards = (ArrayList<SchoolBoard>) inputFile.readObject();
+            this.islands= (ArrayList<Island>) inputFile.readObject();
+            this.clouds=(ArrayList<Cloud>) inputFile.readObject();
+            this.hands=(ArrayList<Hand>) inputFile.readObject();
+            this.specials=(ArrayList<Integer>) inputFile.readObject();
+            this.bag=(ArrayList<Integer>) inputFile.readObject();
+            this.playedCards=(ArrayList<String>) inputFile.readObject();
+            this.queue=(ArrayList<Integer>) inputFile.readObject();
+        } catch (FileNotFoundException e) { e.printStackTrace();
+        } catch (IOException e) { e.printStackTrace();
+        } catch (ClassNotFoundException e) { e.printStackTrace(); }
+    }
+    public void clearFile() {
+        try {
+            File file = new File(fileName);
+            if (file.exists()) {
+                RandomAccessFile raf = new RandomAccessFile(file, "rw");
+                raf.setLength(0);
+            }
+        } catch (FileNotFoundException e) { e.printStackTrace();
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     public ArrayList<String> getAlreadyChosenCharacters(){
@@ -58,8 +104,7 @@ public class VirtualView
             if(player.character.equals(newCharacter)) return false;
         return true;
     }
-
-    public String getCharacter(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
+    public String getCharacter(int playerRef){ return this.schoolBoards.get(playerRef).character; }
     public String getLastPlayedCard(int playerRef){ return hands.get(playerRef).lastPlayedCard; }
     public String getNickname(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
     public void addNewPlayer(String nickname, String character){
@@ -84,60 +129,7 @@ public class VirtualView
             schoolBoards.get(player).setTeam(player);
         }
     }
-    public void saveVirtualView(String fileName){
-        try{
-            clearFile(fileName);
-            File gameStateFile = new File(fileName);
 
-            ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(fileName, false));
-            outputFile.writeObject(this.schoolBoards);
-            outputFile.writeObject(this.islands);
-            outputFile.writeObject(this.clouds);
-            outputFile.writeObject(this.hands);
-            outputFile.writeObject(this.specials);
-            outputFile.writeObject(this.bag);
-            outputFile.writeObject(this.playedCards);
-            outputFile.writeObject(this.queue);
-            outputFile.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void restoreVirtualView(String fileName){
-        try{
-            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
-            this.schoolBoards = (ArrayList<SchoolBoard>) inputFile.readObject();
-            this.islands= (ArrayList<Island>) inputFile.readObject();
-            this.clouds=(ArrayList<Cloud>) inputFile.readObject();
-            this.hands=(ArrayList<Hand>) inputFile.readObject();
-            this.specials=(ArrayList<Integer>) inputFile.readObject();
-            this.bag=(ArrayList<Integer>) inputFile.readObject();
-            this.playedCards=(ArrayList<String>) inputFile.readObject();
-            this.queue=(ArrayList<Integer>) inputFile.readObject();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-    public void clearFile(String fileName) {
-        try {
-            File file = new File(fileName);
-            if (file.exists()) {
-                RandomAccessFile raf = new RandomAccessFile(file, "rw");
-                raf.setLength(0);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
         if(place==0){
@@ -205,7 +197,6 @@ public class VirtualView
         specials.add(specialRef);
         server.setSpecial(specialRef);
     }
-
     @Override
     public void notifyBagExtraction(int color) {
         //bag[color]--;
@@ -214,38 +205,32 @@ public class VirtualView
     /*public void notifyBag(ArrayList<Integer> bag) {
         this.bag=bag;
     }*/
-
-
     @Override
     public void notifyQueue(int playerRef) {
         queue.add(playerRef);
     }
-
     @Override
     public void notifyResetQueue() {
         for(int i=0; i< queue.size(); i++)
             queue.remove(i);
     }
 
-
     //private class SchoolBoard keeps the state of each player's school board
     private class SchoolBoard implements Serializable{
         String nickname;
         String character;
         int team; //0: white, 1: black, 2:grey
-
         int[] studentsEntrance;
         int[] studentsTable;
         int towersNumber;
         boolean[] professors;
 
         public SchoolBoard(String nickname, String character){
-            this.nickname=nickname;
-            this.character=character;
+            this.nickname = nickname;
+            this.character = character;
             this.studentsEntrance = new int[]{0, 0, 0, 0, 0};
             this.studentsTable  = new int[]{0, 0, 0, 0, 0};
             this.professors = new boolean[]{false, false, false, false, false};
-
         }
         
         public void setStudentsEntrance(int color, int newValue){
@@ -283,16 +268,13 @@ public class VirtualView
         public void setTowersNumber(int towersNumber) {
             this.towersNumber = towersNumber;
         }
-
         public void setStudentsIsland(int color, int newValue) {
             this.studentsIsland[color]=newValue;
         }
-
         public void setMotherPosition(boolean isMotherPos) {
             this.isMotherPosition=isMotherPos;
         }
         public void setTowersColor(int newColor){ this.towersColor=newColor; }
-
         public void setInhibited(int isInhibited) {
             this.isInhibited=isInhibited;
         }

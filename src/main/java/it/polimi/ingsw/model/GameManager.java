@@ -12,7 +12,7 @@ public interface GameManager {
     boolean refreshStudentsCloud();
     void queueForPlanificationPhase();
     int readQueue(int pos);
-    boolean playCard(int playerRef, int queueRef, String card) throws NotAllowedException;
+    boolean playCard(int playerRef, int queueRef, String card, ArrayList<String> alreadyPlayedCard) throws NotAllowedException;
 
     //Action Phase
     void inOrderForActionPhase();

@@ -17,7 +17,7 @@ public class Controller implements ServerController{
     private int numberOfPlayers;
     private boolean expertMode;
     private String winner;
-    private String fileName;
+
 
     public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server){
         this.expertMode = isExpert;
@@ -25,7 +25,6 @@ public class Controller implements ServerController{
         this.server = server;
         this.virtualView = new VirtualView(numberOfPlayers, server);
         this.winner = "NONE";
-        this.fileName = "saveGame.txt";
     }
 
     @Override
@@ -63,7 +62,12 @@ public class Controller implements ServerController{
     public String getLastPlayedCard(int playerRef){ return virtualView.getLastPlayedCard(playerRef); }
     @Override
     public void playCard(int playerRef, String chosenAssistants) throws NotAllowedException {
-        try { roundController.setEnd(gameManager.playCard(playerRef,currentUser,chosenAssistants));
+        ArrayList<String> alreadyPlayedCard = new ArrayList<>();
+
+        for(int i = 0; i < currentUser; i++)
+            alreadyPlayedCard.add(getLastPlayedCard(gameManager.readQueue(i)));
+
+        try { roundController.setEnd(gameManager.playCard(playerRef,currentUser,chosenAssistants,alreadyPlayedCard));
         }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
 
@@ -93,46 +97,7 @@ public class Controller implements ServerController{
     @Override
     public void resumeTurn(){ synchronized(roundController) { roundController.notify();} }
 
-    /*
-    public void saveVirtualView(){
-        try{
-            File gameStateFile = new File(fileName);
-
-            ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(fileName, false));
-            outputFile.writeObject(this.virtualView);
-            outputFile.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void restoreVirtualView(){
-        try{
-            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
-            this.virtualView = (VirtualView) inputFile.readObject();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }   //da chiedere
-    public void clearFile(String fileName) {
-        try{
-            File file = new File(fileName);
-            if (file.exists()) {
-                RandomAccessFile raf = new RandomAccessFile(file, "rw");
-                raf.setLength(0);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
+    public void saveGame(){ virtualView.saveVirtualView(); }
 
     public int getCurrentUser() { return currentUser; }
     public void setCurrentUser(int currentUser) { this.currentUser = currentUser; }
