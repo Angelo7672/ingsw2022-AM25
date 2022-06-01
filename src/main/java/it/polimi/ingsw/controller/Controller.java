@@ -26,7 +26,7 @@ public class Controller implements ServerController{
         this.server = server;
         this.virtualView = new VirtualView(numberOfPlayers, server);
         this.winner = "NONE";
-        this.fileName = "";
+        this.fileName = "saveGame.txt";
     }
 
     @Override
@@ -96,8 +96,7 @@ public class Controller implements ServerController{
 
     public void saveVirtualView(){
         try{
-            //File gameStateFile = new File(fileName);
-            //gameStateFile.createNewFile();
+            File gameStateFile = new File(fileName);
 
             ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(fileName, false));
             outputFile.writeObject(this.virtualView);

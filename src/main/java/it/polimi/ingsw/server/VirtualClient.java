@@ -458,6 +458,7 @@ public class VirtualClient implements Runnable{
                     } else send(new GenericAnswer("error"));
                 }
             }
+            System.out.println("Fine");
         }
 
         private void moveStudent(){

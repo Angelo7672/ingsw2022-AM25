@@ -177,7 +177,7 @@ public class VirtualView
 
 
     //private class SchoolBoard keeps the state of each player's school board
-    private class SchoolBoard {
+    private class SchoolBoard implements Serializable{
         String nickname;
         String character;
         int team; //0: white, 1: black, 2:grey
@@ -212,7 +212,8 @@ public class VirtualView
             this.team=team;
         }
     }
-    private class Island{
+
+    private class Island implements Serializable{
         int[] studentsIsland;
         boolean isMotherPosition;
         int towersNumber;
@@ -244,24 +245,25 @@ public class VirtualView
             this.isInhibited=isInhibited;
         }
     }
-    private class Cloud {
+    private class Cloud implements Serializable{
         int[] students;
 
         public Cloud(){
-            students = new int[]{0, 0, 0, 0, 0};
+            this.students = new int[]{0, 0, 0, 0, 0};
         }
+
         public void setCloudStudents(int color, int newStudentsValue) {
             students[color]=newStudentsValue;
         }
     }
-    private class Hand{
+    private class Hand implements Serializable{
         int numberOfCards;
         int coins;
         String lastPlayedCard;
 
         public Hand(){
-            numberOfCards=10;
-            coins=1;
+            this.numberOfCards=10;
+            this.coins=1;
         }
 
         public void setCoins(int coins) {
