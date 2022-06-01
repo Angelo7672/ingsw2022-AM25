@@ -1,14 +1,10 @@
 package it.polimi.ingsw.controller.listeners;
 
-import it.polimi.ingsw.model.Bag;
-
-import java.util.List;
-
 public interface BagListener {
     enum Colour {GREEN, RED, YELLOW, PINK, BLUE }
 
     public void notifyBagExtraction(int color);
-    void notifyBag(List<Bag.Colour> bag);
+    //void notifyBag(ArrayList<int> bag);
 
 
 }

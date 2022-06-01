@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.controller.listeners.TowersListener;
@@ -16,9 +15,9 @@ import java.net.Socket;
 
 public class GUI extends Application implements TowersListener  {
 
+    private static Proxy_c proxy;
     private View view;
     private Socket socket;
-    private Proxy_c proxy;
     private LoginSceneController loginSceneController;
     // private GUIcontroller currentController;
 
@@ -27,7 +26,7 @@ public class GUI extends Application implements TowersListener  {
     }
 
     public GUI() throws IOException {
-
+        //loginSceneController = new LoginSceneController();
         //this.socket = socket;
         //this.proxy = new Proxy_c(socket, this);
     }
@@ -36,26 +35,27 @@ public class GUI extends Application implements TowersListener  {
         FXMLLoader loader = new FXMLLoader();
 
         Parent root = loader.load(getClass().getResource("/fxml/LoginScene.fxml"));
-        //LoginSceneController controller = loader.getController();
-        //controller.setGui(this);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
         Scene loginScene = new Scene(root);
         stage.setScene(loginScene);
         stage.setTitle("Eriantys");
         stage.setResizable(false);
         stage.show();
+        //sceneControllerSetup();
 
 
-    }/*
+    }
     public void sceneControllerSetup() throws IOException {
         FXMLLoader loader = FXMLLoader.load(getClass().getResource("/fxml/LoginScene.fxml"));
-        LoginSceneController controller = loader.getController();
-        controller.setGui(this);
-    }*/
+        loginSceneController = loader.getController();
+        loginSceneController.setGui(this);
+    }
 
-    public void setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
-        //proxy.setupConnection(nickname, character);
-        System.out.println("ciao");
+    public static void setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
+        boolean ok = proxy.setupConnection(nickname, character);
+        //System.out.println("ciao");
+        System.out.println(ok);
+
     }
 
 

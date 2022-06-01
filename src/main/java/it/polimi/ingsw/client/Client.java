@@ -30,7 +30,7 @@ public class Client {
         else if (graph.equalsIgnoreCase("GUI")) {
             GUI gui = new GUI();
             gui.setSocket(socket);
-            //gui.setProxy(new Proxy_c(socket, gui));
+            gui.setProxy(new Proxy_c(socket));
             gui.main(null);
 
         }

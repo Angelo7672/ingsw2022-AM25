@@ -1,12 +1,10 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.listeners.*;
-import it.polimi.ingsw.model.Bag;
 import it.polimi.ingsw.server.ControllerServer;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 //virtual View class listen to changes in model classes through specific listener interfaces
 public class VirtualView
@@ -20,7 +18,7 @@ public class VirtualView
     private ArrayList<Hand> hands;
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
     private ArrayList<String> playedCards;
-    private List<Bag.Colour> bag;
+    private ArrayList<Integer> bag;
     private ArrayList<Integer> queue;
     private ControllerServer server;
     private int numberOfPlayers;
@@ -34,6 +32,7 @@ public class VirtualView
         this.specials = new ArrayList<>();
         this.playedCards = new ArrayList<>();
         this.queue=new ArrayList<>();
+        this.bag=new ArrayList<>();
         this.server = server;
         this.numberOfPlayers = numberOfPlayers;
 
@@ -85,7 +84,60 @@ public class VirtualView
             schoolBoards.get(player).setTeam(player);
         }
     }
+    public void saveVirtualView(String fileName){
+        try{
+            clearFile(fileName);
+            File gameStateFile = new File(fileName);
 
+            ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(fileName, false));
+            outputFile.writeObject(this.schoolBoards);
+            outputFile.writeObject(this.islands);
+            outputFile.writeObject(this.clouds);
+            outputFile.writeObject(this.hands);
+            outputFile.writeObject(this.specials);
+            outputFile.writeObject(this.bag);
+            outputFile.writeObject(this.playedCards);
+            outputFile.writeObject(this.queue);
+            outputFile.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void restoreVirtualView(String fileName){
+        try{
+            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
+            this.schoolBoards = (ArrayList<SchoolBoard>) inputFile.readObject();
+            this.islands= (ArrayList<Island>) inputFile.readObject();
+            this.clouds=(ArrayList<Cloud>) inputFile.readObject();
+            this.hands=(ArrayList<Hand>) inputFile.readObject();
+            this.specials=(ArrayList<Integer>) inputFile.readObject();
+            this.bag=(ArrayList<Integer>) inputFile.readObject();
+            this.playedCards=(ArrayList<String>) inputFile.readObject();
+            this.queue=(ArrayList<Integer>) inputFile.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    public void clearFile(String fileName) {
+        try {
+            File file = new File(fileName);
+            if (file.exists()) {
+                RandomAccessFile raf = new RandomAccessFile(file, "rw");
+                raf.setLength(0);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
         if(place==0){
@@ -159,9 +211,9 @@ public class VirtualView
         //bag[color]--;
     }
 
-    public void notifyBag(List<Bag.Colour> bag) {
+    /*public void notifyBag(ArrayList<Integer> bag) {
         this.bag=bag;
-    }
+    }*/
 
 
     @Override

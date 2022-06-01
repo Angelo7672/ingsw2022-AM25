@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 import it.polimi.ingsw.server.ControllerServer;
 
-import java.io.*;
 import java.util.ArrayList;
 
 public class Controller implements ServerController{
@@ -94,6 +93,7 @@ public class Controller implements ServerController{
     @Override
     public void resumeTurn(){ synchronized(roundController) { roundController.notify();} }
 
+    /*
     public void saveVirtualView(){
         try{
             File gameStateFile = new File(fileName);
@@ -132,7 +132,7 @@ public class Controller implements ServerController{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public int getCurrentUser() { return currentUser; }
     public void setCurrentUser(int currentUser) { this.currentUser = currentUser; }

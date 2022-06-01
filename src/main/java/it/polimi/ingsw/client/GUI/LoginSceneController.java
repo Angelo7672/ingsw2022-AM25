@@ -30,9 +30,8 @@ public class LoginSceneController {
     @FXML private Button king;
     @FXML private Button next;
 
-
     public void setCharacter(ActionEvent e){
-        if(e.getSource()== wizard)
+        if(e.getSource()==wizard)
             this.currentCharacter="wizard";
         else if(e.getSource()==samurai)
             this.currentCharacter="samurai";
@@ -45,7 +44,7 @@ public class LoginSceneController {
     public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
         this.currentNickname =nicknameBox.getText();
         System.out.println(currentNickname +", "+ currentCharacter);
-        //gui.setupConnection(currentNickname, currentCharacter);
+        gui.setupConnection(currentNickname, currentCharacter);
         switchScene();
     }
     public void setGui(GUI gui) {
