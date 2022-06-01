@@ -49,6 +49,8 @@ public class CloudsManager{
         int[] students = new int[5];
         boolean checker = false;
 
+        if(cloudIndex < 0 || cloudIndex > clouds.size()) throw new NotAllowedException();   //choose an existing cloud
+
         for (int i = 0; i < 5; i++) {
             if(clouds.get(cloudIndex).getColour(i) != 0) checker = true;
             students[i]=clouds.get(cloudIndex).getColour(i);

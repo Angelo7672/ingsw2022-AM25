@@ -62,7 +62,6 @@ public class Controller implements ServerController{
 
     //Planning Phase
     public String getLastPlayedCard(int playerRef){ return virtualView.getLastPlayedCard(playerRef); }
-
     @Override
     public void playCard(int playerRef, String chosenAssistants) throws NotAllowedException {
         try { roundController.setEnd(gameManager.playCard(playerRef,currentUser,chosenAssistants));
@@ -93,7 +92,7 @@ public class Controller implements ServerController{
     public void oneLastRide(){ winner = gameManager.oneLastRide(); }
 
     @Override
-    public void resumeTurn(){ synchronized(roundController) {roundController.notify();} }
+    public void resumeTurn(){ synchronized(roundController) { roundController.notify();} }
 
     public void saveVirtualView(){
         try{
@@ -122,7 +121,6 @@ public class Controller implements ServerController{
             e.printStackTrace();
         }
     }   //da chiedere
-
     public void clearFile(String fileName) {
         try{
             File file = new File(fileName);
@@ -136,8 +134,6 @@ public class Controller implements ServerController{
             e.printStackTrace();
         }
     }
-
-
 
     public int getCurrentUser() { return currentUser; }
     public void setCurrentUser(int currentUser) { this.currentUser = currentUser; }

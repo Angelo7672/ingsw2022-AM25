@@ -55,10 +55,8 @@ public class VirtualClient implements Runnable{
         this.readyActionPhase = false;
         this.planLocker = new Object();
         this.roundPartOne = new RoundPartOne();
-        roundPartOne.start();
         this.actionLocker = new Object();
         this.roundPartTwo = new RoundPartTwo();
-        roundPartTwo.start();
         this.errorLocker = new Object();
         this.error = false;
         proxy.incrLimiter();
@@ -106,7 +104,6 @@ public class VirtualClient implements Runnable{
 
                 } else if(readyActionPhase) {    //Action Phase msg
                     readyActionPhase = false;
-                    System.out.println("action"+playerRef);
                     roundPartTwo.setActionMsg(tmp);
                     if (!error) synchronized (actionLocker) { actionLocker.notify(); }
                     else {
@@ -204,6 +201,8 @@ public class VirtualClient implements Runnable{
                     if (proxy.isFirst()) gameSetting();
                         loginClient();
                 }
+                roundPartOne.start();
+                roundPartTwo.start();
             }catch (InterruptedException e) { e.printStackTrace(); }
         }
 
@@ -338,6 +337,7 @@ public class VirtualClient implements Runnable{
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }
         }
+
         private void readyPlanningPhase(){
             GenericMessage msg = (GenericMessage) planningMsg;
 
@@ -407,7 +407,6 @@ public class VirtualClient implements Runnable{
         private boolean cloudLocker;
 
         public RoundPartTwo(){
-            this.numberOfPlayer = proxy.getConnectionsAllowed();
             this.studentLocker = true;
             this.studentCounter = 0;
             this.studentAlt = false;
@@ -418,6 +417,7 @@ public class VirtualClient implements Runnable{
         @Override
         public void run(){
             try {
+                numberOfPlayer = proxy.getConnectionsAllowed();
                 while (!victory) {
                     synchronized (actionLocker) {
                         actionLocker.wait();
@@ -437,8 +437,7 @@ public class VirtualClient implements Runnable{
                     if (actionMsg instanceof MoveStudent){
                         moveStudent();
                         go = false;
-                    }
-                    else send(new GenericAnswer("error"));
+                    } else send(new GenericAnswer("error"));
                 }
                 go = true;
             } if(motherLocker) {
@@ -447,8 +446,7 @@ public class VirtualClient implements Runnable{
                     if (actionMsg instanceof MoveMotherNature){
                         moveMotherNature();
                         go = false;
-                    }
-                    else send(new GenericAnswer("error"));
+                    } else send(new GenericAnswer("error"));
                 }
                 go = true;
             } if(cloudLocker) {
@@ -457,8 +455,7 @@ public class VirtualClient implements Runnable{
                     if (actionMsg instanceof ChosenCloud){
                         chooseCloud();
                         go = false;
-                    }
-                    else send(new GenericAnswer("error"));
+                    } else send(new GenericAnswer("error"));
                 }
             }
         }
@@ -468,7 +465,6 @@ public class VirtualClient implements Runnable{
             boolean checker;
 
             checker = server.userMoveStudent(playerRef, studentMovement.getColor(), studentMovement.isInSchool(), studentMovement.getIslandRef());
-            System.out.println("ciao"+playerRef);
             try {
                 if (checker) {
                     studentCounter++;
@@ -478,12 +474,10 @@ public class VirtualClient implements Runnable{
                             motherLocker = true;
                             readyActionPhase = true;
                             send(new GenericAnswer("transfer complete"));
-                            System.out.println("transfer complete");
                             synchronized (actionLocker){ actionLocker.wait(); }
                         }else if (studentCounter < 3) {
                             readyActionPhase = true;
                             send(new GenericAnswer("ok"));
-                            System.out.println("ok");
                             synchronized (actionLocker){ actionLocker.wait(); } //attenzione potrebbe arrivare lo special
                             moveStudent();
                         }

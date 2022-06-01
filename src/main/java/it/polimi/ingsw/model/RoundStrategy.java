@@ -155,12 +155,6 @@ public abstract class RoundStrategy {
 
     public String oneLastRide(){ return toString(playerManager.checkVictory()); }
 
-    public void chooseCloud(int playerRef,int cloudRef) throws NotAllowedException {
-        int[] students;
-
-        students = cloudsManager.removeStudents(cloudRef);
-        for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef,students[i]);
-    }
     public void effect(){}
     public boolean effect(int ref){return false;}
     public boolean effect(int ref, int color){return false;}

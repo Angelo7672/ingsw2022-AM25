@@ -93,7 +93,12 @@ public class Game implements GameManager{
         if(index!=-1) roundStrategies.get(index).effect();
     }
     @Override
-    public void chooseCloud(int playerRef, int cloudRef) throws NotAllowedException { roundStrategies.get(0).chooseCloud(playerRef, cloudRef); }
+    public void chooseCloud(int playerRef,int cloudRef) throws NotAllowedException {
+        int[] students;
+
+        students = cloudsManager.removeStudents(cloudRef);
+        for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef,students[i]);
+    }
 
     @Override
     public int readQueue(int pos) {
