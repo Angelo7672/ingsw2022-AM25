@@ -44,8 +44,25 @@ public class VirtualView
     public void saveVirtualView(){
         try{
             clearFile();
-            File gameStateFile = new File(fileName);
-
+            FileOutputStream outputFile = new FileOutputStream(fileName);
+            ObjectOutputStream objectOut = new ObjectOutputStream(outputFile);
+            for(SchoolBoard schoolBoard : schoolBoards)
+                objectOut.writeObject(schoolBoard);
+            for(Island island:islands)
+                objectOut.writeObject(island);
+            for(Cloud cloud:clouds)
+                objectOut.writeObject(cloud);
+            for(int i=0; i<specials.size(); i++)
+                objectOut.writeObject(specials.get(i));
+            for(int i=0; i<bag.size(); i++)
+                objectOut.writeObject(bag.get(i));
+            for(int i=0; i<playedCards.size(); i++)
+                objectOut.writeObject(playedCards.get(i));
+            for(int i=0; i<queue.size(); i++)
+                objectOut.writeObject(queue.get(i));
+            objectOut.close();
+            outputFile.close();
+            /*
             ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(fileName, false));
 
             outputFile.writeObject(this.schoolBoards);
@@ -56,13 +73,30 @@ public class VirtualView
             outputFile.writeObject(this.bag);
             outputFile.writeObject(this.playedCards);
             outputFile.writeObject(this.queue);
-            outputFile.close();
+            outputFile.close();*/
         } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace(); }
     }
     public void restoreVirtualView(){
         try{
             ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
+            for(SchoolBoard s:this.schoolBoards){
+                this.schoolBoards.add( (SchoolBoard) inputFile.readObject());
+            for(Island i:this.islands)
+                this.islands.add((Island) inputFile.readObject());
+            for(Cloud c:this.clouds)
+                this.clouds.add((Cloud) inputFile.readObject());
+            for(int i=0; i<this.specials.size(); i++)
+                this.specials.add((Integer) inputFile.readObject());
+            for(int i=0; i<bag.size(); i++)
+                this.bag.add((Integer) inputFile.readObject());
+            for(int i=0; i<playedCards.size(); i++)
+                this.playedCards.add((String) inputFile.readObject());
+            for(int i=0; i<queue.size(); i++)
+                this.queue.add((Integer) inputFile.readObject());
+            }
+            inputFile.close();
+            /*
             this.schoolBoards = (ArrayList<SchoolBoard>) inputFile.readObject();
             this.islands= (ArrayList<Island>) inputFile.readObject();
             this.clouds=(ArrayList<Cloud>) inputFile.readObject();
@@ -70,7 +104,7 @@ public class VirtualView
             this.specials=(ArrayList<Integer>) inputFile.readObject();
             this.bag=(ArrayList<Integer>) inputFile.readObject();
             this.playedCards=(ArrayList<String>) inputFile.readObject();
-            this.queue=(ArrayList<Integer>) inputFile.readObject();
+            this.queue=(ArrayList<Integer>) inputFile.readObject();*/
         } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace();
         } catch (ClassNotFoundException e) { e.printStackTrace(); }
