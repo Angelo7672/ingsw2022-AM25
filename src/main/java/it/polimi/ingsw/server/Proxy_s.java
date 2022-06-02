@@ -170,6 +170,10 @@ public class Proxy_s implements Exit {
             client.setSpecial(specialRef);
     }
 
+    public void clientDisconnected(int clientLost){
+        for(int i = 0; i < user.size(); i++)
+            if(i != clientLost) user.get(i).closeSocket();
+    }
 
     public void incrLimiter(){ this.limiter++; }
     public boolean isFirst() {

@@ -100,27 +100,6 @@ public abstract class RoundStrategy {
         return victory;
     }
 
-    public boolean refreshStudentsCloud(){  //Poi da cambiare e mettere tutto in cloudManager
-        boolean lastTurn = false;   //if true, the students are finished
-
-        if(numberOfPlayer == 2 || numberOfPlayer ==4 ) {
-            for (int j = 0; j < numberOfPlayer && !lastTurn; j++) {
-                for (int i = 0; i < 3; i++) {
-                    cloudsManager.refreshCloudStudents(bag.extraction(), j);
-                    lastTurn = bag.checkVictory();
-                }
-            }
-        } else if(numberOfPlayer==3) {
-            for (int j = 0; j < numberOfPlayer && !lastTurn; j++) {
-                for (int i = 0; i < 4; i++) {
-                    cloudsManager.refreshCloudStudents(bag.extraction(), j);
-                    lastTurn = bag.checkVictory();
-                }
-            }
-        }
-        return lastTurn;
-    }
-
     public void queueForPlanificationPhase(){ queueManager.queueForPlanificationPhase(); }
 
 

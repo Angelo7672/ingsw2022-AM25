@@ -92,10 +92,10 @@ public class Controller implements ServerController{
         }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
 
-    public void oneLastRide(){ winner = gameManager.oneLastRide(); }
-
     @Override
     public void resumeTurn(){ synchronized(roundController) { roundController.notify();} }
+
+    public void oneLastRide(){ winner = gameManager.oneLastRide(); }
 
     public void saveGame(){ virtualView.saveVirtualView(); }
 

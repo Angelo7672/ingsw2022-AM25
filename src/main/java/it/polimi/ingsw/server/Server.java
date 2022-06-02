@@ -83,6 +83,12 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public void resumeTurn(){ controller.resumeTurn(); }
 
+    public void endGame(){
+
+        //controller.getWinner();
+
+    }
+
     @Override
     public void sendGameInfo(int numberOfPlayers, boolean expertMode){ proxy.sendGameInfo(numberOfPlayers, expertMode); }
     @Override

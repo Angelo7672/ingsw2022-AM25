@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class VirtualView
         implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, BagListener,
-        QueueListener, Serializable {
+        QueueListener {
 
     private ArrayList<SchoolBoard> schoolBoards;
     private ArrayList<Island> islands;
@@ -31,8 +31,8 @@ public class VirtualView
         this.islands = new ArrayList<>();
         this.specials = new ArrayList<>();
         this.playedCards = new ArrayList<>();
-        this.queue=new ArrayList<>();
-        this.bag=new ArrayList<>();
+        this.queue = new ArrayList<>();
+        this.bag = new ArrayList<>();
         this.server = server;
         this.numberOfPlayers = numberOfPlayers;
         this.fileName = "saveGame.txt";
@@ -43,12 +43,14 @@ public class VirtualView
 
     public void saveVirtualView(){
         try{
-            clearFile();
+            //clearFile();
             FileOutputStream outputFile = new FileOutputStream(fileName);
             ObjectOutputStream objectOut = new ObjectOutputStream(outputFile);
-            for(SchoolBoard schoolBoard : schoolBoards)
-                objectOut.writeObject(schoolBoard);
-            for(Island island:islands)
+
+            objectOut.writeObject(schoolBoards);
+            /*for(SchoolBoard schoolBoard : schoolBoards)
+                objectOut.writeObject(schoolBoard);*/
+            /*for(Island island:islands)
                 objectOut.writeObject(island);
             for(Cloud cloud:clouds)
                 objectOut.writeObject(cloud);
@@ -59,7 +61,7 @@ public class VirtualView
             for(int i=0; i<playedCards.size(); i++)
                 objectOut.writeObject(playedCards.get(i));
             for(int i=0; i<queue.size(); i++)
-                objectOut.writeObject(queue.get(i));
+                objectOut.writeObject(queue.get(i));*/
             objectOut.close();
             outputFile.close();
             /*
@@ -260,6 +262,7 @@ public class VirtualView
         boolean[] professors;
 
         public SchoolBoard(String nickname, String character){
+            super();
             this.nickname = nickname;
             this.character = character;
             this.studentsEntrance = new int[]{0, 0, 0, 0, 0};

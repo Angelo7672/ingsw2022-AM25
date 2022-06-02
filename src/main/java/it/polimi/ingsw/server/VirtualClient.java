@@ -144,7 +144,7 @@ public class VirtualClient implements Runnable{
                             synchronized(errorLocker){ errorLocker.notify(); }
                         }
                     }
-                }else System.out.println("errore!"); //ovviamente da cambiare
+                }else System.out.println("errore! "+playerRef); //ovviamente da cambiare
             }
         }catch (SocketException socketException){
             clientConnectionExpired(socketException);
@@ -152,7 +152,7 @@ public class VirtualClient implements Runnable{
             System.err.println(e.getMessage());
             System.out.println("Client disconnected!");
             connectionExpired = true;
-            //metodo per notificare tutti
+            proxy.clientDisconnected(playerRef);
             server.exitError();
         }
     }
@@ -161,16 +161,27 @@ public class VirtualClient implements Runnable{
     public void unlockActionPhase(){ readyActionPhase = true; }
 
     //Message to client
-    public void sendPlayCard(){
+    public void sendPlayCard(){ send(new PlayCard()); }
+    public void sendStartTurn(){ send(new StartTurn()); }
+
+    private void send(Answer serverAnswer){
         try {
-            output.writeObject(new PlayCard());
+            output.reset();
+            output.writeObject(serverAnswer);
             output.flush();
         }catch (IOException e){ clientConnectionExpired(e); }
     }
-    public void sendStartTurn(){
+    private void clientConnectionExpired(IOException e){
+        System.err.println(e.getMessage());
+        System.out.println("Client disconnected!");
+        connectionExpired = true;
+        proxy.clientDisconnected(playerRef);
+        server.exitError();
+    }
+    public void closeSocket(){
         try {
-            output.writeObject(new StartTurn());
-            output.flush();
+            send(new DisconnectedAnswer());
+            this.socket.close();
         }catch (IOException e){ clientConnectionExpired(e); }
     }
     
@@ -288,7 +299,6 @@ public class VirtualClient implements Runnable{
                         readyStart();
                     }
                 } else {
-                    //send(new GenericAnswer("error"));
                     send(new LoginMessage(server.alreadyChosenCharacters()));
                     synchronized (errorLocker) {
                         loginInitialization = true;
@@ -313,7 +323,26 @@ public class VirtualClient implements Runnable{
                     }
                 }else{
                     proxy.thisClientIsReady();
-                    readyPlanningPhase = true;  //controlla bene, questo fa ricevere il ready for play card
+                    synchronized (setupLocker) {
+                        clientInitialization = true;  //controlla bene, questo fa ricevere il ready for play card
+                        setupLocker.wait();
+                        readyPlanningPhase();
+                    }
+                }
+            }catch (InterruptedException ex) { ex.printStackTrace(); }
+        }
+        private void readyPlanningPhase(){
+            GenericMessage msg = (GenericMessage) setupMsg;
+
+            try {
+                if (!msg.getMessage().equals("Ready for Planning Phase")) {
+                    send(new GenericAnswer("error"));
+                    synchronized (errorLocker) {
+                        clientInitialization = true;
+                        error = true;
+                        errorLocker.wait();
+                        readyPlanningPhase();
+                    }
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
@@ -330,31 +359,12 @@ public class VirtualClient implements Runnable{
                 while (!victory) {
                     synchronized (planLocker) {
                         planLocker.wait();
-                        readyPlanningPhase();
+                        planningPhase();
                         readyForAction();
                         server.resumeTurn();
                     }
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }
-        }
-
-        private void readyPlanningPhase(){
-            GenericMessage msg = (GenericMessage) planningMsg;
-
-            try {
-                if (!msg.getMessage().equals("Ready for Planning Phase")) {
-                    send(new GenericAnswer("error"));
-                    synchronized (errorLocker) {
-                        oneCardAtaTime = true;
-                        error = true;
-                        errorLocker.wait();
-                        readyPlanningPhase();
-                    }
-                }else{
-                    synchronized (planLocker){ planLocker.wait(); }
-                    planningPhase();
-                }
-            }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void planningPhase() {
             CardMessage cardMessage = (CardMessage) planningMsg;
@@ -458,7 +468,6 @@ public class VirtualClient implements Runnable{
                     } else send(new GenericAnswer("error"));
                 }
             }
-            System.out.println("Fine");
         }
 
         private void moveStudent(){
@@ -466,6 +475,7 @@ public class VirtualClient implements Runnable{
             boolean checker;
 
             checker = server.userMoveStudent(playerRef, studentMovement.getColor(), studentMovement.isInSchool(), studentMovement.getIslandRef());
+            System.out.println("studente "+studentCounter);
             try {
                 if (checker) {
                     studentCounter++;
@@ -506,6 +516,7 @@ public class VirtualClient implements Runnable{
                     }
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
+            System.out.println("Fine Action "+playerRef);
         }
         private void moveMotherNature(){
             MoveMotherNature motherMovement = (MoveMotherNature) actionMsg;
@@ -571,28 +582,5 @@ public class VirtualClient implements Runnable{
         }
 
         public void setActionMsg(Message actionMsg) { this.actionMsg = actionMsg; }
-    }
-
-    private void send(Answer serverAnswer){
-        try {
-            output.reset();
-            output.writeObject(serverAnswer);
-            output.flush();
-        }catch (IOException e){ clientConnectionExpired(e); }
-    }
-
-    private void clientConnectionExpired(IOException e){
-        System.err.println(e.getMessage());
-        System.out.println("Client disconnected!");
-        connectionExpired = true;
-        //metodo per notificare tutti
-        server.exitError();
-    }
-
-    public void closeSocket(){
-        try {
-            send(new DisconnectedAnswer());
-            this.socket.close();
-        }catch (IOException e){ clientConnectionExpired(e); }
     }
 }
