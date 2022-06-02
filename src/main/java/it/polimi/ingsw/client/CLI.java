@@ -200,7 +200,10 @@ public class CLI implements Runnable {
         } else if(special==12){
             System.out.println("Which color? Insert color");
             String color = scanner.next();
-            if(translateColor(color)==-1) return false;
+            if(translateColor(color)==-1) {
+                System.out.println("Error, enter an existing color");
+                return false;
+            }
             return proxy.useSpecial(special, translateColor(color), null, null);
         }
         return false;
@@ -218,7 +221,10 @@ public class CLI implements Runnable {
         }
         String result =proxy.playCard(card);
         if (!result.equalsIgnoreCase("ok")) System.out.println(result);
-        else constants.setCardPlayed(true);
+        else {
+            constants.setCardPlayed(true);
+            System.out.println("it's your opponent turn, wait...");
+        }
     }
 
     public void moveStudents() {
@@ -226,19 +232,37 @@ public class CLI implements Runnable {
         do {
             cli();
             String accepted;
-            String color;
-            String where;
+            String color=null;
+            String where=null;
+            int colorInt=-1;
             int islandRef = -1;
             try {
-                System.out.println("Which student do you want to move? Insert color");
-                color = scanner.next();
-                int colorInt = translateColor(color);
-                System.out.println("Where do you want to move the student? School or Island");
-                where = scanner.next();
+                while(color==null) {
+                    System.out.println("Which student do you want to move? Insert color");
+                    color = scanner.next();
+                    colorInt = translateColor(color);
+                    if(colorInt==-1) {
+                        System.out.println("Error, enter an existing color");
+                        color = null;
+                    }
+                }
+                while(where==null) {
+                    System.out.println("Where do you want to move the student? School or Island");
+                    where = scanner.next();
+                    if(!where.equalsIgnoreCase("island")&&!where.equalsIgnoreCase("school")){
+                        System.out.println("Error, insert school or island");
+                        where=null;
+                    }
+                }
                 if (where.equalsIgnoreCase("island")) {
-                    System.out.println("Which island? insert the number");
-                    islandRef = scanner.nextInt();
-                    islandRef = islandRef-1;
+                    while (islandRef==-1) {
+                        System.out.println("Which island? insert the number");
+                        islandRef = scanner.nextInt();
+                        islandRef = islandRef - 1;
+                        if(islandRef<0 || islandRef>=view.getIslandSize()){
+                            System.out.println("Error, insert an existing island");
+                        }
+                    }
                 }
                 accepted = proxy.moveStudent(colorInt, where, islandRef);
                 if (accepted.equals("transfer complete")) finished = true;
@@ -275,6 +299,10 @@ public class CLI implements Runnable {
             do {
                 System.out.println("Which cloud do you want?");
                 cloud = scanner.nextInt();
+                if(cloud<=0 || cloud>view.getNumberOfPlayers()) {
+                    cloud = -1;
+                    System.out.println("Error, enter an existing number");
+                }
             } while (cloud == -1);
         }catch (InputMismatchException e){
             System.err.println("error, try again");
@@ -293,9 +321,14 @@ public class CLI implements Runnable {
         try {
             setup();
             while (active) {
-                if (proxy.startPlanningPhase()) constants.resetAll();
+                System.out.println("it's your opponent turn, wait...");
+                while(true) {
+                    if (proxy.startPlanningPhase()){
+                        constants.resetAll();
+                        break;
+                    }
+                }
                 while (!constants.isCloudChosen()) {
-                    System.out.println("turn");
                     turn();
                 }
             }
@@ -316,7 +349,6 @@ public class CLI implements Runnable {
             constants.setActionPhaseStarted(proxy.startActionPhase());
         }
         else {
-
             switch (phase) {
                 case ("MoveStudent") -> moveStudents();
                 case ("MoveMother") -> moveMotherNature();
@@ -347,7 +379,7 @@ public class CLI implements Runnable {
         String ANSI_CYAN = "\u001B[36m";
         String ANSI_WHITE = "\u001B[37m";
         String  UNDERLINE = "\u001B[4m";
-        System.out.println(System.lineSeparator().repeat(100));
+        System.out.println(System.lineSeparator().repeat(10));
         /*System.out.print("\033[H\033[2J");
         System.out.flush();*/
         System.out.println(UNDERLINE+"ISLANDS"+ANSI_RESET);
@@ -362,7 +394,7 @@ public class CLI implements Runnable {
             System.out.println(". Towers value: " + view.getIslandTowers(i));
         }
         System.out.println();
-        System.out.println(UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + view.getMotherPosition());//aggiungere
+        System.out.println(UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));//aggiungere
         System.out.println();
 
         System.out.println(UNDERLINE+"SCHOOLS"+ANSI_RESET);
@@ -385,8 +417,11 @@ public class CLI implements Runnable {
         }
         System.out.println(UNDERLINE+"CLOUDS"+ANSI_RESET);
         for (int i = 0; i < view.getNumberOfPlayers(); i++) {
+            if (view.getStudentsCloud(i)[0]+view.getStudentsCloud(i)[1]+view.getStudentsCloud(i)[2]+view.getStudentsCloud(i)[3]+view.getStudentsCloud(i)[4] != 0){
             System.out.println("\t"+"Cloud " + (i + 1) + ": Students:" +ANSI_GREEN + " Green " + view.getStudentsCloud(i)[0] + ANSI_RED + ", Red " + view.getStudentsCloud(i)[1] +
                     ANSI_YELLOW + ", Yellow " + view.getStudentsCloud(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsCloud(i)[3] + ANSI_BLUE+ ", Blue " + view.getStudentsCloud(i)[4]+ANSI_RESET);
+
+            }
         }
         System.out.println();
 

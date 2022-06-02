@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 
 
@@ -19,13 +18,19 @@ public class Proxy_c implements Exit{
     private Answer tempObj;
     private View view;
     private Thread ping;
+    private Thread receive;
+    private ArrayList<Answer> answersList;
+    private final Object lock;
 
     public Proxy_c(Socket socket) throws IOException{
         this.socket = socket;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
         startPing();
+        startReceive();
         socket.setSoTimeout(15000);
+        answersList = new ArrayList<>();
+        lock = new Object();
     }
 
     public String first() throws IOException, ClassNotFoundException {
@@ -37,7 +42,9 @@ public class Proxy_c implements Exit{
     }
 
     public ArrayList<String> getChosenCharacters() throws IOException, ClassNotFoundException {
-        if(tempObj == null) tempObj = receive();
+        if(tempObj == null) {
+            tempObj = receive();
+        }
         LoginMessage msg = (LoginMessage) tempObj;
         tempObj = null;
         return (msg.getCharacterAlreadyChosen());
@@ -66,7 +73,7 @@ public class Proxy_c implements Exit{
         else return false;
 
         send(new SetupGame(numberOfPlayers, isExpert));
-        tempObj = receive();
+        tempObj = receive();;
         if(!((GenericAnswer)tempObj).getMessage().equals("ok")) return false;
         send(new GenericMessage("Ready for login!"));
         tempObj = receive();
@@ -86,7 +93,10 @@ public class Proxy_c implements Exit{
     public String playCard(String card) throws IOException, ClassNotFoundException {
         send(new CardMessage(card));
         tempObj = receive();
-        if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage();
+        if(tempObj instanceof GenericAnswer) {
+            view.setCards(card);
+            return ((GenericAnswer)tempObj).getMessage();
+        }
         if(tempObj instanceof MoveNotAllowedAnswer) return ((MoveNotAllowedAnswer) tempObj).getMessage();
         return "Error, try again";
     }
@@ -133,19 +143,19 @@ public class Proxy_c implements Exit{
 
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
         send(new CheckSpecial(special));
-        tempObj = (SpecialMessage) receive();
+        tempObj = receive();
         return ((SpecialMessage)tempObj).getMessage().equals("ok");
     }
 
     public boolean useSpecial(int special, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException {
         send(new UseSpecial(special, ref, color1, color2));
+        while (answersList.size()==0) {}//wait
         tempObj = receive();
         return ((GenericAnswer)tempObj).getMessage().equals("ok");
     }
 
     //send message to server
     public void send(Message message) throws IOException {
-        //outputStream = new ObjectOutputStream(socket.getOutputStream());
         try {
             outputStream.reset();
             outputStream.writeObject(message);
@@ -154,16 +164,23 @@ public class Proxy_c implements Exit{
 
         }
     }
-    public Answer receive() throws IOException, ClassNotFoundException{
+    public Answer receive() throws IOException, ClassNotFoundException {
         Answer tmp;
         while (true) {
-            tmp = (Answer) inputStream.readObject();
+            synchronized (lock){
+                try {
+                    if (answersList.size() == 0) lock.wait();
+                }catch (InterruptedException e){
+
+                }
+            tmp = answersList.get(0);
+            answersList.remove(0);
             if(tmp instanceof UserInfoAnswer) {
                 view.setUserInfo((UserInfoAnswer)tmp);
             }
             else if(tmp instanceof LastCardMessage) {view.setLastCard((LastCardMessage)tmp);}
-            else if(tmp instanceof  NumberOfCardsMessage) {view.setNumberOfCards((NumberOfCardsMessage)tmp);}
-            else if(tmp instanceof SchoolStudentMessage) {view.setStudents((SchoolStudentMessage)tmp);}
+            else if(tmp instanceof NumberOfCardsMessage) {view.setNumberOfCards((NumberOfCardsMessage)tmp);}
+            else if(tmp instanceof SchoolStudentMessage) {view.setSchoolStudents((SchoolStudentMessage)tmp);}
             else if(tmp instanceof ProfessorMessage) {view.setProfessors((ProfessorMessage)tmp);}
             else if(tmp instanceof SchoolTowersMessage) {view.setSchoolTowers((SchoolTowersMessage)tmp);}
             else if(tmp instanceof CoinsMessage) {view.setCoins((CoinsMessage)tmp);}
@@ -178,16 +195,54 @@ public class Proxy_c implements Exit{
 
             }
             else if(tmp instanceof GameInfoAnswer) {
-                view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(),((GameInfoAnswer) tmp).isExpertMode());
+                view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());
                 return null;
             }
-            else if(tmp instanceof PongAnswer){socket.setSoTimeout(15000);}
             else if(tmp instanceof SoldOutAnswer){
-                System.out.println("sold out");
+                System.err.println("sold out");
+            }
+            else if(tmp instanceof DisconnectedAnswer){
+                System.err.println("Client disconnected, game over.");
+                socket.close();
+                return null;
             }
             else break;
+            }
         }
         return tmp;
+    }
+
+    private void startReceive(){
+        receive = new Thread(() -> {
+            ArrayList<Answer> answersTmpList = new ArrayList<>();
+            Answer tmp;
+            while (true){
+                try {
+                    tmp = (Answer) inputStream.readObject();
+                    if(tmp instanceof PongAnswer){
+                        socket.setSoTimeout(15000);
+                    }
+                    else answersTmpList.add(tmp);
+                    synchronized (lock){
+                        for(int i=0; i<answersTmpList.size(); i++) {
+                            answersList.add(answersTmpList.get(i));
+                            answersTmpList.remove(i);
+                        }
+                        if(answersList.size()!=0) lock.notify();
+
+                    }
+                } catch (IOException | ClassNotFoundException e) {
+                    try {
+                        System.err.println("Client disconnected, game over.");
+                        socket.close();
+                        return;
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+        receive.start();
     }
 
     private void startPing() {

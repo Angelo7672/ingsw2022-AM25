@@ -85,7 +85,7 @@ public class View {
         islands.remove(msg.getUnifiedIsland());
     }
 
-    public void setStudents(SchoolStudentMessage msg){
+    public void setSchoolStudents(SchoolStudentMessage msg){
         if(msg.getMessage().equalsIgnoreCase("Entrance")) schoolBoards.get(msg.getComponentRef()).setStudentsEntrance(msg.getColor(), msg.getNewValue());
         else if (msg.getMessage().equalsIgnoreCase("Table")) schoolBoards.get(msg.getComponentRef()).setStudentsTable(msg.getColor(), msg.getNewValue());
     }
@@ -101,7 +101,6 @@ public class View {
     public void setCoins(CoinsMessage msg){ hands.get(msg.getPlayerRef()).setCoins(msg.getPlayerRef());}
     public void setLastCard(LastCardMessage msg){
         hands.get(msg.getPlayerRef()).setLastCard(msg.getCard());
-        cards.remove(msg.getCard());
     }
     public void setNumberOfCards(NumberOfCardsMessage msg){hands.get(msg.getPlayerRef()).setNumberOfCards(msg.getNumberOfCards());}
 
@@ -113,14 +112,23 @@ public class View {
     public void setSpecialStudents(int color, int newValue, int special){specials.get(special).setStudents(color, newValue);}
     public void setNoEntry(int noEntry, int special){specials.get(special).setNoEntry(noEntry);}
 
-    public void setCards(Assistant card){cards.remove(card);}
+    public void setCards(String card){
+        int index=-1;
+        for (int i = 0; i < cards.size(); i++) {
+            if(cards.get(i).toString().equalsIgnoreCase(card)){
+                index = i;
+                break;
+            }
+        }
+        cards.remove(index);
+        }
 
     public int getIslandTowers(int islandRef){ return islands.get(islandRef).getTowersNumber();}
     public int getTowersColor(int islandRef){ return islands.get(islandRef).getTowersColor();}
     public Boolean isMotherPosition(int islandRef){ return islands.get(islandRef).isMother();}
     public int getMotherPosition(){
         for (int i = 0; i < getIslandSize(); i++) {
-            if(islands.get(i).isMother()) return i+1;
+            if(islands.get(i).isMother()) return i;
         }
         return 0;
     }
