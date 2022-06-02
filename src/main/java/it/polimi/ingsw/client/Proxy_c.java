@@ -164,7 +164,7 @@ public class Proxy_c implements Exit{
 
         }
     }
-    public Answer receive() throws IOException, ClassNotFoundException {
+    public Answer receive() throws IOException {
         Answer tmp;
         while (true) {
             synchronized (lock){
