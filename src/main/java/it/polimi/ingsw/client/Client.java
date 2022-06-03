@@ -34,5 +34,9 @@ public class Client {
             gui.main(null);
 
         }
+        else {
+            System.err.println("Error! Try again.");
+            return;
+        }
     }
 }

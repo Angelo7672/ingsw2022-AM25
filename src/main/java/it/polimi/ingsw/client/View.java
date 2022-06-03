@@ -28,6 +28,7 @@ public class View {
     private SpecialListener specialListener;
     private StudentsListener studentsListener;
     private BagListener bagListener;
+    private int maxStepsMotherNature;
 
     public View(int numberOfPlayers, boolean expertMode){
         this.numberOfPlayers = numberOfPlayers;
@@ -77,6 +78,9 @@ public class View {
         islands.get(getMotherPosition()).setMotherPosition(false);
         islands.get(msg.getMotherPosition()).setMotherPosition(true);
     }
+    public void setMaxStepsMotherNature(int steps){
+        maxStepsMotherNature = steps;
+    }
     public void setTowersColor(IslandTowersColorMessage msg){ islands.get(msg.getIslandRef()).setTowersColor(msg.getColor()); }
     public void setInhibited(InhibitedIslandMessage msg) {
         islands.get(msg.getIslandRef()).setInhibited(msg.getInhibited());
@@ -120,6 +124,7 @@ public class View {
                 break;
             }
         }
+        setMaxStepsMotherNature(cards.get(index).getMovement());
         cards.remove(index);
         }
 
@@ -132,6 +137,7 @@ public class View {
         }
         return 0;
     }
+    public int getMaxStepsMotherNature(){return maxStepsMotherNature;}
     public int[] getStudentsIsland(int islandRef){ return islands.get(islandRef).getStudents();}
     public int getInhibited(int islandRef){ return islands.get(islandRef).isInhibited; }
 

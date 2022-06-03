@@ -31,7 +31,7 @@ public class CLI implements Runnable {
         System.out.println("Waiting for server...");
         String result = proxy.first();
         if(result.equals("SetupGame")) {
-            while(!setupGame()) System.out.println("Error, try again");
+            setupGame();
         }
         else  if (result.equals("Server Sold Out")){
             System.out.println(result);
@@ -72,20 +72,23 @@ public class CLI implements Runnable {
     }
 
     public boolean setupGame(){
-        while(true) {
-            int numberOfPlayers;
-            String expertMode;
+        int numberOfPlayers;
+        String expertMode;
+        while (true){
             try {
                 System.out.println("Insert number of player");
-                numberOfPlayers = scanner.nextInt();
+                do {
+                    String intString = scanner.next();
+                    numberOfPlayers = Integer.parseInt(intString);
+                }while (numberOfPlayers<2 || numberOfPlayers>4);
                 do{
-                System.out.println("Expert mode? [y/n]");
-                expertMode = scanner.next();
+                    System.out.println("Expert mode? [y/n]");
+                    expertMode = scanner.next();
                 }while(expertMode==null);
                 if (proxy.setupGame(numberOfPlayers, expertMode)) return true;
-                else System.out.println("Error, try again");
-            } catch (InputMismatchException e) {
-                return false;
+                else System.err.println("Error, try again");
+            } catch (NumberFormatException e) {
+                System.err.println("Error, insert a number");
             } catch (IOException e) {
                 System.err.println("io");
             } catch (ClassNotFoundException e) {
@@ -105,108 +108,120 @@ public class CLI implements Runnable {
         if (answer.equalsIgnoreCase("n")) return;
         else if (answer.equalsIgnoreCase("y")) {
             int special = -1;
-            do {
-                System.out.println("Which special do you want to use? Insert number");
-                special = scanner.nextInt();
-            } while (special == -1);
+            try {
+                do {
+                    System.out.println("Which special do you want to use? Insert number");
+                    String intString = scanner.next();
+                    special = Integer.parseInt(intString);
+                } while (special == -1);
+            }catch (NumberFormatException e){
+                System.err.println("Error, insert a number.");
+                useSpecial();
+            }
             special = special-1;
             if(!proxy.checkSpecial(special)) {
-                System.out.println("Error, special not present");
+                System.err.println("Error, special not present");
                 useSpecial();
             }
             if(special(special)) return;
         }
-        System.out.println("Error, try again");
+        System.err.println("Error, try again");
         useSpecial();
     }
 
     private boolean special(int special) throws IOException, ClassNotFoundException {
-        if (special == 2 || special == 4 || special == 6 || special == 8) {
-            return proxy.useSpecial(special, 0, null, null);
-        }
-        else if (special == 1) {
-            System.out.println("Which student do you want to move? Insert color");
-            String color = scanner.next();
-            if(translateColor(color)==-1) return false;
-            ArrayList<Integer> color1 = new ArrayList<>();
-            color1.add(translateColor(color));
-            int island = -1;
-            do {
-                System.out.println("In witch island? Insert the number");
-                island = scanner.nextInt();
-            } while (island == -1);
-            island = island-1;
-            return proxy.useSpecial(special, island, color1, null);
-        } else if (special == 3 || special == 5) {
-            int island =-1;
-            do {
-                System.out.println("Which island? Insert the number");
-                island = scanner.nextInt();
-            } while(island==-1);
-            island = island-1;
-            return proxy.useSpecial(special, island, null, null);
-        } else if(special == 7){
-            ArrayList<Integer> entranceStudents = new ArrayList<>();
-            ArrayList<Integer> cardStudents = new ArrayList<>();
-            String color;
-            for(int i=0; i<3; i++){
-                System.out.println("Which student on the card?");
-                color = scanner.next();
-                if(translateColor(color)==-1) return false;
-                cardStudents.add(translateColor(color));
-                System.out.println("Which student in the entrance?");
-                color = scanner.next();
-                if(translateColor(color)==-1) return false;
-                entranceStudents.add(translateColor(color));
-                if(i<2) {
-                    System.out.println("Do you want to move student again? [Y/N]");
-                    String answer = scanner.next();
-                    if(answer.equalsIgnoreCase("n")) break;
-                }
-                if(proxy.useSpecial(special, 0, entranceStudents, cardStudents)) return true;
-            }
-        } else if(special == 9){
-            System.out.println("Which color?");
-            String color = scanner.next();
-            if(translateColor(color)==-1) return false;
-            return proxy.useSpecial(special, translateColor(color), null, null);
-        } else if(special == 10){
-            ArrayList<Integer> entranceStudents = new ArrayList<>();
-            ArrayList<Integer> tableStudents = new ArrayList<>();
-            String color;
-            for(int i=0; i<2; i++) {
-                System.out.println("Which student on the table?");
-                color = scanner.next();
+        try {
+            if (special == 2 || special == 4 || special == 6 || special == 8) {
+                return proxy.useSpecial(special, 0, null, null);
+            } else if (special == 1) {
+                System.out.println("Which student do you want to move? Insert color");
+                String color = scanner.next();
                 if (translateColor(color) == -1) return false;
-                tableStudents.add(translateColor(color));
-                System.out.println("Which student in the entrance?");
-                color = scanner.next();
-                if (translateColor(color) == -1) return false;
-                entranceStudents.add(translateColor(color));
-                if (i < 1) {
-                    System.out.println("Do you want to move student again? [Y/N]");
-                    String answer = scanner.next();
-                    if (answer.equalsIgnoreCase("n")) break;
+                ArrayList<Integer> color1 = new ArrayList<>();
+                color1.add(translateColor(color));
+                int island = -1;
+                do {
+                    System.out.println("In witch island? Insert the number");
+                    String intString = scanner.next();
+                    island = Integer.parseInt(intString);
+                } while (island == -1);
+                island = island - 1;
+                return proxy.useSpecial(special, island, color1, null);
+            } else if (special == 3 || special == 5) {
+                int island = -1;
+                do {
+                    System.out.println("Which island? Insert the number");
+                    String intString = scanner.next();
+                    island = Integer.parseInt(intString);
+                } while (island == -1);
+                island = island - 1;
+                return proxy.useSpecial(special, island, null, null);
+            } else if (special == 7) {
+                ArrayList<Integer> entranceStudents = new ArrayList<>();
+                ArrayList<Integer> cardStudents = new ArrayList<>();
+                String color;
+                for (int i = 0; i < 3; i++) {
+                    System.out.println("Which student on the card?");
+                    color = scanner.next();
+                    if (translateColor(color) == -1) return false;
+                    cardStudents.add(translateColor(color));
+                    System.out.println("Which student in the entrance?");
+                    color = scanner.next();
+                    if (translateColor(color) == -1) return false;
+                    entranceStudents.add(translateColor(color));
+                    if (i < 2) {
+                        System.out.println("Do you want to move student again? [Y/N]");
+                        String answer = scanner.next();
+                        if (answer.equalsIgnoreCase("n")) break;
+                    }
+                    if (proxy.useSpecial(special, 0, entranceStudents, cardStudents)) return true;
                 }
+            } else if (special == 9) {
+                System.out.println("Which color?");
+                String color = scanner.next();
+                if (translateColor(color) == -1) return false;
+                return proxy.useSpecial(special, translateColor(color), null, null);
+            } else if (special == 10) {
+                ArrayList<Integer> entranceStudents = new ArrayList<>();
+                ArrayList<Integer> tableStudents = new ArrayList<>();
+                String color;
+                for (int i = 0; i < 2; i++) {
+                    System.out.println("Which student on the table?");
+                    color = scanner.next();
+                    if (translateColor(color) == -1) return false;
+                    tableStudents.add(translateColor(color));
+                    System.out.println("Which student in the entrance?");
+                    color = scanner.next();
+                    if (translateColor(color) == -1) return false;
+                    entranceStudents.add(translateColor(color));
+                    if (i < 1) {
+                        System.out.println("Do you want to move student again? [Y/N]");
+                        String answer = scanner.next();
+                        if (answer.equalsIgnoreCase("n")) break;
+                    }
+                }
+                return proxy.useSpecial(special, 0, entranceStudents, tableStudents);
+            } else if (special == 11) {
+                System.out.println("Which student do you want to move? Insert color");
+                String color = scanner.next();
+                if (translateColor(color) == -1) return false;
+                ArrayList<Integer> color1 = new ArrayList<>();
+                color1.add(translateColor(color));
+                return proxy.useSpecial(special, -1, color1, null);
+            } else if (special == 12) {
+                System.out.println("Which color? Insert color");
+                String color = scanner.next();
+                if (translateColor(color) == -1) {
+                    System.out.println("Error, enter an existing color");
+                    return false;
+                }
+                return proxy.useSpecial(special, translateColor(color), null, null);
             }
-            return proxy.useSpecial(special, 0, entranceStudents, tableStudents);
-        } else if(special==11){
-            System.out.println("Which student do you want to move? Insert color");
-            String color = scanner.next();
-            if(translateColor(color)==-1) return false;
-            ArrayList<Integer> color1 = new ArrayList<>();
-            color1.add(translateColor(color));
-            return proxy.useSpecial(special, -1, color1, null);
-        } else if(special==12){
-            System.out.println("Which color? Insert color");
-            String color = scanner.next();
-            if(translateColor(color)==-1) {
-                System.out.println("Error, enter an existing color");
-                return false;
-            }
-            return proxy.useSpecial(special, translateColor(color), null, null);
+            return false;
+        }catch (NumberFormatException e){
+            System.out.println("Error, insert a number.");
+            return false;
         }
-        return false;
     }
 
     public void playCard() throws IOException, ClassNotFoundException {
@@ -257,7 +272,8 @@ public class CLI implements Runnable {
                 if (where.equalsIgnoreCase("island")) {
                     while (islandRef==-1) {
                         System.out.println("Which island? insert the number");
-                        islandRef = scanner.nextInt();
+                        String intString = scanner.next();
+                        islandRef = Integer.parseInt(intString);
                         islandRef = islandRef - 1;
                         if(islandRef<0 || islandRef>=view.getIslandSize()){
                             System.out.println("Error, insert an existing island");
@@ -267,9 +283,10 @@ public class CLI implements Runnable {
                 accepted = proxy.moveStudent(colorInt, where, islandRef);
                 if (accepted.equals("transfer complete")) finished = true;
                 System.out.println(accepted);
-                System.out.println("acceped");
-            } catch (InputMismatchException | IOException | ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 System.err.println("Error, try again");
+            } catch (NumberFormatException e){
+                System.err.println("Error, insert a number.");
             }
         } while (!finished);
         constants.setStudentMoved(true);
@@ -280,11 +297,16 @@ public class CLI implements Runnable {
         int steps = -1;
         try {
             do {
-                System.out.println("How many steps do you want to move Mother Nature?");
-                steps = scanner.nextInt();
+                System.out.println("How many steps do you want to move Mother Nature? Maximum number of steps "+view.getMaxStepsMotherNature());
+                String intString = scanner.next();
+                steps = Integer.parseInt(intString);
+                if(steps>view.getMaxStepsMotherNature()) {
+                    System.out.println("Error, insert a number between 1 and "+view.getMaxStepsMotherNature());
+                    steps=-1;
+                }
             } while (steps <= 0);
-        }catch (InputMismatchException e){
-            System.err.println("error, try again");
+        }catch (NumberFormatException e){
+            System.err.println("error, insert a number.");
             return;
         }
         String result = proxy.moveMotherNature(steps);
@@ -298,14 +320,15 @@ public class CLI implements Runnable {
         try{
             do {
                 System.out.println("Which cloud do you want?");
-                cloud = scanner.nextInt();
+                String intString = scanner.next();
+                cloud = Integer.parseInt(intString);
                 if(cloud<=0 || cloud>view.getNumberOfPlayers()) {
                     cloud = -1;
                     System.out.println("Error, enter an existing number");
                 }
             } while (cloud == -1);
-        }catch (InputMismatchException e){
-            System.err.println("error, try again");
+        }catch (NumberFormatException e){
+            System.err.println("error, insert a number");
             return;
         }
         cloud = cloud-1;
