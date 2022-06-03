@@ -475,7 +475,7 @@ public class VirtualClient implements Runnable{
             boolean checker;
 
             checker = server.userMoveStudent(playerRef, studentMovement.getColor(), studentMovement.isInSchool(), studentMovement.getIslandRef());
-            System.out.println("studente "+studentCounter);
+
             try {
                 if (checker) {
                     studentCounter++;
@@ -516,7 +516,6 @@ public class VirtualClient implements Runnable{
                     }
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
-            System.out.println("Fine Action "+playerRef);
         }
         private void moveMotherNature(){
             MoveMotherNature motherMovement = (MoveMotherNature) actionMsg;

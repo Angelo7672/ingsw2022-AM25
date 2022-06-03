@@ -135,7 +135,8 @@ public class Game implements GameManager{
         int[] students;
 
         students = cloudsManager.removeStudents(cloudRef);
-        for(int i = 0; i < 5 ; i++) playerManager.setStudentEntrance(playerRef,students[i]);
+        for(int i = 0; i < 5 ; i++)
+            playerManager.setStudentEntrance(playerRef,i,students[i]);
     }
 
     @Override

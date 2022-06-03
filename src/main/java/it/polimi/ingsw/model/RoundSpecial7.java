@@ -11,9 +11,9 @@ public class RoundSpecial7 extends RoundStrategy{
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         special = new Special7();
         int[] extraction = {0,0,0,0,0};
-        for(int i=0; i<6; i++){
+        for(int i=0; i<6; i++)
             extraction[bag.extraction()]++;
-        }
+
         special.setup(extraction);
     }
 
@@ -22,7 +22,7 @@ public class RoundSpecial7 extends RoundStrategy{
         if(playerManager.checkStudentsEntrance(entranceStudent, playerRef) && special.checkStudents(cardStudent)) {
             for (int i = 0; i < entranceStudent.size(); i++) {
                 special.effect(cardStudent.get(i), entranceStudent.get(i));
-                playerManager.setStudentEntrance(playerRef, cardStudent.get(i));
+                //playerManager.setStudentEntrance(playerRef, cardStudent.get(i));
                 try { playerManager.removeStudentEntrance(playerRef, entranceStudent.get(i));
                 }catch (NotAllowedException notAllowedException){ return false; }
             }

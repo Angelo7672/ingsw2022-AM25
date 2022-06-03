@@ -35,7 +35,7 @@ public class VirtualView
         this.bag = new ArrayList<>();
         this.server = server;
         this.numberOfPlayers = numberOfPlayers;
-        this.fileName = "saveGame.txt";
+        this.fileName = "saveGame.bin";
 
         for(int i=0; i<12; i++)
             this.islands.add(new Island());
@@ -43,7 +43,7 @@ public class VirtualView
 
     public void saveVirtualView(){
         try{
-            //clearFile();
+            clearFile();
             FileOutputStream outputFile = new FileOutputStream(fileName);
             ObjectOutputStream objectOut = new ObjectOutputStream(outputFile);
 

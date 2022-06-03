@@ -50,10 +50,10 @@ public class PlayerManager  {
     public void initializeSchool(){
         if(numberOfPlayer == 2 || numberOfPlayer == 4){
             for(int j = 0; j < numberOfPlayer; j++)
-                for (int i = 0; i < 7; i++) setStudentEntrance(j,bag.extraction());
+                for (int i = 0; i < 7; i++) setStudentEntrance(j,bag.extraction(),1);
         }else if(numberOfPlayer == 3){
             for(int j = 0; j < numberOfPlayer; j++)
-                for (int i = 0; i < 9; i++) setStudentEntrance(j,bag.extraction());
+                for (int i = 0; i < 9; i++) setStudentEntrance(j,bag.extraction(),1);
         }
     }
 
@@ -154,9 +154,11 @@ public class PlayerManager  {
         this.studentsListener.notifyStudentsChange(1,playerRef,colour,getStudentTable(playerRef,colour));
     }
 
-    public void setStudentEntrance(int playerRef, int colour){
-        players.get(playerRef).school.setStudentEntrance(colour);
-        this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
+    public void setStudentEntrance(int playerRef, int colour, int studentsOfThisColor){
+        for(int i = 0; i < studentsOfThisColor; i++) {
+            players.get(playerRef).school.setStudentEntrance(colour);
+            this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
+        }
     }
     public int getStudentEntrance(int playerRef, int colour){ return players.get(playerRef).school.getStudentEntrance(colour); }
     public void removeStudentEntrance(int playerRef, int colour) throws NotAllowedException{
