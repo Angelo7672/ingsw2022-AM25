@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.InputMismatchException;
 
 public class GUI extends Application implements TowersListener  {
 
@@ -19,6 +20,7 @@ public class GUI extends Application implements TowersListener  {
     private View view;
     private Socket socket;
     private LoginSceneController loginSceneController;
+    private SetupSceneController setupSceneController;
     // private GUIcontroller currentController;
 
     public static void main(String[] args){
@@ -31,24 +33,67 @@ public class GUI extends Application implements TowersListener  {
         //this.proxy = new Proxy_c(socket, this);
     }
     @Override
+    public void init(){
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SetupScene.fxml"));
+        try {
+            Scene loginScene= new Scene(loader.load());
+            SetupSceneController controller = loader.getController();
+            controller.setGui(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    public void setup(Stage stage) throws IOException, ClassNotFoundException {
+        String result = proxy.first();
+        if(result.equals("SetupGame")) {
+            FXMLLoader loader = new FXMLLoader();
+
+            Parent root = loader.load(getClass().getResource("/fxml/SetupScene.fxml"));
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
+            Scene loginScene = new Scene(root);
+            stage.setScene(loginScene);
+            stage.setTitle("Eriantys");
+            stage.setResizable(false);
+            stage.show();
+        }
+        else  if (result.equals("Server Sold Out")){
+            System.out.println(result);
+            return;
+        }
+        //setupConnection();
+        view = proxy.startView();
+    }
+
+    private Proxy_c getProxy() {
+        return proxy;
+    }
+
+    @Override
     public void start(Stage stage) throws IOException {
+        try {
+            setup(stage);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }/*
         FXMLLoader loader = new FXMLLoader();
 
-        Parent root = loader.load(getClass().getResource("/fxml/LoginScene.fxml"));
+        Parent root = loader.load(getClass().getResource("/fxml/SetupScene.fxml"));
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
         Scene loginScene = new Scene(root);
         stage.setScene(loginScene);
         stage.setTitle("Eriantys");
         stage.setResizable(false);
-        stage.show();
-        //sceneControllerSetup();
-
+        stage.show();*/
 
     }
-    public void sceneControllerSetup() throws IOException {
+    public Parent sceneControllerSetup() throws IOException {
         FXMLLoader loader = FXMLLoader.load(getClass().getResource("/fxml/LoginScene.fxml"));
         loginSceneController = loader.getController();
         loginSceneController.setGui(this);
+        return loader.load((getClass().getResource("/fxml/LoginScene.fxml")));
     }
 
     public static void setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
@@ -56,6 +101,22 @@ public class GUI extends Application implements TowersListener  {
         //System.out.println("ciao");
         System.out.println(ok);
 
+    }
+
+    public static boolean setupGame(int numberOfPlayers, String expertMode) {
+        while(true) {
+            try {
+                if (proxy.setupGame(numberOfPlayers, expertMode))
+                    return true;
+                return false;
+            } catch (InputMismatchException e) {
+                return false;
+            } catch (IOException e) {
+                System.err.println("io");
+            } catch (ClassNotFoundException e) {
+                System.err.println("class error");
+            }
+        }
     }
 
 
@@ -105,6 +166,9 @@ public class GUI extends Application implements TowersListener  {
 
 
     }*/
+    public void setSetupSceneController(SetupSceneController controller){
+        this.setupSceneController=controller;
+    }
 
 }
 

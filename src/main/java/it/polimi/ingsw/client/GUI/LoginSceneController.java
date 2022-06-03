@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.Proxy_c;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -44,7 +45,7 @@ public class LoginSceneController {
     public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
         this.currentNickname =nicknameBox.getText();
         System.out.println(currentNickname +", "+ currentCharacter);
-        gui.setupConnection(currentNickname, currentCharacter);
+        //gui.setupConnection(currentNickname, currentCharacter);
         switchScene();
     }
     public void setGui(GUI gui) {
