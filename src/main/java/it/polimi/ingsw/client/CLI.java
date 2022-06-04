@@ -1,15 +1,15 @@
 package it.polimi.ingsw.client;
 
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import it.polimi.ingsw.controller.listeners.*;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
-public class CLI implements Runnable {
+public class CLI implements Runnable, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, BagListener,
+        QueueListener {
 
     private final Exit proxy;
     private final Scanner scanner;
@@ -39,6 +39,15 @@ public class CLI implements Runnable {
         }
         setupConnection();
         view = proxy.startView();
+        view.setBagListener(this);
+        view.setCoinsListener(this);
+        view.setInhibitedListener(this);
+        view.setIslandListener(this);
+        view.setMotherPositionListener(this);
+        view.setPlayedCardListener(this);
+        view.setProfessorsListener(this);
+        view.setStudentsListener(this);
+        view.setTowersListener(this);
     }
 
     public void setupConnection() throws IOException, ClassNotFoundException {
@@ -102,7 +111,6 @@ public class CLI implements Runnable {
     }
 
     public void useSpecial() throws IOException, ClassNotFoundException {
-        cli();
         System.out.println("Do you want to use a special card? [y/n]");
         String answer = scanner.next();
         if (answer.equalsIgnoreCase("n")) return;
@@ -225,7 +233,6 @@ public class CLI implements Runnable {
     }
 
     public void playCard() throws IOException, ClassNotFoundException {
-        cli();
         System.out.println("Which card do you want to play?");
         String card;
         try {
@@ -245,7 +252,6 @@ public class CLI implements Runnable {
     public void moveStudents() {
         boolean finished = false;
         do {
-            cli();
             String accepted;
             String color=null;
             String where=null;
@@ -293,7 +299,6 @@ public class CLI implements Runnable {
     }
 
     public void moveMotherNature() throws IOException, ClassNotFoundException {
-        cli();
         int steps = -1;
         try {
             do {
@@ -315,7 +320,6 @@ public class CLI implements Runnable {
     }
 
     public void chooseCloud() throws IOException, ClassNotFoundException {
-        cli();
         int cloud = -1;
         try{
             do {
@@ -479,5 +483,85 @@ public class CLI implements Runnable {
         if(name.equalsIgnoreCase("special7")) return true;
         if(name.equalsIgnoreCase("special8")) return true;
         return false;
+    }
+
+    @Override
+    public void notifyBagExtraction() {
+
+    }
+
+    @Override
+    public void notifyBag(List<Integer> bag) {
+
+    }
+
+    @Override
+    public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
+        cli();
+    }
+
+    @Override
+    public void notifyInhibited(int islandRef, int isInhibited) {
+        cli();
+    }
+
+    @Override
+    public void notifyIslandChange(int islandToDelete) {
+        cli();
+    }
+
+    @Override
+    public void notifyMotherPosition(int newMotherPosition) {
+        cli();
+    }
+
+    @Override
+    public void notifyPlayedCard(int playerRef, String assistantCard) {
+        cli();
+    }
+
+    @Override
+    public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
+        cli();
+    }
+
+    @Override
+    public void notifyQueue(int playerRef) {
+
+    }
+
+    @Override
+    public void notifyResetQueue() {
+
+    }
+
+    @Override
+    public void notifySpecial(int specialRef) {
+        cli();
+    }
+
+    @Override
+    public void notifySpecialName(String specialName) {
+        cli();
+    }
+
+    @Override
+    public void notifyPlayedSpecial(int specialRef) {
+        cli();
+    }
+
+    @Override
+    public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
+        cli();
+    }
+
+    @Override
+    public void notifyTowersChange(int place, int componentRef, int towersNumber) {
+        cli();
+    }
+
+    @Override
+    public void notifyTowerColor(int islandRef, int newColor) {
+        cli();
     }
 }
