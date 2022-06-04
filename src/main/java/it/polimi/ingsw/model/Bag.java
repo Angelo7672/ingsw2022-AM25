@@ -27,14 +27,14 @@ public class Bag {
         for (int i = 0; i < 24; i++) bag.add(4);
 
         Collections.shuffle(bag);
-        //this.bagListener.notifyBag(bag);
+        this.bagListener.notifyBag(bag);
     }
 
     public int extraction(){
         int colorExtracted;
 
         colorExtracted = bag.get(0);
-        this.bagListener.notifyBagExtraction(colorExtracted);
+        this.bagListener.notifyBagExtraction();
         bag.remove(0);
 
         return colorExtracted;
@@ -49,6 +49,6 @@ public class Bag {
             bag.add(color);
 
         Collections.shuffle(bag);
-        //this.bagListener.notifyBag(bag);
+        this.bagListener.notifyBag(bag);
     }
 }

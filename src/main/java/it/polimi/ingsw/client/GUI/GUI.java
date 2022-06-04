@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.controller.listeners.TowersListener;
+import it.polimi.ingsw.controller.listeners.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,8 +13,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.InputMismatchException;
+import java.util.List;
 
-public class GUI extends Application implements TowersListener  {
+public class GUI extends Application implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, BagListener,
+        QueueListener  {
 
     private static Proxy_c proxy;
     private View view;
@@ -170,6 +173,65 @@ public class GUI extends Application implements TowersListener  {
         this.setupSceneController=controller;
     }
 
+    @Override
+    public void notifyBagExtraction() {
+
+    }
+
+    @Override
+    public void notifyBag(List<Integer> bag) {
+
+    }
+
+    @Override
+    public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
+
+    }
+
+    @Override
+    public void notifyInhibited(int islandRef, int isInhibited) {
+
+    }
+
+    @Override
+    public void notifyIslandChange(int islandToDelete) {
+
+    }
+
+    @Override
+    public void notifyMotherPosition(int newMotherPosition) {
+
+    }
+
+    @Override
+    public void notifyPlayedCard(int playerRef, String assistantCard) {
+
+    }
+
+    @Override
+    public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
+
+    }
+
+    @Override
+    public void notifyQueue(int playerRef) {
+
+    }
+
+    @Override
+    public void notifyResetQueue() {
+
+    }
+
+    @Override
+    public void notifySpecial(int specialRef) {
+
+    }
+
+    @Override
+    public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
+
+    }
 }
 
 

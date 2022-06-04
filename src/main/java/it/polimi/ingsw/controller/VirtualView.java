@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.ControllerServer;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 //virtual View class listen to changes in model classes through specific listener interfaces
 public class VirtualView
@@ -18,7 +19,7 @@ public class VirtualView
     private ArrayList<Hand> hands;
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
     private ArrayList<String> playedCards;
-    private ArrayList<Integer> bag;
+    private List<Integer> bag;
     private ArrayList<Integer> queue;
     private ControllerServer server;
     private int numberOfPlayers;
@@ -234,13 +235,15 @@ public class VirtualView
         server.setSpecial(specialRef);
     }
     @Override
-    public void notifyBagExtraction(int color) {
-        //bag[color]--;
+    public void notifyBagExtraction() {
+        bag.remove(0);
     }
 
-    /*public void notifyBag(ArrayList<Integer> bag) {
+    @Override
+    public void notifyBag(List<Integer> bag) {
         this.bag=bag;
-    }*/
+    }
+
     @Override
     public void notifyQueue(int playerRef) {
         queue.add(playerRef);

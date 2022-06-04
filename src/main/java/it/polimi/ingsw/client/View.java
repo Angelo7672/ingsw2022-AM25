@@ -166,6 +166,50 @@ public class View {
     public int[]  getSpecialStudents(int special){return specials.get(special).getStudents();}
     public int getNoEntry(int special){return specials.get(special).getNoEntry();}
 
+    public void setTowersListener(TowersListener towersListener) {
+        this.towersListener = towersListener;
+    }
+
+    public void setCoinsListener(CoinsListener coinsListener) {
+        this.coinsListener = coinsListener;
+    }
+
+    public void setInhibitedListener(InhibitedListener inhibitedListener) {
+        this.inhibitedListener = inhibitedListener;
+    }
+
+    public void setIslandListener(IslandListener islandListener) {
+        this.islandListener = islandListener;
+    }
+
+    public void setMotherPositionListener(MotherPositionListener motherPositionListener) {
+        this.motherPositionListener = motherPositionListener;
+    }
+
+    public void setPlayedCardListener(PlayedCardListener playedCardListener) {
+        this.playedCardListener = playedCardListener;
+    }
+
+    public void setProfessorsListener(ProfessorsListener professorsListener) {
+        this.professorsListener = professorsListener;
+    }
+
+    public void setQueueListener(QueueListener queueListener) {
+        this.queueListener = queueListener;
+    }
+
+    public void setSpecialListener(SpecialListener specialListener) {
+        this.specialListener = specialListener;
+    }
+
+    public void setStudentsListener(StudentsListener studentsListener) {
+        this.studentsListener = studentsListener;
+    }
+
+    public void setBagListener(BagListener bagListener) {
+        this.bagListener = bagListener;
+    }
+
 
     private class SchoolBoard {
         String nickname;

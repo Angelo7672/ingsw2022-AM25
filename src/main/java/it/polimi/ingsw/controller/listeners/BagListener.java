@@ -1,10 +1,12 @@
 package it.polimi.ingsw.controller.listeners;
 
+import java.util.List;
+
 public interface BagListener {
     enum Colour {GREEN, RED, YELLOW, PINK, BLUE }
 
-    public void notifyBagExtraction(int color);
-    //void notifyBag(ArrayList<int> bag);
+    public void notifyBagExtraction(); //removes the last element (0) from Bag list
+    public void notifyBag(List<Integer> bag);
 
 
 }
