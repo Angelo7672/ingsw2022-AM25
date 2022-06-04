@@ -234,6 +234,17 @@ public class VirtualView
         specials.add(specialRef);
         server.setSpecial(specialRef);
     }
+
+    @Override
+    public void notifySpecialName(String specialName) {
+
+    }
+
+    @Override
+    public void notifyPlayedSpecial(int specialRef) {
+
+    }
+
     @Override
     public void notifyBagExtraction() {
         bag.remove(0);

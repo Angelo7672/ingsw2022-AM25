@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -30,17 +31,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         launch();
     }
 
-    public GUI() throws IOException {
-        //loginSceneController = new LoginSceneController();
-        //this.socket = socket;
-        //this.proxy = new Proxy_c(socket, this);
-    }
     @Override
     public void init(){
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SetupScene.fxml"));
         try {
-            Scene loginScene= new Scene(loader.load());
+            Scene setupScene= new Scene(loader.load());
             SetupSceneController controller = loader.getController();
             controller.setGui(this);
         } catch (IOException e) {
@@ -68,6 +64,15 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
         //setupConnection();
         view = proxy.startView();
+        view.setBagListener(this);
+        view.setCoinsListener(this);
+        view.setInhibitedListener(this);
+        view.setIslandListener(this);
+        view.setMotherPositionListener(this);
+        view.setPlayedCardListener(this);
+        view.setProfessorsListener(this);
+        view.setStudentsListener(this);
+        view.setTowersListener(this);
     }
 
     private Proxy_c getProxy() {
@@ -76,11 +81,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void start(Stage stage) throws IOException {
-        try {
+        /*try {
             setup(stage);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }/*
+        }*/
         FXMLLoader loader = new FXMLLoader();
 
         Parent root = loader.load(getClass().getResource("/fxml/SetupScene.fxml"));
@@ -89,7 +94,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         stage.setScene(loginScene);
         stage.setTitle("Eriantys");
         stage.setResizable(false);
-        stage.show();*/
+        stage.show();
 
     }
     public Parent sceneControllerSetup() throws IOException {
@@ -99,12 +104,25 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         return loader.load((getClass().getResource("/fxml/LoginScene.fxml")));
     }
 
+    public static void sendAvaiableCharacters() throws IOException, ClassNotFoundException {
+        ArrayList<String> chosenCharacters = proxy.getChosenCharacters();
+        ArrayList<String> availableCharacters = new ArrayList<>();
+        if(!chosenCharacters.contains("WIZARD")) availableCharacters.add("WIZARD");
+        if(!chosenCharacters.contains("KING")) availableCharacters.add("KING");
+        if(!chosenCharacters.contains("WITCH")) availableCharacters.add("WITCH");
+        if(!chosenCharacters.contains("SAMURAI")) availableCharacters.add("SAMURAI");
+
+    }
     public static void setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
         boolean ok = proxy.setupConnection(nickname, character);
         //System.out.println("ciao");
         System.out.println(ok);
-
+        if (proxy.setupConnection(nickname, character)) {
+            System.out.println("SetupConnection done");
+        }
+        else System.out.println("Error, try again");
     }
+
 
     public static boolean setupGame(int numberOfPlayers, String expertMode) {
         while(true) {
@@ -225,6 +243,16 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void notifySpecial(int specialRef) {
+
+    }
+
+    @Override
+    public void notifySpecialName(String specialName) {
+
+    }
+
+    @Override
+    public void notifyPlayedSpecial(int specialRef) {
 
     }
 

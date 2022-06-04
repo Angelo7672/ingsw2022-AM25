@@ -72,44 +72,81 @@ public class View {
         }
     }
 
-    public void setIslandTowers(IslandTowersNumberMessage msg) { islands.get(msg.getIslandRef()).setTowersNumber(msg.getTowersNumber());}
-    public void setStudentsIsland(IslandStudentMessage msg) { islands.get(msg.getIslandRef()).setStudentsIsland(msg.getColor(), msg.getNewValue()); }
+    public void setIslandTowers(IslandTowersNumberMessage msg) {
+        islands.get(msg.getIslandRef()).setTowersNumber(msg.getTowersNumber());
+        this.towersListener.notifyTowersChange(1, msg.getIslandRef(), msg.getTowersNumber());
+    }
+    public void setStudentsIsland(IslandStudentMessage msg) {
+        islands.get(msg.getIslandRef()).setStudentsIsland(msg.getColor(), msg.getNewValue());
+        this.studentsListener.notifyStudentsChange(2, msg.getIslandRef(), msg.getColor(),msg.getNewValue());
+    }
     public void setMotherPosition(MotherPositionMessage msg) {
         islands.get(getMotherPosition()).setMotherPosition(false);
         islands.get(msg.getMotherPosition()).setMotherPosition(true);
+        this.motherPositionListener.notifyMotherPosition(msg.getMotherPosition());
     }
     public void setMaxStepsMotherNature(int steps){
         maxStepsMotherNature = steps;
     }
-    public void setTowersColor(IslandTowersColorMessage msg){ islands.get(msg.getIslandRef()).setTowersColor(msg.getColor()); }
+    public void setTowersColor(IslandTowersColorMessage msg){
+        islands.get(msg.getIslandRef()).setTowersColor(msg.getColor());
+        this.towersListener.notifyTowerColor(msg.getIslandRef(), msg.getColor());
+    }
     public void setInhibited(InhibitedIslandMessage msg) {
         islands.get(msg.getIslandRef()).setInhibited(msg.getInhibited());
+        this.inhibitedListener.notifyInhibited(msg.getIslandRef(),msg.getInhibited() );
     }
     public void removeUnifiedIsland(UnifiedIsland msg){
         islands.remove(msg.getUnifiedIsland());
+        this.islandListener.notifyIslandChange(msg.getUnifiedIsland());
     }
 
     public void setSchoolStudents(SchoolStudentMessage msg){
-        if(msg.getMessage().equalsIgnoreCase("Entrance")) schoolBoards.get(msg.getComponentRef()).setStudentsEntrance(msg.getColor(), msg.getNewValue());
-        else if (msg.getMessage().equalsIgnoreCase("Table")) schoolBoards.get(msg.getComponentRef()).setStudentsTable(msg.getColor(), msg.getNewValue());
+        if(msg.getMessage().equalsIgnoreCase("Entrance")) {
+            schoolBoards.get(msg.getComponentRef()).setStudentsEntrance(msg.getColor(), msg.getNewValue());
+            this.studentsListener.notifyStudentsChange(0, msg.getComponentRef(), msg.getColor(), msg.getNewValue());
+        }
+        else if (msg.getMessage().equalsIgnoreCase("Table")) {
+            schoolBoards.get(msg.getComponentRef()).setStudentsTable(msg.getColor(), msg.getNewValue());
+            this.studentsListener.notifyStudentsChange(1, msg.getComponentRef(), msg.getColor(), msg.getNewValue());
+        }
+
     }
-    public void setSchoolTowers(SchoolTowersMessage msg){ schoolBoards.get(msg.getPlayerRef()).setTowersNumber(msg.getTowers());}
-    public void setProfessors(ProfessorMessage msg){ schoolBoards.get(msg.getPlayerRef()).setProfessors(msg.getColor(), msg.isProfessor());}
+    public void setSchoolTowers(SchoolTowersMessage msg){
+        schoolBoards.get(msg.getPlayerRef()).setTowersNumber(msg.getTowers());
+        this.towersListener.notifyTowersChange(0, msg.getPlayerRef(),msg.getTowers());
+    }
+    public void setProfessors(ProfessorMessage msg){
+        schoolBoards.get(msg.getPlayerRef()).setProfessors(msg.getColor(), msg.isProfessor());
+        this.professorsListener.notifyProfessors(msg.getPlayerRef(),msg.getColor(),msg.isProfessor());
+    }
     public void setUserInfo(UserInfoAnswer msg) {
         schoolBoards.get(msg.getPlayerRef()).setNickname(msg.getNickname());
         schoolBoards.get(msg.getPlayerRef()).setCharacter(msg.getCharacter());
+        //this.userInfoListener(playerRef, nickname, character);
     }
 
-    public void setClouds(CloudStudentMessage msg){ clouds.get(msg.getCloudRef()).setCloudStudents(msg.getColor(), msg.getNewValue()); }
+    public void setClouds(CloudStudentMessage msg){
+        clouds.get(msg.getCloudRef()).setCloudStudents(msg.getColor(), msg.getNewValue());
+        this.studentsListener.notifyStudentsChange(3, msg.getCloudRef(), msg.getColor(), msg.getNewValue());
+    }
 
-    public void setCoins(CoinsMessage msg){ hands.get(msg.getPlayerRef()).setCoins(msg.getPlayerRef());}
+    public void setCoins(CoinsMessage msg){
+        hands.get(msg.getPlayerRef()).setCoins(msg.getPlayerRef());
+        this.coinsListener.notifyNewCoinsValue(msg.getPlayerRef(), hands.get(msg.getPlayerRef()).coins);}
+
     public void setLastCard(LastCardMessage msg){
         hands.get(msg.getPlayerRef()).setLastCard(msg.getCard());
+        this.playedCardListener.notifyPlayedCard(msg.getPlayerRef(),msg.getCard());
     }
-    public void setNumberOfCards(NumberOfCardsMessage msg){hands.get(msg.getPlayerRef()).setNumberOfCards(msg.getNumberOfCards());}
+    public void setNumberOfCards(NumberOfCardsMessage msg){
+        hands.get(msg.getPlayerRef()).setNumberOfCards(msg.getNumberOfCards());
+       }
 
     public void setSpecials(ArrayList<Special> specials){
         this.specials = specials;
+        for(Special s: specials)
+            this.specialListener.notifySpecialName(s.getName());
     }
     public void setSpecialCost(int cost, int special){specials.get(special).setCost(cost);}
     public void setSpecialName(String name, int special){specials.get(special).setName(name);}
