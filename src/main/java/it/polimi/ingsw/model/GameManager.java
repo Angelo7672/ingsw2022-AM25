@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public interface GameManager {
     void initializeGame();
+    ArrayList<Integer> getExtractedSpecials();
 
     //Planification Phase
     boolean refreshStudentsCloud();

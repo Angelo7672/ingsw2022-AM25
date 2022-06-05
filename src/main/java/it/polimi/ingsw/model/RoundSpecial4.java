@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.exception.NotAllowedException;
+
 public class RoundSpecial4 extends RoundStrategy{
     Special4 special;
 
@@ -9,17 +11,18 @@ public class RoundSpecial4 extends RoundStrategy{
     }
 
     @Override
-    public boolean moveMotherNature(int queueRef, int desiredMovement, int ref){
+    public boolean moveMotherNature(int queueRef, int desiredMovement, int ref) throws NotAllowedException {
         int maxMovement;
         boolean victory = false;
 
-        maxMovement = queueManager.readMaxMotherNatureMovement(queueRef)+2; //da incrementare anche per scelta del giocatore
+        maxMovement = queueManager.readMaxMotherNatureMovement(queueRef) + 2; //da incrementare anche per scelta del giocatore
 
         if(desiredMovement > 0 && desiredMovement <= maxMovement){
             islandsManager.moveMotherNature(desiredMovement);
             if(islandsManager.getInhibited(islandsManager.getMotherPos())>0) islandsManager.decreaseInhibited(islandsManager.getMotherPos());
             else victory = conquestIsland(islandsManager.getMotherPos(), -1, -1);
-        }
+        }else throw new NotAllowedException();
+
         return victory;
     }
 

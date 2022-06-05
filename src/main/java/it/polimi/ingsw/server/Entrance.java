@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public interface Entrance {
     void startController(int numberOfPlayers, boolean expertMode);
+    boolean isExpertMode();
     void startGame();
     ArrayList<String> alreadyChosenCharacters();
     boolean userLogin(String nickname, String character);
@@ -17,6 +18,8 @@ public interface Entrance {
     boolean userChooseCloud(int playerRef, int cloudRef);
 
     void resumeTurn();
+
+    String endGame();
 
     void exitError();
 }

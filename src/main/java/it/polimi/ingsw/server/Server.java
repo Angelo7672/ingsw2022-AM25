@@ -20,6 +20,8 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public void startController(int numberOfPlayers, boolean expertMode){ controller = new Controller(numberOfPlayers,expertMode,this); }
     @Override
+    public boolean isExpertMode(){ return controller.isExpertMode(); }
+    @Override
     public void startGame(){ controller.startGame(); }
 
     @Override
@@ -83,11 +85,10 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public void resumeTurn(){ controller.resumeTurn(); }
 
-    public void endGame(){
-
-        //controller.getWinner();
-
-    }
+    @Override
+    public String endGame(){ return controller.getWinner(); }
+    @Override
+    public void gameOver(){ proxy.gameOver(); }
 
     @Override
     public void sendGameInfo(int numberOfPlayers, boolean expertMode){ proxy.sendGameInfo(numberOfPlayers, expertMode); }
@@ -124,6 +125,7 @@ public class Server implements Entrance,ControllerServer{
     public void exitError(){ System.exit(-1); }
 
     public static void main(String[] args) {
+        System.out.println("Eryantis Server | Welcome!");
         Server server = new Server(2525);
 
     }

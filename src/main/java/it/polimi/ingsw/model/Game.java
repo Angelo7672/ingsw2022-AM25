@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Game implements GameManager{
     private ArrayList<RoundStrategy> roundStrategies;
@@ -18,10 +19,12 @@ public class Game implements GameManager{
     private int refSpecial;
     protected SpecialListener specialListener;
     private boolean expertMode;
+    private ArrayList<Integer> extractedSpecials;
 
     public Game(Boolean expertMode, int numberOfPlayer){
         this.expertMode = expertMode;
-        roundStrategies = new ArrayList<>();
+        this.extractedSpecials = new ArrayList<>();
+        this.roundStrategies = new ArrayList<>();
         this.numberOfPlayer = numberOfPlayer;
         this.bag = new Bag();
         this.cloudsManager = new CloudsManager(numberOfPlayer);
@@ -37,10 +40,22 @@ public class Game implements GameManager{
 
         if(expertMode){
             RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+
             ArrayList<Integer> random = new ArrayList<>();
-            for(int i=1; i<=12; i++) random.add(i);
+            for(int i = 1; i <= 12; i++)
+                random.add(i);
             Collections.shuffle(random);
-            for(int i=0; i<3; i++) roundStrategies.add(roundStrategyFactor.getRoundStrategy(random.get(i))); //aggiungo lo special estratto
+
+            for(int i = 0; i < 3; i++) {
+                roundStrategies.add(
+                        roundStrategyFactor.getRoundStrategy(
+                                random.get(i)
+                        )
+                );
+                this.extractedSpecials.add(
+                        random.get(i)
+                );
+            }
         }
     }
 
@@ -87,9 +102,7 @@ public class Game implements GameManager{
         return lastTurn;
     }
     @Override
-    public void queueForPlanificationPhase() {
-        roundStrategies.get(0).queueForPlanificationPhase();
-    }
+    public void queueForPlanificationPhase(){ queueManager.queueForPlanificationPhase(); }
     @Override
     public boolean playCard(int playerRef, int queueRef, String card, ArrayList<String> alreadyPlayedCard) throws NotAllowedException {
         ArrayList<Assistant> alreadyPlayedAssistant = new ArrayList<>();
@@ -101,9 +114,7 @@ public class Game implements GameManager{
     }
 
     @Override
-    public void inOrderForActionPhase() {
-        roundStrategies.get(0).inOrderForActionPhase();
-    }
+    public void inOrderForActionPhase(){ queueManager.inOrderForActionPhase(); }
     @Override
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{
         roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
@@ -114,10 +125,10 @@ public class Game implements GameManager{
         roundStrategies.get(indexSpecial).effect(ref, color1, color2);
     }
     @Override
-    public boolean moveMotherNature(int queueRef, int desiredMovement) {
+    public boolean moveMotherNature(int queueRef, int desiredMovement) throws NotAllowedException {
         boolean victory;
 
-        victory = roundStrategies.get(indexSpecial).moveMotherNature(queueRef, desiredMovement, refSpecial);
+        victory = roundStrategies.get(indexSpecial).moveMotherNature(queueRef, desiredMovement, refSpecial);    //can throw NotAllowedException
         setSpecial(0,-1);
         if(expertMode) checkNoEntry(); //possiamo mettere un boolean in game per farlo attivare solo se si usa questo special nella partita
 
@@ -140,9 +151,7 @@ public class Game implements GameManager{
     }
 
     @Override
-    public int readQueue(int pos) {
-        return roundStrategies.get(0).readQueue(pos);
-    }
+    public int readQueue(int pos){ return queueManager.readQueue(pos); }
 
     @Override
     public String oneLastRide() {
@@ -185,6 +194,9 @@ public class Game implements GameManager{
         return -1;
     }
     @Override
+    public ArrayList<Integer> getExtractedSpecials() { return extractedSpecials; }
+
+    @Override
     public void setStudentsListener(StudentsListener listener){
         playerManager.studentsListener = listener;
         islandsManager.studentListener=listener;
@@ -196,32 +208,21 @@ public class Game implements GameManager{
         islandsManager.towersListener= listener;
     }
     @Override
-    public void setProfessorsListener(ProfessorsListener listener){
-        playerManager.professorsListener = listener;
-    }
+    public void setProfessorsListener(ProfessorsListener listener){ playerManager.professorsListener = listener; }
     @Override
-    public void setPlayedCardListener(PlayedCardListener listener){
-        queueManager.playedCardListener = listener;
-    }
+    public void setPlayedCardListener(PlayedCardListener listener){ queueManager.playedCardListener = listener; }
     @Override
     public void setSpecialListener(SpecialListener listener){ this.specialListener = listener;}
     @Override
-    public void setCoinsListener(CoinsListener listener){
-        playerManager.coinsListener = listener;
-    }
+    public void setCoinsListener(CoinsListener listener){ playerManager.coinsListener = listener; }
     @Override
     public void setIslandListener(IslandListener listener){ islandsManager.islandListener = listener;}
     @Override
     public void setMotherPositionListener(MotherPositionListener listener){ islandsManager.motherPositionListener = listener;}
     @Override
     public void setInhibitedListener(InhibitedListener listener){ islandsManager.inhibitedListener = listener; }
-
     @Override
-    public void setBagListener(BagListener listener) {
-        bag.bagListener=listener;
-    }
+    public void setBagListener(BagListener listener) { bag.bagListener = listener; }
     @Override
-    public void setQueueListener(QueueListener listener) {
-        queueManager.queueListener=listener;
-    }
+    public void setQueueListener(QueueListener listener) { queueManager.queueListener = listener; }
 }

@@ -16,4 +16,6 @@ public interface ServerController {
     void moveMotherNature(int desiredMovement) throws NotAllowedException, EndGameException;
     void chooseCloud(int playerRef, int cloudRef) throws NotAllowedException;
     void resumeTurn();
+    String getWinner();
+    boolean isExpertMode();
 }

@@ -23,7 +23,10 @@ public class RoundController extends Thread{
         while (controller.getWinner().equals("NONE")) {
             planningPhase();
             actionPhase();
-            if (end) { controller.oneLastRide(); }
+            if (end) {
+                controller.oneLastRide();
+                server.gameOver();
+            }
         }
     }
 

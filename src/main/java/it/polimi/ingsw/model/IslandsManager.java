@@ -47,6 +47,8 @@ public class IslandsManager {
         }
     }
 
+    public int getIslandsSize(){ return islands.size(); }
+
     public void incStudent(int island, int color){
         islands.get(island).incStudents(color);
         this.studentListener.notifyStudentsChange(2,island, color, getStudent(island, color));
@@ -75,7 +77,7 @@ public class IslandsManager {
                 returnItem[1] = -1;
                 return returnItem;
             }
-            //if old team is not no one
+            //if old team is not none
             returnItem[1] = islands.get(islandRef).getTowerTeam().getTeam();
             islands.get(islandRef).setTowerTeam(team);
             this.towersListener.notifyTowerColor(islandRef, islands.get(islandRef).getTowerTeam().getTeam());

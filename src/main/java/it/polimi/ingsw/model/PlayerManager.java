@@ -106,52 +106,55 @@ public class PlayerManager  {
     }
 
     public void transferStudent(int playerRef,int colour, boolean inSchool, boolean special) throws NotAllowedException{    //it is used to remove the student from the entrance
-        int studentTableofThisColour;
+        int studentTableThisColour;
         int i;
         boolean stop = false;
 
-        if(!inSchool){  //if inSchool is false, it's placed in a island
+        if(!inSchool) removeStudentEntrance(playerRef,colour);  //if inSchool is false, it's placed in an island
+        else if(inSchool && !special){   //if inSchool is true, it's placed on the table
             removeStudentEntrance(playerRef,colour);
-        } else if(inSchool && !special){   //if inSchool is true, it's placed on the table
-            removeStudentEntrance(playerRef,colour);
-            setStudentTable(playerRef,colour);  //POSSO ACCORPARE COSI' DUE ECCEZIONI?
+            setStudentTable(playerRef,colour);
             players.get(playerRef).checkPosForCoin(colour);    //check the position, in case we have to give a coin to the player
-            studentTableofThisColour = getStudentTable(playerRef,colour);
+            studentTableThisColour = getStudentTable(playerRef,colour);
             for (i = 0; i < numberOfPlayer && !stop; i++) {
-                if (i != playerRef && studentTableofThisColour <= getStudentTable(i,colour))
+                if (i != playerRef && studentTableThisColour <= getStudentTable(i,colour))
                     stop = true;  //if it finds someone with more or equals students at the table it stops
                 else if (i != playerRef && getProfessor(i,colour)) {
-                    removeProfessor(i,colour);    //otherwise check if the other had the professor
+                    removeProfessor(i,colour);    //otherwise, check if the other had the professor
                     setProfessor(playerRef,colour);
                     professorPropriety[colour] = playerRef;
                     stop = true;
                 }
             }
-            if (i == numberOfPlayer) {    //if no one owned that professor
+            if (i == numberOfPlayer && !stop) {    //if no one owned that professor
                 setProfessor(playerRef,colour);
                 professorPropriety[colour] = playerRef;
             }
         } else if(inSchool && special){   //if special is true, card special is active
             removeStudentEntrance(playerRef,colour);
             setStudentTable(playerRef,colour);
-            players.get(playerRef).checkPosForCoin(colour);    //check the position, in case we have to give a coin to the player
-            studentTableofThisColour = getStudentTable(playerRef,colour);
+            checkPosForCoin(playerRef,colour);    //check the position, in case we have to give a coin to the player
+            studentTableThisColour = getStudentTable(playerRef,colour);
             for (i = 0; i < numberOfPlayer && !stop; i++) {
-                if (i != playerRef && studentTableofThisColour < getStudentTable(i,colour)) stop = true;  //if it finds someone with more students at the table it stops
+                if (i != playerRef && studentTableThisColour < getStudentTable(i,colour)) stop = true;  //if it finds someone with more students at the table it stops
                 else if (i != playerRef && getProfessor(i,colour)) {
-                    removeProfessor(i,colour);    //otherwise check if the other had the professor
+                    removeProfessor(i,colour);    //otherwise, check if the other had the professor
                     setProfessor(playerRef,colour);
                     professorPropriety[colour] = playerRef;
                     stop = true;
                 }
             }
-            if (i == numberOfPlayer) {    //if no one owned that professor
+            if (i == numberOfPlayer && !stop) {    //if no one owned that professor
                 setProfessor(playerRef,colour);
                 professorPropriety[colour] = playerRef;
             }
         }
         this.studentsListener.notifyStudentsChange(0,playerRef,colour,getStudentEntrance(playerRef,colour));
         this.studentsListener.notifyStudentsChange(1,playerRef,colour,getStudentTable(playerRef,colour));
+    }
+    private void checkPosForCoin(int playerRef, int colour){
+        players.get(playerRef).checkPosForCoin(colour);
+        //METTI QUI IL LISTENER
     }
 
     public void setStudentEntrance(int playerRef, int colour, int studentsOfThisColor){

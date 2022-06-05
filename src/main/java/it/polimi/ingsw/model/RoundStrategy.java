@@ -83,32 +83,28 @@ public abstract class RoundStrategy {
         return Team.NONE;
     }
 
-    public boolean moveMotherNature(int queueRef, int desiredMovement, int ref) {
+    public boolean moveMotherNature(int queueRef, int desiredMovement, int ref) throws NotAllowedException {
         int maxMovement;
         boolean victory = false;
 
         maxMovement = queueManager.readMaxMotherNatureMovement(queueRef);
+
         if (desiredMovement > 0 && desiredMovement <= maxMovement) {
             islandsManager.moveMotherNature(desiredMovement);
-            if (islandsManager.getInhibited(islandsManager.getMotherPos())>0) {
+            if (islandsManager.getInhibited(islandsManager.getMotherPos()) > 0) {   //always check if the island is inhibited
                 islandsManager.decreaseInhibited(islandsManager.getMotherPos());
             } else {
-                int playerRef = readQueue(queueRef);
-                victory = conquestIsland(islandsManager.getMotherPos(), ref, playerRef);
+                int playerRef = queueManager.readQueue(queueRef);    //check if player can conquest the island
+                victory = conquestIsland(islandsManager.getMotherPos(), ref, playerRef);    //the game could finish with this command
             }
-        }
+        } else throw new NotAllowedException();
+
         return victory;
     }
 
-    public void queueForPlanificationPhase(){ queueManager.queueForPlanificationPhase(); }
-
-
-    public void inOrderForActionPhase(){ queueManager.inOrderForActionPhase(); }
-
-    public int readQueue(int pos){ return queueManager.readQueue(pos); }
-
-    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{ //da cambiare e spezzare in due
         if(!inSchool){
+            if(islandRef < 0 || islandRef >= islandsManager.getIslandsSize()) throw new NotAllowedException();
             playerManager.transferStudent(playerRef, colour, inSchool, false);
             islandsManager.incStudent(islandRef,colour);
         }

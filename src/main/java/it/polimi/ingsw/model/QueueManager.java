@@ -57,18 +57,14 @@ public class QueueManager {
         queue.get(queueRef).setValueCard(card.getValue());
         queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
         this.playedCardListener.notifyPlayedCard(playerRef,String.valueOf(card));
-        if(playerManager.checkIfCardsFinished(playerRef)) return true;
+
+        if(playerManager.checkIfCardsFinished(playerRef)) return true;  //game will finish at the end of the turn
 
         return false;
     }
 
     public void inOrderForActionPhase(){
-        Collections.sort(queue, new Comparator<Queue>() {   //mettere lmabda
-            @Override
-            public int compare(Queue q1, Queue q2) {
-                return q1.compareTo(q2);
-            }
-        });
+        Collections.sort(queue, (q1, q2) -> q1.compareTo(q2));
 
         this.queueListener.notifyResetQueue();
         for(Queue q:queue){

@@ -13,7 +13,7 @@ public class RoundSpecial3 extends RoundStrategy{
         int maxMovement;
         boolean victory1 = false;
         boolean victory2 = false;
-        int playerRef = readQueue(queueRef);
+        int playerRef = queueManager.readQueue(queueRef);
         victory1 = specialConquestIsland(islandRef);
 
         maxMovement = queueManager.readMaxMotherNatureMovement(queueRef);

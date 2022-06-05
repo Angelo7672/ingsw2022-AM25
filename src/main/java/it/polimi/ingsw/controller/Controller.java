@@ -95,12 +95,15 @@ public class Controller implements ServerController{
     @Override
     public void resumeTurn(){ synchronized(roundController) { roundController.notify();} }
 
+    @Override
+    public String getWinner() { return winner; }
     public void oneLastRide(){ winner = gameManager.oneLastRide(); }
 
     public void saveGame(){ virtualView.saveVirtualView(); }
 
+    @Override
+    public boolean isExpertMode() { return expertMode; }
     public int getCurrentUser() { return currentUser; }
     public void setCurrentUser(int currentUser) { this.currentUser = currentUser; }
     public void incrCurrentUser(){ currentUser++; }
-    public String getWinner() { return winner; }
 }

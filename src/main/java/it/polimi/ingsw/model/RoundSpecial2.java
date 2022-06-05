@@ -11,8 +11,9 @@ public class RoundSpecial2 extends RoundStrategy {
     }
 
     @Override
-    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException {
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException {    //da cambiare e spezzare in due
         if(!inSchool){
+            if(islandRef < 0 || islandRef >= islandsManager.getIslandsSize()) throw new NotAllowedException();
             playerManager.transferStudent(playerRef, colour, inSchool, true);
             islandsManager.incStudent(islandRef,colour);
         }

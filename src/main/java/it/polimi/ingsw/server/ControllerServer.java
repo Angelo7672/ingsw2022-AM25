@@ -6,6 +6,8 @@ public interface ControllerServer {
     void startActionPhase(int playerRef);
     void unlockActionPhase(int playerRef);
 
+    void gameOver();
+
     void sendGameInfo(int numberOfPlayers, boolean expertMode);
     void sendUserInfo(int playerRef, String nickname, String character);
     void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue);

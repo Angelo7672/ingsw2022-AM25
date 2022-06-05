@@ -43,7 +43,6 @@ public class Proxy_s implements Exit {
         SoldOut soldOut = new SoldOut();
 
         try {
-            System.out.println("Eryantis Server | Welcome!");
             System.out.println("Waiting for players ...");
             VirtualClient firstClient = new VirtualClient(serverSocket.accept(), server, this, limiter);
             System.out.println("Connected players: " + limiter);
@@ -168,6 +167,14 @@ public class Proxy_s implements Exit {
     public void setSpecial(int specialRef){
         for (VirtualClient client:user)
             client.setSpecial(specialRef);
+    }
+
+    @Override
+    public void gameOver(){
+        String winner = server.endGame();
+
+        for (VirtualClient client:user)
+            client.sendWinner(winner);
     }
 
     public void clientDisconnected(int clientLost){

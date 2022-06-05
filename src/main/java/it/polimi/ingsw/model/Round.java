@@ -17,5 +17,4 @@ public class Round extends RoundStrategy{
     public String getName() {
         return null;
     }
-
 }
