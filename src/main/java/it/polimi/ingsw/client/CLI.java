@@ -283,6 +283,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                         islandRef = islandRef - 1;
                         if(islandRef<0 || islandRef>=view.getIslandSize()){
                             System.out.println("Error, insert an existing island");
+                            islandRef = -1;
                         }
                     }
                 }
