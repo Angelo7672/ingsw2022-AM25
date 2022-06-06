@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.controller.listeners.*;
 import javafx.application.Application;
+import javafx.concurrent.Service;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,14 +26,16 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private Socket socket;
     private LoginSceneController loginSceneController;
     private SetupSceneController setupSceneController;
+    private Service<Void> backgroundThread;
+
     // private GUIcontroller currentController;
 
     public static void main(String[] args){
         launch();
     }
 
-    @Override
-    public void init(){
+        @Override
+        public void init(){
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SetupScene.fxml"));
         try {

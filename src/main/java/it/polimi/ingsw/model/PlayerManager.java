@@ -154,7 +154,7 @@ public class PlayerManager  {
     }
     private void checkPosForCoin(int playerRef, int colour){
         players.get(playerRef).checkPosForCoin(colour);
-        //METTI QUI IL LISTENER
+        this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef) );
     }
 
     public void setStudentEntrance(int playerRef, int colour, int studentsOfThisColor){
