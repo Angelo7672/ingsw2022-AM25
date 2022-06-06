@@ -13,8 +13,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
-public class LoginSceneController {
+public class LoginSceneController implements Initializable {
 
     private GUI gui;
     private Stage stage;
@@ -22,6 +25,7 @@ public class LoginSceneController {
     private String currentNickname;
     private String currentCharacter;
     private Proxy_c proxy;
+    private ArrayList<String> avaiableCharacters;
 
     @FXML private TextField nicknameBox;
     @FXML private AnchorPane loginScene;
@@ -30,6 +34,8 @@ public class LoginSceneController {
     @FXML private Button samurai;
     @FXML private Button king;
     @FXML private Button next;
+
+
 
     public void setCharacter(ActionEvent e){
         if(e.getSource()==wizard)
@@ -45,7 +51,7 @@ public class LoginSceneController {
     public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
         this.currentNickname =nicknameBox.getText();
         System.out.println(currentNickname +", "+ currentCharacter);
-        //gui.setupConnection(currentNickname, currentCharacter);
+        gui.setupConnection(currentNickname, currentCharacter);
         switchScene();
     }
     public void setGui(GUI gui) {
@@ -84,5 +90,10 @@ public class LoginSceneController {
         Scene startMenu = new Scene(root);
         stage.setScene(startMenu);
         stage.show();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resources) {
+        //gui.send
     }
 }

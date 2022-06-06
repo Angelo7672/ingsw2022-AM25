@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.controller.listeners.*;
 import javafx.application.Application;
-import javafx.concurrent.Service;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,9 +25,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private Socket socket;
     private LoginSceneController loginSceneController;
     private SetupSceneController setupSceneController;
-    private Service<Void> backgroundThread;
-
-    // private GUIcontroller currentController;
 
     public static void main(String[] args){
         launch();
@@ -48,12 +44,43 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
 
     }
-    public void setup(Stage stage) throws IOException, ClassNotFoundException {
-        String result = proxy.first();
-        if(result.equals("SetupGame")) {
+    public void setup(Stage stage) {
+
+        String result = null;
+        try {
+            result = proxy.first();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (result.equals("SetupGame")) {
             FXMLLoader loader = new FXMLLoader();
 
-            Parent root = loader.load(getClass().getResource("/fxml/SetupScene.fxml"));
+            Parent root = null;
+            try {
+                root = loader.load(getClass().getResource("/fxml/SetupScene.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
+            Scene loginScene = new Scene(root);
+            stage.setScene(loginScene);
+            stage.setTitle("Eriantys");
+            stage.setResizable(false);
+            stage.show();
+        } else if (result.equals("Server Sold Out")) {
+            System.out.println(result);
+        } else if (result.equals("Not first")) {
+
+            FXMLLoader loader = new FXMLLoader();
+
+            Parent root = null;
+            try {
+                root = loader.load(getClass().getResource("/fxml/LoginScene.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
             Scene loginScene = new Scene(root);
             stage.setScene(loginScene);
@@ -61,12 +88,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             stage.setResizable(false);
             stage.show();
         }
-        else  if (result.equals("Server Sold Out")){
-            System.out.println(result);
-            return;
+        /*
+        try {
+            view = proxy.startView();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //setupConnection();
-        view = proxy.startView();
         view.setBagListener(this);
         view.setCoinsListener(this);
         view.setInhibitedListener(this);
@@ -76,7 +105,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         view.setProfessorsListener(this);
         view.setStudentsListener(this);
         view.setTowersListener(this);
+    }*/
     }
+
+
+
 
     private Proxy_c getProxy() {
         return proxy;
@@ -84,22 +117,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void start(Stage stage) throws IOException {
-        /*try {
-            setup(stage);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }*/
-        FXMLLoader loader = new FXMLLoader();
-
-        Parent root = loader.load(getClass().getResource("/fxml/SetupScene.fxml"));
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
-        Scene loginScene = new Scene(root);
-        stage.setScene(loginScene);
-        stage.setTitle("Eriantys");
-        stage.setResizable(false);
-        stage.show();
+        setup(stage);
 
     }
+
+
+
     public Parent sceneControllerSetup() throws IOException {
         FXMLLoader loader = FXMLLoader.load(getClass().getResource("/fxml/LoginScene.fxml"));
         loginSceneController = loader.getController();
@@ -107,23 +130,23 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         return loader.load((getClass().getResource("/fxml/LoginScene.fxml")));
     }
 
-    public static void sendAvaiableCharacters() throws IOException, ClassNotFoundException {
+    public static ArrayList<String> sendAvaiableCharacters() throws IOException, ClassNotFoundException {
         ArrayList<String> chosenCharacters = proxy.getChosenCharacters();
         ArrayList<String> availableCharacters = new ArrayList<>();
         if(!chosenCharacters.contains("WIZARD")) availableCharacters.add("WIZARD");
         if(!chosenCharacters.contains("KING")) availableCharacters.add("KING");
         if(!chosenCharacters.contains("WITCH")) availableCharacters.add("WITCH");
         if(!chosenCharacters.contains("SAMURAI")) availableCharacters.add("SAMURAI");
+        return availableCharacters;
 
     }
     public static void setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
-        boolean ok = proxy.setupConnection(nickname, character);
-        //System.out.println("ciao");
-        System.out.println(ok);
         if (proxy.setupConnection(nickname, character)) {
             System.out.println("SetupConnection done");
         }
         else System.out.println("Error, try again");
+
+
     }
 
 

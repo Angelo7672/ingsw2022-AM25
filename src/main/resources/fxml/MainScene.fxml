@@ -91,13 +91,17 @@
             <Image url="@../graphics/schoolboard.png" />
          </image>
       </ImageView>
-      <Label layoutX="132.0" layoutY="588.0" prefHeight="22.0" prefWidth="75.0" text="nickname" />
-      <ImageView fitHeight="151.0" fitWidth="89.0" layoutX="27.0" layoutY="582.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../graphics/character_wizard.png" />
-         </image>
-      </ImageView>
-      <Label layoutX="137.0" layoutY="613.0" text="TEAM: " />
+      <AnchorPane layoutX="1.0" layoutY="569.0" prefHeight="166.0" prefWidth="188.0">
+         <children>
+            <ImageView fitHeight="151.0" fitWidth="89.0" layoutX="17.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/character_wizard.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="112.0" layoutY="23.0" prefHeight="22.0" prefWidth="75.0" text="nickname" />
+            <Label layoutX="119.0" layoutY="54.0" text="TEAM: " />
+         </children>
+      </AnchorPane>
 
    </children>
 </AnchorPane>

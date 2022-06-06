@@ -55,7 +55,7 @@ public class SetupSceneController implements Initializable {
     public void nextPressed(ActionEvent e) {
         System.out.println(numberOfPlayers + ", " + expertMode);
 
-        if(/*gui.setupGame(numberOfPlayers, expertMode*/ true) {
+        if(gui.setupGame(numberOfPlayers, expertMode ) == true) {
             try {
                 switchScene();
             } catch (IOException ex) {
