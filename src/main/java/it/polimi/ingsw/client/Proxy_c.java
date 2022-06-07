@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 
@@ -20,7 +21,8 @@ public class Proxy_c implements Exit{
     private Thread ping;
     private Thread receive;
     private ArrayList<Answer> answersList;
-    private final Object lock;
+    private final Object lock1;
+    private final Object lock2;
 
     public Proxy_c(Socket socket) throws IOException{
         this.socket = socket;
@@ -30,7 +32,8 @@ public class Proxy_c implements Exit{
         startReceive();
         socket.setSoTimeout(15000);
         answersList = new ArrayList<>();
-        lock = new Object();
+        lock1 = new Object();
+        lock2 = new Object();
     }
 
     public String first() throws IOException, ClassNotFoundException {
@@ -50,7 +53,7 @@ public class Proxy_c implements Exit{
         return (msg.getCharacterAlreadyChosen());
     }
 
-    public View startView() throws IOException, ClassNotFoundException {
+    public View startView() throws IOException, ClassNotFoundException, InterruptedException {
         send(new GenericMessage("Ready to start"));
         tempObj = receive();
         return view;
@@ -165,16 +168,23 @@ public class Proxy_c implements Exit{
     }
     public Answer receive() throws IOException {
         Answer tmp;
-        while (true) {
-            synchronized (lock){
+        //while (true) {
+            synchronized (lock1){
                 try {
-                    if (answersList.size() == 0) lock.wait();
+                    if (answersList.size() == 0) lock1.wait();
                 }catch (InterruptedException e){
 
                 }
             tmp = answersList.get(0);
             answersList.remove(0);
-            if(tmp instanceof UserInfoAnswer) {
+            if(tmp instanceof GameInfoAnswer) {
+                    synchronized (lock2){
+                        view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());
+                        lock2.notify();
+                    }
+
+            }
+            /*if(tmp instanceof UserInfoAnswer) {
                 view.setUserInfo((UserInfoAnswer)tmp);
             }
             else if(tmp instanceof LastCardMessage) {view.setLastCard((LastCardMessage)tmp);}
@@ -206,7 +216,7 @@ public class Proxy_c implements Exit{
                 return null;
             }
             else break;
-            }
+            }*/
         }
         return tmp;
     }
@@ -221,24 +231,120 @@ public class Proxy_c implements Exit{
                     if(tmp instanceof PongAnswer){
                         socket.setSoTimeout(15000);
                     }
-                    else answersTmpList.add(tmp);
-                    synchronized (lock){
-                        for(int i=0; i<answersTmpList.size(); i++) {
-                            answersList.add(answersTmpList.get(i));
-                            answersTmpList.remove(i);
+                    else if(tmp instanceof UserInfoAnswer) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setUserInfo((UserInfoAnswer) tmp);
                         }
-                        if(answersList.size()!=0) lock.notify();
+                    }
+                    else if(tmp instanceof LastCardMessage) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setLastCard((LastCardMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof NumberOfCardsMessage) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setNumberOfCards((NumberOfCardsMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof SchoolStudentMessage) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setSchoolStudents((SchoolStudentMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof ProfessorMessage) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setProfessors((ProfessorMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof SchoolTowersMessage) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setSchoolTowers((SchoolTowersMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof CoinsMessage) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setCoins((CoinsMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof CloudStudentMessage) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setClouds((CloudStudentMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof IslandStudentMessage) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setStudentsIsland((IslandStudentMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof MotherPositionMessage) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setMotherPosition((MotherPositionMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof IslandTowersNumberMessage) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setIslandTowers((IslandTowersNumberMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof IslandTowersColorMessage) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setTowersColor((IslandTowersColorMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof InhibitedIslandMessage) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setInhibited((InhibitedIslandMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof UnifiedIsland) {
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.removeUnifiedIsland((UnifiedIsland) tmp);
+                        }
+                    }
+                    else if(tmp instanceof SetSpecialAnswer) {
 
                     }
-                } catch (IOException | ClassNotFoundException e) {
+                    else if(tmp instanceof SoldOutAnswer){
+                        System.err.println("sold out");
+                    }
+                    else if(tmp instanceof DisconnectedAnswer){
+                        System.err.println("Client disconnected, game over.");
+                        socket.close();
+                    }
+                    else answersTmpList.add(tmp);
+                }catch (IOException | ClassNotFoundException e) {
                     try {
                         System.err.println("Client disconnected, game over.");
                         socket.close();
                         return;
                     } catch (IOException ex) {
-                        ex.printStackTrace();
+                    ex.printStackTrace();
                     }
+                } catch (InterruptedException e) {
+                e.printStackTrace();
                 }
+
+                synchronized (lock1){
+                        for(int i=0; i<answersTmpList.size(); i++) {
+                            answersList.add(answersTmpList.get(i));
+                            answersTmpList.remove(i);
+                        }
+                        if(answersList.size()!=0) lock1.notify();
+                    }
             }
         });
         receive.start();

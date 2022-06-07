@@ -44,7 +44,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
 
     }
-    public void setup(Stage stage) {
+    public void setup(Stage stage) throws IOException, ClassNotFoundException, InterruptedException {
 
         String result = null;
         try {
@@ -88,14 +88,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             stage.setResizable(false);
             stage.show();
         }
-        /*
-        try {
+
+        /*try {
             view = proxy.startView();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }*/
+
+        view = proxy.startView();
         view.setBagListener(this);
         view.setCoinsListener(this);
         view.setInhibitedListener(this);
@@ -105,8 +105,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         view.setProfessorsListener(this);
         view.setStudentsListener(this);
         view.setTowersListener(this);
-    }*/
     }
+
 
 
 
@@ -116,7 +116,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, ClassNotFoundException, InterruptedException {
         setup(stage);
 
     }

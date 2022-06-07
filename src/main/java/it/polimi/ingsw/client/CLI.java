@@ -27,7 +27,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         proxy = new Proxy_c(socket);
     }
 
-    public void setup() throws IOException, ClassNotFoundException {
+    public void setup() throws IOException, ClassNotFoundException, InterruptedException {
         System.out.println("Waiting for server...");
         String result = proxy.first();
         if(result.equals("SetupGame")) {
@@ -245,7 +245,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         if (!result.equalsIgnoreCase("ok")) System.out.println(result);
         else {
             constants.setCardPlayed(true);
-            System.out.println("it's your opponent turn, wait...");
+            //System.out.println("it's your opponent turn, wait...");
         }
     }
 
@@ -349,7 +349,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         try {
             setup();
             while (active) {
-                System.out.println("it's your opponent turn, wait...");
+                //System.out.println("it's your opponent turn, wait...");
                 while(true) {
                     if (proxy.startPlanningPhase()){
                         constants.resetAll();
@@ -362,6 +362,8 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             }
         } catch (IOException | ClassNotFoundException e) {
         System.err.println("io / class in run");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         scanner.close();
     }

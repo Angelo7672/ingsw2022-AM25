@@ -9,7 +9,7 @@ public interface Exit {
 
     ArrayList<String> getChosenCharacters() throws IOException, ClassNotFoundException;
 
-    View startView()throws IOException, ClassNotFoundException;
+    View startView() throws IOException, ClassNotFoundException, InterruptedException;
 
     boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException ;
 
