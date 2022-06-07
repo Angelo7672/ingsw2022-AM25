@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 
 
@@ -23,6 +22,7 @@ public class Proxy_c implements Exit{
     private ArrayList<Answer> answersList;
     private final Object lock1;
     private final Object lock2;
+    private String winner;
 
     public Proxy_c(Socket socket) throws IOException{
         this.socket = socket;
@@ -34,6 +34,7 @@ public class Proxy_c implements Exit{
         answersList = new ArrayList<>();
         lock1 = new Object();
         lock2 = new Object();
+        winner = null;
     }
 
     public String first() throws IOException, ClassNotFoundException {
@@ -216,6 +217,11 @@ public class Proxy_c implements Exit{
         return tmp;
     }
 
+    @Override
+    public String getWinner(){
+        return winner;
+    }
+
     private void startReceive(){
         receive = new Thread(() -> {
             ArrayList<Answer> answersTmpList = new ArrayList<>();
@@ -326,6 +332,9 @@ public class Proxy_c implements Exit{
                         System.err.println("Client disconnected, game over.");
                         socket.close();
                     }
+                    else if(tmp instanceof GameOverAnswer){
+                        winner = ((GameOverAnswer) tmp).getWinner();
+                    }
                     else answersTmpList.add(tmp);
                 }catch (IOException | ClassNotFoundException e) {
                     try {
@@ -345,7 +354,7 @@ public class Proxy_c implements Exit{
                             answersTmpList.remove(i);
                         }
                         if(answersList.size()!=0) lock1.notify();
-                    }
+                }
             }
         });
         receive.start();

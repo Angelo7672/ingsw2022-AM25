@@ -30,4 +30,6 @@ public interface Exit {
     String chooseCloud(int cloud) throws IOException, ClassNotFoundException;
 
     boolean startPlanningPhase() throws ClassNotFoundException, IOException;
+
+    String getWinner();
 }

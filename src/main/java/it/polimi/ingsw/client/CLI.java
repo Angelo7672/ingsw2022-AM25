@@ -17,6 +17,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     private final PlayerConstants constants;
     private View view;
     private final Socket socket;
+    private String winner;
 
 
     public CLI(Socket socket) throws IOException{
@@ -369,6 +370,11 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     public void turn() throws IOException, ClassNotFoundException {
+        winner = proxy.getWinner();
+        if(winner!=null){
+            System.out.println("Game Over, the winner is "+winner);
+            socket.close();
+        }
         if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) useSpecial();
         phaseHandler(constants.lastPhase());
     }
