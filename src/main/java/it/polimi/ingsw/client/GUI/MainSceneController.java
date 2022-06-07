@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 
-public class MainSceneController {
+public class MainSceneController implements SceneController{
     private GUI gui;
     private Stage stage;
     private Scene scene;
@@ -19,4 +19,8 @@ public class MainSceneController {
 
     }
 
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui=gui;
+    }
 }

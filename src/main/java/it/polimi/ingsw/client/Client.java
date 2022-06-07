@@ -29,8 +29,18 @@ public class Client {
         }
         else if (graph.equalsIgnoreCase("GUI")) {
             GUI gui = new GUI();
+            Proxy_c proxy = new Proxy_c(socket);
+            View view;
             gui.setSocket(socket);
-            gui.setProxy(new Proxy_c(socket));
+            gui.setProxy(proxy);
+            /*try {
+                view = proxy.startView();
+                gui.setView(view);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
             gui.main(null);
 
         }

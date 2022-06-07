@@ -123,6 +123,14 @@ public class VirtualView
         } catch (IOException e) { e.printStackTrace(); }
     }
 
+    public boolean checkFile(){
+        File file = new File(fileName);
+        if (file.length() != 0)
+            return true;
+        return false;
+    }
+
+
     public ArrayList<String> getAlreadyChosenCharacters(){
         ArrayList<String> chosenCharacters = new ArrayList<>();
 
