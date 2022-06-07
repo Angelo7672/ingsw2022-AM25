@@ -4,28 +4,26 @@ import it.polimi.ingsw.client.Proxy_c;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
-public class LoginSceneController implements Initializable {
-
+public class LoginSceneController implements SceneController {
     private GUI gui;
     private Stage stage;
     private Scene scene;
     private String currentNickname;
     private String currentCharacter;
     private Proxy_c proxy;
-    private ArrayList<String> avaiableCharacters;
+    private ArrayList<String> availableCharacters;
 
     @FXML private TextField nicknameBox;
     @FXML private AnchorPane loginScene;
@@ -34,10 +32,21 @@ public class LoginSceneController implements Initializable {
     @FXML private Button samurai;
     @FXML private Button king;
     @FXML private Button next;
+    @FXML private ImageView wizardImage;
+    @FXML private ImageView witchImage;
+    @FXML private ImageView samuraiImage;
+    @FXML private ImageView kingImage;
 
 
+    /*
+    @Override
+    public void initialize(URL url, ResourceBundle resources) {
+        availableCharacters= gui.getAvailableCharacters();
+        disableCharacters(availableCharacters); //makes already taken characters not selectable
+    }*/
 
     public void setCharacter(ActionEvent e){
+
         if(e.getSource()==wizard)
             this.currentCharacter="wizard";
         else if(e.getSource()==samurai)
@@ -49,13 +58,11 @@ public class LoginSceneController implements Initializable {
     }
 
     public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
+
         this.currentNickname =nicknameBox.getText();
         System.out.println(currentNickname +", "+ currentCharacter);
         gui.setupConnection(currentNickname, currentCharacter);
-        switchScene();
-    }
-    public void setGui(GUI gui) {
-        this.gui=gui;
+        //switchScene();
     }
 
     public void setProxy(Proxy_c proxy) {
@@ -72,17 +79,36 @@ public class LoginSceneController implements Initializable {
     public void hideNicknameMessage(){
         this.nicknameMessage.setVisible(false);
     }
-
-    public void disableCharacter(String character){
-        //se il personaggio è già stato scelto
-        if(character == "wizard")
-            wizard.setImage(new Image(getClass().getResourceAsStream("graphics/character_king_taken.png")));
-        else if(character == "samurai")
-            samurai.setImage(new Image(getClass().getResourceAsStream("graphics/character_samurai_taken.png")));
-        //witch
-        //king
-    }
 */
+    public void disableCharacters(ArrayList<String> availableCharacters) {
+        //se il personaggio è già stato scelto
+        for(String character: availableCharacters){
+            if(character == "WIZARD"){
+                wizardImage.setImage((new Image(getClass().getResourceAsStream("graphics/character_wizard_taken.png"))));
+                wizard.setDisable(true);
+            }
+            else if(character == "SAMURAI"){
+                samuraiImage.setImage((new Image(getClass().getResourceAsStream("graphics/character_samurai_taken.png"))));
+                samurai.setDisable(true);
+            }
+            else if(character == "WITCH"){
+                witchImage.setImage((new Image(getClass().getResourceAsStream("graphics/character_witch_taken.png"))));
+                witch.setDisable(true);
+            }
+            else if(character == "KING"){
+                kingImage.setImage((new Image(getClass().getResourceAsStream("graphics/character_king_taken.png"))));
+                king.setDisable(true);
+            }
+        }
+            /*
+            if (character == "wizard")
+                wizard.setImage(new Image(getClass().getResourceAsStream("graphics/character_king_taken.png")));
+            else if (character == "samurai")
+                samurai.setImage(new Image(getClass().getResourceAsStream("graphics/character_samurai_taken.png")));*/
+            //witch
+            //king
+        }
+
     public void switchScene() throws IOException {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader();
@@ -92,8 +118,11 @@ public class LoginSceneController implements Initializable {
         stage.show();
     }
 
+
     @Override
-    public void initialize(URL url, ResourceBundle resources) {
-        //gui.send
+    public void setGUI(GUI gui) {
+        this.gui=gui;
     }
+
+
 }
