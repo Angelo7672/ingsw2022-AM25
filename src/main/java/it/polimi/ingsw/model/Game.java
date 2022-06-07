@@ -65,6 +65,18 @@ public class Game implements GameManager{
         playerManager.initializeSchool();
         islandsManager.islandsInitialize();
     }
+    @Override
+    public void schoolRestore(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, String team){
+        playerManager.restoreSingleSchool(playerRef,studentsEntrance,studentsTable,towers,professors,stringToTeam(team));
+    }
+    @Override
+    public void cloudRestore(int cloudRef, int[] students){
+        cloudsManager.restoreClouds(cloudRef,students);
+    }
+    @Override
+    public void islandRestore(int islandRef, int[] students, int towerValue, String towerTeam, int inhibited){
+        islandsManager.restoreIslands(islandRef,students,towerValue,stringToTeam(towerTeam),inhibited);
+    }
 
     private Assistant stringToAssistant(String string){
         if(string.equalsIgnoreCase("LION")) return Assistant.LION;
@@ -78,6 +90,18 @@ public class Game implements GameManager{
         else if(string.equalsIgnoreCase("ELEPHANT")) return Assistant.ELEPHANT;
         else if(string.equalsIgnoreCase("TURTLE")) return Assistant.TURTLE;
         return Assistant.NONE;
+    }
+    private String toString(Team team){
+        if(team.equals(Team.WHITE)) return "WHITE";
+        else if(team.equals(Team.BLACK)) return "BLACK";
+        else if(team.equals(Team.GREY)) return "GREY";
+        return "NONE";
+    }
+    private Team stringToTeam(String string){
+        if(string.equalsIgnoreCase("WHITE")) return Team.WHITE;
+        else if(string.equalsIgnoreCase("BLACK")) return Team.BLACK;
+        else if(string.equalsIgnoreCase("GREY")) return Team.GREY;
+        return Team.NONE;
     }
 
     @Override
@@ -154,29 +178,58 @@ public class Game implements GameManager{
     public int readQueue(int pos){ return queueManager.readQueue(pos); }
 
     @Override
-    public String oneLastRide() {
-        return roundStrategies.get(0).oneLastRide();
-    }
+    public String oneLastRide(){ return toString(playerManager.checkVictory()); }
 
     @Override
-    public void useSpecial(int indexSpecial, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
+    public boolean useSpecialSimple(int indexSpecial, int playerRef, int ref){
+        boolean checker = false;
+
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, ref);
-            switch (findName(indexSpecial)) {
-                case(1): roundStrategies.get(indexSpecial).effect(ref);
-                case(2): roundStrategies.get(indexSpecial).effect(ref, color1.get(0));
-                case(3): roundStrategies.get(indexSpecial).effect(ref, color1, color2); break;
+            checker = roundStrategies.get(indexSpecial).effect(ref);
+            if(checker) {
+                playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
+                roundStrategies.get(indexSpecial).increaseCost();
             }
             setSpecial(0, -1);
         }
+
+        return checker;
     }
-    public Boolean affordSpecial(int indexSpecial, int playerRef){
-        if(playerManager.getCoins(playerRef) >= roundStrategies.get(indexSpecial).getCost()){
-            playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
-            roundStrategies.get(indexSpecial).increaseCost();
-            return true;
+    @Override
+    public boolean useSpecialMedium(int indexSpecial, int playerRef, int ref, int color){
+        boolean checker = false;
+
+        if (affordSpecial(indexSpecial, playerRef)) {
+            setSpecial(indexSpecial, ref);
+            checker = roundStrategies.get(indexSpecial).effect(ref, color);
+            if(checker) {
+                playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
+                roundStrategies.get(indexSpecial).increaseCost();
+            }
+            setSpecial(0, -1);
         }
-        return false;
+
+        return checker;
+    }
+    @Override
+    public boolean useSpecialHard(int indexSpecial, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
+        boolean checker = false;
+
+        if(affordSpecial(indexSpecial, playerRef)) {
+            setSpecial(indexSpecial, ref);
+            checker = roundStrategies.get(indexSpecial).effect(ref, color1, color2);
+            if(checker) {
+                playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
+                roundStrategies.get(indexSpecial).increaseCost();
+            }
+            setSpecial(0, -1);
+        }
+
+        return checker;
+    }
+    private Boolean affordSpecial(int indexSpecial, int playerRef){
+        return playerManager.getCoins(playerRef) >= roundStrategies.get(indexSpecial).getCost();
     }
     public void setSpecial(int indexSpecial, int refSpecial){
         this.indexSpecial = indexSpecial;

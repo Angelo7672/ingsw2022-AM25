@@ -81,6 +81,18 @@ public class Server implements Entrance,ControllerServer{
 
         return true;
     }
+    @Override
+    public boolean useSpecialSimple(int indexSpecial, int playerRef, int ref){
+        return controller.useSpecialSimple(indexSpecial,playerRef,ref);
+    }
+    @Override
+    public boolean useSpecialMedium(int indexSpecial, int playerRef, int ref, int color){
+        return controller.useSpecialMedium(indexSpecial,playerRef,ref,color);
+    }
+    @Override
+    public boolean useSpecialHard(int specialIndex, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
+        return controller.useSpecialHard(specialIndex,playerRef,ref,color1,color2);
+    }
 
     @Override
     public void resumeTurn(){ controller.resumeTurn(); }

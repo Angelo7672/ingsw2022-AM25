@@ -11,7 +11,7 @@ import java.util.List;
 public class VirtualView
         implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, BagListener,
-        QueueListener {
+        QueueListener, Serializable {
 
     private ArrayList<SchoolBoard> schoolBoards;
     private ArrayList<Island> islands;
@@ -21,11 +21,11 @@ public class VirtualView
     private ArrayList<String> playedCards;
     private List<Integer> bag;
     private ArrayList<Integer> queue;
-    private ControllerServer server;
+    private transient ControllerServer server;
     private int numberOfPlayers;
     private String fileName;
 
-    public VirtualView(int numberOfPlayers, ControllerServer server) {
+    public VirtualView(int numberOfPlayers, ControllerServer server, String fileName) {
         this.schoolBoards = new ArrayList<>();
         this.hands = new ArrayList<>();
         this.clouds = new ArrayList<>();
@@ -36,7 +36,7 @@ public class VirtualView
         this.bag = new ArrayList<>();
         this.server = server;
         this.numberOfPlayers = numberOfPlayers;
-        this.fileName = "saveGame.bin";
+        this.fileName = fileName;
 
         for(int i=0; i<12; i++)
             this.islands.add(new Island());
@@ -49,68 +49,18 @@ public class VirtualView
             ObjectOutputStream objectOut = new ObjectOutputStream(outputFile);
 
             objectOut.writeObject(schoolBoards);
-            /*for(SchoolBoard schoolBoard : schoolBoards)
-                objectOut.writeObject(schoolBoard);*/
-            /*for(Island island:islands)
-                objectOut.writeObject(island);
-            for(Cloud cloud:clouds)
-                objectOut.writeObject(cloud);
-            for(int i=0; i<specials.size(); i++)
-                objectOut.writeObject(specials.get(i));
-            for(int i=0; i<bag.size(); i++)
-                objectOut.writeObject(bag.get(i));
-            for(int i=0; i<playedCards.size(); i++)
-                objectOut.writeObject(playedCards.get(i));
-            for(int i=0; i<queue.size(); i++)
-                objectOut.writeObject(queue.get(i));*/
+            objectOut.writeObject(islands);
+            objectOut.writeObject(clouds);
+            objectOut.writeObject(hands);
+            objectOut.writeObject(specials);
+            objectOut.writeObject(bag);
+            objectOut.writeObject(playedCards);
+            objectOut.writeObject(queue);
+
             objectOut.close();
             outputFile.close();
-            /*
-            ObjectOutputStream outputFile = new ObjectOutputStream(new FileOutputStream(fileName, false));
-
-            outputFile.writeObject(this.schoolBoards);
-            outputFile.writeObject(this.islands);
-            outputFile.writeObject(this.clouds);
-            outputFile.writeObject(this.hands);
-            outputFile.writeObject(this.specials);
-            outputFile.writeObject(this.bag);
-            outputFile.writeObject(this.playedCards);
-            outputFile.writeObject(this.queue);
-            outputFile.close();*/
         } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace(); }
-    }
-    public void restoreVirtualView(){
-        try{
-            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
-            for(SchoolBoard s:this.schoolBoards){
-                this.schoolBoards.add( (SchoolBoard) inputFile.readObject());
-            for(Island i:this.islands)
-                this.islands.add((Island) inputFile.readObject());
-            for(Cloud c:this.clouds)
-                this.clouds.add((Cloud) inputFile.readObject());
-            for(int i=0; i<this.specials.size(); i++)
-                this.specials.add((Integer) inputFile.readObject());
-            for(int i=0; i<bag.size(); i++)
-                this.bag.add((Integer) inputFile.readObject());
-            for(int i=0; i<playedCards.size(); i++)
-                this.playedCards.add((String) inputFile.readObject());
-            for(int i=0; i<queue.size(); i++)
-                this.queue.add((Integer) inputFile.readObject());
-            }
-            inputFile.close();
-            /*
-            this.schoolBoards = (ArrayList<SchoolBoard>) inputFile.readObject();
-            this.islands= (ArrayList<Island>) inputFile.readObject();
-            this.clouds=(ArrayList<Cloud>) inputFile.readObject();
-            this.hands=(ArrayList<Hand>) inputFile.readObject();
-            this.specials=(ArrayList<Integer>) inputFile.readObject();
-            this.bag=(ArrayList<Integer>) inputFile.readObject();
-            this.playedCards=(ArrayList<String>) inputFile.readObject();
-            this.queue=(ArrayList<Integer>) inputFile.readObject();*/
-        } catch (FileNotFoundException e) { e.printStackTrace();
-        } catch (IOException e) { e.printStackTrace();
-        } catch (ClassNotFoundException e) { e.printStackTrace(); }
     }
     public void clearFile() {
         try {
@@ -257,12 +207,10 @@ public class VirtualView
     public void notifyBagExtraction() {
         bag.remove(0);
     }
-
     @Override
     public void notifyBag(List<Integer> bag) {
-        this.bag=bag;
+        this.bag = bag;
     }
-
     @Override
     public void notifyQueue(int playerRef) {
         queue.add(playerRef);
@@ -275,16 +223,15 @@ public class VirtualView
 
     //private class SchoolBoard keeps the state of each player's school board
     private class SchoolBoard implements Serializable{
-        String nickname;
-        String character;
-        int team; //0: white, 1: black, 2:grey
-        int[] studentsEntrance;
-        int[] studentsTable;
-        int towersNumber;
-        boolean[] professors;
+        private String nickname;
+        private String character;
+        private int team; //0: white, 1: black, 2:grey
+        private int[] studentsEntrance;
+        private int[] studentsTable;
+        private int towersNumber;
+        private boolean[] professors;
 
         public SchoolBoard(String nickname, String character){
-            super();
             this.nickname = nickname;
             this.character = character;
             this.studentsEntrance = new int[]{0, 0, 0, 0, 0};
@@ -292,29 +239,19 @@ public class VirtualView
             this.professors = new boolean[]{false, false, false, false, false};
         }
         
-        public void setStudentsEntrance(int color, int newValue){
-            this.studentsEntrance[color]=newValue;
-        }
-        public void setStudentsTable(int color, int newValue) {
-            this.studentsTable[color]=newValue;
-        }
-        public void setTowersNumber(int towersNumber) {
-            this.towersNumber = towersNumber;
-        }
-        public void setProfessors(int color, boolean newValue) {
-            this.professors[color] = newValue;
-        }
-        public void setTeam(int team) {
-            this.team=team;
-        }
+        public void setStudentsEntrance(int color, int newValue){ this.studentsEntrance[color] = newValue; }
+        public void setStudentsTable(int color, int newValue) { this.studentsTable[color] = newValue; }
+        public void setTowersNumber(int towersNumber) { this.towersNumber = towersNumber; }
+        public void setProfessors(int color, boolean newValue) { this.professors[color] = newValue; }
+        public void setTeam(int team) { this.team = team; }
     }
 
     private class Island implements Serializable{
-        int[] studentsIsland;
-        boolean isMotherPosition;
-        int towersNumber;
-        int towersColor;
-        int isInhibited;
+        private int[] studentsIsland;
+        private boolean isMotherPosition;
+        private int towersNumber;
+        private int towersColor;
+        private int isInhibited;
 
         public Island() {
             this.studentsIsland = new int[]{0,0,0,0,0};
@@ -339,14 +276,14 @@ public class VirtualView
         }
     }
     private class Cloud implements Serializable{
-        int[] students;
+        private int[] students;
 
         public Cloud(){
             this.students = new int[]{0, 0, 0, 0, 0};
         }
 
         public void setCloudStudents(int color, int newStudentsValue) {
-            students[color]=newStudentsValue;
+            students[color] = newStudentsValue;
         }
     }
     private class Hand implements Serializable{
@@ -355,21 +292,20 @@ public class VirtualView
         String lastPlayedCard;
 
         public Hand(){
-            this.numberOfCards=10;
-            this.coins=1;
+            this.numberOfCards = 10;
+            this.coins = 1;
         }
 
         public void setCoins(int coins) {
-            this.coins=coins;
+            this.coins = coins;
         }
 
         public void setLastCard(String lastPlayedCard) {
-            this.lastPlayedCard=lastPlayedCard;
+            this.lastPlayedCard = lastPlayedCard;
         }
         public String getLastCard(){ return lastPlayedCard;}
-
         public void setNumberOfCards(int numberOfCards) {
-            this.numberOfCards=numberOfCards;
+            this.numberOfCards = numberOfCards;
         }
     }
 }

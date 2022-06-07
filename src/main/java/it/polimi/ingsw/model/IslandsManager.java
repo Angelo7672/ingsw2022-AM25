@@ -41,17 +41,31 @@ public class IslandsManager {
         Collections.shuffle(miniBag);
         for(int i = 0; i < 12 && !miniBag.isEmpty(); i++) {
             if (i != motherPos && i != circularArray(motherPos, 6)){
-                incStudent(i,miniBag.get(0));
+                incStudent(i,miniBag.get(0),1);
                 miniBag.remove(0);
             }
         }
     }
+    public void restoreIslands(int islandRef, int[] students, int towerValue, Team towerTeam, int inhibited){
+        //Students
+        for(int i = 0; i < 5; i++)
+            incStudent(islandRef,i,students[i]);
+        //Tower
+        islands.get(islandRef).incTowerValue(towerValue);
+        islands.get(islandRef).setTowerTeam(towerTeam);
+        //TODO manca il listener
+        //Special
+        for(int i = 0; i < inhibited; i++)
+            increaseInhibited(islandRef);
+    }
 
     public int getIslandsSize(){ return islands.size(); }
 
-    public void incStudent(int island, int color){
-        islands.get(island).incStudents(color);
-        this.studentListener.notifyStudentsChange(2,island, color, getStudent(island, color));
+    public void incStudent(int island, int color, int studentOfThisColor){
+        for(int i = 0; i < studentOfThisColor; i ++) {
+            islands.get(island).incStudents(color);
+            this.studentListener.notifyStudentsChange(2, island, color, getStudent(island, color));
+        }
     }
 
     public void moveMotherNature(int steps) {
@@ -136,14 +150,12 @@ public class IslandsManager {
     public void increaseInhibited(int islandRef){
         islands.get(islandRef).increaseInhibited();
         this.inhibitedListener.notifyInhibited(islandRef, getInhibited(islandRef));
-        }
+    }
     public void decreaseInhibited(int islandRef){
         islands.get(islandRef).decreaseInhibited();
         this.inhibitedListener.notifyInhibited(islandRef, getInhibited(islandRef));
     }
-    public int size(){
-        return islands.size();
-    }
+    public int size(){ return islands.size(); }
 
     private class Island {
         private int[] students;
@@ -169,6 +181,4 @@ public class IslandsManager {
         private void increaseInhibited(){ this.inhibited++; }
         private void decreaseInhibited(){this.inhibited--;}
     }
-
 }
-

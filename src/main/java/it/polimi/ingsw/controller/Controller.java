@@ -6,6 +6,10 @@ import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 import it.polimi.ingsw.server.ControllerServer;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 public class Controller implements ServerController{
@@ -17,13 +21,14 @@ public class Controller implements ServerController{
     private int numberOfPlayers;
     private boolean expertMode;
     private String winner;
-
+    private String fileName;
 
     public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server){
         this.expertMode = isExpert;
         this.numberOfPlayers = numberOfPlayers;
         this.server = server;
-        this.virtualView = new VirtualView(numberOfPlayers, server);
+        this.fileName = "saveGame.bin";
+        this.virtualView = new VirtualView(numberOfPlayers, server, fileName);
         this.winner = "NONE";
     }
 
@@ -91,6 +96,18 @@ public class Controller implements ServerController{
         try { gameManager.chooseCloud(playerRef,cloudRef);
         }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
+    @Override
+    public boolean useSpecialSimple(int indexSpecial, int playerRef, int ref){
+        return gameManager.useSpecialSimple(indexSpecial,playerRef,ref);
+    }
+    @Override
+    public boolean useSpecialMedium(int indexSpecial, int playerRef, int ref, int color){
+        return gameManager.useSpecialMedium(indexSpecial,playerRef,ref,color);
+    }
+    @Override
+    public boolean useSpecialHard(int specialIndex, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
+        return gameManager.useSpecialHard(specialIndex,playerRef,ref,color1,color2);
+    }
 
     @Override
     public void resumeTurn(){ synchronized(roundController) { roundController.notify();} }
@@ -100,6 +117,25 @@ public class Controller implements ServerController{
     public void oneLastRide(){ winner = gameManager.oneLastRide(); }
 
     public void saveGame(){ virtualView.saveVirtualView(); }
+    public void clearFile(){ virtualView.clearFile(); }
+    public void restoreVirtualView(){
+    /*
+        try{
+            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
+            this.schoolBoards = (ArrayList<SchoolBoard>) inputFile.readObject();
+            this.islands= (ArrayList<Island>) inputFile.readObject();
+            this.clouds=(ArrayList<Cloud>) inputFile.readObject();
+            this.hands=(ArrayList<Hand>) inputFile.readObject();
+            this.specials=(ArrayList<Integer>) inputFile.readObject();
+            this.bag=(ArrayList<Integer>) inputFile.readObject();
+            this.playedCards=(ArrayList<String>) inputFile.readObject();
+            this.queue=(ArrayList<Integer>) inputFile.readObject();
+            inputFile.close();
+        } catch (FileNotFoundException e) { e.printStackTrace();
+        } catch (IOException e) { e.printStackTrace();
+        } catch (ClassNotFoundException e) { e.printStackTrace(); }
+     */
+    }
 
     @Override
     public boolean isExpertMode() { return expertMode; }

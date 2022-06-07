@@ -17,7 +17,9 @@ public interface GameManager {
 
     //Action Phase
     void inOrderForActionPhase();
-    void useSpecial(int specialIndex, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2);
+    boolean useSpecialSimple(int indexSpecial, int playerRef, int ref);
+    boolean useSpecialMedium(int indexSpecial, int playerRef, int ref, int color);
+    boolean useSpecialHard(int specialIndex, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2);
     void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException;
     boolean moveMotherNature(int queueRef, int desiredMovement) throws NotAllowedException;
     void chooseCloud(int playerRef,int cloudRef) throws NotAllowedException;
@@ -37,4 +39,9 @@ public interface GameManager {
     void setInhibitedListener(InhibitedListener listener);
     void setBagListener(BagListener listener);
     void setQueueListener(QueueListener listener);
+
+    //Restore game
+    void schoolRestore(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, String team);
+    void cloudRestore(int cloudRef, int[] students);
+    void islandRestore(int islandRef, int[] students, int towerValue, String towerTeam, int inhibited);
 }

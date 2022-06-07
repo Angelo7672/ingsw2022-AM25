@@ -15,7 +15,7 @@ public class RoundSpecial2 extends RoundStrategy {
         if(!inSchool){
             if(islandRef < 0 || islandRef >= islandsManager.getIslandsSize()) throw new NotAllowedException();
             playerManager.transferStudent(playerRef, colour, inSchool, true);
-            islandsManager.incStudent(islandRef,colour);
+            islandsManager.incStudent(islandRef,colour,1);
         }
         else if(inSchool)
             playerManager.transferStudent(playerRef, colour, inSchool, true);

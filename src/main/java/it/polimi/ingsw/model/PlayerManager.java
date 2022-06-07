@@ -56,6 +56,24 @@ public class PlayerManager  {
                 for (int i = 0; i < 9; i++) setStudentEntrance(j,bag.extraction(),1);
         }
     }
+    public void restoreSingleSchool(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, Team team){
+        //Entrance
+        for (int i = 0; i < 5; i++)
+            setStudentEntrance(playerRef,i,studentsEntrance[i]);
+        //Table
+        for (int i = 0; i < 5; i++) {
+            try { setStudentTable(playerRef, i, studentsTable[i]);
+            } catch (NotAllowedException notAllowedException) {
+                System.out.println("Error in loading save!");
+                System.exit(-1);
+            }
+        }
+        //Towers
+        placeTower(team,towers);
+        //Professors
+        for (int i = 0; i < 5; i++)
+            if(professors[i]) setProfessor(playerRef,i);
+    }
 
     public void playCard(int playerRef, Assistant card, ArrayList<Assistant> alreadyPlayedAssistant) throws NotAllowedException{
         int i = 0;
@@ -113,7 +131,7 @@ public class PlayerManager  {
         if(!inSchool) removeStudentEntrance(playerRef,colour);  //if inSchool is false, it's placed in an island
         else if(inSchool && !special){   //if inSchool is true, it's placed on the table
             removeStudentEntrance(playerRef,colour);
-            setStudentTable(playerRef,colour);
+            setStudentTable(playerRef,colour,1);
             players.get(playerRef).checkPosForCoin(colour);    //check the position, in case we have to give a coin to the player
             studentTableThisColour = getStudentTable(playerRef,colour);
             for (i = 0; i < numberOfPlayer && !stop; i++) {
@@ -132,7 +150,7 @@ public class PlayerManager  {
             }
         } else if(inSchool && special){   //if special is true, card special is active
             removeStudentEntrance(playerRef,colour);
-            setStudentTable(playerRef,colour);
+            setStudentTable(playerRef,colour,1);
             checkPosForCoin(playerRef,colour);    //check the position, in case we have to give a coin to the player
             studentTableThisColour = getStudentTable(playerRef,colour);
             for (i = 0; i < numberOfPlayer && !stop; i++) {
@@ -170,9 +188,11 @@ public class PlayerManager  {
     }
 
     public int getStudentTable(int playerRef, int colour){ return players.get(playerRef).school.getStudentTable(colour); }
-    public void setStudentTable(int playerRef, int colour) throws NotAllowedException{
-        players.get(playerRef).school.setStudentTable(colour);
-        this.studentsListener.notifyStudentsChange(1, playerRef, colour, getStudentTable(playerRef, colour));
+    public void setStudentTable(int playerRef, int colour, int studentsOfThisColor) throws NotAllowedException{
+        for(int i = 0; i < studentsOfThisColor; i++) {
+            players.get(playerRef).school.setStudentTable(colour);
+            this.studentsListener.notifyStudentsChange(1, playerRef, colour, getStudentTable(playerRef, colour));
+        }
     }
     public void removeStudentTable(int playerRef, int colour) throws NotAllowedException{
         players.get(playerRef).school.removeStudentTable(colour);

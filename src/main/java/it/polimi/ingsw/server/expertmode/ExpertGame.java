@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.expertmode;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.Message.*;
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.server.Answer.*;
 import it.polimi.ingsw.server.Answer.ViewMessage.*;
+import it.polimi.ingsw.server.expertmode.ExpertGame;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -167,7 +168,7 @@ public class VirtualClient implements Runnable{
     public void sendStartTurn(){ send(new StartTurn()); }
     public void sendWinner(String winner){ send(new GameOverAnswer(winner));}
 
-    private void send(Answer serverAnswer){
+    public void send(Answer serverAnswer){
         try {
             output.reset();
             output.writeObject(serverAnswer);

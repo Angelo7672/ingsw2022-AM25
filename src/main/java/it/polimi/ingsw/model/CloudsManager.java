@@ -16,7 +16,6 @@ public class CloudsManager{
             this.students = new int[]{0, 0, 0, 0, 0};
         }
 
-        private int[] getStudents(){ return students; }
         private int getColour(int colour){ return students[colour]; }
         private void incrStudents(int colour){ students[colour]++; }
         private void removeColour(int colour){ students[colour] = 0; }
@@ -33,15 +32,22 @@ public class CloudsManager{
         }
     }
 
-    // given the index of a cloud, return the array of students on that cloud
-    public int[] getStudents(int cloudIndex) {
-        return clouds.get(cloudIndex).getStudents();
-    }
-
     //given the index of a cloud and the color of the student extracted from the bag, add the student to the cloud
     public void refreshCloudStudents(int studentExtracted, int cloudIndex) {
         clouds.get(cloudIndex).incrStudents(studentExtracted);
         this.studentsListener.notifyStudentsChange(3, cloudIndex, studentExtracted,clouds.get(cloudIndex).getColour(studentExtracted));
+    }
+
+    public void restoreClouds(int cloudIndex, int[] students){
+        for (int i = 0; i < 5; i++)
+            setStudents(cloudIndex,i,students[i]);
+    }
+
+    private void setStudents(int cloudIndex, int colour, int studentsOfThisColor){
+        for(int i = 0; i < studentsOfThisColor; i++) {
+            clouds.get(cloudIndex).incrStudents(colour);
+            this.studentsListener.notifyStudentsChange(3, cloudIndex, colour, clouds.get(cloudIndex).getColour(colour));
+        }
     }
 
     // given the index of a cloud, it empties the cloud and returns the array of the students on the cloud

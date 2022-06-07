@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import java.util.ArrayList;
-
 public class RoundSpecial1 extends RoundStrategy{
     Special1 special;
     
@@ -16,10 +14,10 @@ public class RoundSpecial1 extends RoundStrategy{
 
     @Override
     public boolean effect(int islandRef, int color){
-        if(getStudents(color)>0){
+        if(getStudents(color) > 0){
             int extracted = bag.extraction();
             special.effect(color, extracted);
-            islandsManager.incStudent(islandRef, color);
+            islandsManager.incStudent(islandRef, color, 1);
             return true;
         }
         return false;
@@ -53,11 +51,11 @@ public class RoundSpecial1 extends RoundStrategy{
                 students[i]+=color[i];
         }
 
-        public int getStudent(int color){return students[color]; }
+        private int getStudent(int color){ return students[color]; }
 
         @Override
         public void effect(int chosen, int extracted) {
-            if(getStudent(chosen)>0) {
+            if(getStudent(chosen) > 0) {
                 students[chosen]--;
                 students[extracted]++;
             }

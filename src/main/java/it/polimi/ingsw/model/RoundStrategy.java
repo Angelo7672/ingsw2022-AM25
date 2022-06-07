@@ -21,13 +21,6 @@ public abstract class RoundStrategy {
         this.queueManager = queueManager;
     }
 
-    private String toString(Team team){
-        if(team.equals(Team.WHITE)) return "WHITE";
-        else if(team.equals(Team.BLACK)) return "BLACK";
-        else if(team.equals(Team.GREY)) return "GREY";
-        return "NONE";
-    }
-
     protected boolean conquestIsland(int islandRef, int noColor, int playerRef){
         Team teamStronger = highInfluenceTeam(islandRef, noColor, playerRef);
         Team teamWeaker = Team.NONE;
@@ -106,13 +99,11 @@ public abstract class RoundStrategy {
         if(!inSchool){
             if(islandRef < 0 || islandRef >= islandsManager.getIslandsSize()) throw new NotAllowedException();
             playerManager.transferStudent(playerRef, colour, inSchool, false);
-            islandsManager.incStudent(islandRef,colour);
+            islandsManager.incStudent(islandRef,colour,1);
         }
         else if(inSchool)
             playerManager.transferStudent(playerRef, colour, inSchool, false);
     }
-
-    public String oneLastRide(){ return toString(playerManager.checkVictory()); }
 
     public void effect(){}
     public boolean effect(int ref){return false;}

@@ -16,6 +16,9 @@ public interface Entrance {
     boolean userMoveStudent(int playerRef, int colour, boolean inSchool, int islandRef);
     boolean userMoveMotherNature(int desiredMovement) throws EndGameException;
     boolean userChooseCloud(int playerRef, int cloudRef);
+    boolean useSpecialSimple(int indexSpecial, int playerRef, int ref);
+    boolean useSpecialMedium(int indexSpecial, int playerRef, int ref, int color);
+    boolean useSpecialHard(int specialIndex, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2);
 
     void resumeTurn();
 
