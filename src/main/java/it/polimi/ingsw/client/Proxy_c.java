@@ -55,7 +55,9 @@ public class Proxy_c implements Exit{
 
     public View startView() throws IOException, ClassNotFoundException, InterruptedException {
         send(new GenericMessage("Ready to start"));
-        tempObj = receive();
+        synchronized (lock2){
+            if(view == null) lock2.wait();
+        }
         return view;
     }
 
@@ -173,17 +175,10 @@ public class Proxy_c implements Exit{
                 try {
                     if (answersList.size() == 0) lock1.wait();
                 }catch (InterruptedException e){
-
                 }
             tmp = answersList.get(0);
             answersList.remove(0);
-            if(tmp instanceof GameInfoAnswer) {
-                    synchronized (lock2){
-                        view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());
-                        lock2.notify();
-                    }
 
-            }
             /*if(tmp instanceof UserInfoAnswer) {
                 view.setUserInfo((UserInfoAnswer)tmp);
             }
@@ -230,6 +225,12 @@ public class Proxy_c implements Exit{
                     tmp = (Answer) inputStream.readObject();
                     if(tmp instanceof PongAnswer){
                         socket.setSoTimeout(15000);
+                    }
+                    else if(tmp instanceof GameInfoAnswer) {
+                        synchronized (lock2){
+                            view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());
+                            lock2.notify();
+                        }
                     }
                     else if(tmp instanceof UserInfoAnswer) {
                         synchronized (lock2) {
