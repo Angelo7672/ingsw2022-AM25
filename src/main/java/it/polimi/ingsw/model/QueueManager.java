@@ -46,7 +46,6 @@ public class QueueManager {
         //The first player is the one who played first in the previous action phase, then proceeds clockwise. The distribution of players at the table is arranged clockwise in this order 1 2 3 4
         if (firstInQueue != 0) Collections.rotate(queue,-firstInQueue);
 
-        this.queueListener.notifyResetQueue();
         for(int i=0; i<numberOfPlayer; i++){
             this.queueListener.notifyQueue(i, queue.get(i).getPlayerRef());
             this.queueListener.notifyValueCard(i, queue.get(i).getValueCard());
@@ -69,7 +68,6 @@ public class QueueManager {
     public void inOrderForActionPhase(){
         Collections.sort(queue, (q1, q2) -> q1.compareTo(q2));
 
-        this.queueListener.notifyResetQueue();
         for(int i=0; i<numberOfPlayer; i++){
             this.queueListener.notifyQueue(i, queue.get(i).getPlayerRef());
             this.queueListener.notifyValueCard(i, queue.get(i).getValueCard());

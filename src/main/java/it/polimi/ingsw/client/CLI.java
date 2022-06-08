@@ -549,10 +549,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
 
     }
 
-    @Override
-    public void notifyResetQueue() {
-
-    }
 
     @Override
     public void notifySpecial(int specialRef) {

@@ -285,10 +285,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     }
 
-    @Override
-    public void notifyResetQueue() {
-
-    }
 
     @Override
     public void notifySpecial(int specialRef) {

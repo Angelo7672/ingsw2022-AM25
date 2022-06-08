@@ -231,11 +231,6 @@ public class VirtualView
         queue.get(queueRef).setMaxMoveMotherNature(maxMove);
     }
 
-    @Override
-    public void notifyResetQueue() {
-        for(int i=0; i< queue.size(); i++)
-            queue.remove(i);
-    }
 
     private class gameInfo{
         private int numberOfPlayer;
