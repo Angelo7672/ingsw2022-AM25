@@ -40,6 +40,9 @@ public class VirtualView
 
         for(int i=0; i<12; i++)
             this.islands.add(new Island());
+        for(int i=0; i<numberOfPlayers; i++){
+            this.queue.add(new Queue());
+        }
     }
 
     public void saveVirtualView(){
@@ -348,7 +351,6 @@ public class VirtualView
         }
     }
     private class Queue implements Serializable{
-
         private int playerRef;
         private int valueCard;
         private int maxMoveMotherNature;
