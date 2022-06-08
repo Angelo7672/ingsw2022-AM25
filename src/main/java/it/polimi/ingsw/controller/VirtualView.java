@@ -217,7 +217,6 @@ public class VirtualView
     }
     @Override
     public void notifyQueue(int queueRef, int playerRef) {
-
         queue.get(queueRef).setPlayerRef(playerRef);
     }
 
@@ -293,30 +292,18 @@ public class VirtualView
             this.isInhibited = 0;
         }
 
-        public void setTowersNumber(int towersNumber) {
-            this.towersNumber = towersNumber;
-        }
-        public void setStudentsIsland(int color, int newValue) {
-            this.studentsIsland[color]=newValue;
-        }
-        public void setMotherPosition(boolean isMotherPos) {
-            this.isMotherPosition=isMotherPos;
-        }
+        public void setTowersNumber(int towersNumber) { this.towersNumber = towersNumber; }
+        public void setStudentsIsland(int color, int newValue) { this.studentsIsland[color] = newValue; }
+        public void setMotherPosition(boolean isMotherPos) { this.isMotherPosition=isMotherPos; }
         public void setTowersColor(int newColor){ this.towersColor=newColor; }
-        public void setInhibited(int isInhibited) {
-            this.isInhibited=isInhibited;
-        }
+        public void setInhibited(int isInhibited) { this.isInhibited=isInhibited; }
     }
     private class Cloud implements Serializable{
         private int[] students;
 
-        public Cloud(){
-            this.students = new int[]{0, 0, 0, 0, 0};
-        }
+        public Cloud(){ this.students = new int[]{0, 0, 0, 0, 0}; }
 
-        public void setCloudStudents(int color, int newStudentsValue) {
-            students[color] = newStudentsValue;
-        }
+        public void setCloudStudents(int color, int newStudentsValue) { students[color] = newStudentsValue; }
     }
     private class Hand implements Serializable{
         int numberOfCards;
@@ -333,32 +320,18 @@ public class VirtualView
 
         }
 
-        public void setCoins(int coins) {
-            this.coins = coins;
-        }
-
-        public void setLastCard(String lastPlayedCard) {
-            this.lastPlayedCard = lastPlayedCard;
-        }
+        public void setCoins(int coins) { this.coins = coins; }
+        public void setLastCard(String lastPlayedCard) { this.lastPlayedCard = lastPlayedCard; }
         public String getLastCard(){ return lastPlayedCard;}
-        public void setNumberOfCards(int numberOfCards) {
-            this.numberOfCards = numberOfCards;
-        }
+        public void setNumberOfCards(int numberOfCards) { this.numberOfCards = numberOfCards; }
     }
     private class Queue implements Serializable{
         private int playerRef;
         private int valueCard;
         private int maxMoveMotherNature;
 
-        public void setPlayerRef(int playerRef) {
-            this.playerRef = playerRef;
-        }
-        public void setValueCard(int valueCard) {
-            this.valueCard = valueCard;
-        }
-
-        public void setMaxMoveMotherNature(int maxMoveMotherNature) {
-            this.maxMoveMotherNature = maxMoveMotherNature;
-        }
+        public void setPlayerRef(int playerRef) { this.playerRef = playerRef; }
+        public void setValueCard(int valueCard) { this.valueCard = valueCard; }
+        public void setMaxMoveMotherNature(int maxMoveMotherNature) { this.maxMoveMotherNature = maxMoveMotherNature; }
     }
 }

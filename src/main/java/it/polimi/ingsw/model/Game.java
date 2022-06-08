@@ -91,6 +91,10 @@ public class Game implements GameManager{
     }
     @Override
     public void bagRestore(List<Integer> bag){ this.bag.bagRestore(bag); }
+    @Override
+    public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
+        queueManager.queueRestore(playerRef,valueCard,maxMoveMotherNature);
+    }
 
     private Assistant stringToAssistant(String string){
         if(string.equalsIgnoreCase("LION")) return Assistant.LION;

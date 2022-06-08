@@ -25,7 +25,11 @@ public class QueueManager {
         queue.add(first);
     }
 
-    //public void queueRestore()
+    public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
+        queue.remove(0);
+        for(int i = 0; i < numberOfPlayer; i++)
+            queue.add(new Queue(playerRef.get(i),valueCard.get(i),maxMoveMotherNature.get(i)));
+    }
     public void queueForPlanificationPhase(){
         int firstInQueue;
 
@@ -46,7 +50,7 @@ public class QueueManager {
         //The first player is the one who played first in the previous action phase, then proceeds clockwise. The distribution of players at the table is arranged clockwise in this order 1 2 3 4
         if (firstInQueue != 0) Collections.rotate(queue,-firstInQueue);
 
-        for(int i=0; i<numberOfPlayer; i++){
+        for(int i = 0; i < numberOfPlayer; i++){
             this.queueListener.notifyQueue(i, queue.get(i).getPlayerRef());
             this.queueListener.notifyValueCard(i, queue.get(i).getValueCard());
             this.queueListener.notifyMaxMove(i, queue.get(i).getMaxMoveMotherNature());
