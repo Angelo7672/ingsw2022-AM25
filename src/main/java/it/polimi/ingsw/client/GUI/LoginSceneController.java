@@ -62,7 +62,7 @@ public class LoginSceneController implements SceneController {
         this.currentNickname =nicknameBox.getText();
         System.out.println(currentNickname +", "+ currentCharacter);
         gui.setupConnection(currentNickname, currentCharacter);
-        //switchScene();
+        switchScene();
     }
 
     public void setProxy(Proxy_c proxy) {
