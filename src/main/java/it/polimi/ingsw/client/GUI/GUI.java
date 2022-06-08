@@ -269,8 +269,19 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     }
 
+
     @Override
-    public void notifyQueue(int playerRef) {
+    public void notifyQueue(int queueRef, int playerRef) {
+
+    }
+
+    @Override
+    public void notifyValueCard(int queueRef, int valueCard) {
+
+    }
+
+    @Override
+    public void notifyMaxMove(int queueRef, int maxMove) {
 
     }
 

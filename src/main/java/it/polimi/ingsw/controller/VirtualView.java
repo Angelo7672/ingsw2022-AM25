@@ -20,7 +20,7 @@ public class VirtualView
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
     private ArrayList<String> playedCards;
     private List<Integer> bag;
-    private ArrayList<Integer> queue;
+    private ArrayList<Queue> queue;
     private transient ControllerServer server;
     private int numberOfPlayers;
     private String fileName;
@@ -155,6 +155,7 @@ public class VirtualView
     public void notifyPlayedCard(int playerRef, String assistantCard) {
         hands.get(playerRef).setLastCard(assistantCard);
         hands.get(playerRef).setNumberOfCards(hands.get(playerRef).numberOfCards--);
+        hands.get(playerRef).cards.remove(assistantCard);
         server.lastCardPlayedFromAPlayer(playerRef, assistantCard);
     }
     @Override
@@ -212,9 +213,21 @@ public class VirtualView
         this.bag = bag;
     }
     @Override
-    public void notifyQueue(int playerRef) {
-        queue.add(playerRef);
+    public void notifyQueue(int queueRef, int playerRef) {
+
+        queue.get(queueRef).setPlayerRef(playerRef);
     }
+
+    @Override
+    public void notifyValueCard(int queueRef, int valueCard) {
+        queue.get(queueRef).setValueCard(valueCard);
+    }
+
+    @Override
+    public void notifyMaxMove(int queueRef, int maxMove) {
+        queue.get(queueRef).setMaxMoveMotherNature(maxMove);
+    }
+
     @Override
     public void notifyResetQueue() {
         for(int i=0; i< queue.size(); i++)
@@ -290,10 +303,15 @@ public class VirtualView
         int numberOfCards;
         int coins;
         String lastPlayedCard;
+        List<String> cards;
 
         public Hand(){
             this.numberOfCards = 10;
             this.coins = 1;
+            this.cards= new ArrayList<>();
+            cards.add("LION"); cards.add("GOOSE"); cards.add("CAT"); cards.add("EAGLE"); cards.add("FOX");
+            cards.add("LIZARD"); cards.add("OCTOPUS"); cards.add("DOG"); cards.add("ELEPHANT"); cards.add("TURTLE");
+
         }
 
         public void setCoins(int coins) {
@@ -306,6 +324,23 @@ public class VirtualView
         public String getLastCard(){ return lastPlayedCard;}
         public void setNumberOfCards(int numberOfCards) {
             this.numberOfCards = numberOfCards;
+        }
+    }
+    private class Queue implements Serializable{
+
+        private int playerRef;
+        private int valueCard;
+        private int maxMoveMotherNature;
+
+        public void setPlayerRef(int playerRef) {
+            this.playerRef = playerRef;
+        }
+        public void setValueCard(int valueCard) {
+            this.valueCard = valueCard;
+        }
+
+        public void setMaxMoveMotherNature(int maxMoveMotherNature) {
+            this.maxMoveMotherNature = maxMoveMotherNature;
         }
     }
 }

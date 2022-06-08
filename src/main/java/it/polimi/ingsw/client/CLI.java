@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import it.polimi.ingsw.controller.listeners.*;
 
 import java.io.IOException;
@@ -534,8 +533,19 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         cli();
     }
 
+
     @Override
-    public void notifyQueue(int playerRef) {
+    public void notifyQueue(int queueRef, int playerRef) {
+
+    }
+
+    @Override
+    public void notifyValueCard(int queueRef, int valueCard) {
+
+    }
+
+    @Override
+    public void notifyMaxMove(int queueRef, int maxMove) {
 
     }
 

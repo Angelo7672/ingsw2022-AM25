@@ -46,8 +46,10 @@ public class QueueManager {
         if (firstInQueue != 0) Collections.rotate(queue,-firstInQueue);
 
         this.queueListener.notifyResetQueue();
-        for(Queue q:queue){
-            this.queueListener.notifyQueue(q.getPlayerRef());
+        for(int i=0; i<numberOfPlayer; i++){
+            this.queueListener.notifyQueue(i, queue.get(i).getPlayerRef());
+            this.queueListener.notifyValueCard(i, queue.get(i).getValueCard());
+            this.queueListener.notifyMaxMove(i, queue.get(i).getMaxMoveMotherNature());
         }
 
     }
@@ -67,8 +69,10 @@ public class QueueManager {
         Collections.sort(queue, (q1, q2) -> q1.compareTo(q2));
 
         this.queueListener.notifyResetQueue();
-        for(Queue q:queue){
-            this.queueListener.notifyQueue(q.getPlayerRef());
+        for(int i=0; i<numberOfPlayer; i++){
+            this.queueListener.notifyQueue(i, queue.get(i).getPlayerRef());
+            this.queueListener.notifyValueCard(i, queue.get(i).getValueCard());
+            this.queueListener.notifyMaxMove(i, queue.get(i).getMaxMoveMotherNature());
         }
     }
 
