@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class Game implements GameManager{
@@ -70,13 +71,26 @@ public class Game implements GameManager{
         playerManager.restoreSingleSchool(playerRef,studentsEntrance,studentsTable,towers,professors,stringToTeam(team));
     }
     @Override
+    public void handAndCoinsRestore(int playerRef, ArrayList<String> cards, int coins){
+        ArrayList<Assistant> hand = new ArrayList<>();
+
+        for(int i = 0; i < cards.size(); i++)
+            hand.add(stringToAssistant(cards.get(i)));
+
+        playerManager.restoreHandAndCoins(playerRef, hand, coins);
+    }
+    @Override
     public void cloudRestore(int cloudRef, int[] students){
         cloudsManager.restoreClouds(cloudRef,students);
     }
     @Override
+    public void setIslandsSizeAfterRestore(int size){ islandsManager.setIslandsSizeAfterRestore(size); }
+    @Override
     public void islandRestore(int islandRef, int[] students, int towerValue, String towerTeam, int inhibited){
         islandsManager.restoreIslands(islandRef,students,towerValue,stringToTeam(towerTeam),inhibited);
     }
+    @Override
+    public void bagRestore(List<Integer> bag){ this.bag.bagRestore(bag); }
 
     private Assistant stringToAssistant(String string){
         if(string.equalsIgnoreCase("LION")) return Assistant.LION;

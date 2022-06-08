@@ -46,6 +46,14 @@ public class IslandsManager {
             }
         }
     }
+    public void setIslandsSizeAfterRestore(int size){
+        int toDelete = 12 - size;
+
+        for(int i = 0; i < toDelete; i++) {
+            islands.remove(i);
+            this.islandListener.notifyIslandChange(i);
+        }
+    }
     public void restoreIslands(int islandRef, int[] students, int towerValue, Team towerTeam, int inhibited){
         //Students
         for(int i = 0; i < 5; i++)
@@ -53,7 +61,8 @@ public class IslandsManager {
         //Tower
         islands.get(islandRef).incTowerValue(towerValue);
         islands.get(islandRef).setTowerTeam(towerTeam);
-        //TODO manca il listener
+        this.towersListener.notifyTowersChange(2, islandRef, getTowerValue(islandRef));
+        this.towersListener.notifyTowerColor(islandRef, islands.get(islandRef).getTowerTeam().getTeam());
         //Special
         for(int i = 0; i < inhibited; i++)
             increaseInhibited(islandRef);

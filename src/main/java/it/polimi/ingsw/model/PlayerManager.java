@@ -55,6 +55,8 @@ public class PlayerManager  {
             for(int j = 0; j < numberOfPlayer; j++)
                 for (int i = 0; i < 9; i++) setStudentEntrance(j,bag.extraction(),1);
         }
+        for(Player p:players)
+            p.initializeHand();
     }
     public void restoreSingleSchool(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, Team team){
         //Entrance
@@ -73,6 +75,9 @@ public class PlayerManager  {
         //Professors
         for (int i = 0; i < 5; i++)
             if(professors[i]) setProfessor(playerRef,i);
+    }
+    public void restoreHandAndCoins(int playerRef, ArrayList<Assistant> cards, int coins){
+        players.get(playerRef).restoreHandAndCoins(cards,coins);
     }
 
     public void playCard(int playerRef, Assistant card, ArrayList<Assistant> alreadyPlayedAssistant) throws NotAllowedException{
@@ -259,9 +264,16 @@ public class PlayerManager  {
             this.team = team;
             this.coins = 1;
             this.hand = new ArrayList<>();
+            this.school = new School(numberOfPlayer);
+        }
+
+        public void initializeHand(){
             hand.add(Assistant.LION);hand.add(Assistant.GOOSE);hand.add(Assistant.CAT);hand.add(Assistant.EAGLE);hand.add(Assistant.FOX);
             hand.add(Assistant.LIZARD);hand.add(Assistant.OCTOPUS);hand.add(Assistant.DOG);hand.add(Assistant.ELEPHANT);hand.add(Assistant.TURTLE);
-            this.school = new School(numberOfPlayer);
+        }
+        public void restoreHandAndCoins(ArrayList<Assistant> cards, int coins){
+            this.hand = cards;
+            this.coins = coins;
         }
 
         private Team getTeam() { return team; }

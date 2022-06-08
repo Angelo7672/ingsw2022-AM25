@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.listeners.*;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface GameManager {
     void initializeGame();
@@ -42,6 +43,9 @@ public interface GameManager {
 
     //Restore game
     void schoolRestore(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, String team);
+    void handAndCoinsRestore(int playerRef, ArrayList<String> cards, int coins);
     void cloudRestore(int cloudRef, int[] students);
+    void setIslandsSizeAfterRestore(int size);
     void islandRestore(int islandRef, int[] students, int towerValue, String towerTeam, int inhibited);
+    void bagRestore(List<Integer> bag);
 }
