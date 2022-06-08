@@ -90,6 +90,8 @@ public class Game implements GameManager{
         islandsManager.restoreIslands(islandRef,students,towerValue,stringToTeam(towerTeam),inhibited);
     }
     @Override
+    public void restoreMotherPose(int islandRef){ islandsManager.restoreMotherPose(islandRef); }
+    @Override
     public void bagRestore(List<Integer> bag){ this.bag.bagRestore(bag); }
     @Override
     public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){

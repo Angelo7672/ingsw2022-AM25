@@ -6,11 +6,11 @@ import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 import it.polimi.ingsw.server.ControllerServer;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Controller implements ServerController{
     private int currentUser;
@@ -28,7 +28,7 @@ public class Controller implements ServerController{
         this.numberOfPlayers = numberOfPlayers;
         this.server = server;
         this.fileName = "saveGame.bin";
-        this.virtualView = new VirtualView(numberOfPlayers, server, fileName);
+        this.virtualView = new VirtualView(numberOfPlayers, isExpert, server, this, fileName);
         this.winner = "NONE";
     }
 
@@ -110,31 +110,56 @@ public class Controller implements ServerController{
     }
 
     @Override
-    public void resumeTurn(){ synchronized(roundController) { roundController.notify();} }
+    public void resumeTurn(int phase){
+        synchronized(roundController) {
+            if(currentUser + 1 >= numberOfPlayers) virtualView.setCurrentUser(0);   //check if the last one player of queue played
+            else virtualView.setCurrentUser(currentUser+1);
+
+            if(phase == 1 && currentUser + 1 == numberOfPlayers) virtualView.setPhase(phase); //if it's planning phase write at the end
+            else if(phase == 0) virtualView.setPhase(phase);    //if it's action phase write every time
+
+            roundController.notify();
+        }
+    }
 
     @Override
     public String getWinner() { return winner; }
-    public void oneLastRide(){ winner = gameManager.oneLastRide(); }
+    public void oneLastRide(){
+        winner = gameManager.oneLastRide();
+        clearFile();
+    }
 
     public void saveGame(){ virtualView.saveVirtualView(); }
     public void clearFile(){ virtualView.clearFile(); }
-    public void restoreVirtualView(){
-    /*
-        try{
-            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
-            this.schoolBoards = (ArrayList<SchoolBoard>) inputFile.readObject();
-            this.islands= (ArrayList<Island>) inputFile.readObject();
-            this.clouds=(ArrayList<Cloud>) inputFile.readObject();
-            this.hands=(ArrayList<Hand>) inputFile.readObject();
-            this.specials=(ArrayList<Integer>) inputFile.readObject();
-            this.bag=(ArrayList<Integer>) inputFile.readObject();
-            this.playedCards=(ArrayList<String>) inputFile.readObject();
-            this.queue=(ArrayList<Integer>) inputFile.readObject();
-            inputFile.close();
-        } catch (FileNotFoundException e) { e.printStackTrace();
-        } catch (IOException e) { e.printStackTrace();
-        } catch (ClassNotFoundException e) { e.printStackTrace(); }
-     */
+    public boolean checkFile(){
+        File file = new File(fileName);
+        if (file.length() != 0)
+            return true;
+        return false;
+    }
+    public void schoolRestore(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, String team){
+        gameManager.schoolRestore(playerRef,studentsEntrance,studentsTable,towers,professors,team);
+    }
+    public void handAndCoinsRestore(int playerRef, ArrayList<String> cards, int coins){
+        gameManager.handAndCoinsRestore(playerRef,cards,coins);
+    }
+    public void cloudRestore(int cloudRef, int[] students){
+        gameManager.cloudRestore(cloudRef,students);
+    }
+    public void setIslandsSizeAfterRestore(int size){
+        gameManager.setIslandsSizeAfterRestore(size);
+    }
+    public void islandRestore(int islandRef, int[] students, int towerValue, String towerTeam, int inhibited){
+        gameManager.islandRestore(islandRef,students,towerValue,towerTeam,inhibited);
+    }
+    public void restoreMotherPose(int islandRef){
+        gameManager.restoreMotherPose(islandRef);
+    }
+    public void bagRestore(List<Integer> bag){
+        gameManager.bagRestore(bag);
+    }
+    public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
+        gameManager.queueRestore(playerRef,valueCard,maxMoveMotherNature);
     }
 
     @Override

@@ -67,6 +67,7 @@ public class IslandsManager {
         for(int i = 0; i < inhibited; i++)
             increaseInhibited(islandRef);
     }
+    public void restoreMotherPose(int islandRef){ motherPos = islandRef; }
 
     public int getIslandsSize(){ return islands.size(); }
 

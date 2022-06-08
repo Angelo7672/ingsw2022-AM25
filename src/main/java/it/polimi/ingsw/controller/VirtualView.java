@@ -5,38 +5,43 @@ import it.polimi.ingsw.server.ControllerServer;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //virtual View class listen to changes in model classes through specific listener interfaces
 public class VirtualView
         implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, BagListener,
         QueueListener, Serializable {
-
+    private GameInfo gameInfo;
+    private TurnInfo turnInfo;
     private ArrayList<SchoolBoard> schoolBoards;
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
     private ArrayList<Hand> hands;
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
-    private ArrayList<String> playedCards;
     private List<Integer> bag;
     private ArrayList<Queue> queue;
     private transient ControllerServer server;
-    private int numberOfPlayers;
-    private String fileName;
+    private transient Controller controller;
+    private transient int numberOfPlayers;
+    private transient String fileName;
 
-    public VirtualView(int numberOfPlayers, ControllerServer server, String fileName) {
+    public VirtualView(int numberOfPlayers, boolean expertMode, ControllerServer server, Controller controller, String fileName) {
         this.schoolBoards = new ArrayList<>();
         this.hands = new ArrayList<>();
         this.clouds = new ArrayList<>();
         this.islands = new ArrayList<>();
         this.specials = new ArrayList<>();
-        this.playedCards = new ArrayList<>();
         this.queue = new ArrayList<>();
         this.bag = new ArrayList<>();
         this.server = server;
+        this.controller = controller;
         this.numberOfPlayers = numberOfPlayers;
         this.fileName = fileName;
+        this.gameInfo = new GameInfo(numberOfPlayers,expertMode);
+        this.turnInfo = new TurnInfo();
 
         for(int i=0; i<12; i++)
             this.islands.add(new Island());
@@ -51,14 +56,15 @@ public class VirtualView
             FileOutputStream outputFile = new FileOutputStream(fileName);
             ObjectOutputStream objectOut = new ObjectOutputStream(outputFile);
 
+            objectOut.writeObject(gameInfo);
+            objectOut.writeObject(turnInfo);
+            objectOut.writeObject(queue);
             objectOut.writeObject(schoolBoards);
             objectOut.writeObject(islands);
             objectOut.writeObject(clouds);
             objectOut.writeObject(hands);
-            objectOut.writeObject(specials);
+            //objectOut.writeObject(specials);
             objectOut.writeObject(bag);
-            objectOut.writeObject(playedCards);
-            objectOut.writeObject(queue);
 
             objectOut.close();
             outputFile.close();
@@ -75,14 +81,91 @@ public class VirtualView
         } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace(); }
     }
+    public Map<Integer,Boolean> lastSavedGame(){
+        Map<Integer,Boolean> lastPlayed = new HashMap<>();
+        GameInfo tmp;
 
-    public boolean checkFile(){
-        File file = new File(fileName);
-        if (file.length() != 0)
-            return true;
-        return false;
+        try{
+            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
+            tmp = (GameInfo) inputFile.readObject();
+            lastPlayed.put(tmp.getNumberOfPlayer(),tmp.isExpertMode());
+        } catch (FileNotFoundException e) { e.printStackTrace();
+        } catch (IOException e) { e.printStackTrace();
+        } catch (ClassNotFoundException e) { e.printStackTrace(); }
+
+        return lastPlayed;
     }
+    public void restoreGame(){
+        TurnInfo turnInfosTmp;
+        ArrayList<Queue> queueTmp;
+        ArrayList<SchoolBoard> schoolBoardsTmp;
+        ArrayList<Island> islandsTmp;
+        ArrayList<Cloud> cloudsTmp;
+        ArrayList<Hand> handsTmp;
+        ArrayList<Integer> bagTmp;
 
+        try{
+            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
+
+            turnInfosTmp = (TurnInfo) inputFile.readObject();
+            queueTmp = (ArrayList<Queue>) inputFile.readObject();
+            schoolBoardsTmp = (ArrayList<SchoolBoard>) inputFile.readObject();
+            islandsTmp = (ArrayList<Island>) inputFile.readObject();
+            cloudsTmp = (ArrayList<Cloud>) inputFile.readObject();
+            handsTmp = (ArrayList<Hand>) inputFile.readObject();
+            bagTmp = (ArrayList<Integer>) inputFile.readObject();
+
+            inputFile.close();
+
+            //Queue Restore
+            ArrayList<Integer> playerRef = new ArrayList<>();
+            ArrayList<Integer> valueCard = new ArrayList<>();
+            ArrayList<Integer> maxMoveMotherNature = new ArrayList<>();
+            for(Queue q:queueTmp){
+                playerRef.add(q.getPlayerRef());
+                valueCard.add(q.getValueCard());
+                maxMoveMotherNature.add(q.getMaxMoveMotherNature());
+            }
+            controller.queueRestore(playerRef,valueCard,maxMoveMotherNature);
+            //Schools Restore
+            for(int i = 0; i < numberOfPlayers; i++){
+                int[] studentsEntrance = schoolBoardsTmp.get(i).getStudentsEntrance();
+                int[] studentsTable = schoolBoardsTmp.get(i).getStudentsTable();
+                int towers = schoolBoardsTmp.get(i).getTowersNumber();
+                boolean[] professors = schoolBoardsTmp.get(i).getProfessors();
+                String team = schoolBoardsTmp.get(i).getTeam();
+                controller.schoolRestore(i,studentsEntrance,studentsTable,towers,professors,team);
+                controller.addNewPlayer(schoolBoardsTmp.get(i).getNickname(), schoolBoardsTmp.get(i).getNickname());
+            }
+            //Islands Restore
+            if(islandsTmp.size() != 12) controller.setIslandsSizeAfterRestore(islandsTmp.size());
+            for(int i = 0; i < islandsTmp.size(); i++){
+                if(islandsTmp.get(i).isMotherPosition()) controller.restoreMotherPose(i);
+                int[] students = islandsTmp.get(i).getStudentsIsland();
+                int towerValue = islandsTmp.get(i).getTowersNumber();
+                String towerTeam = islandsTmp.get(i).getTowersColor();
+                int inhibited = islandsTmp.get(i).getIsInhibited();
+                controller.islandRestore(i,students,towerValue,towerTeam,inhibited);
+                //TODO: listener per mother pose after restore
+            }
+            //CloudsRestore
+            for(int i = 0; i < numberOfPlayers; i++){
+                int[] students = cloudsTmp.get(i).getStudents();
+                controller.cloudRestore(i,students);
+            }
+            //Hands and Coins restore
+            for(int i = 0; i < numberOfPlayers; i++){
+                ArrayList<String> cards = handsTmp.get(i).getCards();
+                int coins = handsTmp.get(i).getCoins();
+                controller.handAndCoinsRestore(i,cards,coins);
+                //TODO: listener per numero carte in mano e monete dopo il restore
+            }
+            //Bag Restore
+            controller.bagRestore(bagTmp);
+        } catch (FileNotFoundException e) { e.printStackTrace();
+        } catch (IOException e) { e.printStackTrace();
+        } catch (ClassNotFoundException e) { e.printStackTrace(); }
+    }
 
     public ArrayList<String> getAlreadyChosenCharacters(){
         ArrayList<String> chosenCharacters = new ArrayList<>();
@@ -127,6 +210,9 @@ public class VirtualView
             schoolBoards.get(player).setTeam(player);
         }
     }
+
+    public void setCurrentUser(int currentUser){ turnInfo.setCurrentUser(currentUser); }
+    public void setPhase(int phase){ turnInfo.setPhase(phase); }
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
@@ -230,18 +316,20 @@ public class VirtualView
         queue.get(queueRef).setMaxMoveMotherNature(maxMove);
     }
 
-
-    private class gameInfo{
+    private class GameInfo implements Serializable{
         private int numberOfPlayer;
         private boolean expertMode;
 
-        public gameInfo(int numberOfPlayer, boolean expertMode){
+        public GameInfo(int numberOfPlayer, boolean expertMode){
             this.numberOfPlayer = numberOfPlayer;
             this.expertMode = expertMode;
         }
+
+        public int getNumberOfPlayer() { return numberOfPlayer; }
+        public boolean isExpertMode() { return expertMode; }
     }
 
-    private class TurnInfo{
+    private class TurnInfo implements Serializable{
         private int currentUser;
         private String phase;
 
@@ -275,6 +363,18 @@ public class VirtualView
         public void setTowersNumber(int towersNumber) { this.towersNumber = towersNumber; }
         public void setProfessors(int color, boolean newValue) { this.professors[color] = newValue; }
         public void setTeam(int team) { this.team = team; }
+        public String getNickname() { return nickname; }
+        public String getCharacter() { return character; }
+        public String getTeam() {
+            if(team == 0) return "WHITE";
+            else if(team == 1) return "BLACK";
+            else if(team == 2) return "GREY";
+            return "NONE";
+        }
+        public int[] getStudentsEntrance() { return studentsEntrance; }
+        public int[] getStudentsTable() { return studentsTable; }
+        public int getTowersNumber() { return towersNumber; }
+        public boolean[] getProfessors() { return professors; }
     }
 
     private class Island implements Serializable{
@@ -297,6 +397,16 @@ public class VirtualView
         public void setMotherPosition(boolean isMotherPos) { this.isMotherPosition=isMotherPos; }
         public void setTowersColor(int newColor){ this.towersColor=newColor; }
         public void setInhibited(int isInhibited) { this.isInhibited=isInhibited; }
+        public int[] getStudentsIsland() { return studentsIsland; }
+        public boolean isMotherPosition() { return isMotherPosition; }
+        public int getTowersNumber() { return towersNumber; }
+        public String getTowersColor() {
+           if(towersColor == 0) return "WHITE";
+           else if(towersColor == 1) return "BLACK";
+           else if(towersColor == 2) return "GREY";
+           return "NONE";
+        }
+        public int getIsInhibited() { return isInhibited; }
     }
     private class Cloud implements Serializable{
         private int[] students;
@@ -304,26 +414,29 @@ public class VirtualView
         public Cloud(){ this.students = new int[]{0, 0, 0, 0, 0}; }
 
         public void setCloudStudents(int color, int newStudentsValue) { students[color] = newStudentsValue; }
+        public int[] getStudents() { return students; }
     }
     private class Hand implements Serializable{
         int numberOfCards;
         int coins;
         String lastPlayedCard;
-        List<String> cards;
+        ArrayList<String> cards;
 
         public Hand(){
             this.numberOfCards = 10;
             this.coins = 1;
-            this.cards= new ArrayList<>();
+            this.cards = new ArrayList<>();
             cards.add("LION"); cards.add("GOOSE"); cards.add("CAT"); cards.add("EAGLE"); cards.add("FOX");
             cards.add("LIZARD"); cards.add("OCTOPUS"); cards.add("DOG"); cards.add("ELEPHANT"); cards.add("TURTLE");
-
         }
 
         public void setCoins(int coins) { this.coins = coins; }
         public void setLastCard(String lastPlayedCard) { this.lastPlayedCard = lastPlayedCard; }
-        public String getLastCard(){ return lastPlayedCard;}
         public void setNumberOfCards(int numberOfCards) { this.numberOfCards = numberOfCards; }
+        public int getNumberOfCards() { return numberOfCards; }
+        public int getCoins() { return coins; }
+        public String getLastPlayedCard() { return lastPlayedCard; }
+        public ArrayList<String> getCards() { return cards; }
     }
     private class Queue implements Serializable{
         private int playerRef;
@@ -333,5 +446,8 @@ public class VirtualView
         public void setPlayerRef(int playerRef) { this.playerRef = playerRef; }
         public void setValueCard(int valueCard) { this.valueCard = valueCard; }
         public void setMaxMoveMotherNature(int maxMoveMotherNature) { this.maxMoveMotherNature = maxMoveMotherNature; }
+        public int getPlayerRef() { return playerRef; }
+        public int getValueCard() { return valueCard; }
+        public int getMaxMoveMotherNature() { return maxMoveMotherNature; }
     }
 }

@@ -95,7 +95,7 @@ public class Server implements Entrance,ControllerServer{
     }
 
     @Override
-    public void resumeTurn(){ controller.resumeTurn(); }
+    public void resumeTurn(int phase){ controller.resumeTurn(phase); }
 
     @Override
     public String endGame(){ return controller.getWinner(); }

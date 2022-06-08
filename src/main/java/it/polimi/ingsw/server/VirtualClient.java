@@ -370,7 +370,7 @@ public class VirtualClient implements Runnable{
                         planLocker.wait();
                         planningPhase();
                         readyForAction();
-                        server.resumeTurn();
+                        server.resumeTurn(1);
                     }
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }
@@ -440,7 +440,7 @@ public class VirtualClient implements Runnable{
                         actionLocker.wait();
                         studentLocker = true;
                         actionPhase();
-                        server.resumeTurn();
+                        server.resumeTurn(0);
                     }
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }

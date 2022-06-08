@@ -47,6 +47,7 @@ public interface GameManager {
     void cloudRestore(int cloudRef, int[] students);
     void setIslandsSizeAfterRestore(int size);
     void islandRestore(int islandRef, int[] students, int towerValue, String towerTeam, int inhibited);
+    void restoreMotherPose(int islandRef);
     void bagRestore(List<Integer> bag);
     void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature);
 }
