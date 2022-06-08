@@ -234,6 +234,27 @@ public class VirtualView
             queue.remove(i);
     }
 
+    private class gameInfo{
+        private int numberOfPlayer;
+        private boolean expertMode;
+
+        public gameInfo(int numberOfPlayer, boolean expertMode){
+            this.numberOfPlayer = numberOfPlayer;
+            this.expertMode = expertMode;
+        }
+    }
+
+    private class TurnInfo{
+        private int currentUser;
+        private String phase;
+
+        public void setCurrentUser(int currentUser){ this.currentUser = currentUser; }
+        public void setPhase(int phase){
+            if(phase == 0) this.phase = "PlanningPhase";
+            else if(phase == 1) this.phase = "ActionPhase";
+        }
+    }
+
     //private class SchoolBoard keeps the state of each player's school board
     private class SchoolBoard implements Serializable{
         private String nickname;
