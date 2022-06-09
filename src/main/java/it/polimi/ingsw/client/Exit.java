@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.server.Answer.Answer;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -14,6 +16,8 @@ public interface Exit {
     boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException ;
 
     boolean setupGame(int numberOfPlayers, String expertMode) throws IOException, ClassNotFoundException;
+
+    boolean savedGame(String decision) throws IOException;
 
     boolean checkSpecial(int special)  throws IOException, ClassNotFoundException ;
 
@@ -32,4 +36,6 @@ public interface Exit {
     boolean startPlanningPhase() throws ClassNotFoundException, IOException;
 
     String getWinner();
+
+    Answer getMessage();
 }

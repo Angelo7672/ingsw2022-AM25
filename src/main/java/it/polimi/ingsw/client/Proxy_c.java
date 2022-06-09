@@ -42,7 +42,23 @@ public class Proxy_c implements Exit{
         tempObj = receive();
         if(tempObj instanceof SoldOutAnswer) return ((SoldOutAnswer) tempObj).getMessage();
         else if(tempObj instanceof SetupGameMessage) return "SetupGame";
+        else if(tempObj instanceof SavedGameAnswer) return "SavedGame";
         else return "Not first";
+    }
+
+    public Answer getMessage(){
+        return tempObj;
+    }
+
+    public boolean savedGame(String decision) throws IOException {
+        send(new GenericMessage(decision));
+        tempObj = receive();
+        if (tempObj instanceof GenericAnswer) {
+            if(((GenericAnswer)tempObj).getMessage().equals("error"))
+            return false;
+        }
+        return true;
+
     }
 
     public ArrayList<String> getChosenCharacters() throws IOException, ClassNotFoundException {
@@ -171,7 +187,6 @@ public class Proxy_c implements Exit{
     }
     public Answer receive() throws IOException {
         Answer tmp;
-        //while (true) {
             synchronized (lock1){
                 try {
                     if (answersList.size() == 0) lock1.wait();
@@ -179,40 +194,6 @@ public class Proxy_c implements Exit{
                 }
             tmp = answersList.get(0);
             answersList.remove(0);
-
-            /*if(tmp instanceof UserInfoAnswer) {
-                view.setUserInfo((UserInfoAnswer)tmp);
-            }
-            else if(tmp instanceof LastCardMessage) {view.setLastCard((LastCardMessage)tmp);}
-            else if(tmp instanceof NumberOfCardsMessage) {view.setNumberOfCards((NumberOfCardsMessage)tmp);}
-            else if(tmp instanceof SchoolStudentMessage) {view.setSchoolStudents((SchoolStudentMessage)tmp);}
-            else if(tmp instanceof ProfessorMessage) {view.setProfessors((ProfessorMessage)tmp);}
-            else if(tmp instanceof SchoolTowersMessage) {view.setSchoolTowers((SchoolTowersMessage)tmp);}
-            else if(tmp instanceof CoinsMessage) {view.setCoins((CoinsMessage)tmp);}
-            else if(tmp instanceof CloudStudentMessage) {view.setClouds((CloudStudentMessage)tmp);}
-            else if(tmp instanceof IslandStudentMessage) {view.setStudentsIsland((IslandStudentMessage) tmp);}
-            else if(tmp instanceof MotherPositionMessage) {view.setMotherPosition((MotherPositionMessage)tmp);}
-            else if(tmp instanceof IslandTowersNumberMessage) {view.setIslandTowers((IslandTowersNumberMessage) tmp);}
-            else if(tmp instanceof IslandTowersColorMessage) {view.setTowersColor((IslandTowersColorMessage)tmp);}
-            else if(tmp instanceof InhibitedIslandMessage) {view.setInhibited((InhibitedIslandMessage)tmp);}
-            else if(tmp instanceof UnifiedIsland) {view.removeUnifiedIsland((UnifiedIsland) tmp);}
-            else if(tmp instanceof SetSpecialAnswer) {
-
-            }
-            else if(tmp instanceof GameInfoAnswer) {
-                view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());
-                return null;
-            }
-            else if(tmp instanceof SoldOutAnswer){
-                System.err.println("sold out");
-            }
-            else if(tmp instanceof DisconnectedAnswer){
-                System.err.println("Client disconnected, game over.");
-                socket.close();
-                return null;
-            }
-            else break;
-            }*/
         }
         return tmp;
     }
@@ -254,6 +235,12 @@ public class Proxy_c implements Exit{
                         synchronized (lock2) {
                             if (view == null) lock2.wait();
                             view.setNumberOfCards((NumberOfCardsMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof HandAfterRestoreAnswer){
+                        synchronized (lock2){
+                            if (view == null) lock2.wait();
+                            view.restoreCards(((HandAfterRestoreAnswer) tmp).getHand());
                         }
                     }
                     else if(tmp instanceof SchoolStudentMessage) {

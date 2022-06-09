@@ -18,6 +18,9 @@ public interface GameManager {
 
     //Action Phase
     void inOrderForActionPhase();
+
+
+    void useSpecial(int playerRef);
     boolean useSpecialSimple(int indexSpecial, int playerRef, int ref);
     boolean useSpecialMedium(int indexSpecial, int playerRef, int ref, int color);
     boolean useSpecialHard(int specialIndex, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2);

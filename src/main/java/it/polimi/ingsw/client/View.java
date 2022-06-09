@@ -29,6 +29,7 @@ public class View {
     private StudentsListener studentsListener;
     private BagListener bagListener;
     private int maxStepsMotherNature;
+    private int motherNaturePos;
 
     public View(int numberOfPlayers, boolean expertMode){
         this.numberOfPlayers = numberOfPlayers;
@@ -81,8 +82,7 @@ public class View {
         this.studentsListener.notifyStudentsChange(2, msg.getIslandRef(), msg.getColor(),msg.getNewValue());
     }
     public void setMotherPosition(MotherPositionMessage msg) {
-        islands.get(getMotherPosition()).setMotherPosition(false);
-        islands.get(msg.getMotherPosition()).setMotherPosition(true);
+        motherNaturePos = msg.getMotherPosition();
         this.motherPositionListener.notifyMotherPosition(msg.getMotherPosition());
     }
     public void setMaxStepsMotherNature(int steps){
@@ -141,7 +141,7 @@ public class View {
     }
     public void setNumberOfCards(NumberOfCardsMessage msg){
         hands.get(msg.getPlayerRef()).setNumberOfCards(msg.getNumberOfCards());
-       }
+    }
 
     public void setSpecials(ArrayList<Special> specials){
         this.specials = specials;
@@ -163,16 +163,28 @@ public class View {
         }
         setMaxStepsMotherNature(cards.get(index).getMovement());
         cards.remove(index);
+    }
+
+    public void restoreCards(ArrayList<String> hand){
+        for (int i = 0; i < cards.size(); i++) {
+            boolean thereIs = false;
+            for(int j=0; j<hand.size(); j++){
+                if(cards.get(i).toString().equals(hand.get(j))) {
+                    thereIs = true;
+                    break;
+                }
+            }
+            if(!thereIs) {
+                cards.remove(i);
+                i--;
+            }
         }
+    }
 
     public int getIslandTowers(int islandRef){ return islands.get(islandRef).getTowersNumber();}
     public int getTowersColor(int islandRef){ return islands.get(islandRef).getTowersColor();}
-    public Boolean isMotherPosition(int islandRef){ return islands.get(islandRef).isMother();}
     public int getMotherPosition(){
-        for (int i = 0; i < getIslandSize(); i++) {
-            if(islands.get(i).isMother()) return i;
-        }
-        return 0;
+        return motherNaturePos;
     }
     public int getMaxStepsMotherNature(){return maxStepsMotherNature;}
     public int[] getStudentsIsland(int islandRef){ return islands.get(islandRef).getStudents();}
@@ -308,7 +320,6 @@ public class View {
     }
     private class Island{
         int[] studentsIsland;
-        boolean isMotherPosition;
         int towersNumber;
         int towersColor;
         int isInhibited;
@@ -316,6 +327,7 @@ public class View {
         public Island(){
             studentsIsland=new int[]{0,0,0,0,0};
             towersColor = -1;
+            towersNumber = 1;
         }
 
         public void setTowersNumber(int towersNumber) {
@@ -324,16 +336,12 @@ public class View {
         public void setStudentsIsland(int color, int newValue) {
             this.studentsIsland[color]=newValue;
         }
-        public void setMotherPosition(boolean isMotherPos) {
-            this.isMotherPosition=isMotherPos;
-        }
         public void setTowersColor(int newColor){ this.towersColor=newColor; }
         public void setInhibited(int isInhibited) {
             this.isInhibited=isInhibited;
         }
 
         public int[] getStudents() {return studentsIsland;}
-        public boolean isMother() {return isMotherPosition;}
         public int getTowersNumber(){return towersNumber;}
         public int getTowersColor(){return towersColor;}
         public int getIsInhibited(){return isInhibited;}

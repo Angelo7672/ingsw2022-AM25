@@ -164,9 +164,6 @@ public class Game implements GameManager{
         setSpecial(0,-1);
     }
 
-    public void effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
-        roundStrategies.get(indexSpecial).effect(ref, color1, color2);
-    }
     @Override
     public boolean moveMotherNature(int queueRef, int desiredMovement) throws NotAllowedException {
         boolean victory;
@@ -198,6 +195,16 @@ public class Game implements GameManager{
 
     @Override
     public String oneLastRide(){ return toString(playerManager.checkVictory()); }
+
+    @Override
+    public void useSpecial(int playerRef){
+        if(affordSpecial(indexSpecial, playerRef)) {
+            setSpecial(indexSpecial, -1); //cos'è ref?
+            playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
+            roundStrategies.get(indexSpecial).increaseCost();
+        }
+        setSpecial(0, -1);
+    }
 
     @Override
     public boolean useSpecialSimple(int indexSpecial, int playerRef, int ref){
