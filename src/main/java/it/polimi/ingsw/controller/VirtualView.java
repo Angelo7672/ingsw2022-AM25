@@ -117,6 +117,10 @@ public class VirtualView
 
             inputFile.close();
 
+            //Turn status restore
+            controller.setCurrentUser(turnInfosTmp.getCurrentUser());
+
+
             //Queue Restore
             ArrayList<Integer> playerRef = new ArrayList<>();
             ArrayList<Integer> valueCard = new ArrayList<>();
@@ -157,7 +161,6 @@ public class VirtualView
                 ArrayList<String> cards = handsTmp.get(i).getCards();
                 int coins = handsTmp.get(i).getCoins();
                 controller.handAndCoinsRestore(i,cards,coins);
-                //TODO: listener per numero carte in mano dopo il restore
             }
             //Bag Restore
             controller.bagRestore(bagTmp);
@@ -249,6 +252,7 @@ public class VirtualView
     @Override
     public void notifyHand(int playerRef, ArrayList<String> hand) {
         hands.get(playerRef).setCards(hand);
+        server.sendHandAfterRestore(playerRef,hand);
     }
 
     @Override
@@ -342,6 +346,8 @@ public class VirtualView
             if(phase == 0) this.phase = "PlanningPhase";
             else if(phase == 1) this.phase = "ActionPhase";
         }
+        public int getCurrentUser() { return currentUser; }
+        public String getPhase() { return phase; }
     }
 
     //private class SchoolBoard keeps the state of each player's school board

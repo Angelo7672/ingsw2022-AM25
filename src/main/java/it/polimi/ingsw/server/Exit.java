@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server;
 
+import java.util.ArrayList;
+
 public interface Exit {
     void start();
     void goPlayCard(int ref);
@@ -24,4 +26,5 @@ public interface Exit {
     void towerChangeColorOnIsland(int islandRef, int newColor);
     void islandInhibited(int islandRef, int isInhibited);
     void setSpecial(int specialRef);
+    void sendHandAfterRestore(int playerRef, ArrayList<String> hand);
 }

@@ -168,6 +168,10 @@ public class Proxy_s implements Exit {
         for (VirtualClient client:user)
             client.setSpecial(specialRef);
     }
+    @Override
+    public void sendHandAfterRestore(int playerRef, ArrayList<String> hand){
+        user.get(playerRef).sendHandAfterRestore(hand);
+    }
 
     @Override
     public void gameOver(){

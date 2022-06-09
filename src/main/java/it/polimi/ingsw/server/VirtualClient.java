@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 public class VirtualClient implements Runnable{
     private final Socket socket;
@@ -204,6 +205,7 @@ public class VirtualClient implements Runnable{
     public void towerChangeColorOnIsland(int islandRef, int newColor){ send(new IslandTowersColorMessage(islandRef,newColor)); }
     public void islandInhibited(int islandRef, int isInhibited){ send(new InhibitedIslandMessage(islandRef,isInhibited)); }
     public void setSpecial(int specialRef){ send(new SetSpecialAnswer(specialRef)); }
+    public void sendHandAfterRestore(ArrayList<String> hand){ send(new HandAfterRestoreAnswer(hand)); }
 
     private class GameSetup extends Thread{
         Message setupMsg;

@@ -14,7 +14,7 @@ public class PlayerManager  {
     protected TowersListener towersListener;
     protected ProfessorsListener professorsListener;
     protected SpecialListener specialListener;
-    protected CoinsListener coinsListener;;
+    protected CoinsListener coinsListener;
     protected PlayedCardListener playedCardListener;
     protected StudentsListener studentsListener;
 
@@ -48,7 +48,18 @@ public class PlayerManager  {
         }
     }
 
-    //private String assist
+    private String assistantToString(Assistant assistant){
+        if(assistant.equals(Assistant.LION)) return "LION";
+        else if(assistant.equals(Assistant.GOOSE)) return "GOOSE";
+        else if(assistant.equals(Assistant.CAT)) return "CAT";
+        else if(assistant.equals(Assistant.EAGLE)) return "EAGLE";
+        else if(assistant.equals(Assistant.FOX)) return "FOX";
+        else if(assistant.equals(Assistant.LIZARD)) return "LIZARD";
+        else if(assistant.equals(Assistant.OCTOPUS)) return "OCTOPUS";
+        else if(assistant.equals(Assistant.ELEPHANT)) return "ELEPHANT";
+        else if(assistant.equals(Assistant.TURTLE)) return "TURTLE";
+        return "NULL";
+    }
 
     public void initializeSchool(){
         if(numberOfPlayer == 2 || numberOfPlayer == 4){
@@ -82,7 +93,10 @@ public class PlayerManager  {
     public void restoreHandAndCoins(int playerRef, ArrayList<Assistant> cards, int coins){
         players.get(playerRef).restoreHandAndCoins(cards,coins);
         this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef));
-        this.playedCardListener.notifyHand(playerRef,cards);
+        ArrayList<String> hand = new ArrayList<>();
+        for (Assistant c:cards)
+            hand.add(assistantToString(c));
+        this.playedCardListener.notifyHand(playerRef,hand);
     }
 
     public void playCard(int playerRef, Assistant card, ArrayList<Assistant> alreadyPlayedAssistant) throws NotAllowedException{

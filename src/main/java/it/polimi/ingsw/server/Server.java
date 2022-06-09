@@ -132,6 +132,8 @@ public class Server implements Entrance,ControllerServer{
     public void islandInhibited(int islandRef, int isInhibited){ proxy.islandInhibited(islandRef, isInhibited); }
     @Override
     public void setSpecial(int specialRef){ proxy.setSpecial(specialRef); }
+    @Override
+    public void sendHandAfterRestore(int playerRef, ArrayList<String> hand){ proxy.sendHandAfterRestore(playerRef, hand); }
 
     @Override
     public void exitError(){ System.exit(-1); }
