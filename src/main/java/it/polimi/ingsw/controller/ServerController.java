@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public interface ServerController {
     void startGame(boolean gameSave);
+    int checkRestoreNickname(String nickname);
     boolean userLoginNickname(String nickname);
     ArrayList<String> alreadyChosenCharacters();
     boolean userLoginCharacter(String character);

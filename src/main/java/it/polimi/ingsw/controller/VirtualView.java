@@ -153,6 +153,15 @@ public class VirtualView
         } catch (IOException e) { e.printStackTrace();
         } catch (ClassNotFoundException e) { e.printStackTrace(); }
     }
+    public int checkRestoreNickname(String nickname){
+        int checker = -1;
+
+        for (int i = 0; i < schoolBoards.size(); i++)
+            if(nickname.equals(
+                    schoolBoards.get(i).getNickname()
+            )) checker = i;
+        return checker;
+    }
 
     public ArrayList<String> getAlreadyChosenCharacters(){
         ArrayList<String> chosenCharacters = new ArrayList<>();
@@ -233,13 +242,11 @@ public class VirtualView
         hands.get(playerRef).cards.remove(assistantCard);
         server.lastCardPlayedFromAPlayer(playerRef, assistantCard);
     }
-
     @Override
     public void notifyHand(int playerRef, ArrayList<String> hand) {
         hands.get(playerRef).setCards(hand);
         server.sendHandAfterRestore(playerRef,hand);
     }
-
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
         hands.get(playerRef).setCoins(newCoinsValue);
@@ -287,27 +294,15 @@ public class VirtualView
     }
 
     @Override
-    public void notifyBagExtraction() {
-        bag.remove(0);
-    }
+    public void notifyBagExtraction() { bag.remove(0); }
     @Override
-    public void notifyBag(List<Integer> bag) {
-        this.bag = bag;
-    }
+    public void notifyBag(List<Integer> bag) { this.bag = bag; }
     @Override
-    public void notifyQueue(int queueRef, int playerRef) {
-        queue.get(queueRef).setPlayerRef(playerRef);
-    }
-
+    public void notifyQueue(int queueRef, int playerRef) { queue.get(queueRef).setPlayerRef(playerRef); }
     @Override
-    public void notifyValueCard(int queueRef, int valueCard) {
-        queue.get(queueRef).setValueCard(valueCard);
-    }
-
+    public void notifyValueCard(int queueRef, int valueCard) { queue.get(queueRef).setValueCard(valueCard); }
     @Override
-    public void notifyMaxMove(int queueRef, int maxMove) {
-        queue.get(queueRef).setMaxMoveMotherNature(maxMove);
-    }
+    public void notifyMaxMove(int queueRef, int maxMove) { queue.get(queueRef).setMaxMoveMotherNature(maxMove); }
 
     private class TurnInfo implements Serializable{
         private int currentUser;

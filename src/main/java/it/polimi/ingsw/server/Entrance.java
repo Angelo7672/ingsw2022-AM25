@@ -8,6 +8,7 @@ import java.util.List;
 public interface Entrance {
     boolean checkFile();
     List<Integer> lastSavedGame();
+    int checkRestoreNickname(String nickname);
 
     void startController(int numberOfPlayers, boolean expertMode);
     boolean isExpertMode();

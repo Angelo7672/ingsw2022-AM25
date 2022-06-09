@@ -70,7 +70,7 @@ public class QueueManager {
     }
 
     public void inOrderForActionPhase(){
-        Collections.sort(queue, (q1, q2) -> q1.compareTo(q2));
+        Collections.sort(queue, Queue::compareTo);
 
         for(int i=0; i<numberOfPlayer; i++){
             this.queueListener.notifyQueue(i, queue.get(i).getPlayerRef());

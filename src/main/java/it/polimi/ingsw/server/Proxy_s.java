@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -76,6 +77,7 @@ public class Proxy_s implements Exit {
             soldOut.start();
 
             synchronized (this){ this.wait(); }
+            if(restoreGame) virtualClientInOrderAfterRestore();
             server.startGame(restoreGame);
 
         } catch (IOException e) {
@@ -201,6 +203,7 @@ public class Proxy_s implements Exit {
     public void setConnectionsAllowed(int connectionsAllowed) { this.connectionsAllowed = connectionsAllowed; }
     public boolean isRestoreGame() { return restoreGame; }
     public void setRestoreGame(boolean restoreGame) { this.restoreGame = restoreGame; }
+    private void virtualClientInOrderAfterRestore(){ Collections.sort(user, VirtualClient::compareTo); }
 
     private class SoldOut extends Thread{
         @Override

@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.client.Message.*;
 import it.polimi.ingsw.controller.exception.EndGameException;
+import it.polimi.ingsw.model.QueueManager;
 import it.polimi.ingsw.server.Answer.*;
 import it.polimi.ingsw.server.Answer.ViewMessage.*;
 import it.polimi.ingsw.server.expertmode.ExpertGame;
@@ -15,14 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class VirtualClient implements Runnable{
+public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     private final Socket socket;
     private final Entrance server;
     private final Proxy_s proxy;
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private boolean connectionExpired;
-    private final int playerRef;
+    private Integer playerRef;
     private boolean expertMode;
     private boolean clientInitialization;
     private boolean gameSetupInitialization;
@@ -209,6 +210,11 @@ public class VirtualClient implements Runnable{
     public void setSpecial(int specialRef){ send(new SetSpecialAnswer(specialRef)); }
     public void sendHandAfterRestore(ArrayList<String> hand){ send(new HandAfterRestoreAnswer(hand)); }
 
+    public void setPlayerRef(int playerRef) { this.playerRef = playerRef; }
+    public int getPlayerRef() { return playerRef; }
+    @Override
+    public int compareTo(VirtualClient v){ return playerRef.compareTo(v.getPlayerRef()); }
+
     private class GameSetup extends Thread{
         Message setupMsg;
 
@@ -237,14 +243,14 @@ public class VirtualClient implements Runnable{
                 if (msg.getMessage().equals("Ready for login!")) {
                     if(server.checkFile()){
                         List<Integer> savedGame = server.lastSavedGame();
-                        send(new SavedGameAnswer(savedGame));
+                        SavedGameAnswer saveMsg = new SavedGameAnswer(savedGame);
+                        send(saveMsg);
                         synchronized (setupLocker) {
                             gameSetupInitialization = true;
                             setupLocker.wait();
-                            userDecision();
+                            userDecision(saveMsg.getNumberOfPlayers(),saveMsg.isExpertMode());
                         }
-
-                    }else {
+                    } else {
                         send(new SetupGameMessage());
                         synchronized (setupLocker) {
                             gameSetupInitialization = true;
@@ -263,22 +269,23 @@ public class VirtualClient implements Runnable{
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
-        private void userDecision(){
+        private void userDecision(int numberOfPlayers, Boolean expertMode){
             GenericMessage msg = (GenericMessage) setupMsg;
 
             try {
-                if (msg.getMessage().equals("y")) proxy.setRestoreGame(true);
-                else if (msg.getMessage().equals("n")){
+                if (msg.getMessage().equals("y")){
+                    proxy.setRestoreGame(true);
+                    server.startController(numberOfPlayers,expertMode);
+                } else if (msg.getMessage().equals("n")){
                     proxy.setRestoreGame(false);
                     setupGame();
-                }
-                else {
+                } else {
                     send(new GenericAnswer("error"));
                     synchronized (errorLocker) {
                         clientInitialization = true;
                         error = true;
                         errorLocker.wait();
-                        userDecision();
+                        userDecision(numberOfPlayers,expertMode);
                     }
                 }
             } catch (InterruptedException ex) { ex.printStackTrace(); }
@@ -340,9 +347,29 @@ public class VirtualClient implements Runnable{
         }
         private void readyRestore(){
             SetupConnection msg = (SetupConnection) setupMsg;
-            boolean checker;
+            int checker;
 
-
+            try {
+                checker = server.checkRestoreNickname(msg.getNickname());
+                if (checker != -1){
+                    setPlayerRef(checker);
+                    send(new GenericAnswer("ok"));
+                    synchronized (setupLocker){
+                        clientInitialization = true;
+                        setupLocker.wait();
+                        readyStart();
+                    }
+                }
+                else {
+                    send(new GenericAnswer("error"));
+                    synchronized (errorLocker) {
+                        loginInitialization = true;
+                        error = true;
+                        errorLocker.wait();
+                        readyRestore();
+                    }
+                }
+            } catch (InterruptedException e) { e.printStackTrace(); }
         }
         private void setupConnection() {
             SetupConnection msg = (SetupConnection) setupMsg;

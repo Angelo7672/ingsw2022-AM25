@@ -164,6 +164,8 @@ public class Controller implements ServerController{
     public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
         gameManager.queueRestore(playerRef,valueCard,maxMoveMotherNature);
     }
+    @Override
+    public int checkRestoreNickname(String nickname){ return virtualView.checkRestoreNickname(nickname); }
 
     @Override
     public boolean isExpertMode() { return expertMode; }

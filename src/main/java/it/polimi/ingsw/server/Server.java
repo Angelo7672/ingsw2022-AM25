@@ -53,6 +53,8 @@ public class Server implements Entrance,ControllerServer{
     public boolean isExpertMode(){ return controller.isExpertMode(); }
     @Override
     public void startGame(boolean gameSave){ controller.startGame(gameSave); }
+    @Override
+    public int checkRestoreNickname(String nickname){ return controller.checkRestoreNickname(nickname); }
 
     @Override
     public ArrayList<String> alreadyChosenCharacters(){ return controller.alreadyChosenCharacters(); }
