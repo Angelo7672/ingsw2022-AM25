@@ -1,10 +1,10 @@
 package it.polimi.ingsw.server.expertmode;
-/*
-public class CreateSpecial5 implements CreateSpecial{
 
+import it.polimi.ingsw.server.Entrance;
+
+public class CreateSpecial5 implements CreateSpecial{
     @Override
-    public Special makeSpecial(String specialRef){
-        return new
+    public Special makeSpecial(Entrance server){
+        return new Special5(server);
     }
 }
-*/

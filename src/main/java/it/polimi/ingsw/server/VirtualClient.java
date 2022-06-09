@@ -153,8 +153,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     }
                 }else System.out.println("errore! "+playerRef); //ovviamente da cambiare
             }
-        }catch (SocketException socketException){
-            clientConnectionExpired(socketException);
+        }catch (SocketException socketException){ clientConnectionExpired(socketException);
         }catch (IOException | ClassNotFoundException e){
             System.err.println(e.getMessage());
             System.out.println("Client disconnected!");

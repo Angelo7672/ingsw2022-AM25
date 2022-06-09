@@ -1,22 +1,22 @@
 package it.polimi.ingsw.server.expertmode;
 
 import it.polimi.ingsw.client.Message.Message;
-import it.polimi.ingsw.client.Message.Special.Special1Message;
+import it.polimi.ingsw.client.Message.Special.Special3Message;
 import it.polimi.ingsw.server.Answer.GenericAnswer;
 import it.polimi.ingsw.server.Entrance;
 import it.polimi.ingsw.server.VirtualClient;
 
-public class Special1 implements Special{
-    private Special1Message special1Msg;
+public class Special3 implements Special{
+    private Special3Message special3Msg;
     private Entrance server;
 
-    public Special1(Entrance server) { this.server = server; }
+    public Special3(Entrance server) { this.server = server; }
 
     public boolean effect(int playerRef, VirtualClient user){
         VirtualClient virtualClient = user;
         boolean checker;
 
-        checker = server.useSpecialMedium(1, playerRef, special1Msg.getIslandRef(), special1Msg.getColor());
+        checker = server.useSpecialSimple(3, playerRef,special3Msg.getIslandRef());
 
         if(checker) virtualClient.send(new GenericAnswer("ok"));
         else virtualClient.send(new GenericAnswer("error"));
@@ -24,5 +24,5 @@ public class Special1 implements Special{
         return checker;
     }
 
-    public void setSpecialMessage(Message msg) { special1Msg = (Special1Message) msg; }
+    public void setSpecialMessage(Message msg) { special3Msg = (Special3Message) msg; }
 }
