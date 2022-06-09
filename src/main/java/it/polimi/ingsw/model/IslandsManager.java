@@ -26,6 +26,7 @@ public class IslandsManager {
         islands.add(i4); islands.add(i5); islands.add(i6);
         islands.add(i7); islands.add(i8); islands.add(i9);
         islands.add(i10); islands.add(i11); islands.add(i12);
+
     }
 
     public void islandsInitialize(){
@@ -77,8 +78,8 @@ public class IslandsManager {
     public void incStudent(int island, int color, int studentOfThisColor){
         for(int i = 0; i < studentOfThisColor; i ++) {
             islands.get(island).incStudents(color);
-            this.studentListener.notifyStudentsChange(2, island, color, getStudent(island, color));
         }
+        this.studentListener.notifyStudentsChange(2, island, color, getStudent(island, color));
     }
 
     public void moveMotherNature(int steps) {
@@ -129,19 +130,18 @@ public class IslandsManager {
     }
     private boolean checkAdjacent(int pos, int posTemp){
         if (islands.get(pos).getTowerTeam() == islands.get(posTemp).getTowerTeam()) {
-            for (int i = 0; i < 5; i++) {   //high student on an island
+            for (int i = 0; i < 5; i++) {   //move student from postemp to pos
                 islands.get(pos).copyStudents(i,islands.get(pos).getNumStudents(i) + islands.get(posTemp).getNumStudents(i));
-                this.studentListener.notifyStudentsChange(2, pos, i, islands.get(pos).getNumStudents(i) + islands.get(posTemp).getNumStudents(i) );
+                this.studentListener.notifyStudentsChange(2, pos, i, islands.get(pos).getNumStudents(i));
             }
             islands.get(pos).incTowerValue(islands.get(posTemp).getTowerValue()); //tower value increase
-            this.towersListener.notifyTowersChange(1,pos, islands.get(pos).getTowerValue()+islands.get(pos).getTowerValue());
+            this.towersListener.notifyTowersChange(1,pos, islands.get(pos).getTowerValue());
             islands.remove(posTemp); //island delete
             this.islandListener.notifyIslandChange(posTemp);
             if(motherPos == posTemp){
-                motherPos = pos;   //I move mother, if there was one, from the eliminated island
+                motherPos = pos;   //Move mother, if was there, from the eliminated island
                 this.motherPositionListener.notifyMotherPosition(motherPos);
             }
-
             return true;
         }
         return false;

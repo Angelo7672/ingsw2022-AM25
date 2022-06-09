@@ -152,7 +152,9 @@ public class PlayerManager  {
         int i;
         boolean stop = false;
 
-        if(!inSchool) removeStudentEntrance(playerRef,colour);  //if inSchool is false, it's placed in an island
+        if(!inSchool) {
+            removeStudentEntrance(playerRef,colour);  //if inSchool is false, it's placed in an island
+        }
         else if(inSchool && !special){   //if inSchool is true, it's placed on the table
             removeStudentEntrance(playerRef,colour);
             setStudentTable(playerRef,colour,1);
@@ -213,8 +215,8 @@ public class PlayerManager  {
     public void setStudentTable(int playerRef, int colour, int studentsOfThisColor) throws NotAllowedException{
         for(int i = 0; i < studentsOfThisColor; i++) {
             players.get(playerRef).school.setStudentTable(colour);
-            this.studentsListener.notifyStudentsChange(1, playerRef, colour, getStudentTable(playerRef, colour));
         }
+        this.studentsListener.notifyStudentsChange(1, playerRef, colour, getStudentTable(playerRef, colour));
     }
     public void removeStudentTable(int playerRef, int colour) throws NotAllowedException{
         players.get(playerRef).school.removeStudentTable(colour);
