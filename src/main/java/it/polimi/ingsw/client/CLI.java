@@ -529,6 +529,11 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     @Override
+    public void notifyHand(int playerRef, ArrayList<String> hand) {
+
+    }
+
+    @Override
     public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
         cli();
     }

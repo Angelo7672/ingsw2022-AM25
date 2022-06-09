@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.Proxy_c;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,16 +15,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
-public class LoginSceneController implements SceneController {
+public class LoginSceneController implements SceneController, Initializable {
     private GUI gui;
-    private Stage stage;
-    private Scene scene;
     private String currentNickname;
     private String currentCharacter;
     private Proxy_c proxy;
-    private ArrayList<String> availableCharacters;
+    private ArrayList<String> chosenCharacters;
 
     @FXML private TextField nicknameBox;
     @FXML private AnchorPane loginScene;
@@ -38,15 +39,15 @@ public class LoginSceneController implements SceneController {
     @FXML private ImageView kingImage;
 
 
-    /*
+
     @Override
-    public void initialize(URL url, ResourceBundle resources) {
-        availableCharacters= gui.getAvailableCharacters();
-        disableCharacters(availableCharacters); //makes already taken characters not selectable
-    }*/
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        disableCharacters(gui.getChosenCharacters());
+    }
+
 
     public void setCharacter(ActionEvent e){
-
         if(e.getSource()==wizard)
             this.currentCharacter="wizard";
         else if(e.getSource()==samurai)
@@ -63,6 +64,8 @@ public class LoginSceneController implements SceneController {
         System.out.println(currentNickname +", "+ currentCharacter);
         gui.setupConnection(currentNickname, currentCharacter);
         switchScene();
+
+
     }
 
     public void setProxy(Proxy_c proxy) {
@@ -80,9 +83,10 @@ public class LoginSceneController implements SceneController {
         this.nicknameMessage.setVisible(false);
     }
 */
-    public void disableCharacters(ArrayList<String> availableCharacters) {
+    public void disableCharacters(ArrayList<String> chosenCharacters) {
+
         //se il personaggio è già stato scelto
-        for(String character: availableCharacters){
+        for(String character: chosenCharacters){
             if(character == "WIZARD"){
                 wizardImage.setImage((new Image(getClass().getResourceAsStream("graphics/character_wizard_taken.png"))));
                 wizard.setDisable(true);

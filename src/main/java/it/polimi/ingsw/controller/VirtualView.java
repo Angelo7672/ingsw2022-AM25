@@ -247,6 +247,12 @@ public class VirtualView
         hands.get(playerRef).cards.remove(assistantCard);
         server.lastCardPlayedFromAPlayer(playerRef, assistantCard);
     }
+
+    @Override
+    public void notifyHand(int playerRef, ArrayList<String> hand) {
+        hands.get(playerRef).setCards(hand);
+    }
+
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
         hands.get(playerRef).setCoins(newCoinsValue);
@@ -437,6 +443,7 @@ public class VirtualView
         public int getCoins() { return coins; }
         public String getLastPlayedCard() { return lastPlayedCard; }
         public ArrayList<String> getCards() { return cards; }
+        public void setCards(ArrayList<String> cards) { this.cards = cards;}
     }
     private class Queue implements Serializable{
         private int playerRef;
