@@ -1,12 +1,18 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.controller.GameInfo;
 import it.polimi.ingsw.controller.ServerController;
 
+import it.polimi.ingsw.controller.VirtualView;
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Server implements Entrance,ControllerServer{
     private ServerController controller;
@@ -15,6 +21,30 @@ public class Server implements Entrance,ControllerServer{
     public Server(int port){
         this.proxy = new Proxy_s(port,this);
         proxy.start();
+    }
+
+    @Override
+    public boolean checkFile(){
+        File file = new File("saveGame.bin");
+        if (file.length() != 0)  return true;
+        return false;
+    }
+    @Override
+    public List<Integer> lastSavedGame(){
+        List<Integer> lastPlayed = new ArrayList<>();
+        GameInfo tmp;
+
+        try{
+            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream("saveGame.bin"));
+            tmp = (GameInfo) inputFile.readObject();
+            lastPlayed.add(tmp.getNumberOfPlayer());
+            if(tmp.isExpertMode()) lastPlayed.add(1);
+            else lastPlayed.add(0);
+        } catch (FileNotFoundException e) { e.printStackTrace();
+        } catch (IOException e) { e.printStackTrace();
+        } catch (ClassNotFoundException e) { e.printStackTrace(); }
+
+        return lastPlayed;
     }
 
     @Override
@@ -100,7 +130,12 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public String endGame(){ return controller.getWinner(); }
     @Override
-    public void gameOver(){ proxy.gameOver(); }
+    public void gameOver(){
+        proxy.gameOver();
+        System.out.println("GAME OVER!");
+        System.out.println(controller.getWinner() + " WIN!");
+        System.exit(0);
+    }
 
     @Override
     public void sendGameInfo(int numberOfPlayers, boolean expertMode){ proxy.sendGameInfo(numberOfPlayers, expertMode); }

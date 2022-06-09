@@ -8,20 +8,25 @@ public class RoundController extends Thread{
     private GameManager gameManager;
     private int numberOfPlayers;
     private boolean end;
+    private boolean jumpToActionPhase;
+    private boolean restoreGame;
     private Controller controller;
 
-    public RoundController(Controller controller,GameManager gameManager,ControllerServer server,int numberOfPlayers){
+    public RoundController(Controller controller,GameManager gameManager,ControllerServer server,int numberOfPlayers, boolean jumpToActionPhase){
         this.server = server;
         this.gameManager = gameManager;
         this.numberOfPlayers = numberOfPlayers;
         this.end = false;
+        this.jumpToActionPhase = jumpToActionPhase;
+        if(jumpToActionPhase) restoreGame = true;
         this.controller = controller;
     }
 
     @Override
     public void run(){
         while (controller.getWinner().equals("NONE")) {
-            planningPhase();
+            if(!jumpToActionPhase) planningPhase(); //jumpToActionPhase is use when restore a game which is in action phase
+            else if(jumpToActionPhase) jumpToActionPhase = false;
             actionPhase();
             if (end) {
                 controller.oneLastRide();
@@ -43,13 +48,24 @@ public class RoundController extends Thread{
     }
 
     private synchronized void actionPhase(){
-        gameManager.inOrderForActionPhase();
-        for(controller.setCurrentUser(0); controller.getCurrentUser() < numberOfPlayers; controller.incrCurrentUser()){
-            server.unlockActionPhase(gameManager.readQueue(controller.getCurrentUser()));
-            server.startActionPhase(gameManager.readQueue(controller.getCurrentUser()));
-            try { this.wait();
-            } catch (InterruptedException e) { e.printStackTrace(); }
-            controller.saveGame();
+        if(!restoreGame) {
+            gameManager.inOrderForActionPhase();
+            for (controller.setCurrentUser(0); controller.getCurrentUser() < numberOfPlayers; controller.incrCurrentUser()) {
+                server.unlockActionPhase(gameManager.readQueue(controller.getCurrentUser()));
+                server.startActionPhase(gameManager.readQueue(controller.getCurrentUser()));
+                try { this.wait();
+                } catch (InterruptedException e) { e.printStackTrace(); }
+                controller.saveGame();
+            }
+        }else if(restoreGame){
+            restoreGame = false;
+            for (controller.getCurrentUser(); controller.getCurrentUser() < numberOfPlayers; controller.incrCurrentUser()){
+                server.unlockActionPhase(gameManager.readQueue(controller.getCurrentUser()));
+                server.startActionPhase(gameManager.readQueue(controller.getCurrentUser()));
+                try { this.wait();
+                } catch (InterruptedException e) { e.printStackTrace(); }
+                controller.saveGame();
+            }
         }
     }
 

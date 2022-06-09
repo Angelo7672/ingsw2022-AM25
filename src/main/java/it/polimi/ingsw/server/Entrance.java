@@ -3,8 +3,12 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.controller.exception.EndGameException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface Entrance {
+    boolean checkFile();
+    List<Integer> lastSavedGame();
+
     void startController(int numberOfPlayers, boolean expertMode);
     boolean isExpertMode();
     void startGame();

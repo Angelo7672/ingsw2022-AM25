@@ -12,6 +12,8 @@ import java.net.SocketException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class VirtualClient implements Runnable{
     private final Socket socket;
@@ -167,7 +169,7 @@ public class VirtualClient implements Runnable{
     //Message to client
     public void sendPlayCard(){ send(new PlayCard()); }
     public void sendStartTurn(){ send(new StartTurn()); }
-    public void sendWinner(String winner){ send(new GameOverAnswer(winner));}
+    public void sendWinner(String winner){ send(new GameOverAnswer(winner)); }
 
     public void send(Answer serverAnswer){
         try {
@@ -233,6 +235,12 @@ public class VirtualClient implements Runnable{
 
             try {
                 if (msg.getMessage().equals("Ready for login!")) {
+                    /*if(server.checkFile()){
+                        List<Integer> savedGame = server.lastSavedGame();
+                        send(new SavedGameAnswer(savedGame));
+                    }*/
+
+
                     send(new SetupGameMessage());
                     synchronized (setupLocker) {
                         gameSetupInitialization = true;

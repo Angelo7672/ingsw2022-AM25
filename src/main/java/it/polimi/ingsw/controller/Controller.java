@@ -18,6 +18,7 @@ public class Controller implements ServerController{
     private VirtualView virtualView;
     private GameManager gameManager;
     private RoundController roundController;
+    private boolean jumpPhaseForRestore;
     private int numberOfPlayers;
     private boolean expertMode;
     private String winner;
@@ -26,6 +27,7 @@ public class Controller implements ServerController{
     public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server){
         this.expertMode = isExpert;
         this.numberOfPlayers = numberOfPlayers;
+        this.jumpPhaseForRestore = false;
         this.server = server;
         this.fileName = "saveGame.bin";
         this.virtualView = new VirtualView(numberOfPlayers, isExpert, server, this, fileName);
@@ -50,7 +52,7 @@ public class Controller implements ServerController{
         gameManager.setBagListener(virtualView);
         gameManager.setQueueListener(virtualView);
         gameManager.initializeGame();
-        this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers);
+        this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers,jumpPhaseForRestore);
         roundController.start();
     }
 
@@ -131,11 +133,9 @@ public class Controller implements ServerController{
 
     public void saveGame(){ virtualView.saveVirtualView(); }
     public void clearFile(){ virtualView.clearFile(); }
-    public boolean checkFile(){
-        File file = new File(fileName);
-        if (file.length() != 0)
-            return true;
-        return false;
+    public void setPhase(String phase){
+        if (phase.equals("ActionPhase")) jumpPhaseForRestore = true;
+        else if(phase.equals("PlanningPhase")) jumpPhaseForRestore = false;
     }
     public void schoolRestore(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, String team){
         gameManager.schoolRestore(playerRef,studentsEntrance,studentsTable,towers,professors,team);

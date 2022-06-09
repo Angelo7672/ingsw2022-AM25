@@ -81,21 +81,7 @@ public class VirtualView
         } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace(); }
     }
-    public Map<Integer,Boolean> lastSavedGame(){
-        Map<Integer,Boolean> lastPlayed = new HashMap<>();
-        GameInfo tmp;
-
-        try{
-            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
-            tmp = (GameInfo) inputFile.readObject();
-            lastPlayed.put(tmp.getNumberOfPlayer(),tmp.isExpertMode());
-        } catch (FileNotFoundException e) { e.printStackTrace();
-        } catch (IOException e) { e.printStackTrace();
-        } catch (ClassNotFoundException e) { e.printStackTrace(); }
-
-        return lastPlayed;
-    }
-    public void restoreGame(){
+    public void restoreGame(){  //DEVI LEGGERE ANCHE I PRIMI OGGETTI CHE NON SERVONO
         TurnInfo turnInfosTmp;
         ArrayList<Queue> queueTmp;
         ArrayList<SchoolBoard> schoolBoardsTmp;
@@ -119,8 +105,7 @@ public class VirtualView
 
             //Turn status restore
             controller.setCurrentUser(turnInfosTmp.getCurrentUser());
-
-
+            controller.setPhase(turnInfosTmp.getPhase());
             //Queue Restore
             ArrayList<Integer> playerRef = new ArrayList<>();
             ArrayList<Integer> valueCard = new ArrayList<>();
@@ -322,19 +307,6 @@ public class VirtualView
     @Override
     public void notifyMaxMove(int queueRef, int maxMove) {
         queue.get(queueRef).setMaxMoveMotherNature(maxMove);
-    }
-
-    private class GameInfo implements Serializable{
-        private int numberOfPlayer;
-        private boolean expertMode;
-
-        public GameInfo(int numberOfPlayer, boolean expertMode){
-            this.numberOfPlayer = numberOfPlayer;
-            this.expertMode = expertMode;
-        }
-
-        public int getNumberOfPlayer() { return numberOfPlayer; }
-        public boolean isExpertMode() { return expertMode; }
     }
 
     private class TurnInfo implements Serializable{
