@@ -191,8 +191,6 @@ public class PlayerManager  {
                 professorPropriety[colour] = playerRef;
             }
         }
-        this.studentsListener.notifyStudentsChange(0,playerRef,colour,getStudentEntrance(playerRef,colour));
-        this.studentsListener.notifyStudentsChange(1,playerRef,colour,getStudentTable(playerRef,colour));
     }
     private void checkPosForCoin(int playerRef, int colour){
         players.get(playerRef).checkPosForCoin(colour);

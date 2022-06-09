@@ -23,8 +23,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private static Proxy_c proxy;
     private static View view;
     private Socket socket;
-    private LoginSceneController loginSceneController;
-    private SetupSceneController setupSceneController;
     private SceneController currentSceneController;
     private Scene currentScene;
     private int numberOfPlayers;
@@ -75,7 +73,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         } else if (result.equals("Server Sold Out")) {
             System.out.println(result);
         } else if (result.equals("Not first")) {
-            setChosenCharacters();
+
             loadScene(stage, "Login");
         }
 
@@ -90,8 +88,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         stage.show();
 
         setup(stage);
-
-
     }
 
     public void loadScene(Stage stage, String sceneName) {
@@ -119,7 +115,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         return loader.load((getClass().getResource("/fxml/LoginScene.fxml")));
     }*/
 
-    public void setChosenCharacters() {
+    public static ArrayList<String> getChosenCharacters() {
         ArrayList<String> chosenCharacters = null;
         try {
             chosenCharacters = proxy.getChosenCharacters();
@@ -128,7 +124,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        this.chosenCharacters=chosenCharacters;
+        return chosenCharacters;
 
     }
     //public static ArrayList<String> getChosenCharacters(){

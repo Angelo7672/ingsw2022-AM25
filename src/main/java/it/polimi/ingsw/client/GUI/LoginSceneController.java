@@ -4,10 +4,10 @@ import it.polimi.ingsw.client.Proxy_c;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,16 +15,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
-public class LoginSceneController implements SceneController, Initializable {
+public class LoginSceneController implements SceneController {
     private GUI gui;
     private String currentNickname;
     private String currentCharacter;
     private Proxy_c proxy;
     private ArrayList<String> chosenCharacters;
+    private boolean characterTaken;
 
     @FXML private TextField nicknameBox;
     @FXML private AnchorPane loginScene;
@@ -37,13 +36,11 @@ public class LoginSceneController implements SceneController, Initializable {
     @FXML private ImageView witchImage;
     @FXML private ImageView samuraiImage;
     @FXML private ImageView kingImage;
+    @FXML private Label errorMessage;
 
 
+    public LoginSceneController(){
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        //disableCharacters(gui.getChosenCharacters());
     }
 
 
@@ -59,11 +56,23 @@ public class LoginSceneController implements SceneController, Initializable {
     }
 
     public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
+        Boolean characterTaken=false;
 
         this.currentNickname =nicknameBox.getText();
         System.out.println(currentNickname +", "+ currentCharacter);
         gui.setupConnection(currentNickname, currentCharacter);
-        switchScene();
+        ArrayList<String> chosenCharacters= gui.getChosenCharacters();
+
+        for(String character: chosenCharacters){
+            if(character == currentCharacter){
+                characterTaken=true;
+                errorMessage.setVisible(true);
+            }
+        }
+        if(characterTaken=false){
+            switchScene();
+        }
+
 
 
     }
