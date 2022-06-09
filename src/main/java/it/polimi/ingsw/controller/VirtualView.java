@@ -146,7 +146,6 @@ public class VirtualView
                 String towerTeam = islandsTmp.get(i).getTowersColor();
                 int inhibited = islandsTmp.get(i).getIsInhibited();
                 controller.islandRestore(i,students,towerValue,towerTeam,inhibited);
-                //TODO: listener per mother pose after restore
             }
             //CloudsRestore
             for(int i = 0; i < numberOfPlayers; i++){
@@ -158,7 +157,7 @@ public class VirtualView
                 ArrayList<String> cards = handsTmp.get(i).getCards();
                 int coins = handsTmp.get(i).getCoins();
                 controller.handAndCoinsRestore(i,cards,coins);
-                //TODO: listener per numero carte in mano e monete dopo il restore
+                //TODO: listener per numero carte in mano dopo il restore
             }
             //Bag Restore
             controller.bagRestore(bagTmp);
@@ -243,7 +242,6 @@ public class VirtualView
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
         hands.get(playerRef).setLastCard(assistantCard);
-        hands.get(playerRef).setNumberOfCards(hands.get(playerRef).numberOfCards--);
         hands.get(playerRef).cards.remove(assistantCard);
         server.lastCardPlayedFromAPlayer(playerRef, assistantCard);
     }
@@ -423,13 +421,11 @@ public class VirtualView
         public int[] getStudents() { return students; }
     }
     private class Hand implements Serializable{
-        int numberOfCards;
         int coins;
         String lastPlayedCard;
         ArrayList<String> cards;
 
         public Hand(){
-            this.numberOfCards = 10;
             this.coins = 1;
             this.cards = new ArrayList<>();
             cards.add("LION"); cards.add("GOOSE"); cards.add("CAT"); cards.add("EAGLE"); cards.add("FOX");
@@ -438,8 +434,6 @@ public class VirtualView
 
         public void setCoins(int coins) { this.coins = coins; }
         public void setLastCard(String lastPlayedCard) { this.lastPlayedCard = lastPlayedCard; }
-        public void setNumberOfCards(int numberOfCards) { this.numberOfCards = numberOfCards; }
-        public int getNumberOfCards() { return numberOfCards; }
         public int getCoins() { return coins; }
         public String getLastPlayedCard() { return lastPlayedCard; }
         public ArrayList<String> getCards() { return cards; }

@@ -14,7 +14,8 @@ public class PlayerManager  {
     protected TowersListener towersListener;
     protected ProfessorsListener professorsListener;
     protected SpecialListener specialListener;
-    protected CoinsListener coinsListener;
+    protected CoinsListener coinsListener;;
+    protected PlayedCardListener playedCardListener
     protected StudentsListener studentsListener;
 
     public PlayerManager(int numberOfPlayer, Bag bag) {
@@ -47,6 +48,8 @@ public class PlayerManager  {
         }
     }
 
+    //private String assist
+
     public void initializeSchool(){
         if(numberOfPlayer == 2 || numberOfPlayer == 4){
             for(int j = 0; j < numberOfPlayer; j++)
@@ -78,6 +81,8 @@ public class PlayerManager  {
     }
     public void restoreHandAndCoins(int playerRef, ArrayList<Assistant> cards, int coins){
         players.get(playerRef).restoreHandAndCoins(cards,coins);
+        this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef));
+        this.playedCardListener.notifyHand(playerRef,cards);
     }
 
     public void playCard(int playerRef, Assistant card, ArrayList<Assistant> alreadyPlayedAssistant) throws NotAllowedException{
@@ -177,7 +182,7 @@ public class PlayerManager  {
     }
     private void checkPosForCoin(int playerRef, int colour){
         players.get(playerRef).checkPosForCoin(colour);
-        this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef) );
+        this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef));
     }
 
     public void setStudentEntrance(int playerRef, int colour, int studentsOfThisColor){
