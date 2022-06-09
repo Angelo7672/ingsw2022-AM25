@@ -40,10 +40,7 @@ public class LoginSceneController implements SceneController {
 
 
     public LoginSceneController(){
-
     }
-
-
     public void setCharacter(ActionEvent e){
         if(e.getSource()==wizard)
             this.currentCharacter="wizard";
@@ -56,24 +53,24 @@ public class LoginSceneController implements SceneController {
     }
 
     public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
-        Boolean characterTaken=false;
+        Boolean characterAvailable=false;
+        ArrayList<String> availableCharacters;
 
         this.currentNickname =nicknameBox.getText();
         System.out.println(currentNickname +", "+ currentCharacter);
         gui.setupConnection(currentNickname, currentCharacter);
-        ArrayList<String> chosenCharacters= gui.getChosenCharacters();
 
-        for(String character: chosenCharacters){
-            if(character == currentCharacter){
-                characterTaken=true;
-                errorMessage.setVisible(true);
+       availableCharacters = gui.getAvailableCharacters();
+
+        for(String character: availableCharacters) {
+            if (character == currentCharacter) {
+                characterAvailable = true;
             }
+            if (characterAvailable == false) {
+                errorMessage.setVisible(true);
+            } else
+                switchScene();
         }
-        if(characterTaken=false){
-            switchScene();
-        }
-
-
 
     }
 
@@ -122,10 +119,15 @@ public class LoginSceneController implements SceneController {
             //king
         }
 
-    public void switchScene() throws IOException {
+    public void switchScene() {
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("/fxml/MainScene.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load(getClass().getResource("/fxml/MainScene.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Scene startMenu = new Scene(root);
         stage.setScene(startMenu);
         stage.show();
