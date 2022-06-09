@@ -43,7 +43,7 @@ public class LoginSceneController implements SceneController, Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        disableCharacters(gui.getChosenCharacters());
+        //disableCharacters(gui.getChosenCharacters());
     }
 
 

@@ -15,7 +15,7 @@ public class PlayerManager  {
     protected ProfessorsListener professorsListener;
     protected SpecialListener specialListener;
     protected CoinsListener coinsListener;;
-    protected PlayedCardListener playedCardListener
+    protected PlayedCardListener playedCardListener;
     protected StudentsListener studentsListener;
 
     public PlayerManager(int numberOfPlayer, Bag bag) {

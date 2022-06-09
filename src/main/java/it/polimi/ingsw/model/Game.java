@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class Game implements GameManager{
     private ArrayList<RoundStrategy> roundStrategies;
@@ -283,7 +282,10 @@ public class Game implements GameManager{
     @Override
     public void setProfessorsListener(ProfessorsListener listener){ playerManager.professorsListener = listener; }
     @Override
-    public void setPlayedCardListener(PlayedCardListener listener){ queueManager.playedCardListener = listener; }
+    public void setPlayedCardListener(PlayedCardListener listener){
+        queueManager.playedCardListener = listener;
+        playerManager.playedCardListener=listener;
+    }
     @Override
     public void setSpecialListener(SpecialListener listener){ this.specialListener = listener;}
     @Override
