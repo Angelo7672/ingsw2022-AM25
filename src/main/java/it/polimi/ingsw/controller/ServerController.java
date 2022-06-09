@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 import java.util.ArrayList;
 
 public interface ServerController {
-    void startGame();
+    void startGame(boolean gameSave);
     boolean userLoginNickname(String nickname);
     ArrayList<String> alreadyChosenCharacters();
     boolean userLoginCharacter(String character);

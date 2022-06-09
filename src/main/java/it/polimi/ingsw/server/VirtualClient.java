@@ -235,17 +235,22 @@ public class VirtualClient implements Runnable{
 
             try {
                 if (msg.getMessage().equals("Ready for login!")) {
-                    /*if(server.checkFile()){
+                    if(server.checkFile()){
                         List<Integer> savedGame = server.lastSavedGame();
                         send(new SavedGameAnswer(savedGame));
-                    }*/
+                        synchronized (setupLocker) {
+                            gameSetupInitialization = true;
+                            setupLocker.wait();
+                            userDecision();
+                        }
 
-
-                    send(new SetupGameMessage());
-                    synchronized (setupLocker) {
-                        gameSetupInitialization = true;
-                        setupLocker.wait();
-                        setupGame();
+                    }else {
+                        send(new SetupGameMessage());
+                        synchronized (setupLocker) {
+                            gameSetupInitialization = true;
+                            setupLocker.wait();
+                            setupGame();
+                        }
                     }
                 } else {
                     send(new GenericAnswer("error"));
@@ -257,6 +262,26 @@ public class VirtualClient implements Runnable{
                     }
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
+        }
+        private void userDecision(){
+            GenericMessage msg = (GenericMessage) setupMsg;
+
+            try {
+                if (msg.getMessage().equals("y")) proxy.setRestoreGame(true);
+                else if (msg.getMessage().equals("n")){
+                    proxy.setRestoreGame(false);
+                    setupGame();
+                }
+                else {
+                    send(new GenericAnswer("error"));
+                    synchronized (errorLocker) {
+                        clientInitialization = true;
+                        error = true;
+                        errorLocker.wait();
+                        userDecision();
+                    }
+                }
+            } catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void setupGame() {
             SetupGame msg = (SetupGame) setupMsg;
@@ -287,11 +312,20 @@ public class VirtualClient implements Runnable{
 
             try {
                 if (msg.getMessage().equals("Ready for login!")) {
-                    send(new LoginMessage(server.alreadyChosenCharacters()));
-                    synchronized (setupLocker) {
-                        loginInitialization = true;
-                        setupLocker.wait();
-                        setupConnection();
+                    if(proxy.isRestoreGame()){
+                        send(new LoginRestoreAnswer());
+                        synchronized (setupLocker) {
+                            loginInitialization = true;
+                            setupLocker.wait();
+                            readyRestore();
+                        }
+                    }else {
+                        send(new LoginMessage(server.alreadyChosenCharacters()));
+                        synchronized (setupLocker) {
+                            loginInitialization = true;
+                            setupLocker.wait();
+                            setupConnection();
+                        }
                     }
                 } else {
                     send(new GenericAnswer("error"));
@@ -303,6 +337,12 @@ public class VirtualClient implements Runnable{
                     }
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
+        }
+        private void readyRestore(){
+            SetupConnection msg = (SetupConnection) setupMsg;
+            boolean checker;
+
+
         }
         private void setupConnection() {
             SetupConnection msg = (SetupConnection) setupMsg;

@@ -11,7 +11,7 @@ public interface Entrance {
 
     void startController(int numberOfPlayers, boolean expertMode);
     boolean isExpertMode();
-    void startGame();
+    void startGame(boolean gameSave);
     ArrayList<String> alreadyChosenCharacters();
     boolean userLogin(String nickname, String character);
 

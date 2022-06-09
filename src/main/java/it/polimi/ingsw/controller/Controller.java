@@ -35,7 +35,7 @@ public class Controller implements ServerController{
     }
 
     @Override
-    public void startGame(){
+    public void startGame(boolean gameSave){
         server.sendGameInfo(numberOfPlayers, expertMode);   //at every client
         for(int i = 0; i < numberOfPlayers; i++)
             server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
@@ -51,7 +51,10 @@ public class Controller implements ServerController{
         gameManager.setInhibitedListener(virtualView);
         gameManager.setBagListener(virtualView);
         gameManager.setQueueListener(virtualView);
-        gameManager.initializeGame();
+
+        if(gameSave) virtualView.restoreGame();
+        else gameManager.initializeGame();
+
         this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers,jumpPhaseForRestore);
         roundController.start();
     }

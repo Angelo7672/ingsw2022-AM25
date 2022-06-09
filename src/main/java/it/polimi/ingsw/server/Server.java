@@ -52,7 +52,7 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public boolean isExpertMode(){ return controller.isExpertMode(); }
     @Override
-    public void startGame(){ controller.startGame(); }
+    public void startGame(boolean gameSave){ controller.startGame(gameSave); }
 
     @Override
     public ArrayList<String> alreadyChosenCharacters(){ return controller.alreadyChosenCharacters(); }

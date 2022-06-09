@@ -21,6 +21,7 @@ public class Proxy_s implements Exit {
     private int limiter;
     private int clientReady;
     private boolean first;
+    private boolean restoreGame;
 
     public Proxy_s(int port,Entrance server) {
         this.port = port;
@@ -75,7 +76,7 @@ public class Proxy_s implements Exit {
             soldOut.start();
 
             synchronized (this){ this.wait(); }
-            server.startGame();
+            server.startGame(restoreGame);
 
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -198,6 +199,8 @@ public class Proxy_s implements Exit {
     }
     public int getConnectionsAllowed() { return connectionsAllowed; }
     public void setConnectionsAllowed(int connectionsAllowed) { this.connectionsAllowed = connectionsAllowed; }
+    public boolean isRestoreGame() { return restoreGame; }
+    public void setRestoreGame(boolean restoreGame) { this.restoreGame = restoreGame; }
 
     private class SoldOut extends Thread{
         @Override
