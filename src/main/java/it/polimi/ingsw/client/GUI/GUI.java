@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GUI extends Application implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
@@ -28,8 +29,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private SceneController currentSceneController;
     private Scene currentScene;
     private int numberOfPlayers;
-    private String expertMode;
-    private ArrayList<String> chosenCharacters;
+    private boolean expertMode;
+    private HashMap<String, String> userInfo;
     protected static final String SETUP = "setupScene.fxml";
     protected static final String LOGIN = "loginScene.fxml";
     protected static final String MAIN = "mainScene.fxml";
@@ -38,6 +39,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         launch();
     }
 
+    public GUI(){
+        userInfo=new HashMap<>();
+    }
 
     @Override
     public void start(Stage stage) throws IOException, ClassNotFoundException, InterruptedException {
@@ -92,7 +96,18 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         System.out.println("Current controller: "+ currentSceneController);
 
         if (sceneName == MAIN) {
-            //setupView();
+            try {
+                this.view = proxy.startView();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            setupView((MainSceneController) currentSceneController);
+
+
         }
         else if(sceneName == LOGIN){
             Platform.runLater(()->{
@@ -107,24 +122,21 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     e.printStackTrace();
                 }
             });
-
         }
-
-
     }
 
-        /*
-    public void setupView(SceneController controller){
-        view.setBagListener(controller);
+
+    public void setupView(MainSceneController controller){
+
         view.setCoinsListener(controller);
-        view.setInhibitedListener(this);
-        view.setIslandListener(this);
-        view.setMotherPositionListener(this);
-        view.setPlayedCardListener(this);
-        view.setProfessorsListener(this);
-        view.setStudentsListener(this);
-        view.setTowersListener(this);
-    }  */
+        view.setInhibitedListener(controller);
+        view.setIslandListener(controller);
+        view.setMotherPositionListener(controller);
+        view.setPlayedCardListener(controller);
+        view.setProfessorsListener(controller);
+        view.setStudentsListener(controller);
+        view.setTowersListener(controller);
+    }
 
     public void switchScene(String scene){
         loadScene(primaryStage, scene);
@@ -147,7 +159,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 //controller.setTowersInSchool(componentRef, towersNumber);
             }
             else if ((place==1)) {
-                controller.setTowersOnIsland(componentRef, towersNumber);
+
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -20,12 +21,14 @@ public class SetupSceneController implements SceneController {
 
     @FXML private AnchorPane setupScene;
     @FXML private Label message;
-    @FXML private Button twoPlayersButton;
-    @FXML private Button threePlayersButton;
-    @FXML private Button fourPlayersButton;
-    @FXML private Button yesButton;
-    @FXML private Button noButton;
+    @FXML private RadioButton twoPlayersButton;
+    @FXML private RadioButton threePlayersButton;
+    @FXML private RadioButton fourPlayersButton;
+    @FXML private RadioButton yesButton;
+    @FXML private RadioButton noButton;
     @FXML private Button nextButton;
+    @FXML private Label errorMessage;
+
 
     public SetupSceneController(){
         this.numberOfPlayers=0;
@@ -56,12 +59,15 @@ public class SetupSceneController implements SceneController {
             if (proxy.setupGame(numberOfPlayers, expertMode) == true) {
                 gui.switchScene(GUI.LOGIN);
             } else
-                System.out.println("Errore");
+                showErrorMessage();
         }
-        else System.out.println("Errore");
+        else showErrorMessage();
 
     }
 
+    public void showErrorMessage(){
+        errorMessage.setVisible(true);
+    }
     @Override
     public void setGUI(GUI gui) {
         this.gui=gui;

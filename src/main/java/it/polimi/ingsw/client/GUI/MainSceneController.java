@@ -1,15 +1,21 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
+import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.controller.listeners.*;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 
-public class MainSceneController implements SceneController{
+
+public class MainSceneController implements SceneController, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener{
     private GUI gui;
+    private View view;
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -33,19 +39,7 @@ public class MainSceneController implements SceneController{
     @FXML private ImageView schoolBoard3;
     @FXML private ImageView schoolBoard4;
 
-    public MainSceneController(){
 
-    }
-
-    public void setTowersOnIsland(int islandRef, int towersNumber){
-        //if(islandRef==1){
-
-
-    }
-
-    public void setTowersInSchool(int schoolRef, int towersNumber){
-
-    }
 
     @Override
     public void setGUI(GUI gui) {
@@ -58,4 +52,73 @@ public class MainSceneController implements SceneController{
     }
 
 
+    public void setView(View view) {
+        this.view = view;
+    }
+
+
+    @Override
+    public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
+
+    }
+
+    @Override
+    public void notifyInhibited(int islandRef, int isInhibited) {
+
+    }
+
+    @Override
+    public void notifyIslandChange(int islandToDelete) {
+
+    }
+
+    @Override
+    public void notifyMotherPosition(int newMotherPosition) {
+
+    }
+
+    @Override
+    public void notifyPlayedCard(int playerRef, String assistantCard) {
+
+    }
+
+    @Override
+    public void notifyHand(int playerRef, ArrayList<String> hand) {
+
+    }
+
+    @Override
+    public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
+
+    }
+
+    @Override
+    public void notifySpecial(int specialRef) {
+
+    }
+
+    @Override
+    public void notifySpecialName(String specialName) {
+
+    }
+
+    @Override
+    public void notifyPlayedSpecial(int specialRef) {
+
+    }
+
+    @Override
+    public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
+
+    }
+
+    @Override
+    public void notifyTowersChange(int place, int componentRef, int towersNumber) {
+
+    }
+
+    @Override
+    public void notifyTowerColor(int islandRef, int newColor) {
+
+    }
 }

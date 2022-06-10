@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="setupScene" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.SetupSceneController">
+<AnchorPane fx:id="setupScene" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.SetupSceneController">
    <children>
       <ImageView fitHeight="275.0" fitWidth="511.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/eriantys_banner2.jpg" />
          </image>
       </ImageView>
-      <Label fx:id="message" layoutX="95.0" layoutY="411.0" text="Do you want to play in Expert Mode?" />
+      <Label fx:id="message" layoutX="94.0" layoutY="408.0" text="Do you want to play in Expert Mode?" />
       <Button fx:id="nextButton" layoutX="230.0" layoutY="501.0" mnemonicParsing="false" onAction="#nextPressed" text="Next" />
-      <Label fx:id="message" layoutX="99.0" layoutY="328.0" prefHeight="18.0" prefWidth="187.0" text="Choose the number of players" />
-      <Button fx:id="twoPlayersButton" layoutX="112.0" layoutY="362.0" mnemonicParsing="false" onAction="#setNumberOfPlayers" text="2 players" />
-      <Button fx:id="threePlayersButton" layoutX="193.0" layoutY="362.0" mnemonicParsing="false" onAction="#setNumberOfPlayers" text="3 players" />
-      <Button fx:id="fourPlayersButton" layoutX="275.0" layoutY="362.0" mnemonicParsing="false" onAction="#setNumberOfPlayers" text="4 players" />
-      <Button fx:id="yesButton" layoutX="112.0" layoutY="443.0" mnemonicParsing="false" onAction="#setExpertMode" text="yes" />
-      <Button fx:id="noButton" layoutX="162.0" layoutY="443.0" mnemonicParsing="false" onAction="#setExpertMode" text="no" />
+      <Label fx:id="message" layoutX="95.0" layoutY="330.0" prefHeight="18.0" prefWidth="187.0" text="Choose the number of players" />
+      <Label fx:id="errorMessage" layoutX="211.0" layoutY="540.0" text="Error, try again" textFill="#cd0909" visible="false" />
+      <RadioButton fx:id="yesButton" layoutX="95.0" layoutY="444.0" mnemonicParsing="false" onAction="#setExpertMode" text="yes">
+         <toggleGroup>
+            <ToggleGroup fx:id="expertModeChoice" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="noButton" layoutX="157.0" layoutY="444.0" mnemonicParsing="false" onAction="#setExpertMode" text="no" toggleGroup="$expertModeChoice" />
+      <RadioButton fx:id="twoPlayersButton" layoutX="95.0" layoutY="366.0" mnemonicParsing="false" onAction="#setNumberOfPlayers" text="2 players">
+         <toggleGroup>
+            <ToggleGroup fx:id="playersNumberChoice" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="threePlayersButton" layoutX="177.0" layoutY="366.0" mnemonicParsing="false" onAction="#setNumberOfPlayers" text="3 players" toggleGroup="$playersNumberChoice" />
+      <RadioButton fx:id="fourPlayersButton" layoutX="257.0" layoutY="366.0" mnemonicParsing="false" onAction="#setNumberOfPlayers" text="4 players" toggleGroup="$playersNumberChoice" />
    </children>
 </AnchorPane>
