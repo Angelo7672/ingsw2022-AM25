@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.expertmode;
 
+import it.polimi.ingsw.client.Message.Message;
 import it.polimi.ingsw.client.Message.Special.Special1Message;
 import it.polimi.ingsw.server.Answer.GenericAnswer;
 import it.polimi.ingsw.server.Entrance;
@@ -21,4 +22,7 @@ public class Special6 implements Special{
 
         return checker;
     }
+
+    @Override
+    public void setSpecialMessage(Message msg) {}
 }

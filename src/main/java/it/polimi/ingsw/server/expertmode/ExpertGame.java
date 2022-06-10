@@ -1,58 +1,78 @@
 package it.polimi.ingsw.server.expertmode;
 
+import it.polimi.ingsw.client.Message.Message;
+import it.polimi.ingsw.client.Message.Special.Special1Message;
+import it.polimi.ingsw.server.Entrance;
+import it.polimi.ingsw.server.VirtualClient;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class ExpertGame extends Thread{
-    private boolean special1,special2,special3,special4,special5,special6,
-                    special7,special8,special9,special10,special11,special12;
-    private List<Boolean> specialOfThisMatch;
+    private Entrance server;
+    private SpecialDeck specialDeck;
+    private int firstSpecial, secondSpecial, thirdSpecial;
 
-    public ExpertGame(ArrayList<Integer> extractedSpecial){ //voglio che extractedSpecial ordinato
-        this.specialOfThisMatch = new ArrayList<>();
+
+    public ExpertGame(Entrance server, ArrayList<Integer> extractedSpecial){ //voglio che extractedSpecial ordinato
+        this.server = server;
+        this.specialDeck = new SpecialDeck();
+        this.firstSpecial = extractedSpecial.get(0);
+        this.secondSpecial = extractedSpecial.get(1);
+        this.thirdSpecial = extractedSpecial.get(2);
 
         for(Integer special:extractedSpecial){
             switch (special){
                 case 1:
-
-
+                    specialDeck.addSpecial(new CreateSpecial1(), server);
+                    break;
+                case 2:
+                    specialDeck.addSpecial(new CreateSpecial2(), server);
+                    break;
+                case 3:
+                    specialDeck.addSpecial(new CreateSpecial3(), server);
+                    break;
+                case 4:
+                    specialDeck.addSpecial(new CreateSpecial4(), server);
+                    break;
+                case 5:
+                    specialDeck.addSpecial(new CreateSpecial5(), server);
+                    break;
+                case 6:
+                    specialDeck.addSpecial(new CreateSpecial6(), server);
+                    break;
+                case 7:
+                    specialDeck.addSpecial(new CreateSpecial7(), server);
+                    break;
+                case 8:
+                    specialDeck.addSpecial(new CreateSpecial8(), server);
+                    break;
+                case 9:
+                    specialDeck.addSpecial(new CreateSpecial9(), server);
+                    break;
+                case 10:
+                    specialDeck.addSpecial(new CreateSpecial10(), server);
+                    break;
+                case 11:
+                    specialDeck.addSpecial(new CreateSpecial11(), server);
+                    break;
+                case 12:
+                    specialDeck.addSpecial(new CreateSpecial12(), server);
+                    break;
             }
         }
     }
 
+    /*public boolean effect(int specialRef, int playerRef, VirtualClient user){
+        if (specialRef == firstSpecial)
+            return specialDeck.effect(0,playerRef,user);
+        else if(specialRef == secondSpecial)
+            return specialDeck.effect(1,playerRef,user);
+        else if (specialRef == thirdSpecial)
+            return specialDeck.effect(2,playerRef,user);
 
-    private void specialCharacters(){
+        return false;
+    }*/
 
+    public void setSpecialMsg(Message msg){ specialDeck.setSpecialMsg(msg); }
 
-        if(special1){
-
-        }else if(special2){
-
-        }else if(special3){
-
-        }else if(special4){
-
-        }else if(special5){
-
-        }else if(special6){
-
-        }else if(special7){
-
-        }else if(special8){
-
-        }else if(special9){
-
-        }else if(special10){
-
-        }else if(special11){
-
-        }else if(special12){
-
-        }
-    }
-
-    public void setSpecial(){
-        for(Boolean special:specialOfThisMatch)
-            special = true;
-    }
 }
