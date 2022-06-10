@@ -14,20 +14,27 @@ public class Client {
         System.out.println("Eriantys");
         System.out.println();
         Scanner scanner = new Scanner(System.in);
-        try {
-            socket = new Socket("127.0.0.1", 2525);
-        } catch (IOException e) {
-            System.err.println("Some errors occurred, try again.");
-            return;
-        }
-        System.out.println("Connection established");
         System.out.println("Do you want to use CLI or GUI?");
         String graph = scanner.next();
         if(graph.equalsIgnoreCase("CLI")) {
+            try {
+                socket = new Socket("127.0.0.1", 2525);
+            } catch (IOException e) {
+                System.err.println("Some errors occurred, try again.");
+                return;
+            }
+            System.out.println("Connection established");
             CLI cli = new CLI(socket);
             cli.run();
         }
         else if (graph.equalsIgnoreCase("GUI")) {
+            try {
+                socket = new Socket("127.0.0.1", 2525);
+            } catch (IOException e) {
+                System.err.println("Some errors occurred, try again.");
+                return;
+            }
+            System.out.println("Connection established");
             GUI gui = new GUI();
             Proxy_c proxy = new Proxy_c(socket);
             View view;

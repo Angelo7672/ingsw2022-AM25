@@ -322,7 +322,9 @@ public class Proxy_c implements Exit{
                     else if(tmp instanceof GameOverAnswer){
                         winner = ((GameOverAnswer) tmp).getWinner();
                     }
-                    else answersTmpList.add(tmp);
+                    else {
+                        answersTmpList.add(tmp);
+                    }
                 }catch (IOException | ClassNotFoundException e) {
                     try {
                         System.err.println("Client disconnected, game over.");

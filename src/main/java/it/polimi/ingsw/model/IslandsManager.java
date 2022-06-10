@@ -26,7 +26,6 @@ public class IslandsManager {
         islands.add(i4); islands.add(i5); islands.add(i6);
         islands.add(i7); islands.add(i8); islands.add(i9);
         islands.add(i10); islands.add(i11); islands.add(i12);
-
     }
 
     public void islandsInitialize(){
