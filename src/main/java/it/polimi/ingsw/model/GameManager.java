@@ -20,10 +20,10 @@ public interface GameManager {
     void inOrderForActionPhase();
 
 
-    void useSpecial(int playerRef);
+    boolean useSpecialLite(int indexSpecial, int playerRef);
     boolean useSpecialSimple(int indexSpecial, int playerRef, int ref);
     boolean useSpecialMedium(int indexSpecial, int playerRef, int ref, int color);
-    boolean useSpecialHard(int specialIndex, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2);
+    boolean useSpecialHard(int indexSpecial, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2);
     void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException;
     boolean moveMotherNature(int queueRef, int desiredMovement) throws NotAllowedException;
     void chooseCloud(int playerRef,int cloudRef) throws NotAllowedException;

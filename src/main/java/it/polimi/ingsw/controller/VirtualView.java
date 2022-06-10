@@ -89,10 +89,12 @@ public class VirtualView
         ArrayList<Cloud> cloudsTmp;
         ArrayList<Hand> handsTmp;
         ArrayList<Integer> bagTmp;
+        Object tmp;
 
         try{
             ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
 
+            tmp = inputFile.readObject();   //I have to read all object in file, this first object is GameInfo but now is useless
             turnInfosTmp = (TurnInfo) inputFile.readObject();
             queueTmp = (ArrayList<Queue>) inputFile.readObject();
             schoolBoardsTmp = (ArrayList<SchoolBoard>) inputFile.readObject();

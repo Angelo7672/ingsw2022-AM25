@@ -8,18 +8,15 @@ public class ExpertGame extends Thread{
                     special7,special8,special9,special10,special11,special12;
     private List<Boolean> specialOfThisMatch;
 
-    public ExpertGame(ArrayList<Integer> extractedSpecial){
+    public ExpertGame(ArrayList<Integer> extractedSpecial){ //voglio che extractedSpecial ordinato
         this.specialOfThisMatch = new ArrayList<>();
 
-        List<Boolean> tmpForPickSpecials = new ArrayList<>();
-        tmpForPickSpecials.add(special1);tmpForPickSpecials.add(special2);tmpForPickSpecials.add(special3);tmpForPickSpecials.add(special4);tmpForPickSpecials.add(special5);tmpForPickSpecials.add(special6);
-        tmpForPickSpecials.add(special7);tmpForPickSpecials.add(special8);tmpForPickSpecials.add(special9);tmpForPickSpecials.add(special10);tmpForPickSpecials.add(special11);tmpForPickSpecials.add(special12);
-        for (int i = 0; i < 3; i++){
-            this.specialOfThisMatch.add(
-                    tmpForPickSpecials.get(
-                            extractedSpecial.get(i)
-                    )
-            ); //NON FUNZIONA, MEGLIO USARE IL FACTORY
+        for(Integer special:extractedSpecial){
+            switch (special){
+                case 1:
+
+
+            }
         }
     }
 

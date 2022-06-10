@@ -91,6 +91,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     readyPlanningPhase = false;
                     if (tmp instanceof GenericMessage) {
                         roundPartOne.setPlanningMsg(tmp);
+                        System.out.println("l'errore e' qui");
                         if (!error) synchronized(planLocker){ planLocker.notify(); }
                         else {
                             error = false;
@@ -320,6 +321,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 if (msg.getMessage().equals("Ready for login!")) {
                     if(proxy.isRestoreGame()){
                         send(new LoginRestoreAnswer());
+                        System.out.println("cane");
                         synchronized (setupLocker) {
                             loginInitialization = true;
                             setupLocker.wait();
@@ -444,6 +446,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 while (!victory) {
                     synchronized (planLocker) {
                         planLocker.wait();
+                        System.out.println("qui no");
                         planningPhase();
                         readyForAction();
                         server.resumeTurn(1);
@@ -457,6 +460,8 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
 
             try {
                 checker = server.userPlayCard(playerRef, cardMessage.getCard());
+
+
                 if(checker){
                     send(new GenericAnswer("ok"));
                     readyPlanningPhase = true;  //dai un nome migliore

@@ -9,15 +9,15 @@ public class Special2 implements Special{
 
     public Special2(Entrance server) { this.server = server; }
 
-    /*public boolean effect(int playerRef, VirtualClient user){
+    public boolean effect(int playerRef, VirtualClient user){
         VirtualClient virtualClient = user;
         boolean checker;
 
-        checker = server.useSpecialSimple(2,playerRef);
+        checker = server.useSpecialLite(2,playerRef);
 
         if(checker) virtualClient.send(new GenericAnswer("ok"));
         else virtualClient.send(new GenericAnswer("error"));
 
         return checker;
-    }*/
+    }
 }

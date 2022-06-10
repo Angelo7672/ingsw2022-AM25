@@ -102,6 +102,10 @@ public class Controller implements ServerController{
         }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
     @Override
+    public boolean useSpecialLite(int indexSpecial, int playerRef){
+        return gameManager.useSpecialLite(indexSpecial, playerRef);
+    }
+    @Override
     public boolean useSpecialSimple(int indexSpecial, int playerRef, int ref){
         return gameManager.useSpecialSimple(indexSpecial,playerRef,ref);
     }

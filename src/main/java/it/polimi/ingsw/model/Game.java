@@ -197,13 +197,14 @@ public class Game implements GameManager{
     public String oneLastRide(){ return toString(playerManager.checkVictory()); }
 
     @Override
-    public void useSpecial(int playerRef){
+    public boolean useSpecialLite(int indexSpecial, int playerRef){
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, -1); //cos'è ref?
             playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
             roundStrategies.get(indexSpecial).increaseCost();
-        }
+        } else return false;
         setSpecial(0, -1);
+        return true;
     }
 
     @Override

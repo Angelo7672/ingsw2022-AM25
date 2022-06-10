@@ -114,6 +114,10 @@ public class Server implements Entrance,ControllerServer{
         return true;
     }
     @Override
+    public boolean useSpecialLite(int indexSpecial, int playerRef){
+        return controller.useSpecialLite(indexSpecial, playerRef);
+    }
+    @Override
     public boolean useSpecialSimple(int indexSpecial, int playerRef, int ref){
         return controller.useSpecialSimple(indexSpecial,playerRef,ref);
     }
