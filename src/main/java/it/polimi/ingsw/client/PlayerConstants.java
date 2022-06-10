@@ -8,6 +8,7 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
     private boolean motherMoved;
     private boolean cloudChosen;
     private boolean startGame;
+    private boolean endTurn;
 
     public PlayerConstants(){
         this.cardPlayed = true;
@@ -17,6 +18,7 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
         this.motherMoved = true;
         this.cloudChosen = true;
         this.startGame = false;
+        this.endTurn = false;
     }
 
     public boolean isCardPlayed() {
@@ -94,4 +96,11 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
     }
 
 
+    public boolean isEndTurn() {
+        return endTurn;
+    }
+
+    public void setEndTurn(boolean endTurn) {
+        this.endTurn = endTurn;
+    }
 }

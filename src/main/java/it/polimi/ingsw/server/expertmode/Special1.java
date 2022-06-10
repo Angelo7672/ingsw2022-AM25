@@ -24,5 +24,6 @@ public class Special1 implements Special{
         return checker;
     }
 
+    @Override
     public void setSpecialMessage(Message msg) { special1Msg = (Special1Message) msg; }
 }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class View {
 
     private final int numberOfPlayers;
+    private int turnCounter;
     private ArrayList<SchoolBoard> schoolBoards;
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
@@ -44,6 +45,7 @@ public class View {
         for(int i=0; i<numberOfPlayers; i++) {
             hands.add(new Hand());
             clouds.add(new Cloud());
+            hands.get(i).setLastCard("");
         }
         for(int i=0; i<12; i++){
             this.islands.add(new Island());
@@ -136,6 +138,13 @@ public class View {
         this.coinsListener.notifyNewCoinsValue(msg.getPlayerRef(), hands.get(msg.getPlayerRef()).coins);}
 
     public void setLastCard(LastCardMessage msg){
+        if(turnCounter == numberOfPlayers){
+            turnCounter=0;
+            for (int i = 0; i < numberOfPlayers; i++) {
+                hands.get(i).setLastCard("");
+            }
+        }
+        turnCounter++;
         hands.get(msg.getPlayerRef()).setLastCard(msg.getCard());
         this.playedCardListener.notifyPlayedCard(msg.getPlayerRef(),msg.getCard());
     }

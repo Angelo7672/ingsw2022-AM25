@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.client.Message.*;
+import it.polimi.ingsw.client.Message.Special.Special1Message;
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.QueueManager;
 import it.polimi.ingsw.server.Answer.*;
@@ -39,6 +40,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     private RoundPartOne roundPartOne;
     private RoundPartTwo roundPartTwo;
     private ExpertGame expertGame;
+    private boolean special;
     private Object actionLocker;
     private Object errorLocker;
     private boolean error;
@@ -60,6 +62,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         this.readyPlanningPhase = false;
         this.oneCardAtaTime = false;
         this.readyActionPhase = false;
+        this.special = false;
         this.planLocker = new Object();
         this.roundPartOne = new RoundPartOne();
         this.actionLocker = new Object();
@@ -113,10 +116,19 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 } else if(readyActionPhase) {    //Action Phase msg
                     readyActionPhase = false;
                     roundPartTwo.setActionMsg(tmp);
-                    if (!error) synchronized (actionLocker) { actionLocker.notify(); }
+                    if (!error) synchronized (actionLocker) {
+                        actionLocker.notify();
+                    }
                     else {
                         error = false;
-                        synchronized (errorLocker) { errorLocker.notify(); }
+                        synchronized (errorLocker) {
+                            errorLocker.notify();
+                        }
+                    }
+                }else if(special) {
+                    special = false;
+                    if(tmp instanceof Special1Message){ //o gli altri
+
                     }
 
                 } else if (clientInitialization) {  //login msg
@@ -165,10 +177,13 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     }
 
     public void unlockPlanningPhase(){ oneCardAtaTime = true; }
-    public void unlockActionPhase(){ readyActionPhase = true; }
+    public void unlockActionPhase(){
+        readyActionPhase = true;
+        if(expertMode) special = true;
+    }
 
     //Message to client
-    public void sendPlayCard(){ send(new PlayCard()); }
+    public void sendPlayCard(){ send(new PlayCard()); System.out.println("Ho mandato l'ok per giocare una carta "+playerRef);}
     public void sendStartTurn(){ send(new StartTurn()); }
     public void sendWinner(String winner){ send(new GameOverAnswer(winner)); }
 
@@ -321,7 +336,6 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 if (msg.getMessage().equals("Ready for login!")) {
                     if(proxy.isRestoreGame()){
                         send(new LoginRestoreAnswer());
-                        System.out.println("cane");
                         synchronized (setupLocker) {
                             loginInitialization = true;
                             setupLocker.wait();
@@ -409,6 +423,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         readyStart();
                     }
                 }else{
+                    System.out.println("Ho ricevuto ready to start "+playerRef);
                     proxy.thisClientIsReady();
                     synchronized (setupLocker) {
                         clientInitialization = true;  //controlla bene, questo fa ricevere il ready for play card
@@ -431,6 +446,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         readyPlanningPhase();
                     }
                 }
+                System.out.println("Ho ricevuto ready for PlanningPhase "+playerRef);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
