@@ -1,25 +1,17 @@
 package it.polimi.ingsw.client.GUI;
 //setupScene is to be shown only to the first player to choose number of player and expert mode
 
-import it.polimi.ingsw.client.Proxy_c;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 
 
 public class SetupSceneController implements SceneController {
 
-    private int numberOfPlayers;
+    private int numberOfPlayers = 0;
     private String expertMode;
-    private Proxy_c proxy;
     private GUI gui;
 
     @FXML private AnchorPane setupScene;
@@ -30,6 +22,11 @@ public class SetupSceneController implements SceneController {
     @FXML private Button yesButton;
     @FXML private Button noButton;
     @FXML private Button nextButton;
+
+    public SetupSceneController(){
+        this.numberOfPlayers=0;
+        this.expertMode="";
+    }
 
 
     public void setNumberOfPlayers(ActionEvent e) {
@@ -51,30 +48,14 @@ public class SetupSceneController implements SceneController {
 
     public void nextPressed(ActionEvent e) {
         System.out.println(numberOfPlayers + ", " + expertMode);
-        if(gui.setupGame(numberOfPlayers, expertMode ) == true) {
-            //switchScene();
-            gui.switchScene("Login");
+        if(numberOfPlayers!=0 && expertMode!="") {
+            if (gui.setupGame(numberOfPlayers, expertMode) == true) {
+                gui.switchScene(GUI.LOGIN);
+            } else
+                System.out.println("Errore");
         }
-        else
-            System.out.println("Errore");
+        else System.out.println("Errore");
     }
-
-    public void switchScene() throws IOException {
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("/fxml/LoginScene.fxml"));
-        Scene startMenu = new Scene(root);
-        stage.setScene(startMenu);
-        stage.show();
-    }
-
-    public void setGui(GUI gui){
-        this.gui = gui;
-    }
-    public void setProxy(Proxy_c proxy){
-        this.proxy=proxy;
-    }
-
 
     @Override
     public void setGUI(GUI gui) {

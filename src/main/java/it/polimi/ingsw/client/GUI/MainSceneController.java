@@ -49,8 +49,4 @@ public class MainSceneController implements SceneController{
         this.gui=gui;
     }
 
-    @Override
-    public void switchScene() {
-
-    }
 }

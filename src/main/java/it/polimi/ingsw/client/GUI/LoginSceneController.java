@@ -3,21 +3,17 @@ package it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.client.Proxy_c;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class LoginSceneController implements SceneController{
+public class LoginSceneController implements SceneController {
     private GUI gui;
     private String currentNickname;
     private String currentCharacter;
@@ -38,12 +34,11 @@ public class LoginSceneController implements SceneController{
     @FXML private ImageView kingImage;
     @FXML private Label errorMessage;
 
-    /*
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        chosenCharacters = gui.getChosenCharaters();
-        disableCharacters(chosenCharacters);
-    }*/
+
+    public LoginSceneController(){
+        this.currentNickname="";
+        this.currentCharacter="";
+    }
 
 
     public void setCharacter(ActionEvent e){
@@ -59,28 +54,19 @@ public class LoginSceneController implements SceneController{
 
 
     public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
-        this.currentNickname =nicknameBox.getText();
+        currentNickname= this.nicknameBox.getText();
         System.out.println(currentNickname +", "+ currentCharacter);
-
-        if(gui.setupConnection(currentNickname, currentCharacter)) {
-            gui.switchScene("Main");
-        }
-        else {
-            errorMessage.setVisible(true);
-        }
-
+        if(currentNickname!="" && currentCharacter!="") {
+            if (gui.setupConnection(currentNickname, currentCharacter))
+                gui.switchScene(GUI.MAIN);
+            else
+                showErrorMessage();
+        }else
+            showErrorMessage();
     }
-
-    public void setProxy(Proxy_c proxy) {
-        this.proxy=proxy;
-    }
-
-
-
 
     public void showErrorMessage(){
         errorMessage.setVisible(true);
-
     }
 
 
@@ -114,29 +100,10 @@ public class LoginSceneController implements SceneController{
             //king
         }
 
-    public void switchScene() {
-
-        //gui.loadScene(new Stage(), "Main");
-
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = null;
-        try {
-            root = loader.load(getClass().getResource("/fxml/MainScene.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Scene startMenu = new Scene(root);
-        stage.setScene(startMenu);
-        stage.show();
-    }
-
 
     @Override
     public void setGUI(GUI gui) {
         this.gui=gui;
     }
-
-
 
 }
