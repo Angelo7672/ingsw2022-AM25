@@ -1,9 +1,9 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,17 +12,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
-public class LoginSceneController implements SceneController, Initializable {
+public class LoginSceneController implements SceneController {
     private GUI gui;
     private String currentNickname;
     private String currentCharacter;
     private Exit proxy;
-    private ArrayList<String> chosenCharacters;
-    private boolean characterTaken;
 
     @FXML private TextField nicknameBox;
     @FXML private AnchorPane loginScene;
@@ -43,42 +39,47 @@ public class LoginSceneController implements SceneController, Initializable {
         this.currentCharacter="";
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        //disableCharacters(gui.getChosenCharacters());
-    }
-
     public void setCharacter(ActionEvent e){
         if(e.getSource()==wizard)
-            this.currentCharacter="wizard";
+            this.currentCharacter="WIZARD";
         else if(e.getSource()==samurai)
-            this.currentCharacter="samurai";
+            this.currentCharacter="SAMURAI";
         else if(e.getSource()==witch)
-            this.currentCharacter="witch";
+            this.currentCharacter="WITCH";
         else if(e.getSource()==king)
-            this.currentCharacter="king";
+            this.currentCharacter="KING";
     }
-
 
     public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
         currentNickname= this.nicknameBox.getText();
         System.out.println(currentNickname +", "+ currentCharacter);
         if(currentNickname!="" && currentCharacter!="") {
             if (proxy.setupConnection(currentNickname, currentCharacter))
-                gui.switchScene(GUI.MAIN);
-            else
+                //gui.switchScene(GUI.MAIN);
+                System.out.println("SetupConnection done");
+            else {
                 showErrorMessage();
+                Platform.runLater(()->{
+                    try {
+                        disableCharacters(proxy.getChosenCharacters());
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                });
+
+            }
         }else
             showErrorMessage();
+
     }
 
     public void showErrorMessage(){
         errorMessage.setVisible(true);
     }
 
-
     public void disableCharacters(ArrayList<String> chosenCharacters) {
-        System.out.println(chosenCharacters);
         //se il personaggio è già stato scelto
         for(String character: chosenCharacters){
             if(character.equalsIgnoreCase("WIZARD")){
@@ -98,14 +99,7 @@ public class LoginSceneController implements SceneController, Initializable {
                 king.setDisable(true);
             }
         }
-            /*
-            if (character == "wizard")
-                wizard.setImage(new Image(getClass().getResourceAsStream("graphics/character_king_taken.png")));
-            else if (character == "samurai")
-                samurai.setImage(new Image(getClass().getResourceAsStream("graphics/character_samurai_taken.png")));*/
-            //witch
-            //king
-        }
+    }
 
 
     @Override
@@ -117,7 +111,4 @@ public class LoginSceneController implements SceneController, Initializable {
     public void setProxy(Exit proxy) {
         this.proxy=proxy;
     }
-
-
-
 }

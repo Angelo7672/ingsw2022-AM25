@@ -69,6 +69,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
     }
 
+
     public void loadScene(Stage stage, String sceneName) {
         Parent root = null;
         FXMLLoader loader = new FXMLLoader();
@@ -81,10 +82,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
         currentScene = new Scene(root);
         currentSceneController = loader.getController();
-        stage.setScene(currentScene);
-        stage.centerOnScreen();
         currentSceneController.setGUI(this);
         currentSceneController.setProxy(proxy);
+
+        stage.setScene(currentScene);
+        stage.centerOnScreen();
 
         System.out.println("Current scene: "+ currentScene);
         System.out.println("Current controller: "+ currentSceneController);
@@ -110,59 +112,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
 
     }
-    /*
-    public boolean setupGame(int numberOfPlayers, String expertMode) {
-        Boolean ok = false;
-        try {
-           if (proxy.setupGame(numberOfPlayers, expertMode))
-                ok = true;
-                this.numberOfPlayers=numberOfPlayers;
-                this.expertMode=expertMode;
-       } catch (InputMismatchException e) {
-            e.printStackTrace();
-       } catch (IOException e) {
-            e.printStackTrace();
-       } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-       }
-        /*
-       try {
-           view = proxy.startView();
-       } catch (IOException e) {
-           e.printStackTrace();
-       } catch (ClassNotFoundException e) {
-           e.printStackTrace();
-       } catch (InterruptedException e) {
-           e.printStackTrace();
-       }
-
-       return ok;
-   }
-
-    public boolean setupConnection(String nickname, String character) {
-        /*try {
-            chosenCharacters= proxy.getChosenCharacters();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Boolean ok = false;
-        try {
-            if (proxy.setupConnection(nickname, character))
-                ok=true;
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-
-        }
-        return ok;
-
-    }*/
-
 
         /*
     public void setupView(SceneController controller){
@@ -182,36 +131,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         primaryStage.show();
     }
 
-
     public void setSocket(Socket socket){
         this.socket=socket;
     }
     public void setProxy(Proxy_c proxy){
         this.proxy=proxy;
     }
-
-   public ArrayList<String> getChosenCharacters() {
-       return chosenCharacters;
-   }
-
-   public void setChosenCharacters(ArrayList<String> chosenCharacters) {
-       this.chosenCharacters = chosenCharacters;
-   }
-/*
-    public void getChosenCharacters() {
-        try {
-            this.chosenCharacters = proxy.getChosenCharacters();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        ArrayList<String> availableCharacters = new ArrayList<>();
-        if(!chosenCharacters.contains("WIZARD")) availableCharacters.add("WIZARD");
-        if(!chosenCharacters.contains("KING")) availableCharacters.add("KING");
-        if(!chosenCharacters.contains("WITCH")) availableCharacters.add("WITCH");
-        if(!chosenCharacters.contains("SAMURAI")) availableCharacters.add("SAMURAI");*/
-
 
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
