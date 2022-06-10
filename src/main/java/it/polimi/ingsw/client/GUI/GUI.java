@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.controller.listeners.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,7 +15,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 
 public class GUI extends Application implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
@@ -82,20 +82,35 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         currentScene = new Scene(root);
         currentSceneController = loader.getController();
         stage.setScene(currentScene);
+        stage.centerOnScreen();
         currentSceneController.setGUI(this);
+        currentSceneController.setProxy(proxy);
 
         System.out.println("Current scene: "+ currentScene);
         System.out.println("Current controller: "+ currentSceneController);
 
         if (sceneName == MAIN) {
             //setupView();
-        }/*
+        }
         else if(sceneName == LOGIN){
-            LoginSceneController controller = (LoginSceneController) currentSceneController;
-            controller.disableCharacters(getChosenCharaters());
-        }*/
-    }
+            Platform.runLater(()->{
 
+                LoginSceneController controller = (LoginSceneController) currentSceneController;
+                try {
+                    ArrayList<String> characters=proxy.getChosenCharacters();
+                    controller.disableCharacters(characters);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            });
+
+        }
+
+
+    }
+    /*
     public boolean setupGame(int numberOfPlayers, String expertMode) {
         Boolean ok = false;
         try {
@@ -119,7 +134,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
            e.printStackTrace();
        } catch (InterruptedException e) {
            e.printStackTrace();
-       }*/
+       }
 
        return ok;
    }
@@ -131,7 +146,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }*/
+        }
 
         Boolean ok = false;
         try {
@@ -146,13 +161,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
         return ok;
 
-    }
+    }*/
 
 
-
-    public void setupView(){
-        view.setBagListener(this);
-        view.setCoinsListener(this);
+        /*
+    public void setupView(SceneController controller){
+        view.setBagListener(controller);
+        view.setCoinsListener(controller);
         view.setInhibitedListener(this);
         view.setIslandListener(this);
         view.setMotherPositionListener(this);
@@ -160,7 +175,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         view.setProfessorsListener(this);
         view.setStudentsListener(this);
         view.setTowersListener(this);
-    }
+    }  */
 
     public void switchScene(String scene){
         loadScene(primaryStage, scene);
@@ -175,6 +190,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         this.proxy=proxy;
     }
 
+   public ArrayList<String> getChosenCharacters() {
+       return chosenCharacters;
+   }
+
+   public void setChosenCharacters(ArrayList<String> chosenCharacters) {
+       this.chosenCharacters = chosenCharacters;
+   }
+/*
     public void getChosenCharacters() {
         try {
             this.chosenCharacters = proxy.getChosenCharacters();
@@ -182,13 +205,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }/*
+        }
         ArrayList<String> availableCharacters = new ArrayList<>();
         if(!chosenCharacters.contains("WIZARD")) availableCharacters.add("WIZARD");
         if(!chosenCharacters.contains("KING")) availableCharacters.add("KING");
         if(!chosenCharacters.contains("WITCH")) availableCharacters.add("WITCH");
         if(!chosenCharacters.contains("SAMURAI")) availableCharacters.add("SAMURAI");*/
-    }
+
 
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {

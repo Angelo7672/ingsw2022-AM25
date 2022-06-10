@@ -1,8 +1,9 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.client.Proxy_c;
+import it.polimi.ingsw.client.Exit;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,13 +12,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
-public class LoginSceneController implements SceneController {
+public class LoginSceneController implements SceneController, Initializable {
     private GUI gui;
     private String currentNickname;
     private String currentCharacter;
-    private Proxy_c proxy;
+    private Exit proxy;
     private ArrayList<String> chosenCharacters;
     private boolean characterTaken;
 
@@ -40,6 +43,10 @@ public class LoginSceneController implements SceneController {
         this.currentCharacter="";
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        //disableCharacters(gui.getChosenCharacters());
+    }
 
     public void setCharacter(ActionEvent e){
         if(e.getSource()==wizard)
@@ -57,7 +64,7 @@ public class LoginSceneController implements SceneController {
         currentNickname= this.nicknameBox.getText();
         System.out.println(currentNickname +", "+ currentCharacter);
         if(currentNickname!="" && currentCharacter!="") {
-            if (gui.setupConnection(currentNickname, currentCharacter))
+            if (proxy.setupConnection(currentNickname, currentCharacter))
                 gui.switchScene(GUI.MAIN);
             else
                 showErrorMessage();
@@ -71,23 +78,23 @@ public class LoginSceneController implements SceneController {
 
 
     public void disableCharacters(ArrayList<String> chosenCharacters) {
-
+        System.out.println(chosenCharacters);
         //se il personaggio è già stato scelto
         for(String character: chosenCharacters){
-            if(character == "WIZARD"){
-                wizardImage.setImage((new Image(getClass().getResourceAsStream("graphics/character_wizard_taken.png"))));
+            if(character.equalsIgnoreCase("WIZARD")){
+                wizardImage.setImage((new Image(getClass().getResourceAsStream("/graphics/character_wizard_taken.png"))));
                 wizard.setDisable(true);
             }
-            else if(character == "SAMURAI"){
-                samuraiImage.setImage((new Image(getClass().getResourceAsStream("graphics/character_samurai_taken.png"))));
+            else if(character.equalsIgnoreCase("SAMURAI")){
+                samuraiImage.setImage((new Image(getClass().getResourceAsStream("/graphics/character_samurai_taken.png"))));
                 samurai.setDisable(true);
             }
-            else if(character == "WITCH"){
-                witchImage.setImage((new Image(getClass().getResourceAsStream("graphics/character_witch_taken.png"))));
+            else if(character.equalsIgnoreCase("WITCH")){
+                witchImage.setImage((new Image(getClass().getResourceAsStream("/graphics/character_witch_taken.png"))));
                 witch.setDisable(true);
             }
-            else if(character == "KING"){
-                kingImage.setImage((new Image(getClass().getResourceAsStream("graphics/character_king_taken.png"))));
+            else if(character.equalsIgnoreCase("KING")){
+                kingImage.setImage((new Image(getClass().getResourceAsStream("/graphics/character_king_taken.png"))));
                 king.setDisable(true);
             }
         }
@@ -105,5 +112,12 @@ public class LoginSceneController implements SceneController {
     public void setGUI(GUI gui) {
         this.gui=gui;
     }
+
+    @Override
+    public void setProxy(Exit proxy) {
+        this.proxy=proxy;
+    }
+
+
 
 }

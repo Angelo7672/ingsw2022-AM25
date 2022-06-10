@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.client.Exit;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +13,8 @@ public class MainSceneController implements SceneController{
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private Exit proxy;
+
     @FXML private ImageView island1;
     @FXML private ImageView island2;
     @FXML private ImageView island3;
@@ -48,5 +51,11 @@ public class MainSceneController implements SceneController{
     public void setGUI(GUI gui) {
         this.gui=gui;
     }
+
+    @Override
+    public void setProxy(Exit proxy) {
+        this.proxy=proxy;
+    }
+
 
 }
