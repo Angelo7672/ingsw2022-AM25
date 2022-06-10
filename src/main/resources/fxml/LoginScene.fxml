@@ -51,6 +51,6 @@
          </graphic>
       </Button>
       <Label fx:id="insertNickname1" layoutX="34.0" layoutY="344.0" text="Choose your character" />
-      <Label layoutX="200.0" layoutY="568.0" text="Error, try again" textFill="#ed0e0e" visible="false" />
+      <Label fx:id="errorMessage" layoutX="200.0" layoutY="568.0" text="Error, try again" textFill="#ed0e0e" visible="false" />
    </children>
 </AnchorPane>

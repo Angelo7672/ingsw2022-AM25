@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class LoginSceneController implements SceneController {
+public class LoginSceneController implements SceneController{
     private GUI gui;
     private String currentNickname;
     private String currentCharacter;
@@ -38,9 +38,14 @@ public class LoginSceneController implements SceneController {
     @FXML private ImageView kingImage;
     @FXML private Label errorMessage;
 
+    /*
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        chosenCharacters = gui.getChosenCharaters();
+        disableCharacters(chosenCharacters);
+    }*/
 
-    public LoginSceneController(){
-    }
+
     public void setCharacter(ActionEvent e){
         if(e.getSource()==wizard)
             this.currentCharacter="wizard";
@@ -52,24 +57,16 @@ public class LoginSceneController implements SceneController {
             this.currentCharacter="king";
     }
 
-    public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
-        Boolean characterAvailable=false;
-        ArrayList<String> availableCharacters;
 
+    public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
         this.currentNickname =nicknameBox.getText();
         System.out.println(currentNickname +", "+ currentCharacter);
-        gui.setupConnection(currentNickname, currentCharacter);
 
-       availableCharacters = gui.getAvailableCharacters();
-
-        for(String character: availableCharacters) {
-            if (character == currentCharacter) {
-                characterAvailable = true;
-            }
-            if (characterAvailable == false) {
-                errorMessage.setVisible(true);
-            } else
-                switchScene();
+        if(gui.setupConnection(currentNickname, currentCharacter)) {
+            gui.switchScene("Main");
+        }
+        else {
+            errorMessage.setVisible(true);
         }
 
     }
@@ -77,18 +74,16 @@ public class LoginSceneController implements SceneController {
     public void setProxy(Proxy_c proxy) {
         this.proxy=proxy;
     }
-    /*
 
 
 
-    public void printNicknameMessage(){
-        this.nicknameMessage.setText("The nickname is already taken");
-        this.nicknameMessage.setVisible(true);
+
+    public void showErrorMessage(){
+        errorMessage.setVisible(true);
+
     }
-    public void hideNicknameMessage(){
-        this.nicknameMessage.setVisible(false);
-    }
-*/
+
+
     public void disableCharacters(ArrayList<String> chosenCharacters) {
 
         //se il personaggio è già stato scelto
@@ -120,6 +115,9 @@ public class LoginSceneController implements SceneController {
         }
 
     public void switchScene() {
+
+        //gui.loadScene(new Stage(), "Main");
+
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         Parent root = null;
@@ -138,6 +136,7 @@ public class LoginSceneController implements SceneController {
     public void setGUI(GUI gui) {
         this.gui=gui;
     }
+
 
 
 }

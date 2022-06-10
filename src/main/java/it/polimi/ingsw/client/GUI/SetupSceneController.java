@@ -52,11 +52,8 @@ public class SetupSceneController implements SceneController {
     public void nextPressed(ActionEvent e) {
         System.out.println(numberOfPlayers + ", " + expertMode);
         if(gui.setupGame(numberOfPlayers, expertMode ) == true) {
-            try {
-                switchScene();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            //switchScene();
+            gui.switchScene("Login");
         }
         else
             System.out.println("Errore");

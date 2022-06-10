@@ -24,7 +24,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private static Exit proxy;
     private static View view;
     private Socket socket;
+    public Stage primaryStage;
     private SceneController currentSceneController;
+    private SetupSceneController setupSceneController;
+    private MainSceneController mainSceneController;
+    private LoginSceneController loginSceneController;
     private Scene currentScene;
     private int numberOfPlayers;
     private String expertMode;
@@ -37,13 +41,17 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void start(Stage stage) throws IOException, ClassNotFoundException, InterruptedException {
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
-        stage.setTitle("Eriantys");
-        stage.setResizable(false);
-        stage.show();
+        primaryStage=stage;
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
+        primaryStage.setTitle("Eriantys");
+        primaryStage.setResizable(false);
+        primaryStage.show();
+        //controllerSetup("Setup");
+        //controllerSetup("Login");
+        //controllerSetup("Main");
 
-        //controllersSetup();
-        setup(stage);
+        setup(primaryStage);
+
     }
 
     public void setup(Stage stage) throws IOException, ClassNotFoundException, InterruptedException {
@@ -69,51 +77,56 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     public void loadScene(Stage stage, String sceneName) {
         Parent root = null;
+        FXMLLoader loader = new FXMLLoader();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + sceneName + "Scene.fxml"));
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + sceneName + "Scene.fxml"));
+            loader.setLocation(getClass().getResource("/fxml/" + sceneName + "Scene.fxml"));
             root = loader.load();
-            SceneController controller = (SceneController) loader.getController();
-            controller.setGUI(this);
-            currentSceneController=controller;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         currentScene = new Scene(root);
-        stage.setScene(currentScene);
+        currentSceneController = (SceneController) loader.getController();
 
+        stage.setScene(currentScene);
+        currentSceneController.setGUI(this);
+
+        System.out.println("Current scene: "+ currentScene);
+        System.out.println("Current controller: "+ currentSceneController);
+
+        /*
         if (sceneName == "Main") {
             setupView();
-        }
+        }*/
     }
-/*
-    public void controllersSetup(){
-        for(String sceneName : scenes){
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + sceneName + "Scene.fxml"));
-            try {
-                Parent root = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            SceneController sceneController= loader.getController();
-            sceneController.setGUI(this);
-        }
-    }*/
+    public void controllerSetup(String sceneName) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + sceneName + "Scene.fxml"));
+        Parent root = loader.load();
+
+        SceneController sceneController= (SceneController) loader.getController();
+        sceneController.setGUI(this);
+
+    }
 
 
 
-    public static void setupConnection(String nickname, String character) {
+    public static boolean setupConnection(String nickname, String character) {
         try {
-            if (proxy.setupConnection(nickname, character)) {
-                System.out.println("SetupConnection done");
-            }
-            else System.out.println("Error, try again");
+            if (proxy.setupConnection(nickname, character))
+                return true;
+            return false;
+
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            return false;
         }
+
 
     }
 
@@ -154,6 +167,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         view.setTowersListener(this);
     }
 
+    public void switchScene(String scene){
+        loadScene(primaryStage, scene);
+        primaryStage.show();
+    }
+
 
     public void setSocket(Socket socket){
         this.socket=socket;
@@ -162,7 +180,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         this.proxy=proxy;
     }
 
-    public static ArrayList<String> getAvailableCharacters() {
+    public static ArrayList<String> getChosenCharaters() {
         ArrayList<String> chosenCharacters = null;
         try {
             chosenCharacters = proxy.getChosenCharacters();
@@ -170,14 +188,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
+        }/*
         ArrayList<String> availableCharacters = new ArrayList<>();
         if(!chosenCharacters.contains("WIZARD")) availableCharacters.add("WIZARD");
         if(!chosenCharacters.contains("KING")) availableCharacters.add("KING");
         if(!chosenCharacters.contains("WITCH")) availableCharacters.add("WITCH");
-        if(!chosenCharacters.contains("SAMURAI")) availableCharacters.add("SAMURAI");
+        if(!chosenCharacters.contains("SAMURAI")) availableCharacters.add("SAMURAI");*/
 
-        return availableCharacters;
+        return chosenCharacters;
 
     }
 
