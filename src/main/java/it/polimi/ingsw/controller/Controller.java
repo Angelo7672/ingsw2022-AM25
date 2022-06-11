@@ -40,6 +40,8 @@ public class Controller implements ServerController{
         for(int i = 0; i < numberOfPlayers; i++)
             server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
         this.gameManager = new Game(expertMode, numberOfPlayers);
+        if(expertMode) server.setExpertGame();
+
         gameManager.setStudentsListener(virtualView);
         gameManager.setTowerListener(virtualView);
         gameManager.setProfessorsListener(virtualView);
@@ -67,6 +69,8 @@ public class Controller implements ServerController{
     public boolean userLoginCharacter(String character){ return virtualView.checkNewCharacter(character); }
     @Override
     public void addNewPlayer(String nickname, String character){ virtualView.addNewPlayer(nickname,character); }
+    @Override
+    public ArrayList<Integer> getExtractedSpecials(){ return gameManager.getExtractedSpecials(); }
 
     //Planning Phase
     public String getLastPlayedCard(int playerRef){ return virtualView.getLastPlayedCard(playerRef); }

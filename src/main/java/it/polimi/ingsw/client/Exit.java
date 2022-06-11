@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.server.Answer.Answer;
+import it.polimi.ingsw.server.answer.Answer;
 
 import java.io.IOException;
 import java.util.ArrayList;

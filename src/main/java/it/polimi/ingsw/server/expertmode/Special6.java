@@ -1,8 +1,7 @@
 package it.polimi.ingsw.server.expertmode;
 
 import it.polimi.ingsw.client.Message.Message;
-import it.polimi.ingsw.client.Message.Special.Special1Message;
-import it.polimi.ingsw.server.Answer.GenericAnswer;
+import it.polimi.ingsw.server.answer.GenericAnswer;
 import it.polimi.ingsw.server.Entrance;
 import it.polimi.ingsw.server.VirtualClient;
 

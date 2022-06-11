@@ -1,11 +1,10 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.client.Message.*;
-import it.polimi.ingsw.client.Message.Special.Special1Message;
+import it.polimi.ingsw.client.Message.special.Special1Message;
 import it.polimi.ingsw.controller.exception.EndGameException;
-import it.polimi.ingsw.model.QueueManager;
-import it.polimi.ingsw.server.Answer.*;
-import it.polimi.ingsw.server.Answer.ViewMessage.*;
+import it.polimi.ingsw.server.answer.*;
+import it.polimi.ingsw.server.answer.viewMessage.*;
 import it.polimi.ingsw.server.expertmode.ExpertGame;
 
 import java.io.IOException;
@@ -15,7 +14,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     private final Socket socket;
@@ -64,16 +62,14 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         this.readyActionPhase = false;
         this.special = false;
         this.planLocker = new Object();
-        this.roundPartOne = new RoundPartOne();
         this.actionLocker = new Object();
-        this.roundPartTwo = new RoundPartTwo();
         this.errorLocker = new Object();
         this.error = false;
-        proxy.incrLimiter();
         try {
             this.input = new ObjectInputStream(socket.getInputStream());
             this.output = new ObjectOutputStream(socket.getOutputStream());
         }catch (IOException e) { clientConnectionExpired(e); }
+        proxy.incrLimiter();
     }
 
     @Override
@@ -126,7 +122,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     }
                 }else if(special) {
                     special = false;
-                    if(tmp instanceof Special1Message){ //o gli altri
+                    if(tmp instanceof SpecialMessage){
 
                     }
 
@@ -240,13 +236,12 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     if (proxy.isFirst()) gameSetting();
                     loginClient();
                 }
+                expertMode = server.isExpertMode();
+                roundPartOne = new RoundPartOne();
+                roundPartTwo = new RoundPartTwo(expertMode);
                 roundPartOne.start();
                 roundPartTwo.start();
-                expertMode = server.isExpertMode();
-                if(expertMode) {
-                    //expertGame = new ExpertGame();
-
-                }
+                if (expertMode) expertGame = server.getExpertGame();
             }catch (InterruptedException e) { e.printStackTrace(); }
         }
 
@@ -289,6 +284,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             try {
                 if (msg.getMessage().equals("y")){
                     proxy.setRestoreGame(true);
+                    proxy.setConnectionsAllowed(numberOfPlayers);
                     server.startController(numberOfPlayers,expertMode);
                     send(new GenericAnswer("ok"));
                     synchronized (setupLocker) {
@@ -481,11 +477,8 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             CardMessage cardMessage = (CardMessage) planningMsg;
             boolean checker;
 
-            System.out.println("card message "+cardMessage);
             try {
                 checker = server.userPlayCard(playerRef, cardMessage.getCard());
-
-
                 if(checker){
                     send(new GenericAnswer("ok"));
                     readyPlanningPhase = true;  //dai un nome migliore
@@ -528,8 +521,10 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         private int studentCounter;
         private boolean motherLocker;
         private boolean cloudLocker;
+        private final boolean expertMode;
 
-        public RoundPartTwo(){
+        public RoundPartTwo(Boolean expertMode){
+            this.expertMode = expertMode;
             this.studentLocker = false;
             this.studentCounter = 0;
             this.motherLocker = false;
@@ -544,6 +539,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     synchronized (actionLocker) {
                         actionLocker.wait();
                         studentLocker = true;
+                        if (expertMode)
                         actionPhase();
                         server.resumeTurn(0);
                     }

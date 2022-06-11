@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.server.Answer.SoldOutAnswer;
+import it.polimi.ingsw.server.answer.SoldOutAnswer;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

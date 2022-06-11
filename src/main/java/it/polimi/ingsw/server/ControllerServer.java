@@ -3,6 +3,8 @@ package it.polimi.ingsw.server;
 import java.util.ArrayList;
 
 public interface ControllerServer {
+    void setExpertGame();
+
     void goPlayCard(int playerRef);
     void unlockPlanningPhase(int playerRef);
     void startActionPhase(int playerRef);

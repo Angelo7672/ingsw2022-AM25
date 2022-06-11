@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.exception.EndGameException;
+import it.polimi.ingsw.server.expertmode.ExpertGame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public interface Entrance {
     void startController(int numberOfPlayers, boolean expertMode);
     boolean isExpertMode();
     void startGame(boolean gameSave);
+    ExpertGame getExpertGame();
     ArrayList<String> alreadyChosenCharacters();
     boolean userLogin(String nickname, String character);
 
