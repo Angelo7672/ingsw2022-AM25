@@ -477,11 +477,8 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             CardMessage cardMessage = (CardMessage) planningMsg;
             boolean checker;
 
-            System.out.println("card message "+cardMessage);
             try {
                 checker = server.userPlayCard(playerRef, cardMessage.getCard());
-
-
                 if(checker){
                     send(new GenericAnswer("ok"));
                     readyPlanningPhase = true;  //dai un nome migliore
