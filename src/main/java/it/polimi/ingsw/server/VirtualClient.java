@@ -94,7 +94,6 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     readyPlanningPhase = false;
                     if (tmp instanceof GenericMessage) {
                         roundPartOne.setPlanningMsg(tmp);
-                        System.out.println("l'errore e' qui");
                         if (!error) synchronized(planLocker){ planLocker.notify(); }
                         else {
                             error = false;
@@ -183,7 +182,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     }
 
     //Message to client
-    public void sendPlayCard(){ send(new PlayCard()); System.out.println("Ho mandato l'ok per giocare una carta "+playerRef);}
+    public void sendPlayCard(){ send(new PlayCard()); }
     public void sendStartTurn(){ send(new StartTurn()); }
     public void sendWinner(String winner){ send(new GameOverAnswer(winner)); }
 
@@ -291,9 +290,20 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 if (msg.getMessage().equals("y")){
                     proxy.setRestoreGame(true);
                     server.startController(numberOfPlayers,expertMode);
+                    send(new GenericAnswer("ok"));
+                    synchronized (setupLocker) {
+                        clientInitialization = true;
+                        setupLocker.wait();
+                        System.out.println("ciao "+playerRef);
+                    }
                 } else if (msg.getMessage().equals("n")){
                     proxy.setRestoreGame(false);
-                    setupGame();
+                    send(new GenericAnswer("ok"));
+                    synchronized (setupLocker) {
+                        gameSetupInitialization = true;
+                        setupLocker.wait();
+                        setupGame();
+                    }
                 } else {
                     send(new GenericAnswer("error"));
                     synchronized (errorLocker) {
@@ -423,7 +433,6 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         readyStart();
                     }
                 }else{
-                    System.out.println("Ho ricevuto ready to start "+playerRef);
                     proxy.thisClientIsReady();
                     synchronized (setupLocker) {
                         clientInitialization = true;  //controlla bene, questo fa ricevere il ready for play card
@@ -446,7 +455,6 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         readyPlanningPhase();
                     }
                 }
-                System.out.println("Ho ricevuto ready for PlanningPhase "+playerRef);
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
@@ -462,7 +470,6 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 while (!victory) {
                     synchronized (planLocker) {
                         planLocker.wait();
-                        System.out.println("qui no");
                         planningPhase();
                         readyForAction();
                         server.resumeTurn(1);

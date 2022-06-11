@@ -81,7 +81,7 @@ public class VirtualView
         } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace(); }
     }
-    public void restoreGame(){  //DEVI LEGGERE ANCHE I PRIMI OGGETTI CHE NON SERVONO
+    public void restoreGame(){
         TurnInfo turnInfosTmp;
         ArrayList<Queue> queueTmp;
         ArrayList<SchoolBoard> schoolBoardsTmp;
@@ -104,6 +104,7 @@ public class VirtualView
             bagTmp = (ArrayList<Integer>) inputFile.readObject();
 
             inputFile.close();
+            System.out.println("Restore game");
 
             //Turn status restore
             controller.setCurrentUser(turnInfosTmp.getCurrentUser());
