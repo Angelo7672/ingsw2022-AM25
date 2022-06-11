@@ -4,22 +4,31 @@ import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.controller.listeners.*;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.ResourceBundle;
 
 
 public class MainSceneController implements SceneController, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
-        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener{
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, Initializable {
+
     private GUI gui;
     private View view;
     private Stage stage;
     private Scene scene;
     private Parent root;
     private Exit proxy;
+    private int numberOfPlayers;
+    private boolean expertMode;
+    private HashMap<String, String> userInfo;
 
     @FXML private ImageView island1;
     @FXML private ImageView island2;
@@ -39,7 +48,33 @@ public class MainSceneController implements SceneController, TowersListener, Pro
     @FXML private ImageView schoolBoard3;
     @FXML private ImageView schoolBoard4;
 
+    @FXML private Button useSpecialButton;
 
+    @FXML private ImageView motherNature;
+
+    public MainSceneController(){
+        this.userInfo=new HashMap<>();
+        this.numberOfPlayers=4;
+        this.expertMode=false;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resources) {
+        if (numberOfPlayers == 2) {
+            schoolBoard3.setVisible(false);
+            schoolBoard4.setVisible(false);
+        } else if (numberOfPlayers == 3)
+            schoolBoard4.setVisible(false);
+
+        if (expertMode == false) {
+            useSpecialButton.setVisible(false);
+        }
+    }
+
+
+    public void setView(View view){
+        this.view=view;
+    }
 
     @Override
     public void setGUI(GUI gui) {
@@ -52,10 +87,17 @@ public class MainSceneController implements SceneController, TowersListener, Pro
     }
 
 
-    public void setView(View view) {
-        this.view = view;
+    public void setNumberOfPlayers(int numberOfPlayers){
+        this.numberOfPlayers=numberOfPlayers;
     }
 
+    public void setExpertMode(boolean expertMode) {
+        this.expertMode = expertMode;
+    }
+
+    public void setUserInfo(String nickname, String character) {
+        userInfo.put(nickname, character);
+    }
 
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
@@ -121,4 +163,9 @@ public class MainSceneController implements SceneController, TowersListener, Pro
     public void notifyTowerColor(int islandRef, int newColor) {
 
     }
+
+
+
+
+
 }

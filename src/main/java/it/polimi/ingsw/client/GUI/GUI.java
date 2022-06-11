@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.controller.listeners.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -16,11 +15,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class GUI extends Application implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
-        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, BagListener
-       {
+public class GUI extends Application {
 
     private static Exit proxy;
     private static View view;
@@ -39,23 +35,19 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         launch();
     }
 
-    public GUI(){
-        userInfo=new HashMap<>();
+    public GUI() {
+        userInfo = new HashMap<>();
     }
 
     @Override
     public void start(Stage stage) throws IOException, ClassNotFoundException, InterruptedException {
-        primaryStage=stage;
+        primaryStage = stage;
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
         primaryStage.setTitle("Eriantys");
         primaryStage.setResizable(false);
+        primaryStage.centerOnScreen();
         primaryStage.show();
 
-        setup(primaryStage);
-
-    }
-
-    public void setup(Stage stage) throws IOException, ClassNotFoundException, InterruptedException {
         String result = null;
         try {
             result = proxy.first();
@@ -65,14 +57,34 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             e.printStackTrace();
         }
         if (result.equals("SetupGame")) {
-            loadScene(stage, SETUP);
+            //loadScene(stage, SETUP);
+            sceneSetup(stage, SETUP);
         } else if (result.equals("Server Sold Out")) {
             System.out.println(result);
         } else if (result.equals("Not first")) {
-            loadScene(stage, LOGIN);
+            //loadScene(stage, LOGIN);
+            sceneSetup(stage, LOGIN);
         }
+
     }
 
+    public void sceneSetup(Stage stage, String sceneName) {
+        loadScene(stage, sceneName);
+
+        if (sceneName == LOGIN) {
+            initializeLoginScene();
+            //loadScene(stage, LOGIN);
+
+        } else if (sceneName == MAIN) {
+            initializeMainScene();
+            //loadScene(stage, MAIN);
+
+        }/*
+        stage.setScene(currentScene);
+        stage.centerOnScreen();
+        stage.show();*/
+
+    }
 
     public void loadScene(Stage stage, String sceneName) {
         Parent root = null;
@@ -89,44 +101,15 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         currentSceneController.setGUI(this);
         currentSceneController.setProxy(proxy);
 
+        System.out.println("Current scene: " + currentScene);
+        System.out.println("Current controller: " + currentSceneController);
+
         stage.setScene(currentScene);
         stage.centerOnScreen();
-
-        System.out.println("Current scene: "+ currentScene);
-        System.out.println("Current controller: "+ currentSceneController);
-
-        if (sceneName == MAIN) {
-            try {
-                this.view = proxy.startView();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            setupView((MainSceneController) currentSceneController);
-
-
-        }
-        else if(sceneName == LOGIN){
-            Platform.runLater(()->{
-
-                LoginSceneController controller = (LoginSceneController) currentSceneController;
-                try {
-                    ArrayList<String> characters=proxy.getChosenCharacters();
-                    controller.disableCharacters(characters);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
     }
 
 
-    public void setupView(MainSceneController controller){
+    public void setupView(MainSceneController controller) {
 
         view.setCoinsListener(controller);
         view.setInhibitedListener(controller);
@@ -138,115 +121,60 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         view.setTowersListener(controller);
     }
 
-    public void switchScene(String scene){
+    public void switchScene(String scene) {
         loadScene(primaryStage, scene);
         primaryStage.show();
     }
 
-    public void setSocket(Socket socket){
-        this.socket=socket;
-    }
-    public void setProxy(Proxy_c proxy){
-        this.proxy=proxy;
+    public void setSocket(Socket socket) {
+        this.socket = socket;
     }
 
-    @Override
-    public void notifyTowersChange(int place, int componentRef, int towersNumber) {
-        try {
-            FXMLLoader loader = FXMLLoader.load(getClass().getResource("/fxml/MainScene.fxml"));
-            MainSceneController controller = loader.getController();
-            if(place == 0){
-                //controller.setTowersInSchool(componentRef, towersNumber);
+    public void setProxy(Proxy_c proxy) {
+        this.proxy = proxy;
+    }
+
+
+    public void initializeLoginScene() {
+        Platform.runLater(()->{
+            LoginSceneController controller = (LoginSceneController) currentSceneController;
+            try {
+                ArrayList<String> characters = proxy.getChosenCharacters();
+                controller.disableCharacters(characters);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
-            else if ((place==1)) {
+        });
 
+
+    }
+
+    public void initializeMainScene() {
+        Platform.runLater(()->{
+            try {
+            this.view = proxy.startView();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+                MainSceneController controller = (MainSceneController) currentSceneController;
+                setupView(controller);
+                controller.setView(this.view);
 
-    @Override
-    public void notifyTowerColor(int islandRef, int newColor) {
-        try {
-            FXMLLoader loader = FXMLLoader.load(getClass().getResource("/fxml/MainScene.fxml"));
-            MainSceneController controller = loader.getController();
-            //controller.setTowersOnIsland();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                controller.setNumberOfPlayers(view.getNumberOfPlayers());
+                controller.setExpertMode(view.getExpertMode());
+                for (int i = 0; i < view.getNumberOfPlayers(); i++)
+                    controller.setUserInfo(view.getNickname(i), view.getCharacter(i));
+        });
+
 
     }
+}
 
-
-
-    @Override
-    public void notifyBagExtraction() {
-
-    }
-
-
-    @Override
-    public void notifyBag(List<Integer> bag) {
-
-    }
-
-    @Override
-    public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
-
-    }
-
-    @Override
-    public void notifyInhibited(int islandRef, int isInhibited) {
-
-    }
-
-    @Override
-    public void notifyIslandChange(int islandToDelete) {
-
-    }
-
-    @Override
-    public void notifyMotherPosition(int newMotherPosition) {
-
-    }
-
-    @Override
-    public void notifyPlayedCard(int playerRef, String assistantCard) {
-
-    }
-
-    @Override
-    public void notifyHand(int playerRef, ArrayList<String> hand) {
-
-    }
-
-    @Override
-    public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
-
-    }
-
-
-
-    @Override
-    public void notifySpecial(int specialRef) {
-
-    }
-
-    @Override
-    public void notifySpecialName(String specialName) {
-
-    }
-
-    @Override
-    public void notifyPlayedSpecial(int specialRef) {
-
-    }
-
-   @Override
-   public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
-
-   }
-       }
 
 
