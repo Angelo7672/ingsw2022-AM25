@@ -19,6 +19,8 @@ public interface Exit {
 
     boolean savedGame(String decision) throws IOException;
 
+    boolean readyForLogin();
+
     boolean checkSpecial(int special)  throws IOException, ClassNotFoundException ;
 
     boolean useSpecial(int special, int i, ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException ;

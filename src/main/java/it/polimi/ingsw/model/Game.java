@@ -240,12 +240,12 @@ public class Game implements GameManager{
         return checker;
     }
     @Override
-    public boolean useSpecialHard(int indexSpecial, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
+    public boolean useSpecialHard(int indexSpecial, int playerRef, ArrayList<Integer> color1, ArrayList<Integer> color2){
         boolean checker = false;
 
         if(affordSpecial(indexSpecial, playerRef)) {
-            setSpecial(indexSpecial, ref);
-            checker = roundStrategies.get(indexSpecial).effect(ref, color1, color2);
+            setSpecial(indexSpecial, playerRef);
+            checker = roundStrategies.get(indexSpecial).effect(playerRef, color1, color2);
             if(checker) {
                 playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
                 roundStrategies.get(indexSpecial).increaseCost();

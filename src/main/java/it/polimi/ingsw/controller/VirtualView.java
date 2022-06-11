@@ -18,6 +18,7 @@ public class VirtualView
     private TurnInfo turnInfo;
     private ArrayList<SchoolBoard> schoolBoards;
     private ArrayList<Island> islands;
+    private int motherPosition;
     private ArrayList<Cloud> clouds;
     private ArrayList<Hand> hands;
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
@@ -132,7 +133,7 @@ public class VirtualView
             //Islands Restore
             if(islandsTmp.size() != 12) controller.setIslandsSizeAfterRestore(islandsTmp.size());
             for(int i = 0; i < islandsTmp.size(); i++){
-                if(islandsTmp.get(i).isMotherPosition()) controller.restoreMotherPose(i);
+                //if(islandsTmp.get(i).isMotherPosition()) controller.restoreMotherPose(i);
                 int[] students = islandsTmp.get(i).getStudentsIsland();
                 int towerValue = islandsTmp.get(i).getTowersNumber();
                 String towerTeam = islandsTmp.get(i).getTowersColor();
@@ -236,7 +237,7 @@ public class VirtualView
     }
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
-        islands.get(newMotherPosition).setMotherPosition(true);
+        motherPosition = newMotherPosition;
         server.motherChangePosition(newMotherPosition);
     }
     @Override
@@ -359,14 +360,12 @@ public class VirtualView
 
     private class Island implements Serializable{
         private int[] studentsIsland;
-        private boolean isMotherPosition;
         private int towersNumber;
         private int towersColor;
         private int isInhibited;
 
         public Island() {
             this.studentsIsland = new int[]{0,0,0,0,0};
-            this.isMotherPosition = false;
             this.towersNumber = 1;
             this.towersColor = -1;
             this.isInhibited = 0;
@@ -374,11 +373,9 @@ public class VirtualView
 
         public void setTowersNumber(int towersNumber) { this.towersNumber = towersNumber; }
         public void setStudentsIsland(int color, int newValue) { this.studentsIsland[color] = newValue; }
-        public void setMotherPosition(boolean isMotherPos) { this.isMotherPosition=isMotherPos; }
         public void setTowersColor(int newColor){ this.towersColor=newColor; }
         public void setInhibited(int isInhibited) { this.isInhibited=isInhibited; }
         public int[] getStudentsIsland() { return studentsIsland; }
-        public boolean isMotherPosition() { return isMotherPosition; }
         public int getTowersNumber() { return towersNumber; }
         public String getTowersColor() {
            if(towersColor == 0) return "WHITE";

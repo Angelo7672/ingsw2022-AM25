@@ -206,7 +206,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             this.socket.close();
         }catch (IOException e){ clientConnectionExpired(e); }
     }
-    
+
     public void sendGameInfo(int numberOfPlayers, boolean expertMode){ send(new GameInfoAnswer(numberOfPlayers,expertMode)); }
     public void sendUserInfo(int playerRef, String nickname, String character){ send(new UserInfoAnswer(playerRef,nickname,character)); }
     public void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue){ send(new SchoolStudentMessage(color,place,componentRef,newStudentsValue)); }
@@ -238,7 +238,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 synchronized (objGame){
                     objGame.wait();
                     if (proxy.isFirst()) gameSetting();
-                        loginClient();
+                    loginClient();
                 }
                 roundPartOne.start();
                 roundPartTwo.start();
@@ -481,6 +481,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             CardMessage cardMessage = (CardMessage) planningMsg;
             boolean checker;
 
+            System.out.println("card message "+cardMessage);
             try {
                 checker = server.userPlayCard(playerRef, cardMessage.getCard());
 

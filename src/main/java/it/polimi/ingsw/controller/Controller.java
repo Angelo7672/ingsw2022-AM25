@@ -114,8 +114,8 @@ public class Controller implements ServerController{
         return gameManager.useSpecialMedium(indexSpecial,playerRef,ref,color);
     }
     @Override
-    public boolean useSpecialHard(int specialIndex, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
-        return gameManager.useSpecialHard(specialIndex,playerRef,ref,color1,color2);
+    public boolean useSpecialHard(int specialIndex, int playerRef, ArrayList<Integer> color1, ArrayList<Integer> color2){
+        return gameManager.useSpecialHard(specialIndex,playerRef,color1,color2);
     }
 
     @Override

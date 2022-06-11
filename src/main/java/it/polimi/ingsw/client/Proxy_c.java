@@ -37,12 +37,21 @@ public class Proxy_c implements Exit{
         winner = null;
     }
 
+    public boolean readyForLogin() throws IOException {
+        send(new GenericMessage("Ready for login!"));
+        tempObj = receive();
+        if(tempObj instanceof LoginRestoreAnswer) return true;
+        return false;
+
+    }
+
     public String first() throws IOException, ClassNotFoundException {
         send(new GenericMessage("Ready for login!"));
         tempObj = receive();
         if(tempObj instanceof SoldOutAnswer) return ((SoldOutAnswer) tempObj).getMessage();
         else if(tempObj instanceof SetupGameMessage) return "SetupGame";
         else if(tempObj instanceof SavedGameAnswer) return "SavedGame";
+        else if (tempObj instanceof LoginRestoreAnswer) return "LoginRestore";
         else return "Not first";
     }
 
@@ -59,23 +68,6 @@ public class Proxy_c implements Exit{
         }
         return true;
 
-    }
-
-    public ArrayList<String> getChosenCharacters() throws IOException, ClassNotFoundException {
-        if(tempObj == null) {
-            tempObj = receive();
-        }
-        LoginMessage msg = (LoginMessage) tempObj;
-        tempObj = null;
-        return (msg.getCharacterAlreadyChosen());
-    }
-
-    public View startView() throws IOException, ClassNotFoundException, InterruptedException {
-        send(new GenericMessage("Ready to start"));
-        synchronized (lock2){
-            if(view == null) lock2.wait();
-        }
-        return view;
     }
 
     public boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
@@ -100,6 +92,23 @@ public class Proxy_c implements Exit{
         send(new GenericMessage("Ready for login!"));
         tempObj = receive();
         return true;
+    }
+
+    public ArrayList<String> getChosenCharacters() throws IOException, ClassNotFoundException {
+        if(tempObj == null) {
+            tempObj = receive();
+        }
+        LoginMessage msg = (LoginMessage) tempObj;
+        tempObj = null;
+        return (msg.getCharacterAlreadyChosen());
+    }
+
+    public View startView() throws IOException, ClassNotFoundException, InterruptedException {
+        send(new GenericMessage("Ready to start"));
+        synchronized (lock2){
+            if(view == null) lock2.wait();
+        }
+        return view;
     }
 
     public boolean startPlanningPhase() throws ClassNotFoundException, IOException {

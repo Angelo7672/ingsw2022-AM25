@@ -1,17 +1,21 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.CLI;
 
+import it.polimi.ingsw.client.Exit;
+import it.polimi.ingsw.client.PlayerConstants;
+import it.polimi.ingsw.client.Proxy_c;
+import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.controller.listeners.*;
 import it.polimi.ingsw.server.Answer.Answer;
 import it.polimi.ingsw.server.Answer.LoginRestoreAnswer;
 import it.polimi.ingsw.server.Answer.SavedGameAnswer;
+import it.polimi.ingsw.server.Answer.SoldOutAnswer;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
 
 public class CLI implements Runnable, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
-        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, BagListener,
-        QueueListener {
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener{
 
     private final Exit proxy;
     private final Scanner scanner;
@@ -20,17 +24,9 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     private View view;
     private final Socket socket;
     private String winner;
-
+    private Printable printable;
     private String ANSI_RESET = "\u001B[0m";
-    private String ANSI_BLACK = "\u001B[30m";
     private String ANSI_RED = "\u001B[31m";
-    private String ANSI_GREEN = "\u001B[32m";
-    private String ANSI_YELLOW = "\u001B[33m";
-    private String ANSI_BLUE = "\u001B[34m";
-    private String ANSI_PURPLE = "\u001B[35m";
-    private String ANSI_CYAN = "\u001B[36m";
-    private String ANSI_WHITE = "\u001B[37m";
-    private String  UNDERLINE = "\u001B[4m";
     private String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
 
 
@@ -57,15 +53,18 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         else if(result.equals("SetupGame")) {
             setupGame();
         }
+        else if(result.equals("LoginRestore")){
+            loginRestore();
+        }
         else  if (result.equals("Server Sold Out")){
-            System.err.println(SPACE+result);
+            System.out.println();
+            System.out.print(ANSI_RED+SPACE+result+ANSI_RESET);
             return;
         }
         if(!restoreGame) {
             setupConnection();
         }
         view = proxy.startView();
-        view.setBagListener(this);
         view.setCoinsListener(this);
         view.setInhibitedListener(this);
         view.setIslandListener(this);
@@ -74,6 +73,9 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         view.setProfessorsListener(this);
         view.setStudentsListener(this);
         view.setTowersListener(this);
+        printable = new Printable(view);
+        System.out.println();
+        System.out.println(SPACE+"Game is started! Wait for your turn...");
     }
 
     public void setupConnection() throws IOException, ClassNotFoundException {
@@ -93,11 +95,11 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             } while (nickname == null);
             do {
                 System.out.println();
-                System.out.print(SPACE+"Choose a character: "+availableCharacters.toString()+ " ");
+                System.out.print(SPACE+"Choose a character: "+ availableCharacters + " ");
                 character = scanner.next().toUpperCase(Locale.ROOT);
                 if (!availableCharacters.contains(character)) {
                     System.out.println();
-                    System.err.println("Error, choose an available character");
+                    System.out.println(ANSI_RED+SPACE+"Error, choose an available character"+ANSI_RESET);
                     character=null;
                 }
             } while (character == null);
@@ -108,7 +110,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             }
             else {
                 System.out.println();
-                System.err.println(SPACE+"Error, try again");
+                System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
             }
         }
     }
@@ -118,12 +120,17 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         String expertMode;
         while (true){
             try {
-                System.out.println();
-                System.out.print(SPACE+"Insert number of player ");
-                do {
+                while (true){
+                    System.out.println();
+                    System.out.print(SPACE+"Insert number of player: ");
                     String intString = scanner.next();
                     numberOfPlayers = Integer.parseInt(intString);
-                }while (numberOfPlayers<2 || numberOfPlayers>4);
+                    if(numberOfPlayers<2 || numberOfPlayers > 4){
+                        System.out.println();
+                        System.out.println(ANSI_RED+SPACE+"Error, insert a number between 2 and 4"+ANSI_RESET);
+                    }
+                    else break;
+                }
                 do{
                     System.out.println();
                     System.out.print(SPACE+"Expert mode? [y/n] ");
@@ -134,10 +141,11 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 }
                 else {
                     System.out.println();
-                    System.err.println(SPACE+"Error, try again");
+                    System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
                 }
             } catch (NumberFormatException e) {
-                System.err.println("Error, insert a number");
+                System.out.println();
+                System.out.println(ANSI_RED+SPACE+"Error, insert a number"+ANSI_RESET);
             } catch (IOException e) {
                 System.err.println("io");
             } catch (ClassNotFoundException e) {
@@ -148,7 +156,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
 
     private boolean savedGame() throws IOException, ClassNotFoundException {
         SavedGameAnswer savedGame = (SavedGameAnswer) proxy.getMessage();
-        String decision = null;
+        String decision;
         while(true) {
             System.out.println();
             System.out.print(SPACE+"There is a game started: number of players: " + savedGame.getNumberOfPlayers() + " . Expert mode: ");
@@ -161,24 +169,33 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 if(!decision.equalsIgnoreCase("n") && !decision.equalsIgnoreCase("y")){
                     decision=null;
                     System.out.println();
-                    System.err.println(SPACE+"Error, insert y or n");
+                    System.out.println(ANSI_RED+SPACE+"Error, insert y or n"+ANSI_RESET);
                 }
             }while(decision == null);
             if (proxy.savedGame(decision)) break;
             else {
                 System.out.println();
-                System.err.println(SPACE+"Error, try again.");
+                System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
             }
         }
         if(decision.equals("n")) return false;
         while (true){
+            if(proxy.readyForLogin()) {
+                loginRestore();
+                return true;
+            }
+        }
+    }
+
+    private void loginRestore() throws IOException, ClassNotFoundException {
+        while (true){
             System.out.println();
-            System.out.print(SPACE+"Insert nickname for restore last game: ");
+            System.out.println("Insert nickname for restore last game: ");
             String nickname = scanner.next();
-            if(proxy.setupConnection(nickname, null)) return true;
+            if(proxy.setupConnection(nickname, null)) return;
             else {
                 System.out.println();
-                System.err.println(SPACE+"Error, insert your previous nickname");
+                System.out.print(ANSI_RED+SPACE+"Error, insert your previous nickname"+ANSI_RESET);
             }
         }
     }
@@ -203,19 +220,19 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 } while (special == -1);
             }catch (NumberFormatException e){
                 System.out.println();
-                System.err.println(SPACE+"Error, insert a number.");
+                System.out.println(ANSI_RED+SPACE+"Error, insert a number"+ANSI_RESET);
                 useSpecial();
             }
             special = special-1;
             if(!proxy.checkSpecial(special)) {
                 System.out.println();
-                System.err.println(SPACE+"Error, special not present");
+                System.out.println(ANSI_RED+SPACE+"Error, special not present"+ANSI_RESET);
                 useSpecial();
             }
             if(special(special)) return;
         }
         System.out.println();
-        System.err.println(SPACE+"Error, try again");
+        System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
         useSpecial();
     }
 
@@ -315,7 +332,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 String color = scanner.next();
                 if (translateColor(color) == -1) {
                     System.out.println();
-                    System.err.println(SPACE+"Error, enter an existing color");
+                    System.out.print(ANSI_RED+SPACE+"Error, enter an existing color"+ANSI_RESET);
                     return false;
                 }
                 return proxy.useSpecial(special, translateColor(color), null, null);
@@ -323,13 +340,13 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             return false;
         }catch (NumberFormatException e){
             System.out.println();
-            System.err.println(SPACE+"Error, insert a number.");
+            System.out.println(ANSI_RED+SPACE+"Error, insert a number"+ANSI_RESET);
             return false;
         }
     }
 
     public void playCard() throws IOException, ClassNotFoundException {
-        cli();
+        printable.cli();
         System.out.println();
         System.out.print(SPACE+"Which card do you want to play? ");
         String card;
@@ -337,7 +354,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             card = scanner.next();
         } catch (InputMismatchException e) {
             System.out.println();
-            System.err.println(SPACE+"Error, try again");
+            System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
             return;
         }
         String result = proxy.playCard(card);
@@ -350,7 +367,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     public void moveStudents() {
-        cli();
+        printable.cli();
         boolean finished = false;
         do {
             String accepted;
@@ -366,7 +383,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                     colorInt = translateColor(color);
                     if(colorInt==-1) {
                         System.out.println();
-                        System.err.println(SPACE+"Error, enter an existing color");
+                        System.out.println(ANSI_RED+SPACE+"Error, enter an existing color"+ANSI_RESET);
                         color = null;
                     }
                 }
@@ -376,7 +393,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                     where = scanner.next();
                     if(!where.equalsIgnoreCase("island")&&!where.equalsIgnoreCase("school")){
                         System.out.println();
-                        System.err.println(SPACE+"Error, insert school or island");
+                        System.out.println(ANSI_RED+SPACE+"Error, insert school or island"+ANSI_RESET);
                         where=null;
                     }
                 }
@@ -389,7 +406,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                         islandRef = islandRef - 1;
                         if(islandRef<0 || islandRef>=view.getIslandSize()){
                             System.out.println();
-                            System.err.println(SPACE+"Error, insert an existing island");
+                            System.out.println(ANSI_RED+SPACE+"Error, insert an existing island"+ANSI_RESET);
                             islandRef = -1;
                         }
                     }
@@ -398,10 +415,10 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 if (accepted.equals("transfer complete")) finished = true;
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println();
-                System.err.println(SPACE+"Error, try again");
+                System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
             } catch (NumberFormatException e){
                 System.out.println();
-                System.err.println(SPACE+"Error, insert a number.");
+                System.out.println(ANSI_RED+SPACE+"Error, insert a number"+ANSI_RESET);
             }
         } while (!finished);
         constants.setStudentMoved(true);
@@ -411,20 +428,20 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         int steps = -1;
         try {
             do {
-                printMotherNature();
+                printable.printMotherNature();
                 System.out.println();
                 System.out.print(SPACE+"How many steps do you want to move Mother Nature? Maximum number of steps "+view.getMaxStepsMotherNature()+" ");
                 String intString = scanner.next();
                 steps = Integer.parseInt(intString);
                 if(steps>view.getMaxStepsMotherNature()) {
                     System.out.println();
-                    System.out.println(SPACE+"Error, insert a number between 1 and "+view.getMaxStepsMotherNature());
+                    System.out.println(ANSI_RED+SPACE+"Error, insert a number between 1 and "+view.getMaxStepsMotherNature()+ANSI_RESET);
                     steps=-1;
                 }
             } while (steps <= 0);
         }catch (NumberFormatException e){
             System.out.println();
-            System.err.println(SPACE+"error, insert a number.");
+            System.out.println(ANSI_RED+SPACE+"Error, insert a number."+ANSI_RESET);
             return;
         }
         String result = proxy.moveMotherNature(steps);
@@ -437,7 +454,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         constants.setEndTurn(true);
         try{
             do {
-                printCloud();
+                printable.printCloud();
                 System.out.println();
                 System.out.print(SPACE+"Which cloud do you want? ");
                 String intString = scanner.next();
@@ -445,12 +462,12 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 if(cloud<=0 || cloud>view.getNumberOfPlayers()) {
                     cloud = -1;
                     System.out.println();
-                    System.err.println(SPACE+"Error, enter an existing number");
+                    System.out.println(ANSI_RED+SPACE+"Error, insert an existing cloud."+ANSI_RESET);
                 }
             } while (cloud == -1);
         }catch (NumberFormatException e){
             System.out.println();
-            System.err.println(SPACE+"error, insert a number");
+            System.out.println(ANSI_RED+SPACE+"Error, insert a number."+ANSI_RESET);
             return;
         }
         cloud = cloud-1;
@@ -458,7 +475,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         if (result.equalsIgnoreCase("ok")) {
             constants.setCloudChosen(true);
             System.out.println();
-            cli();
+            printable.cli();
             System.out.println(SPACE+"it's your opponent turn, wait...");
             constants.setEndTurn(false);
         }
@@ -526,166 +543,43 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         };
     }
 
-    private void printIsland(int i){
-        System.out.println("\t"+"Island " + (i + 1) + ": Students:" + ANSI_GREEN +" Green "+ view.getStudentsIsland(i)[0 ] + ANSI_RED  + ", Red " + view.getStudentsIsland(i)[1] +
-                ANSI_YELLOW +", Yellow " + view.getStudentsIsland(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsIsland(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsIsland(i)[4]+ANSI_RESET);
-        if (view.getInhibited(i) != 0) System.out.print("\t"+"\t"+"     No Entry tiles: " + view.getInhibited(i) + ". ");
-        if(view.getTowersColor(i)==0) System.out.print("\t"+"\t"+"      Towers Team: " + "WHITE" + ANSI_RESET);
-        else if(view.getTowersColor(i)==1) System.out.print("\t"+"\t"+"      Towers Team: " + ANSI_BLACK+ "BLACK" + ANSI_RESET);
-        else if(view.getTowersColor(i)==2) System.out.print("\t"+"\t"+"      Towers Team: " + ANSI_WHITE+ "GREY" + ANSI_RESET);
-        else if(view.getTowersColor(i)==-1) System.out.print("\t"+"\t"+"      Towers Team: " + "NO ONE" + ANSI_RESET);
-        System.out.println(". Towers value: " + view.getIslandTowers(i));
-    }
-    private void printMotherNature(){
-        System.out.println();
-        System.out.println("\t"+UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));//aggiungere
-        System.out.println();
-    }
-    private void printNickname(int i){
-        System.out.print("\t"+"School of " + view.getNickname(i)+" ");
-    }
-    private void printEntrance(int i){
-        System.out.println(" Entrance students:" + ANSI_GREEN + " Green " + view.getStudentsEntrance(i)[0] + ANSI_RED  + ", Red " + view.getStudentsEntrance(i)[1] +
-                ANSI_YELLOW + ", Yellow " + view.getStudentsEntrance(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsEntrance(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsEntrance(i)[4]+ANSI_RESET);
-    }
-    private void printTable(int i){
-        System.out.println(" Table students:" + ANSI_GREEN + " Green " + view.getStudentsTable(i)[0] + ANSI_RED  + ", Red " + view.getStudentsTable(i)[1] +
-                ANSI_YELLOW + ", Yellow " + view.getStudentsTable(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsTable(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsTable(i)[4]+ANSI_RESET);
-    }
-    private void printProf(int i){
-        System.out.println(" Professor: " + ANSI_GREEN + "Green "+ view.getProfessors(i)[0] + ANSI_RED  + ", Red " + view.getProfessors(i)[1] +
-                ANSI_YELLOW + ", Yellow " + view.getProfessors(i)[2] +ANSI_PURPLE + ", Pink " + view.getProfessors(i)[3] + ANSI_BLUE+ ", Blue " + view.getProfessors(i)[4]+ANSI_RESET);
-    }
-
-    private void printCloud(){
-        System.out.println();
-        System.out.println(UNDERLINE+"CLOUDS:"+ANSI_RESET);
-        for (int i = 0; i < view.getNumberOfPlayers(); i++) {
-            if (view.getStudentsCloud(i)[0]+view.getStudentsCloud(i)[1]+view.getStudentsCloud(i)[2]+view.getStudentsCloud(i)[3]+view.getStudentsCloud(i)[4] != 0){
-                System.out.println("\t"+"Cloud " + (i + 1) + ": Students:" +ANSI_GREEN + " Green " + view.getStudentsCloud(i)[0] + ANSI_RED + ", Red " + view.getStudentsCloud(i)[1] +
-                        ANSI_YELLOW + ", Yellow " + view.getStudentsCloud(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsCloud(i)[3] + ANSI_BLUE+ ", Blue " + view.getStudentsCloud(i)[4]+ANSI_RESET);
-            }
-        }
-        System.out.println();
-    }
-
-    private void printLastCard(){
-        System.out.print(UNDERLINE+"LAST PLAYED CARDS:"+ANSI_RESET);
-        for (int i = 0; i < view.getNumberOfPlayers(); i++) {
-            System.out.print(" "+view.getNickname(i) + ": " + view.getLastCard(i) + ". ");
-        }
-        System.out.println();
-    }
-
-    public void cli(){
-
-        System.out.println(System.lineSeparator().repeat(10));
-        /*System.out.print("\033[H\033[2J");
-        System.out.flush();*/
-        System.out.println(UNDERLINE+"ISLANDS"+ANSI_RESET);
-        for (int i = 0; i < view.getIslandSize(); i++) {
-            System.out.println("\t"+"Island " + (i + 1) + ": Students:" + ANSI_GREEN +" Green "+ view.getStudentsIsland(i)[0 ] + ANSI_RED  + ", Red " + view.getStudentsIsland(i)[1] +
-                    ANSI_YELLOW +", Yellow " + view.getStudentsIsland(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsIsland(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsIsland(i)[4]+ANSI_RESET);
-            if (view.getInhibited(i) != 0) System.out.print("\t"+"\t"+"  No Entry tiles: " + view.getInhibited(i) + ". ");
-            if(view.getTowersColor(i)==0) System.out.print("\t"+"\t"+"  Towers Team: " + "WHITE" + ANSI_RESET);
-            else if(view.getTowersColor(i)==1) System.out.print("\t"+"\t"+"  Towers Team: " + ANSI_BLACK+ "BLACK" + ANSI_RESET);
-            else if(view.getTowersColor(i)==2) System.out.print("\t"+"\t"+"  Towers Team: " + ANSI_WHITE+ "GREY" + ANSI_RESET);
-            else if(view.getTowersColor(i)==-1) System.out.print("\t"+"\t"+"  Towers Team: " + "NO ONE" + ANSI_RESET);
-            System.out.println(". Towers value: " + view.getIslandTowers(i));
-        }
-        printMotherNature();
-        System.out.println(UNDERLINE+"SCHOOLS"+ANSI_RESET);
-        for (int i = 0; i < view.getNumberOfPlayers(); i++) {
-            System.out.print("\t"+"Nickname: " + view.getNickname(i) + ". Character: " + view.getCharacter(i)+ ". Team: ");
-            if(view.getTeam(i).equals("WHITE")) System.out.println(view.getTeam(i) + ".");
-            if(view.getTeam(i).equals("BLACK")) System.out.println(ANSI_BLACK+view.getTeam(i) + "."+ANSI_RESET);
-            if(view.getTeam(i).equals("GREY")) System.out.println(ANSI_WHITE+view.getTeam(i) + "."+ANSI_RESET);
-            System.out.println("\t"+"Entrance students:" + ANSI_GREEN + " Green " + view.getStudentsEntrance(i)[0] + ANSI_RED  + ", Red " + view.getStudentsEntrance(i)[1] +
-                    ANSI_YELLOW + ", Yellow " + view.getStudentsEntrance(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsEntrance(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsEntrance(i)[4]+ANSI_RESET);
-            System.out.println("\t"+"Table students:" + ANSI_GREEN + " Green " + view.getStudentsTable(i)[0] + ANSI_RED  + ", Red " + view.getStudentsTable(i)[1] +
-                    ANSI_YELLOW + ", Yellow " + view.getStudentsTable(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsTable(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsTable(i)[4]+ANSI_RESET);
-            System.out.println("\t"+"Professor: " + ANSI_GREEN + "Green "+ view.getProfessors(i)[0] + ANSI_RED  + ", Red " + view.getProfessors(i)[1] +
-                    ANSI_YELLOW + ", Yellow " + view.getProfessors(i)[2] +ANSI_PURPLE + ", Pink " + view.getProfessors(i)[3] + ANSI_BLUE+ ", Blue " + view.getProfessors(i)[4]+ANSI_RESET);
-            System.out.print("\t"+"Towers number: " + view.getSchoolTowers(i) + ".");
-            if (view.getExpertMode()) System.out.print(" Coins: " + view.getCoins(i));
-        }
-
-        System.out.println(UNDERLINE+"CLOUDS"+ANSI_RESET);
-        for (int i = 0; i < view.getNumberOfPlayers(); i++) {
-            if (view.getStudentsCloud(i)[0]+view.getStudentsCloud(i)[1]+view.getStudentsCloud(i)[2]+view.getStudentsCloud(i)[3]+view.getStudentsCloud(i)[4] != 0){
-                System.out.println("\t"+"Cloud " + (i + 1) + ": Students:" +ANSI_GREEN + " Green " + view.getStudentsCloud(i)[0] + ANSI_RED + ", Red " + view.getStudentsCloud(i)[1] +
-                        ANSI_YELLOW + ", Yellow " + view.getStudentsCloud(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsCloud(i)[3] + ANSI_BLUE+ ", Blue " + view.getStudentsCloud(i)[4]+ANSI_RESET);
-            }
-        }
-        System.out.println();
-
-        System.out.println(UNDERLINE+"LAST PLAYED CARDS"+ANSI_RESET);
-        System.out.print("\t");
-        for (int i = 0; i < view.getNumberOfPlayers(); i++) {
-            System.out.print(view.getNickname(i) + ": " + view.getLastCard(i) + ". ");
-        }
-        System.out.println();
-        System.out.println();
-
-        System.out.println(UNDERLINE+"YOUR CARDS"+ANSI_RESET);
-        for (int i = 0; i < view.getCards().size(); i++) {
-            System.out.println("\t"+view.getCards().get(i).name()+" value: "+view.getCards().get(i).getValue()+
-                    " movement: "+view.getCards().get(i).getMovement());
-        }
-
-        if(view.getExpertMode()){
-            System.out.println(UNDERLINE+"SPECIALS"+ANSI_RESET);
-            for(int i=0; i<3; i++){
-                System.out.print("\t"+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
-                if(specialArray(view.getSpecialName(i))) System.out.println(". Students: "+ ANSI_GREEN +" Green "+ view.getSpecialStudents(i)[0] + ANSI_RED  + ", Red " + view.getSpecialStudents(i)[1] +
-                        ANSI_YELLOW +", Yellow " + view.getSpecialStudents(i)[2] + ANSI_PURPLE + ", Pink " + view.getSpecialStudents(i)[3] + ANSI_BLUE + ", Blue " + view.getSpecialStudents(i)[4]+ANSI_RESET);
-                if(view.getNoEntry(i)!=-1) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
-            }
-        }
-        System.out.println();
-        System.out.println();
-    }
-
-    private boolean specialArray(String name){
-        if(name.equalsIgnoreCase("special1")) return true;
-        if(name.equalsIgnoreCase("special7")) return true;
-        if(name.equalsIgnoreCase("special8")) return true;
-        return false;
-    }
-
-    @Override
-    public void notifyBagExtraction() {
-
-    }
-
-    @Override
-    public void notifyBag(List<Integer> bag) {
-
-    }
-
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
-        cli();
+        if(constants.isStartGame()) {
+            printable.printCoins(playerRef);
+        }
     }
 
     @Override
     public void notifyInhibited(int islandRef, int isInhibited) {
-        cli();
+        if(constants.isStartGame()) {
+            System.out.println();
+            System.out.print("New play: "+"\t"+" island "+islandRef+" No Entry tiles: "+isInhibited);
+        }
     }
 
     @Override
     public void notifyIslandChange(int islandToDelete) {
-
+        if(constants.isStartGame()) {
+            System.out.println();
+            System.out.print("New play: "+"\t"+" island "+islandToDelete+" had been united.");
+        }
     }
 
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
-        if(constants.isStartGame()) printMotherNature();
+        if(constants.isStartGame()) {
+            System.out.println();
+            System.out.print("New play: "+"\t");
+            printable.printMotherNature();
+        }
     }
 
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
-        if(constants.isStartGame()) printLastCard();
+        if(constants.isStartGame()) {
+            printable.printLastCard();
+        }
     }
 
     @Override
@@ -696,31 +590,13 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     @Override
     public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
         if(constants.isStartGame()) {
-            printNickname(playerRef);
-            printProf(playerRef);
+            printable.printProf(playerRef);
         }
     }
 
-
-    @Override
-    public void notifyQueue(int queueRef, int playerRef) {
-
-    }
-
-    @Override
-    public void notifyValueCard(int queueRef, int valueCard) {
-
-    }
-
-    @Override
-    public void notifyMaxMove(int queueRef, int maxMove) {
-
-    }
-
-
     @Override
     public void notifySpecial(int specialRef) {
-        cli();
+        printable.cli();
     }
 
     @Override
@@ -730,38 +606,27 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
 
     @Override
     public void notifyPlayedSpecial(int specialRef) {
-        cli();
+        printable.cli();
     }
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
         if(constants.isStartGame()&&!constants.isEndTurn()) {
-            switch (place) {
-                case (0): {
-                    printNickname(componentRef);
-                    printEntrance(componentRef);
-                    break;
-                }
-                case (1): {
-                    printNickname(componentRef);
-                    printTable(componentRef);
-                    break;
-                }
-                case (2): {
-                    printIsland(componentRef);
-                    break;
-                }
-            }
+            printable.printStudentsChange(place, componentRef);
         }
     }
 
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
-
+        if(constants.isStartGame()&&!constants.isEndTurn()) {
+            printable.printTowersChange(place, componentRef);
+        }
     }
 
     @Override
     public void notifyTowerColor(int islandRef, int newColor) {
-
+        if(constants.isStartGame()&&!constants.isEndTurn()) {
+            printable.printTowersOwner(islandRef);
+        }
     }
 }
