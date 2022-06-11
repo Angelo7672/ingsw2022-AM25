@@ -5,14 +5,14 @@ import it.polimi.ingsw.client.PlayerConstants;
 import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.controller.listeners.*;
-import it.polimi.ingsw.server.Answer.Answer;
-import it.polimi.ingsw.server.Answer.LoginRestoreAnswer;
-import it.polimi.ingsw.server.Answer.SavedGameAnswer;
-import it.polimi.ingsw.server.Answer.SoldOutAnswer;
+import it.polimi.ingsw.server.answer.SavedGameAnswer;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class CLI implements Runnable, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener{

@@ -7,6 +7,7 @@ import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.controller.VirtualView;
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.exception.NotAllowedException;
+import it.polimi.ingsw.server.expertmode.ExpertGame;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.Map;
 public class Server implements Entrance,ControllerServer{
     private ServerController controller;
     private Exit proxy;
+    private ExpertGame expertGame;
 
     public Server(int port){
         this.proxy = new Proxy_s(port,this);
@@ -53,6 +55,10 @@ public class Server implements Entrance,ControllerServer{
     public boolean isExpertMode(){ return controller.isExpertMode(); }
     @Override
     public void startGame(boolean gameSave){ controller.startGame(gameSave); }
+    @Override
+    public void setExpertGame(){ expertGame = new ExpertGame(this, controller.getExtractedSpecials()); }
+    @Override
+    public ExpertGame getExpertGame(){ return expertGame; }
     @Override
     public int checkRestoreNickname(String nickname){ return controller.checkRestoreNickname(nickname); }
 

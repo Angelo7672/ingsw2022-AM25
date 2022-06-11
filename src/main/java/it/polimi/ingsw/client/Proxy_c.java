@@ -1,15 +1,14 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.Message.*;
-import it.polimi.ingsw.server.Answer.*;
-import it.polimi.ingsw.server.Answer.ViewMessage.*;
+import it.polimi.ingsw.server.answer.*;
+import it.polimi.ingsw.server.answer.viewMessage.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-
 
 public class Proxy_c implements Exit{
     private final ObjectInputStream inputStream;

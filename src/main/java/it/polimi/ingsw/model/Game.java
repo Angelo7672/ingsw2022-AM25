@@ -56,6 +56,7 @@ public class Game implements GameManager{
                         random.get(i)
                 );
             }
+            Collections.sort(extractedSpecials);    //I want an ordered array (required in server)
         }
     }
 
