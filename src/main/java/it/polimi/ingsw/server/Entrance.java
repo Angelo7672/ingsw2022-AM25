@@ -30,7 +30,7 @@ public interface Entrance {
     boolean useSpecialLite(int indexSpecial, int playerRef);
     boolean useSpecialSimple(int indexSpecial, int playerRef, int ref);
     boolean useSpecialMedium(int indexSpecial, int playerRef, int ref, int color);
-    boolean useSpecialHard(int indexSpecial, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2);
+    boolean useSpecialHard(int indexSpecial, int playerRef, ArrayList<Integer> color1, ArrayList<Integer> color2);
 
     void resumeTurn(int phase);
 

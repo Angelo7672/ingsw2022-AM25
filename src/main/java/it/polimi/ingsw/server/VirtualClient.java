@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.client.message.*;
+import it.polimi.ingsw.client.message.special.*;
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.server.answer.*;
 import it.polimi.ingsw.server.answer.viewmessage.*;
@@ -37,7 +38,14 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     private RoundPartOne roundPartOne;
     private RoundPartTwo roundPartTwo;
     private ExpertGame expertGame;
-    private boolean special;
+    private boolean special1;
+    private boolean special3;
+    private boolean special5;
+    private boolean special7;
+    private boolean special9;
+    private boolean special10;
+    private boolean special11;
+    private boolean special12;
     private Object actionLocker;
     private Object errorLocker;
     private boolean error;
@@ -53,13 +61,20 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         this.gameSetupInitialization = false;
         this.loginInitialization = false;
         this.setupLocker = new Object();
-        this.gameSetup = new GameSetup();
+        this.gameSetup = new GameSetup(this);
         this.objGame = new Object();
         gameSetup.start();
         this.readyPlanningPhase = false;
         this.oneCardAtaTime = false;
         this.readyActionPhase = false;
-        this.special = false;
+        this.special1 = false;
+        this.special3 = false;
+        this.special5 = false;
+        this.special7 = false;
+        this.special9 = false;
+        this.special10 = false;
+        this.special11 = false;
+        this.special12 = false;
         this.planLocker = new Object();
         this.actionLocker = new Object();
         this.errorLocker = new Object();
@@ -116,11 +131,54 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         synchronized (errorLocker) { errorLocker.notify(); }
                     }
 
-                }else if(special) {
-                    special = false;
-                    if(tmp instanceof SpecialMessage){
-
-                    }
+                }else if(special1) {
+                    special1 = false;
+                    if (tmp instanceof Special1Message) {
+                        expertGame.setSpecialMsg(1, tmp);
+                        expertGame.wakeUp(1);
+                    } else send(new GenericAnswer("error"));
+                }else if(special3) {
+                    special3 = false;
+                    if (tmp instanceof Special3Message) {
+                        expertGame.setSpecialMsg(3, tmp);
+                        expertGame.wakeUp(3);
+                    } else send(new GenericAnswer("error"));
+                }else if(special5) {
+                    special5 = false;
+                    if (tmp instanceof Special5Message) {
+                        expertGame.setSpecialMsg(5, tmp);
+                        expertGame.wakeUp(5);
+                    } else send(new GenericAnswer("error"));
+                }else if(special7){
+                    special7 = false;
+                    if(tmp instanceof Special7Message){
+                        expertGame.setSpecialMsg(7, tmp);
+                        expertGame.wakeUp(7);
+                    } else send(new GenericAnswer("error"));
+                }else if(special9){
+                    special9 = false;
+                    if(tmp instanceof Special9Message){
+                        expertGame.setSpecialMsg(9, tmp);
+                        expertGame.wakeUp(9);
+                    } else send(new GenericAnswer("error"));
+                }else if(special10){
+                    special10 = false;
+                    if(tmp instanceof Special10Message){
+                        expertGame.setSpecialMsg(10, tmp);
+                        expertGame.wakeUp(10);
+                    } else send(new GenericAnswer("error"));
+                }else if(special11) {
+                    special11 = false;
+                    if (tmp instanceof Special11Message) {
+                        expertGame.setSpecialMsg(11, tmp);
+                        expertGame.wakeUp(11);
+                    } else send(new GenericAnswer("error"));
+                }else if(special12){
+                    special12 = false;
+                    if(tmp instanceof Special12Message){
+                        expertGame.setSpecialMsg(12, tmp);
+                        expertGame.wakeUp(12);
+                    } else send(new GenericAnswer("error"));
 
                 } else if (clientInitialization) {  //login msg
                     clientInitialization = false;
@@ -168,10 +226,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     }
 
     public void unlockPlanningPhase(){ oneCardAtaTime = true; }
-    public void unlockActionPhase(){
-        readyActionPhase = true;
-        if(expertMode) special = true;
-    }
+    public void unlockActionPhase(){ readyActionPhase = true; }
 
     //Message to client
     public void sendPlayCard(){ send(new PlayCard()); }
@@ -218,11 +273,23 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
 
     public void setPlayerRef(int playerRef) { this.playerRef = playerRef; }
     public int getPlayerRef() { return playerRef; }
+    public void setSpecial1() { this.special1 = true; }
+    public void setSpecial3() { this.special3 = true; }
+    public void setSpecial5() { this.special5 = true; }
+    public void setSpecial7() { this.special7 = true; }
+    public void setSpecial9() { this.special9 = true; }
+    public void setSpecial10() { this.special10 = true; }
+    public void setSpecial11() { this.special11 = true; }
+    public void setSpecial12() { this.special12 = true; }
+
     @Override
     public int compareTo(VirtualClient v){ return playerRef.compareTo(v.getPlayerRef()); }
 
     private class GameSetup extends Thread{
+        private final VirtualClient virtualClient;
         Message setupMsg;
+
+        public GameSetup(VirtualClient virtualClient){ this.virtualClient = virtualClient; }
 
         @Override
         public void run(){
@@ -234,7 +301,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }
                 expertMode = server.isExpertMode();
                 roundPartOne = new RoundPartOne();
-                roundPartTwo = new RoundPartTwo(expertMode);
+                roundPartTwo = new RoundPartTwo(expertMode,virtualClient);
                 roundPartOne.start();
                 roundPartTwo.start();
                 if (expertMode) expertGame = server.getExpertGame();
@@ -512,6 +579,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     }
 
     private class RoundPartTwo extends Thread{
+        private final VirtualClient virtualClient;
         private Message actionMsg;
         private int numberOfPlayer;
         private boolean studentLocker;
@@ -520,7 +588,8 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         private boolean cloudLocker;
         private final boolean expertMode;
 
-        public RoundPartTwo(Boolean expertMode){
+        public RoundPartTwo(Boolean expertMode, VirtualClient virtualClient){
+            this.virtualClient = virtualClient;
             this.expertMode = expertMode;
             this.studentLocker = false;
             this.studentCounter = 0;
@@ -536,7 +605,6 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     synchronized (actionLocker) {
                         actionLocker.wait();
                         studentLocker = true;
-                        if (expertMode){}
                         actionPhase();
                         server.resumeTurn(0);
                     }
@@ -582,18 +650,36 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                                     synchronized (actionLocker) { actionLocker.wait(); } //attenzione potrebbe arrivare lo special
                                 }
                             }
+                        }else if(expertMode){
+                            if(actionMsg instanceof UseSpecial){
+                                if (!expertGame.effect(
+                                        ((UseSpecial) actionMsg).getSpecialIndex(), playerRef, virtualClient)
+                                ) send(new MoveNotAllowedAnswer());
+                            }
                         } else send(new GenericAnswer("error"));
                     }
                 }
                 if (motherLocker) {
                     motherLocker = false;
                     if (actionMsg instanceof MoveMotherNature) moveMotherNature();
-                    else send(new GenericAnswer("error"));
+                    else if(expertMode){
+                        if(actionMsg instanceof UseSpecial){
+                            if (!expertGame.effect(
+                                    ((UseSpecial) actionMsg).getSpecialIndex(), playerRef, virtualClient)
+                            ) send(new MoveNotAllowedAnswer());
+                        }
+                    } else send(new GenericAnswer("error"));
                 }
                 if (cloudLocker) {
                     cloudLocker = false;
                     if (actionMsg instanceof ChosenCloud) chooseCloud();
-                    else send(new GenericAnswer("error"));
+                    else if(expertMode){
+                        if(actionMsg instanceof UseSpecial){
+                            if (!expertGame.effect(
+                                    ((UseSpecial) actionMsg).getSpecialIndex(), playerRef, virtualClient)
+                            ) send(new MoveNotAllowedAnswer());
+                        }
+                    } else send(new GenericAnswer("error"));
                 }
             }catch (InterruptedException e) { e.printStackTrace(); }
         }

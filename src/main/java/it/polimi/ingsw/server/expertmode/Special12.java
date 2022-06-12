@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.message.special.Special12Message;
 import it.polimi.ingsw.server.answer.GenericAnswer;
 import it.polimi.ingsw.server.Entrance;
 import it.polimi.ingsw.server.VirtualClient;
+import it.polimi.ingsw.server.answer.MoveNotAllowedAnswer;
 
 public class Special12 implements Special{
     private Special12Message special12Msg;
@@ -12,17 +13,25 @@ public class Special12 implements Special{
 
     public Special12(Entrance server) { this.server = server; }
 
-    public boolean effect(int playerRef, VirtualClient user){
+    @Override
+    public void effect(int playerRef, VirtualClient user){
         VirtualClient virtualClient = user;
         boolean checker;
 
-        checker = server.useSpecialSimple(12, playerRef, special12Msg.getColor());
+        try {
+            virtualClient.setSpecial12();
+            virtualClient.send(new GenericAnswer("ok"));
+            synchronized (this) { this.wait(); }
 
-        if(checker) virtualClient.send(new GenericAnswer("ok"));
-        else virtualClient.send(new GenericAnswer("error"));
+            checker = server.useSpecialSimple(12, playerRef, special12Msg.getColor());
 
-        return checker;
+            if (checker) virtualClient.send(new GenericAnswer("ok"));
+            else virtualClient.send(new MoveNotAllowedAnswer());
+        }catch (InterruptedException e) { e.printStackTrace(); }
     }
 
+    @Override
     public void setSpecialMessage(Message msg) { special12Msg = (Special12Message) msg; }
+    @Override
+    public void wakeUp() { this.notify(); }
 }

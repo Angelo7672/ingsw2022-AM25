@@ -138,7 +138,7 @@ public class Server implements Entrance,ControllerServer{
         return controller.useSpecialMedium(indexSpecial,playerRef,ref,color);
     }
     @Override
-    public boolean useSpecialHard(int specialIndex, int playerRef, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){
+    public boolean useSpecialHard(int specialIndex, int playerRef, ArrayList<Integer> color1, ArrayList<Integer> color2){
         return controller.useSpecialHard(specialIndex,playerRef,color1,color2);
     }
 

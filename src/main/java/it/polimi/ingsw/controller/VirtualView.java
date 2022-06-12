@@ -152,7 +152,7 @@ public class VirtualView
             //Islands Restore
             if(islandsTmp.size() != 12) controller.setIslandsSizeAfterRestore(islandsTmp.size());
             for(int i = 0; i < islandsTmp.size(); i++){
-                //if(islandsTmp.get(i).isMotherPosition()) controller.restoreMotherPose(i);
+                if(islandsTmp.get(i).isMotherPosition()) controller.restoreMotherPose(i);
                 int[] students = islandsTmp.get(i).getStudentsIsland();
                 int towerValue = islandsTmp.get(i).getTowersNumber();
                 String towerTeam = islandsTmp.get(i).getTowersColor();
@@ -395,9 +395,8 @@ public class VirtualView
         public void setStudentsIsland(int color, int newValue) { this.studentsIsland[color] = newValue; }
         public void setTowersColor(int newColor){ this.towersColor=newColor; }
         public void setInhibited(int isInhibited) { this.isInhibited=isInhibited; }
-        public void setMotherPosition(boolean isMotherPos) {
-            this.isMotherPosition=isMotherPos;
-        }
+        public void setMotherPosition(boolean isMotherPos) { this.isMotherPosition=isMotherPos; }
+        public boolean isMotherPosition() { return isMotherPosition; }
         public int[] getStudentsIsland() { return studentsIsland; }
         public int getTowersNumber() { return towersNumber; }
         public String getTowersColor() {
