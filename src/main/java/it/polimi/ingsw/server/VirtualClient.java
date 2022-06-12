@@ -282,6 +282,8 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     proxy.setRestoreGame(true);
                     proxy.setConnectionsAllowed(numberOfPlayers);
                     server.startController(numberOfPlayers,expertMode);
+                    server.createGame();
+                    server.restoreGame();
                     send(new GenericAnswer("ok"));
                     synchronized (setupLocker) {
                         clientInitialization = true;

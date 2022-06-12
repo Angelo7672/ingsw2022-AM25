@@ -103,7 +103,6 @@ public class VirtualView
             bagTmp = (ArrayList<Integer>) inputFile.readObject();
 
             inputFile.close();
-            System.out.println("Restore game");
 
             //Turn status restore
             controller.setCurrentUser(turnInfosTmp.getCurrentUser());

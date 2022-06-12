@@ -54,7 +54,13 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public boolean isExpertMode(){ return controller.isExpertMode(); }
     @Override
-    public void startGame(boolean gameSave){ controller.startGame(gameSave); }
+    public void createGame(){ controller.createGame(); }
+    @Override
+    public void initializeGame(){ controller.initializeGame(); }
+    @Override
+    public void restoreGame(){ controller.restoreGame(); }
+    @Override
+    public void startGame(){ controller.startGame(); }
     @Override
     public void setExpertGame(){ expertGame = new ExpertGame(this, controller.getExtractedSpecials()); }
     @Override
