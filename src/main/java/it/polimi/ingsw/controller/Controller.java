@@ -68,6 +68,8 @@ public class Controller implements ServerController{
 
         gameManager.initializeGame(); }
     @Override
+    public void restoreVirtualView(){ virtualView.restoreVirtualView(); }
+    @Override
     public void restoreGame(){  //restore game
         virtualView.restoreGame();
 

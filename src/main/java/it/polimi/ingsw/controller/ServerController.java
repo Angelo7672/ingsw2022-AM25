@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public interface ServerController {
     void createGame();
     void initializeGame();
+    void restoreVirtualView();
     void restoreGame();
     void startGame();
     ArrayList<Integer> getExtractedSpecials();

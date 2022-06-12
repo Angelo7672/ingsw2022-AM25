@@ -11,9 +11,7 @@ import it.polimi.ingsw.server.expertmode.ExpertGame;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Server implements Entrance,ControllerServer{
     private ServerController controller;
@@ -57,6 +55,8 @@ public class Server implements Entrance,ControllerServer{
     public void createGame(){ controller.createGame(); }
     @Override
     public void initializeGame(){ controller.initializeGame(); }
+    @Override
+    public void restoreVirtualView(){ controller.restoreVirtualView(); }
     @Override
     public void restoreGame(){ controller.restoreGame(); }
     @Override

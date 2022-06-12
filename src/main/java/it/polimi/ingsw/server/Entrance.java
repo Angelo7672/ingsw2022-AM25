@@ -15,6 +15,7 @@ public interface Entrance {
     boolean isExpertMode();
     void createGame();
     void initializeGame();
+    void restoreVirtualView();
     void restoreGame();
     void startGame();
     ExpertGame getExpertGame();

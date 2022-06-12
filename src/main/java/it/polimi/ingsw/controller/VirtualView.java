@@ -80,6 +80,29 @@ public class VirtualView
         } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace(); }
     }
+    public void restoreVirtualView(){
+        Object tmp;
+        Object tmp1;
+        Object tmp2;
+        ArrayList<SchoolBoard> schoolBoardsTmp;
+
+        try{
+            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
+
+            tmp = inputFile.readObject();   //I have to read all object in file
+            tmp1 = inputFile.readObject();   //I have to read all object in file
+            tmp2 = inputFile.readObject();   //I have to read all object in file
+            schoolBoardsTmp = (ArrayList<SchoolBoard>) inputFile.readObject();
+
+            inputFile.close();
+
+            //Virtual view restore
+            for(SchoolBoard s:schoolBoardsTmp)
+                addNewPlayer(s.getNickname(),s.getCharacter());
+        } catch (FileNotFoundException e) { e.printStackTrace();
+        } catch (IOException e) { e.printStackTrace();
+        } catch (ClassNotFoundException e) { e.printStackTrace(); }
+    }
     public void restoreGame(){
         TurnInfo turnInfosTmp;
         ArrayList<Queue> queueTmp;
@@ -150,6 +173,8 @@ public class VirtualView
             }
             //Bag Restore
             controller.bagRestore(bagTmp);
+
+            System.out.println("fine restore");
         } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace();
         } catch (ClassNotFoundException e) { e.printStackTrace(); }
@@ -317,7 +342,6 @@ public class VirtualView
         public int getCurrentUser() { return currentUser; }
         public String getPhase() { return phase; }
     }
-
     //private class SchoolBoard keeps the state of each player's school board
     private class SchoolBoard implements Serializable{
         private String nickname;
@@ -354,7 +378,6 @@ public class VirtualView
         public int getTowersNumber() { return towersNumber; }
         public boolean[] getProfessors() { return professors; }
     }
-
     private class Island implements Serializable{
         private int[] studentsIsland;
         private int towersNumber;
