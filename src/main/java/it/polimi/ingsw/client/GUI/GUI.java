@@ -27,16 +27,24 @@ public class GUI extends Application {
     private int numberOfPlayers;
     private boolean expertMode;
     private HashMap<String, String> userInfo;
-    protected static final String SETUP = "setupScene.fxml";
-    protected static final String LOGIN = "loginScene.fxml";
-    protected static final String MAIN = "mainScene.fxml";
+    protected static final String SETUP = "SetupScene.fxml";
+    protected static final String LOGIN = "LoginScene.fxml";
+    protected static final String MAIN = "MainScene.fxml";
+    private HashMap<String, Scene> scenesMap;
+    private HashMap<String, SceneController > sceneControllersMap;
+    private ArrayList<String> sceneNames;
 
     public static void main(String[] args) {
         launch();
     }
 
     public GUI() {
+
         userInfo = new HashMap<>();
+        scenesMap = new HashMap<>();
+        sceneControllersMap = new HashMap<>();
+        sceneNames=new ArrayList<>();
+
     }
 
     @Override
@@ -48,6 +56,12 @@ public class GUI extends Application {
         primaryStage.centerOnScreen();
         primaryStage.show();
 
+        sceneNames.add(SETUP);
+        sceneNames.add(LOGIN);
+        sceneNames.add(MAIN);
+
+        //sceneSetup(stage, );
+
         String result = null;
         try {
             result = proxy.first();
@@ -57,7 +71,7 @@ public class GUI extends Application {
             e.printStackTrace();
         }
         if (result.equals("SetupGame")) {
-            //loadScene(stage, SETUP);
+            //loadScene(stage, LOGIN);
             sceneSetup(stage, SETUP);
         } else if (result.equals("Server Sold Out")) {
             System.out.println(result);
@@ -69,6 +83,26 @@ public class GUI extends Application {
     }
 
     public void sceneSetup(Stage stage, String sceneName) {
+        /*
+        Parent root = null;
+
+        for(String sceneName : sceneNames) {
+            FXMLLoader loader = new FXMLLoader();
+            try {
+                loader.setLocation(getClass().getResource(sceneName));
+                root = loader.load();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            SceneController controller = loader.getController();
+            scenesMap.put(sceneName, new Scene(root));
+            sceneControllersMap.put(sceneName, controller);
+            controller.setGUI(this);
+            controller.setProxy(proxy);
+
+        }*/
+
         loadScene(stage, sceneName);
 
         if (sceneName == LOGIN) {
@@ -87,6 +121,7 @@ public class GUI extends Application {
     }
 
     public void loadScene(Stage stage, String sceneName) {
+
         Parent root = null;
         FXMLLoader loader = new FXMLLoader();
         try {
@@ -100,6 +135,8 @@ public class GUI extends Application {
         currentSceneController = loader.getController();
         currentSceneController.setGUI(this);
         currentSceneController.setProxy(proxy);
+
+        //stage.setScene(scenesMap.get(sceneName));
 
         System.out.println("Current scene: " + currentScene);
         System.out.println("Current controller: " + currentSceneController);
