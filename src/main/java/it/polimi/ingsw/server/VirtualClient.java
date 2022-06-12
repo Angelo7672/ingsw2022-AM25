@@ -110,15 +110,12 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 } else if(readyActionPhase) {    //Action Phase msg
                     readyActionPhase = false;
                     roundPartTwo.setActionMsg(tmp);
-                    if (!error) synchronized (actionLocker) {
-                        actionLocker.notify();
-                    }
+                    if (!error) synchronized (actionLocker) { actionLocker.notify(); }
                     else {
                         error = false;
-                        synchronized (errorLocker) {
-                            errorLocker.notify();
-                        }
+                        synchronized (errorLocker) { errorLocker.notify(); }
                     }
+
                 }else if(special) {
                     special = false;
                     if(tmp instanceof SpecialMessage){
@@ -537,10 +534,12 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 while (!victory) {
                     synchronized (actionLocker) {
                         actionLocker.wait();
+                        System.out.println("inizio action "+playerRef);
                         studentLocker = true;
-                        if (expertMode)
+                        if (expertMode){}
                         actionPhase();
                         server.resumeTurn(0);
+                        System.out.println("fine action "+playerRef);
                     }
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }
@@ -556,6 +555,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     while (go) {
                         if (actionMsg instanceof MoveStudent) {
                             if (numberOfPlayer == 2 || numberOfPlayer == 4) {
+                                System.out.println(studentCounter + playerRef);
                                 moveStudent();
                                 if (studentCounter == 3) {
                                     studentCounter = 0;
