@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.Message;
+package it.polimi.ingsw.client.message;
 
 public class SetupGame implements Message{
     private final int playersNumber;

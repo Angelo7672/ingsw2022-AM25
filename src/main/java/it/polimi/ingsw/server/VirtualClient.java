@@ -180,9 +180,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
 
     public void send(Answer serverAnswer){
         try {
-            output.reset();
             output.writeObject(serverAnswer);
             output.flush();
+            output.reset();
         }catch (IOException e){ clientConnectionExpired(e); }
     }
     private void clientConnectionExpired(IOException e){
@@ -251,7 +251,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         SavedGameAnswer saveMsg = new SavedGameAnswer(savedGame);
                         send(saveMsg);
                         synchronized (setupLocker) {
-                            gameSetupInitialization = true;
+                            clientInitialization = true;
                             setupLocker.wait();
                             userDecision(saveMsg.getNumberOfPlayers(),saveMsg.isExpertMode());
                         }
@@ -286,7 +286,6 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     synchronized (setupLocker) {
                         clientInitialization = true;
                         setupLocker.wait();
-                        System.out.println("ciao "+playerRef);
                     }
                 } else if (msg.getMessage().equals("n")){
                     proxy.setRestoreGame(false);
@@ -534,12 +533,10 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 while (!victory) {
                     synchronized (actionLocker) {
                         actionLocker.wait();
-                        System.out.println("inizio action "+playerRef);
                         studentLocker = true;
                         if (expertMode){}
                         actionPhase();
                         server.resumeTurn(0);
-                        System.out.println("fine action "+playerRef);
                     }
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }
@@ -555,7 +552,6 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     while (go) {
                         if (actionMsg instanceof MoveStudent) {
                             if (numberOfPlayer == 2 || numberOfPlayer == 4) {
-                                System.out.println(studentCounter + playerRef);
                                 moveStudent();
                                 if (studentCounter == 3) {
                                     studentCounter = 0;

@@ -1,6 +1,6 @@
-package it.polimi.ingsw.client.Message.special;
+package it.polimi.ingsw.client.message.special;
 
-import it.polimi.ingsw.client.Message.Message;
+import it.polimi.ingsw.client.message.Message;
 
 public class Special9Message implements Message {
     private int color;
