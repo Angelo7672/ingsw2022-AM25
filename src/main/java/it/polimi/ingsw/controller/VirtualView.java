@@ -259,6 +259,7 @@ public class VirtualView
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
         islands.get(newMotherPosition).setMotherPosition(true);
+        server.motherChangePosition(newMotherPosition);
     }
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {

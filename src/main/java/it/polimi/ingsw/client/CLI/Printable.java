@@ -20,23 +20,24 @@ public class Printable {
     }
 
     protected void printIslandStudent(int i){
-        System.out.println("\t"+"Island " + (i + 1) + ": Students:" + ANSI_GREEN +" Green "+ view.getStudentsIsland(i)[0 ] + ANSI_RED  + ", Red " + view.getStudentsIsland(i)[1] +
+        System.out.println("\t"+"Island " + (i + 1) + ":" +"\t"+"     Students:" + ANSI_GREEN +" Green "+ view.getStudentsIsland(i)[0 ] + ANSI_RED  + ", Red " + view.getStudentsIsland(i)[1] +
                 ANSI_YELLOW +", Yellow " + view.getStudentsIsland(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsIsland(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsIsland(i)[4]+ANSI_RESET);
     }
     protected void printTowersValue(int i){
         System.out.print("\t"+"Island "+(i+1)+": ");
-        System.out.println("\t"+"Towers value: " + view.getIslandTowers(i));
+        System.out.println("\t"+"     Towers value: " + view.getIslandTowers(i));
+        System.out.println();
     }
     protected void printTowersOwner(int i){
-        System.out.println();
         System.out.print("New play: " + "\t"+"\t"+"Island "+(i+1)+": ");
-        if(view.getTowersColor(i)==0) System.out.println("\t"+"Towers Team: " + "WHITE" + ANSI_RESET);
-        else if(view.getTowersColor(i)==1) System.out.println("\t"+"Towers Team: " + ANSI_BLACK+ "BLACK" + ANSI_RESET);
-        else if(view.getTowersColor(i)==2) System.out.println("\t"+"Towers Team: " + ANSI_WHITE+ "GREY" + ANSI_RESET);
-        else if(view.getTowersColor(i)==-1) System.out.println("\t"+"Towers Team: NO ONE");
+        if(view.getTowersColor(i)==0) System.out.println("\t"+"    Towers Team: " + "WHITE" + ANSI_RESET);
+        else if(view.getTowersColor(i)==1) System.out.println("\t"+"    Towers Team: " + ANSI_BLACK+ "BLACK" + ANSI_RESET);
+        else if(view.getTowersColor(i)==2) System.out.println("\t"+"    Towers Team: " + ANSI_WHITE+ "GREY" + ANSI_RESET);
+        else if(view.getTowersColor(i)==-1) System.out.println("\t"+"    Towers Team: NO ONE");
+        System.out.println();
     }
     protected void printMotherNature(){
-        System.out.println("\t"+UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));//aggiungere
+        System.out.println(UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));//aggiungere
         System.out.println();
     }
     protected void printNickname(int i){
@@ -67,7 +68,6 @@ public class Printable {
         System.out.println("\t"+" Coins: " + view.getCoins(i));
     }
     protected void printCloud(){
-        System.out.println();
         System.out.println(UNDERLINE+"CLOUDS:"+ANSI_RESET);
         for (int i = 0; i < view.getNumberOfPlayers(); i++) {
             if (view.getStudentsCloud(i)[0]+view.getStudentsCloud(i)[1]+view.getStudentsCloud(i)[2]+view.getStudentsCloud(i)[3]+view.getStudentsCloud(i)[4] != 0){
@@ -80,7 +80,7 @@ public class Printable {
 
     protected void printLastCard(){
         System.out.println();
-        System.out.print("New play: "+"\t"+UNDERLINE+"LAST PLAYED CARDS:"+ANSI_RESET);
+        System.out.print("New play: "+"\t"+UNDERLINE+"LAST PLAYED CARDS:"+ANSI_RESET+"\t" );
         for (int i = 0; i < view.getNumberOfPlayers(); i++) {
             System.out.print(" "+view.getNickname(i) + ": " + view.getLastCard(i) + ". ");
         }
@@ -89,7 +89,6 @@ public class Printable {
 
     protected void printTowersChange(int place, int componentRef){
         System.out.print("New play: " + "\t");
-        System.out.println("towers");
         switch (place){
             case(0): {
                 printNickname(componentRef);
@@ -98,23 +97,28 @@ public class Printable {
             }
             case(1): printTowersValue(componentRef); break;
         }
+        System.out.println();
     }
 
     protected void printStudentsChange(int place, int componentRef){
-        System.out.print("New play: " + "\t");
-        System.out.println("students");
         switch (place) {
             case (0): {
+                System.out.println();
+                System.out.print("New play: " + "\t");
                 printNickname(componentRef);
                 printEntrance(componentRef);
                 break;
             }
             case (1): {
+                System.out.println();
+                System.out.print("New play: " + "\t");
                 printNickname(componentRef);
                 printTable(componentRef);
                 break;
             }
             case (2): {
+                System.out.println();
+                System.out.print("New play: " + "\t");
                 printIslandStudent(componentRef);
                 break;
             }

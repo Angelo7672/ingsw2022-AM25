@@ -11,6 +11,7 @@ public class Client {
     private static Socket socket;
     private static String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
     private static String ANSI_GREEN = "\u001B[32m";
+    private static String ANSI_RED = "\u001B[31m";
     private static String ANSI_RESET = "\u001B[0m";
     private static String  UNDERLINE = "\u001B[4m";
 
@@ -36,7 +37,7 @@ public class Client {
             try {
                 socket = new Socket("127.0.0.1", 2525);
             } catch (IOException e) {
-                System.err.println("Some errors occurred, try again.");
+                System.out.println(ANSI_RED+SPACE+"Some errors occurred, try again."+ANSI_RESET);
                 return;
             }
             System.out.println(SPACE+"Connection established");

@@ -320,15 +320,17 @@ public class Proxy_c implements Exit{
                     else if(tmp instanceof SetSpecialAnswer) {
 
                     }
-                    else if(tmp instanceof SoldOutAnswer){
-                        System.err.println("sold out");
-                    }
                     else if(tmp instanceof DisconnectedAnswer){
-                        System.err.println("Client disconnected, game over.");
-                        socket.close();
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setDisconnected(true);
+                        }
                     }
                     else if(tmp instanceof GameOverAnswer){
-                        winner = ((GameOverAnswer) tmp).getWinner();
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setWinner(((GameOverAnswer) tmp).getWinner());
+                        }
                     }
                     else {
                         answersTmpList.add(tmp);
