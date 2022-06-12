@@ -16,7 +16,6 @@ public class VirtualView
     private TurnInfo turnInfo;
     private ArrayList<SchoolBoard> schoolBoards;
     private ArrayList<Island> islands;
-    private int motherPosition;
     private ArrayList<Cloud> clouds;
     private ArrayList<Hand> hands;
     private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
@@ -259,8 +258,7 @@ public class VirtualView
     }
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
-        motherPosition = newMotherPosition;
-        server.motherChangePosition(newMotherPosition);
+        islands.get(newMotherPosition).setMotherPosition(true);
     }
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
@@ -383,18 +381,23 @@ public class VirtualView
         private int towersNumber;
         private int towersColor;
         private int isInhibited;
+        private boolean isMotherPosition;
 
         public Island() {
             this.studentsIsland = new int[]{0,0,0,0,0};
             this.towersNumber = 1;
             this.towersColor = -1;
             this.isInhibited = 0;
+            this.isMotherPosition=false;
         }
 
         public void setTowersNumber(int towersNumber) { this.towersNumber = towersNumber; }
         public void setStudentsIsland(int color, int newValue) { this.studentsIsland[color] = newValue; }
         public void setTowersColor(int newColor){ this.towersColor=newColor; }
         public void setInhibited(int isInhibited) { this.isInhibited=isInhibited; }
+        public void setMotherPosition(boolean isMotherPos) {
+            this.isMotherPosition=isMotherPos;
+        }
         public int[] getStudentsIsland() { return studentsIsland; }
         public int getTowersNumber() { return towersNumber; }
         public String getTowersColor() {
