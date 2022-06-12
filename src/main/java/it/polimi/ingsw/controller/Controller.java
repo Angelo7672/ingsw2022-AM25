@@ -35,10 +35,16 @@ public class Controller implements ServerController{
     }
 
     @Override
-    public void startGame(boolean gameSave){
-        server.sendGameInfo(numberOfPlayers, expertMode);   //at every client
-        for(int i = 0; i < numberOfPlayers; i++)
-            server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
+    public ArrayList<String> alreadyChosenCharacters(){ return virtualView.getAlreadyChosenCharacters(); }
+    @Override
+    public boolean userLoginNickname(String nickname){ return virtualView.checkNewNickname(nickname); }
+    @Override
+    public boolean userLoginCharacter(String character){ return virtualView.checkNewCharacter(character); }
+    @Override
+    public void addNewPlayer(String nickname, String character){ virtualView.addNewPlayer(nickname,character); }
+
+    @Override
+    public void createGame(){
         this.gameManager = new Game(expertMode, numberOfPlayers);
         if(expertMode) server.setExpertGame();
 
@@ -53,22 +59,28 @@ public class Controller implements ServerController{
         gameManager.setInhibitedListener(virtualView);
         gameManager.setBagListener(virtualView);
         gameManager.setQueueListener(virtualView);
+    }
+    @Override
+    public void initializeGame(){   //new game
+        server.sendGameInfo(numberOfPlayers, expertMode);   //at every client
+        for(int i = 0; i < numberOfPlayers; i++)
+            server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
 
-        if(gameSave) virtualView.restoreGame();
-        else gameManager.initializeGame();
+        gameManager.initializeGame(); }
+    @Override
+    public void restoreGame(){  //restore game
+        virtualView.restoreGame();
 
+        server.sendGameInfo(numberOfPlayers, expertMode);   //at every client
+        for(int i = 0; i < numberOfPlayers; i++)
+            server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
+    }
+    @Override
+    public void startGame(){
         this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers,jumpPhaseForRestore);
         roundController.start();
     }
 
-    @Override
-    public ArrayList<String> alreadyChosenCharacters(){ return virtualView.getAlreadyChosenCharacters(); }
-    @Override
-    public boolean userLoginNickname(String nickname){ return virtualView.checkNewNickname(nickname); }
-    @Override
-    public boolean userLoginCharacter(String character){ return virtualView.checkNewCharacter(character); }
-    @Override
-    public void addNewPlayer(String nickname, String character){ virtualView.addNewPlayer(nickname,character); }
     @Override
     public ArrayList<Integer> getExtractedSpecials(){ return gameManager.getExtractedSpecials(); }
 

@@ -13,7 +13,10 @@ public interface Entrance {
 
     void startController(int numberOfPlayers, boolean expertMode);
     boolean isExpertMode();
-    void startGame(boolean gameSave);
+    void createGame();
+    void initializeGame();
+    void restoreGame();
+    void startGame();
     ExpertGame getExpertGame();
     ArrayList<String> alreadyChosenCharacters();
     boolean userLogin(String nickname, String character);

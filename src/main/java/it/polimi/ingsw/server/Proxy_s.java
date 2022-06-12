@@ -78,7 +78,11 @@ public class Proxy_s implements Exit {
 
             synchronized (this){ this.wait(); }
             if(restoreGame) virtualClientInOrderAfterRestore();
-            server.startGame(restoreGame);
+            else {
+                server.createGame();
+                server.initializeGame();
+            }
+            server.startGame();
 
         } catch (IOException e) {
             System.err.println(e.getMessage());

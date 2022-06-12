@@ -6,7 +6,10 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 import java.util.ArrayList;
 
 public interface ServerController {
-    void startGame(boolean gameSave);
+    void createGame();
+    void initializeGame();
+    void restoreGame();
+    void startGame();
     ArrayList<Integer> getExtractedSpecials();
 
     int checkRestoreNickname(String nickname);
