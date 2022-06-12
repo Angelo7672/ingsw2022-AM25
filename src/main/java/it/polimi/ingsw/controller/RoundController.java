@@ -53,6 +53,7 @@ public class RoundController extends Thread{
             for (controller.setCurrentUser(0); controller.getCurrentUser() < numberOfPlayers; controller.incrCurrentUser()) {
                 server.unlockActionPhase(gameManager.readQueue(controller.getCurrentUser()));
                 server.startActionPhase(gameManager.readQueue(controller.getCurrentUser()));
+                System.out.println("start action "+gameManager.readQueue(controller.getCurrentUser()));
                 try { this.wait();
                 } catch (InterruptedException e) { e.printStackTrace(); }
                 controller.saveGame();
