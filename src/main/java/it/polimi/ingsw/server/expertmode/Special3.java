@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.expertmode;
 
-import it.polimi.ingsw.client.message.Message;
+import it.polimi.ingsw.client.message.*;
 import it.polimi.ingsw.client.message.special.Special3Message;
 import it.polimi.ingsw.server.answer.GenericAnswer;
 import it.polimi.ingsw.server.Entrance;

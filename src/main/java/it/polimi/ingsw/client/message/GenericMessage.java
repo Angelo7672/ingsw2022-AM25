@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.Message;
+package it.polimi.ingsw.client.message;
 
 public class GenericMessage implements Message {
     private final String message;

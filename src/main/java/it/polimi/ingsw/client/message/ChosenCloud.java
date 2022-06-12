@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.Message;
+package it.polimi.ingsw.client.message;
 
 public class ChosenCloud implements Message{
     private final int cloud;
