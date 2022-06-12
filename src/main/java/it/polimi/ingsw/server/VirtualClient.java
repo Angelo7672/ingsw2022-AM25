@@ -1,10 +1,9 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.client.Message.*;
-import it.polimi.ingsw.client.Message.special.Special1Message;
+import it.polimi.ingsw.client.message.*;
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.server.answer.*;
-import it.polimi.ingsw.server.answer.viewMessage.*;
+import it.polimi.ingsw.server.answer.viewmessage.*;
 import it.polimi.ingsw.server.expertmode.ExpertGame;
 
 import java.io.IOException;

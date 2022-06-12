@@ -2,8 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.listeners.*;
 import it.polimi.ingsw.model.Assistant;
-import it.polimi.ingsw.server.answer.viewMessage.UnifiedIsland;
-import it.polimi.ingsw.server.answer.viewMessage.*;
+import it.polimi.ingsw.server.answer.viewmessage.*;
 
 import java.util.ArrayList;
 

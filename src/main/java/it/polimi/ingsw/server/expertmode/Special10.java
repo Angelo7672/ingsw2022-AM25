@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.expertmode;
 
-import it.polimi.ingsw.client.Message.Message;
-import it.polimi.ingsw.client.Message.special.Special10Message;
+import it.polimi.ingsw.client.message.Message;
+import it.polimi.ingsw.client.message.special.Special10Message;
 import it.polimi.ingsw.server.Entrance;
 
 public class Special10 implements Special{
