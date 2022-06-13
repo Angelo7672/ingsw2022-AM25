@@ -142,8 +142,9 @@ public class Controller implements ServerController{
             if(currentUser + 1 >= numberOfPlayers) virtualView.setCurrentUser(0);   //check if the last one player of queue played
             else virtualView.setCurrentUser(currentUser+1);
 
-            if(phase == 1 && currentUser + 1 == numberOfPlayers) virtualView.setPhase(phase); //if it's planning phase write at the end
-            else if(phase == 0) virtualView.setPhase(phase);    //if it's action phase write every time
+            if(phase == 1 && currentUser + 1 == numberOfPlayers) virtualView.setPhase(1); //if it's planning phase write at the end
+            else if(phase == 0 && currentUser + 1 == numberOfPlayers) virtualView.setPhase(0);  //if action phase is over, set planning phase
+            else if(phase == 0 && currentUser +1 != numberOfPlayers) virtualView.setPhase(1);   //if action phase isn't over, set action phase
 
             roundController.notify();
         }
@@ -159,7 +160,7 @@ public class Controller implements ServerController{
     public void saveGame(){ virtualView.saveVirtualView(); }
     public void clearFile(){ virtualView.clearFile(); }
     public void setPhase(String phase){
-        if (phase.equals("ActionPhase")) jumpPhaseForRestore = true;
+        if (phase.equals("ActionPhase")){ jumpPhaseForRestore = true; System.out.println("action");}
         else if(phase.equals("PlanningPhase")) jumpPhaseForRestore = false;
     }
     public void schoolRestore(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, String team){
