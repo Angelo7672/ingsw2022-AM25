@@ -1,17 +1,36 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.VirtualView;
+import it.polimi.ingsw.controller.listeners.BagListener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+/*
 class BagTest {
-   /* Bag bag;
+    Bag bag;
+
     
     @BeforeEach
     void initialization(){
         bag = new Bag();
+        BagListener bagListener = new BagListener() {
+            @Override
+            public void notifyBagExtraction() {
+
+            }
+
+            @Override
+            public void notifyBag(List<Integer> bag) {
+
+            }
+        };
         bag.bagInitialize();
+
+
     }
 
     @Test
@@ -24,7 +43,7 @@ class BagTest {
             assertTrue(test >= 0, "A number outside the legend has been extracted");
             assertTrue(test < 5, "A number outside the legend has been extracted");
         }
-    }*/
+    }
 
 
    /* @Test
@@ -41,4 +60,3 @@ class BagTest {
         assertTrue(bag.checkVictory(),"The bag be empty");
     }
 */
-}
