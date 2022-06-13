@@ -314,7 +314,7 @@ public class VirtualView
     public void notifyMaxMove(int queueRef, int maxMove) { queue.get(queueRef).setMaxMoveMotherNature(maxMove); }
     @Override
     public void notifySpecial(int specialRef, int playerRef) {  //notify use of a special by a player
-        server.sendUsedSpecial(playerRef, specialRef);
+        server.sendUsedSpecial(schoolBoards.get(playerRef).nickname, specialRef);
     }
     @Override
     public void notifySpecialList(ArrayList<Integer> specialList) {

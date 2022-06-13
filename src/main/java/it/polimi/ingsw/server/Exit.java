@@ -26,6 +26,6 @@ public interface Exit {
     void towerChangeColorOnIsland(int islandRef, int newColor);
     void islandInhibited(int islandRef, int isInhibited);
     void setSpecial(int specialRef);
-    void sendUsedSpecial(int playerRef, int indexSpecial);
+    void sendUsedSpecial(String nickname, int indexSpecial);
     void sendHandAfterRestore(int playerRef, ArrayList<String> hand);
 }

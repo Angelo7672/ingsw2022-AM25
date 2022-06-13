@@ -179,9 +179,9 @@ public class Proxy_s implements Exit {
             client.setSpecial(specialRef);
     }
     @Override
-    public void sendUsedSpecial(int playerRef, int indexSpecial){
+    public void sendUsedSpecial(String nickname, int indexSpecial){
         for (VirtualClient client:user)
-            client.sendUsedSpecial(playerRef,indexSpecial);
+            client.sendUsedSpecial(nickname,indexSpecial);
     }
     @Override
     public void sendHandAfterRestore(int playerRef, ArrayList<String> hand){
