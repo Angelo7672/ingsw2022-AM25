@@ -156,8 +156,8 @@ public class View {
 
     public void setSpecials(ArrayList<Special> specials){
         this.specials = specials;
-        for(Special s: specials)
-            this.specialListener.notifySpecialName(s.getName());
+        //for(Special s: specials)
+            //this.specialListener.notifySpecialName(s.getName());
     }
     public void setSpecialCost(int cost, int special){specials.get(special).setCost(cost);}
     public void setSpecialName(String name, int special){specials.get(special).setName(name);}

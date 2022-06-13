@@ -12,9 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.ArrayList;
 
-public class LoginSceneController implements SceneController {
+public class LoginSceneController implements SceneController{
     private GUI gui;
     private String currentNickname;
     private String currentCharacter;
@@ -56,6 +57,7 @@ public class LoginSceneController implements SceneController {
         if(currentNickname!="" && currentCharacter!="") {
             if (proxy.setupConnection(currentNickname, currentCharacter)){
                 gui.switchScene(GUI.MAIN);
+
             System.out.println("SetupConnection done");
         }
             else {

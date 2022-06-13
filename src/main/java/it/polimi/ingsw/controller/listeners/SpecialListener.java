@@ -1,7 +1,8 @@
 package it.polimi.ingsw.controller.listeners;
 
+import java.util.ArrayList;
+
 public interface SpecialListener {
-    public void notifySpecial(int specialRef);
-    public void notifySpecialName(String specialName);
-    public void notifyPlayedSpecial(int specialRef);
+    public void notifySpecial(int specialRef, int playerRef);
+    public void notifySpecialList(ArrayList<Integer> specialsList);
 }

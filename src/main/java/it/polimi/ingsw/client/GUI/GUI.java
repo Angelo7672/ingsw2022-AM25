@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.server.answer.SavedGameAnswer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -56,10 +57,6 @@ public class GUI extends Application {
         primaryStage.centerOnScreen();
         primaryStage.show();
 
-        sceneNames.add(SETUP);
-        sceneNames.add(LOGIN);
-        sceneNames.add(MAIN);
-
         //sceneSetup(stage, );
 
         String result = null;
@@ -70,17 +67,24 @@ public class GUI extends Application {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        if (result.equals("SetupGame")) {
-            //loadScene(stage, LOGIN);
-            sceneSetup(stage, SETUP);
+        if(result.equals("SavedGame")){
+            SavedGameAnswer savedGame = (SavedGameAnswer) proxy.getMessage();
+            //if(!savedGame()){
+            //    loadScene(stage,SETUP);
+            //}
+        }
+        else if (result.equals("SetupGame")) {
+            loadScene(stage, SETUP);
+            //sceneSetup(stage, SETUP);
         } else if (result.equals("Server Sold Out")) {
             System.out.println(result);
         } else if (result.equals("Not first")) {
-            //loadScene(stage, LOGIN);
-            sceneSetup(stage, LOGIN);
+            loadScene(stage, LOGIN);
+            //sceneSetup(stage, LOGIN);
         }
 
     }
+
 
     public void sceneSetup(Stage stage, String sceneName) {
         /*
@@ -113,10 +117,10 @@ public class GUI extends Application {
             initializeMainScene();
             //loadScene(stage, MAIN);
 
-        }/*
-        stage.setScene(currentScene);
+        }
+        stage.setScene(scenesMap.get(sceneName));
         stage.centerOnScreen();
-        stage.show();*/
+        stage.show();
 
     }
 
@@ -132,9 +136,15 @@ public class GUI extends Application {
             e.printStackTrace();
         }
         currentScene = new Scene(root);
+        scenesMap.put(sceneName, currentScene);
         currentSceneController = loader.getController();
         currentSceneController.setGUI(this);
         currentSceneController.setProxy(proxy);
+        sceneControllersMap.put(sceneName, currentSceneController);
+        /*
+        stage.setScene(currentScene);
+        stage.centerOnScreen();
+        stage.show();*/
 
         //stage.setScene(scenesMap.get(sceneName));
 
@@ -144,6 +154,7 @@ public class GUI extends Application {
         stage.setScene(currentScene);
         stage.centerOnScreen();
     }
+
 
 
     public void setupView(MainSceneController controller) {
@@ -158,8 +169,19 @@ public class GUI extends Application {
         view.setTowersListener(controller);
     }
 
-    public void switchScene(String scene) {
-        loadScene(primaryStage, scene);
+    public void switchScene(String sceneName) {
+        System.out.println("switched scene to "+ sceneName);
+        loadScene(primaryStage, sceneName);
+        System.out.println("loaded scene" + sceneName);
+        if (sceneName == LOGIN) {
+            initializeLoginScene();
+            //loadScene(stage, LOGIN);
+
+        } else if (sceneName == MAIN) {
+            initializeMainScene();
+            //loadScene(stage, MAIN);
+
+        }
         primaryStage.show();
     }
 
@@ -173,10 +195,13 @@ public class GUI extends Application {
 
 
     public void initializeLoginScene() {
+        System.out.println("initializeLoginScene");
         Platform.runLater(()->{
-            LoginSceneController controller = (LoginSceneController) currentSceneController;
+            //LoginSceneController controller = (LoginSceneController) currentSceneController;
+            LoginSceneController controller = (LoginSceneController) sceneControllersMap.get(LOGIN);
             try {
                 ArrayList<String> characters = proxy.getChosenCharacters();
+                System.out.println("getting chosen characters");
                 controller.disableCharacters(characters);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -189,9 +214,13 @@ public class GUI extends Application {
     }
 
     public void initializeMainScene() {
+        System.out.println("initializeMainScene");
         Platform.runLater(()->{
             try {
-            this.view = proxy.startView();
+                System.out.println("view not started yet");
+                this.view = proxy.startView();//this.view = new View(2, true); //
+                System.out.println("view started");
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -199,14 +228,18 @@ public class GUI extends Application {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-                MainSceneController controller = (MainSceneController) currentSceneController;
-                setupView(controller);
-                controller.setView(this.view);
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            setupView(controller);
+            controller.setView(this.view);
 
-                controller.setNumberOfPlayers(view.getNumberOfPlayers());
-                controller.setExpertMode(view.getExpertMode());
-                for (int i = 0; i < view.getNumberOfPlayers(); i++)
-                    controller.setUserInfo(view.getNickname(i), view.getCharacter(i));
+            controller.setNumberOfPlayers(view.getNumberOfPlayers());
+            controller.setExpertMode(view.getExpertMode());
+            for (int i = 0; i < view.getNumberOfPlayers(); i++)
+                controller.setUserInfo(view.getNickname(i), view.getCharacter(i));
+
+                    controller.startMainScene();
+                    primaryStage.setScene(scenesMap.get(MAIN));
+                    primaryStage.show();
         });
 
 

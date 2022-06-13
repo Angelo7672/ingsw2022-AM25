@@ -38,6 +38,15 @@ public class Game implements GameManager{
         Round round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         roundStrategies.add(round);
 
+
+    }
+
+    @Override
+    public void initializeGame(){
+        bag.bagInitialize();
+        playerManager.initializeSchool();
+        islandsManager.islandsInitialize();
+
         if(expertMode){
             RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
 
@@ -57,14 +66,9 @@ public class Game implements GameManager{
                 );
             }
             Collections.sort(extractedSpecials);    //I want an ordered array (required in server)
+            this.specialListener.notifySpecialList(extractedSpecials);
         }
-    }
 
-    @Override
-    public void initializeGame(){
-        bag.bagInitialize();
-        playerManager.initializeSchool();
-        islandsManager.islandsInitialize();
     }
     @Override
     public void schoolRestore(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, String team){
@@ -201,6 +205,7 @@ public class Game implements GameManager{
     public boolean useSpecialLite(int indexSpecial, int playerRef){
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, -1); //cos'è ref?
+            this.specialListener.notifySpecial(indexSpecial, playerRef);
             playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
             roundStrategies.get(indexSpecial).increaseCost();
         } else return false;
@@ -214,6 +219,7 @@ public class Game implements GameManager{
 
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, ref);
+            this.specialListener.notifySpecial(indexSpecial, playerRef);
             checker = roundStrategies.get(indexSpecial).effect(ref);
             if(checker) {
                 playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
@@ -230,6 +236,7 @@ public class Game implements GameManager{
 
         if (affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, ref);
+            this.specialListener.notifySpecial(indexSpecial, playerRef);
             checker = roundStrategies.get(indexSpecial).effect(ref, color);
             if(checker) {
                 playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
@@ -246,6 +253,7 @@ public class Game implements GameManager{
 
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, playerRef);
+            this.specialListener.notifySpecial(indexSpecial, playerRef);
             checker = roundStrategies.get(indexSpecial).effect(playerRef, color1, color2);
             if(checker) {
                 playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
@@ -262,7 +270,7 @@ public class Game implements GameManager{
     public void setSpecial(int indexSpecial, int refSpecial){
         this.indexSpecial = indexSpecial;
         this.refSpecial = refSpecial;
-        this.specialListener.notifySpecial(indexSpecial);
+
     }
 
     public int findName(int index){

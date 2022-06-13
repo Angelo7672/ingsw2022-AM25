@@ -11,14 +11,15 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 
-public class MainSceneController implements SceneController, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
-        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, Initializable {
+public class MainSceneController implements SceneController, TowersListener, ProfessorsListener,PlayedCardListener,
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener {
 
     private GUI gui;
     private View view;
@@ -29,6 +30,7 @@ public class MainSceneController implements SceneController, TowersListener, Pro
     private int numberOfPlayers;
     private boolean expertMode;
     private HashMap<String, String> userInfo;
+    private int gamePhase;
 
     @FXML private ImageView island1;
     @FXML private ImageView island2;
@@ -58,8 +60,8 @@ public class MainSceneController implements SceneController, TowersListener, Pro
         this.expertMode=false;
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resources) {
+
+    public void startMainScene() {
         if (numberOfPlayers == 2) {
             schoolBoard3.setVisible(false);
             schoolBoard4.setVisible(false);
@@ -69,11 +71,29 @@ public class MainSceneController implements SceneController, TowersListener, Pro
         if (expertMode == false) {
             useSpecialButton.setVisible(false);
         }
+        System.out.println("startMainScene");
+        try {
+            if(proxy.startPlanningPhase()) {
+                gamePhase = 1;
+                //showCards();
+            }
+            else
+                System.out.println("errore");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showCards(){
+        //fa comparire la finestra con le carte
     }
 
 
     public void setView(View view){
         this.view=view;
+        System.out.println("view set");
     }
 
     @Override
@@ -134,24 +154,19 @@ public class MainSceneController implements SceneController, TowersListener, Pro
 
     }
 
-    @Override
-    public void notifySpecial(int specialRef) {
 
-    }
-
-    @Override
-    public void notifySpecialName(String specialName) {
-
-    }
-
-    @Override
-    public void notifyPlayedSpecial(int specialRef) {
-
-    }
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
-
+        if(place==0)
+            System.out.println("student in entrance");
+        else if(place==1){
+            System.out.println("students at table");
+        } else if(place==2)
+            System.out.println("student in island");
+        else if(place==3){
+            System.out.println("students on cloud");
+        }
     }
 
     @Override

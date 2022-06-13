@@ -18,7 +18,7 @@ public class VirtualView
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
     private ArrayList<Hand> hands;
-    private ArrayList<Integer> specials; //specials keeps the 3 special character for the game
+    private ArrayList<Integer> specialList; //specials keeps the 3 special character for the game
     private List<Integer> bag;
     private ArrayList<Queue> queue;
     private transient ControllerServer server;
@@ -31,7 +31,7 @@ public class VirtualView
         this.hands = new ArrayList<>();
         this.clouds = new ArrayList<>();
         this.islands = new ArrayList<>();
-        this.specials = new ArrayList<>();
+        this.specialList = new ArrayList<>();
         this.queue = new ArrayList<>();
         this.bag = new ArrayList<>();
         this.server = server;
@@ -302,21 +302,6 @@ public class VirtualView
         islands.get(islandRef).setInhibited(isInhibited);
         server.islandInhibited(islandRef, isInhibited);
     }
-    @Override
-    public void notifySpecial(int specialRef) {
-        specials.add(specialRef);
-        server.setSpecial(specialRef);
-    }
-
-    @Override
-    public void notifySpecialName(String specialName) {
-
-    }
-
-    @Override
-    public void notifyPlayedSpecial(int specialRef) {
-
-    }
 
     @Override
     public void notifyBagExtraction() { bag.remove(0); }
@@ -328,6 +313,16 @@ public class VirtualView
     public void notifyValueCard(int queueRef, int valueCard) { queue.get(queueRef).setValueCard(valueCard); }
     @Override
     public void notifyMaxMove(int queueRef, int maxMove) { queue.get(queueRef).setMaxMoveMotherNature(maxMove); }
+
+    @Override
+    public void notifySpecial(int specialRef, int playerRef) {
+
+    }
+
+    @Override
+    public void notifySpecialList(ArrayList<Integer> specialList) {
+        this.specialList=specialList;
+    }
 
     private class TurnInfo implements Serializable{
         private int currentUser;

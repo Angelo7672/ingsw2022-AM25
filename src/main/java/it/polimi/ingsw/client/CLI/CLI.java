@@ -616,19 +616,14 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     @Override
-    public void notifySpecial(int specialRef) {
+    public void notifySpecial(int specialRef, int playerRef) {
         printable.cli();
     }
-
     @Override
-    public void notifySpecialName(String specialName) {
+    public void notifySpecialList(ArrayList<Integer> specialsList) {
 
     }
 
-    @Override
-    public void notifyPlayedSpecial(int specialRef) {
-        printable.cli();
-    }
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
@@ -660,4 +655,5 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     public void notifyWinner() throws IOException {
         winner();
     }
+
 }
