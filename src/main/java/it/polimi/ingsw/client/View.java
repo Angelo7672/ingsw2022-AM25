@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.listeners.*;
 import it.polimi.ingsw.model.Assistant;
 import it.polimi.ingsw.server.answer.viewmessage.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class View {
@@ -24,12 +25,14 @@ public class View {
     private MotherPositionListener motherPositionListener;
     private PlayedCardListener playedCardListener;
     private ProfessorsListener professorsListener;
-    private QueueListener queueListener;
     private SpecialListener specialListener;
     private StudentsListener studentsListener;
-    private BagListener bagListener;
+    private WinnerListener winnerListener;
+    private DisconnectedListener disconnectedListener;
     private int maxStepsMotherNature;
     private int motherNaturePos;
+    private String winner;
+    private boolean disconnected;
 
     public View(int numberOfPlayers, boolean expertMode){
         this.numberOfPlayers = numberOfPlayers;
@@ -251,10 +254,6 @@ public class View {
         this.professorsListener = professorsListener;
     }
 
-    public void setQueueListener(QueueListener queueListener) {
-        this.queueListener = queueListener;
-    }
-
     public void setSpecialListener(SpecialListener specialListener) {
         this.specialListener = specialListener;
     }
@@ -263,8 +262,24 @@ public class View {
         this.studentsListener = studentsListener;
     }
 
-    public void setBagListener(BagListener bagListener) {
-        this.bagListener = bagListener;
+    public void setDisconnectedListener(DisconnectedListener disconnectedListener) {
+        this.disconnectedListener = disconnectedListener;
+    }
+
+    public void setWinnerListener(WinnerListener winnerListener){this.winnerListener=winnerListener;}
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) throws IOException {
+        this.winner = winner;
+        winnerListener.notifyWinner();
+    }
+
+    public void setDisconnected(boolean disconnected) throws IOException {
+        this.disconnected = disconnected;
+        disconnectedListener.notifyDisconnected();
     }
 
 

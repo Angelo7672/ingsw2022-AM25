@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.message.special.Special9Message;
 import it.polimi.ingsw.server.answer.GenericAnswer;
 import it.polimi.ingsw.server.Entrance;
 import it.polimi.ingsw.server.VirtualClient;
+import it.polimi.ingsw.server.answer.MoveNotAllowedAnswer;
 
 public class Special9 implements Special{
     private Special9Message special9Msg;
@@ -12,17 +13,25 @@ public class Special9 implements Special{
 
     public Special9(Entrance server) { this.server = server; }
 
-    public boolean effect(int playerRef, VirtualClient user){
+    @Override
+    public void effect(int playerRef, VirtualClient user){
         VirtualClient virtualClient = user;
         boolean checker;
 
-        checker = server.useSpecialSimple(9, playerRef, special9Msg.getColor());
+        try {
+            virtualClient.setSpecial9();
+            virtualClient.send(new GenericAnswer("ok"));
+            synchronized (this) { this.wait(); }
 
-        if(checker) virtualClient.send(new GenericAnswer("ok"));
-        else virtualClient.send(new GenericAnswer("error"));
+            checker = server.useSpecialSimple(9, playerRef, special9Msg.getColor());
 
-        return checker;
+            if (checker) virtualClient.send(new GenericAnswer("ok"));
+            else virtualClient.send(new MoveNotAllowedAnswer());
+        }catch (InterruptedException e) { e.printStackTrace(); }
     }
 
+    @Override
     public void setSpecialMessage(Message msg) { special9Msg = (Special9Message) msg; }
+    @Override
+    public void wakeUp() { }
 }

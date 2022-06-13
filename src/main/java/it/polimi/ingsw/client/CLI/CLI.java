@@ -15,7 +15,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class CLI implements Runnable, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
-        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener{
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, WinnerListener, DisconnectedListener{
 
     private final Exit proxy;
     private final Scanner scanner;
@@ -23,11 +23,10 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     private final PlayerConstants constants;
     private View view;
     private final Socket socket;
-    private String winner;
     private Printable printable;
-    private String ANSI_RESET = "\u001B[0m";
-    private String ANSI_RED = "\u001B[31m";
-    private String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
+    private final String ANSI_RESET = "\u001B[0m";
+    private final String ANSI_RED = "\u001B[31m";
+    private final String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
 
 
     public CLI(Socket socket) throws IOException{
@@ -49,12 +48,19 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 setupGame();
                 setupConnection();
             }
+            else {
+                System.out.println();
+                System.out.println(SPACE + "Setup Connection done, waiting for players...");
+            }
         }
         else if(result.equals("SetupGame")) {
             setupGame();
         }
         else if(result.equals("LoginRestore")){
+            restoreGame = true;
             loginRestore();
+            System.out.println();
+            System.out.println(SPACE+"Setup Connection done, waiting for players...");
         }
         else  if (result.equals("Server Sold Out")){
             System.out.println();
@@ -73,6 +79,8 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         view.setProfessorsListener(this);
         view.setStudentsListener(this);
         view.setTowersListener(this);
+        view.setDisconnectedListener(this);
+        view.setWinnerListener(this);
         printable = new Printable(view);
         System.out.println();
         System.out.println(SPACE+"Game is started! Wait for your turn...");
@@ -81,11 +89,11 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     public void setupConnection() throws IOException, ClassNotFoundException {
         while (true) {
             ArrayList<String> chosenCharacters = proxy.getChosenCharacters();
-        ArrayList<String> availableCharacters = new ArrayList<>();
-        if(!chosenCharacters.contains("WIZARD")) availableCharacters.add("WIZARD");
-        if(!chosenCharacters.contains("KING")) availableCharacters.add("KING");
-        if(!chosenCharacters.contains("WITCH")) availableCharacters.add("WITCH");
-        if(!chosenCharacters.contains("SAMURAI")) availableCharacters.add("SAMURAI");
+            ArrayList<String> availableCharacters = new ArrayList<>();
+            if(!chosenCharacters.contains("WIZARD")) availableCharacters.add("WIZARD");
+            if(!chosenCharacters.contains("KING")) availableCharacters.add("KING");
+            if(!chosenCharacters.contains("WITCH")) availableCharacters.add("WITCH");
+            if(!chosenCharacters.contains("SAMURAI")) availableCharacters.add("SAMURAI");
             String nickname;
             String character;
             do {
@@ -162,9 +170,9 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             System.out.print(SPACE+"There is a game started: number of players: " + savedGame.getNumberOfPlayers() + " . Expert mode: ");
             if (savedGame.isExpertMode()) System.out.println("yes");
             else System.out.println("no");
-            System.out.println();
-            System.out.print(SPACE+"Do you want to continue it? [y/n] ");
             do{
+                System.out.println();
+                System.out.print(SPACE+"Do you want to continue it? [y/n] ");
                 decision = scanner.next();
                 if(!decision.equalsIgnoreCase("n") && !decision.equalsIgnoreCase("y")){
                     decision=null;
@@ -190,7 +198,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     private void loginRestore() throws IOException, ClassNotFoundException {
         while (true){
             System.out.println();
-            System.out.println("Insert nickname for restore last game: ");
+            System.out.print(SPACE+"Insert nickname for restore last game: ");
             String nickname = scanner.next();
             if(proxy.setupConnection(nickname, null)) return;
             else {
@@ -413,6 +421,10 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 }
                 accepted = proxy.moveStudent(colorInt, where, islandRef);
                 if (accepted.equals("transfer complete")) finished = true;
+                else if(accepted.equals("move not allowed")) {
+                    System.out.println();
+                    System.out.println(ANSI_RED+SPACE+"Move not allowed"+ANSI_RESET);
+                }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println();
                 System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
@@ -428,6 +440,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         int steps = -1;
         try {
             do {
+                System.out.println();
                 printable.printMotherNature();
                 System.out.println();
                 System.out.print(SPACE+"How many steps do you want to move Mother Nature? Maximum number of steps "+view.getMaxStepsMotherNature()+" ");
@@ -487,13 +500,13 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         try {
             setup();
             while (active) {
-                while(true) {
+                while(active) {
                     if (proxy.startPlanningPhase()){
                         constants.resetAll();
                         break;
                     }
                 }
-                while (!constants.isCloudChosen()) {
+                while (!constants.isCloudChosen()&&active) {
                     turn();
                 }
             }
@@ -506,11 +519,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     public void turn() throws IOException, ClassNotFoundException {
-        winner = proxy.getWinner();
-        if(winner!=null){
-            System.out.println("Game Over, the winner is "+winner);
-            socket.close();
-        }
         if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) useSpecial();
         phaseHandler(constants.lastPhase());
     }
@@ -543,6 +551,18 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         };
     }
 
+    private void disconnectClient() throws IOException {
+        System.out.println(ANSI_RED+SPACE+"One of the player is offline, Game over."+ANSI_RESET);
+        socket.close();
+        setActive(false);
+    }
+
+    private void winner() throws IOException {
+        System.out.println(ANSI_RED+SPACE+"Game over, the winner is "+view.getWinner()+"."+ANSI_RESET);
+        socket.close();
+        setActive(false);
+    }
+
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
         if(constants.isStartGame()) {
@@ -554,7 +574,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     public void notifyInhibited(int islandRef, int isInhibited) {
         if(constants.isStartGame()) {
             System.out.println();
-            System.out.print("New play: "+"\t"+" island "+islandRef+" No Entry tiles: "+isInhibited);
+            System.out.println("New play: "+"\t"+" island "+islandRef+" No Entry tiles: "+isInhibited);
         }
     }
 
@@ -562,7 +582,8 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     public void notifyIslandChange(int islandToDelete) {
         if(constants.isStartGame()) {
             System.out.println();
-            System.out.print("New play: "+"\t"+" island "+islandToDelete+" had been united.");
+            System.out.println("New play: "+"\t"+" island "+islandToDelete+1+" had been united.");
+            System.out.println();
         }
     }
 
@@ -570,7 +591,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     public void notifyMotherPosition(int newMotherPosition) {
         if(constants.isStartGame()) {
             System.out.println();
-            System.out.print("New play: "+"\t");
+            System.out.print("New play: "+"\t"+"\t");
             printable.printMotherNature();
         }
     }
@@ -628,5 +649,15 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         if(constants.isStartGame()&&!constants.isEndTurn()) {
             printable.printTowersOwner(islandRef);
         }
+    }
+
+    @Override
+    public void notifyDisconnected() throws IOException {
+        disconnectClient();
+    }
+
+    @Override
+    public void notifyWinner() throws IOException {
+        winner();
     }
 }

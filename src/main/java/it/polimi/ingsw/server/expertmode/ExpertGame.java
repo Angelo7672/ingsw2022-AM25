@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.expertmode;
 
 import it.polimi.ingsw.client.message.Message;
 import it.polimi.ingsw.server.Entrance;
+import it.polimi.ingsw.server.VirtualClient;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ public class ExpertGame extends Thread{
     private int firstSpecial, secondSpecial, thirdSpecial;
 
 
-    public ExpertGame(Entrance server, ArrayList<Integer> extractedSpecial){ //voglio che extractedSpecial ordinato
+    public ExpertGame(Entrance server, ArrayList<Integer> extractedSpecial){
         this.server = server;
         this.specialDeck = new SpecialDeck();
         this.firstSpecial = extractedSpecial.get(0);
@@ -60,17 +61,31 @@ public class ExpertGame extends Thread{
         }
     }
 
-    /*public boolean effect(int specialRef, int playerRef, VirtualClient user){
-        if (specialRef == firstSpecial)
-            return specialDeck.effect(0,playerRef,user);
-        else if(specialRef == secondSpecial)
-            return specialDeck.effect(1,playerRef,user);
-        else if (specialRef == thirdSpecial)
-            return specialDeck.effect(2,playerRef,user);
+    public boolean effect(int specialRef, int playerRef, VirtualClient user){
+        if (specialRef == firstSpecial) {
+            specialDeck.effect(0, playerRef, user);
+            return true;
+        }
+        else if(specialRef == secondSpecial) {
+            specialDeck.effect(1, playerRef, user);
+            return true;
+        }
+        else if (specialRef == thirdSpecial) {
+            specialDeck.effect(2, playerRef, user);
+            return true;
+        }
 
         return false;
-    }*/
+    }
 
-    public void setSpecialMsg(Message msg){ specialDeck.setSpecialMsg(msg); }
-
+    public void setSpecialMsg(int indexSpecial, Message msg){
+        if(indexSpecial == firstSpecial) specialDeck.setSpecialMsg(0,msg);
+        else if(indexSpecial == secondSpecial) specialDeck.setSpecialMsg(1,msg);
+        else if(indexSpecial == thirdSpecial) specialDeck.setSpecialMsg(2,msg);
+    }
+    public void wakeUp(int indexSpecial){
+        if(indexSpecial == firstSpecial) specialDeck.wakeUp(0);
+        else if(indexSpecial == secondSpecial) specialDeck.wakeUp(1);
+        else if(indexSpecial == thirdSpecial) specialDeck.wakeUp(2);
+    }
 }
