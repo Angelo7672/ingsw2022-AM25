@@ -71,11 +71,10 @@ public class Controller implements ServerController{
     public void restoreVirtualView(){ virtualView.restoreVirtualView(); }
     @Override
     public void restoreGame(){  //restore game
-        virtualView.restoreGame();
-
         server.sendGameInfo(numberOfPlayers, expertMode);   //at every client
         for(int i = 0; i < numberOfPlayers; i++)
             server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
+        virtualView.restoreGame();
     }
     @Override
     public void startGame(){
@@ -160,7 +159,7 @@ public class Controller implements ServerController{
     public void saveGame(){ virtualView.saveVirtualView(); }
     public void clearFile(){ virtualView.clearFile(); }
     public void setPhase(String phase){
-        if (phase.equals("ActionPhase")){ jumpPhaseForRestore = true; System.out.println("action");}
+        if (phase.equals("ActionPhase")){ jumpPhaseForRestore = true; }
         else if(phase.equals("PlanningPhase")) jumpPhaseForRestore = false;
     }
     public void schoolRestore(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, String team){

@@ -173,7 +173,6 @@ public class VirtualView
             //Bag Restore
             controller.bagRestore(bagTmp);
 
-            System.out.println("fine restore");
         } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace();
         } catch (ClassNotFoundException e) { e.printStackTrace(); }
