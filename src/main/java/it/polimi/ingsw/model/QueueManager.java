@@ -20,7 +20,7 @@ public class QueueManager {
         int firstInQueue;
 
         //The first player is chosen randomly, then queueForPlanificationPhase order the queue
-        firstInQueue = rnd.nextInt(numberOfPlayer - 1);
+        firstInQueue = rnd.nextInt(numberOfPlayer);
         Queue first = new Queue(firstInQueue,-1,-1);
         queue.add(first);
     }

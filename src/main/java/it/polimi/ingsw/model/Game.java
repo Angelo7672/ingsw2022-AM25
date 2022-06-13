@@ -37,8 +37,6 @@ public class Game implements GameManager{
 
         Round round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         roundStrategies.add(round);
-
-
     }
 
     @Override

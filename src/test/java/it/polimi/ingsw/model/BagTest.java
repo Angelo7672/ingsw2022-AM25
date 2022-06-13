@@ -1,14 +1,22 @@
 package it.polimi.ingsw.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BagTest {
-    /*@Test
+   /* Bag bag;
+    
+    @BeforeEach
+    void initialization(){
+        bag = new Bag();
+        bag.bagInitialize();
+    }
+
+    @Test
     @DisplayName("First test: check if all 120 numbers drawn are compatible with the legend")
     void bagInit(){
-        Bag bag = new Bag();
         int test;
 
         for(int i = 0; i < 120; i++) {
@@ -16,10 +24,10 @@ class BagTest {
             assertTrue(test >= 0, "A number outside the legend has been extracted");
             assertTrue(test < 5, "A number outside the legend has been extracted");
         }
-    }/*
+    }*/
 
 
-    @Test
+   /* @Test
     @DisplayName("Third test: extracts 130 students and check the victory")
     void checkVictory(){
         Bag bag = new Bag();
