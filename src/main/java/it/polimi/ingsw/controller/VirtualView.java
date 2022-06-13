@@ -312,15 +312,15 @@ public class VirtualView
     public void notifyValueCard(int queueRef, int valueCard) { queue.get(queueRef).setValueCard(valueCard); }
     @Override
     public void notifyMaxMove(int queueRef, int maxMove) { queue.get(queueRef).setMaxMoveMotherNature(maxMove); }
-
     @Override
-    public void notifySpecial(int specialRef, int playerRef) {
-
+    public void notifySpecial(int specialRef, int playerRef) {  //notify use of a special by a player
+        server.sendUsedSpecial(playerRef, specialRef);
     }
-
     @Override
     public void notifySpecialList(ArrayList<Integer> specialList) {
-        this.specialList=specialList;
+        this.specialList = specialList;
+        for(Integer special:specialList)
+            server.setSpecial(special);
     }
 
     private class TurnInfo implements Serializable{

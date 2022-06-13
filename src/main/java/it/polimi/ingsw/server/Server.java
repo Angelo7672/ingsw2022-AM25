@@ -186,6 +186,8 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public void setSpecial(int specialRef){ proxy.setSpecial(specialRef); }
     @Override
+    public void sendUsedSpecial(int playerRef, int indexSpecial){ proxy.sendUsedSpecial(playerRef, indexSpecial); }
+    @Override
     public void sendHandAfterRestore(int playerRef, ArrayList<String> hand){ proxy.sendHandAfterRestore(playerRef, hand); }
 
     @Override
