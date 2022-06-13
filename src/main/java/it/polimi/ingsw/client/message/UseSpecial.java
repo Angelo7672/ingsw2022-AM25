@@ -15,6 +15,7 @@ public class UseSpecial implements Message{
         this.color2 = color2;
     }
 
+
     public int getSpecialIndex() {
         return specialIndex;
     }

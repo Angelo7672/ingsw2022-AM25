@@ -10,7 +10,6 @@ import it.polimi.ingsw.server.answer.SavedGameAnswer;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -65,7 +64,9 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         else  if (result.equals("Server Sold Out")){
             System.out.println();
             System.out.print(ANSI_RED+SPACE+result+ANSI_RESET);
-            return;
+            socket.close();
+            scanner.close();
+            setActive(false);
         }
         if(!restoreGame) {
             setupConnection();
@@ -99,12 +100,12 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             do {
                 System.out.println();
                 System.out.print(SPACE+"Insert your nickname: ");
-                nickname = scanner.next();
+                nickname = readNext();
             } while (nickname == null);
             do {
                 System.out.println();
                 System.out.print(SPACE+"Choose a character: "+ availableCharacters + " ");
-                character = scanner.next().toUpperCase(Locale.ROOT);
+                character = readNext().toUpperCase(Locale.ROOT);
                 if (!availableCharacters.contains(character)) {
                     System.out.println();
                     System.out.println(ANSI_RED+SPACE+"Error, choose an available character"+ANSI_RESET);
@@ -131,7 +132,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 while (true){
                     System.out.println();
                     System.out.print(SPACE+"Insert number of player: ");
-                    String intString = scanner.next();
+                    String intString = readNext();
                     numberOfPlayers = Integer.parseInt(intString);
                     if(numberOfPlayers<2 || numberOfPlayers > 4){
                         System.out.println();
@@ -142,7 +143,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 do{
                     System.out.println();
                     System.out.print(SPACE+"Expert mode? [y/n] ");
-                    expertMode = scanner.next();
+                    expertMode = readNext();
                 }while(expertMode==null);
                 if (proxy.setupGame(numberOfPlayers, expertMode)) {
                     return;
@@ -173,7 +174,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             do{
                 System.out.println();
                 System.out.print(SPACE+"Do you want to continue it? [y/n] ");
-                decision = scanner.next();
+                decision = readNext();
                 if(!decision.equalsIgnoreCase("n") && !decision.equalsIgnoreCase("y")){
                     decision=null;
                     System.out.println();
@@ -199,7 +200,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         while (true){
             System.out.println();
             System.out.print(SPACE+"Insert nickname for restore last game: ");
-            String nickname = scanner.next();
+            String nickname = readNext();
             if(proxy.setupConnection(nickname, null)) return;
             else {
                 System.out.println();
@@ -215,7 +216,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     public void useSpecial() throws IOException, ClassNotFoundException {
         System.out.println();
         System.out.print(SPACE+"Do you want to use a special card? [y/n] ");
-        String answer = scanner.next();
+        String answer = readNext();
         if (answer.equalsIgnoreCase("n")) return;
         else if (answer.equalsIgnoreCase("y")) {
             int special = -1;
@@ -223,7 +224,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 do {
                     System.out.println();
                     System.out.print(SPACE+"Which special do you want to use? Insert number ");
-                    String intString = scanner.next();
+                    String intString = readNext();
                     special = Integer.parseInt(intString);
                 } while (special == -1);
             }catch (NumberFormatException e){
@@ -246,12 +247,10 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
 
     private boolean special(int special) throws IOException, ClassNotFoundException {
         try {
-            if (special == 2 || special == 4 || special == 6 || special == 8) {
-                return proxy.useSpecial(special, 0, null, null);
-            } else if (special == 1) {
+            if (special == 1) {
                 System.out.println();
                 System.out.print(SPACE+"Which student do you want to move? Insert color ");
-                String color = scanner.next();
+                String color = readNext();
                 if (translateColor(color) == -1) return false;
                 ArrayList<Integer> color1 = new ArrayList<>();
                 color1.add(translateColor(color));
@@ -281,18 +280,18 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 for (int i = 0; i < 3; i++) {
                     System.out.println();
                     System.out.print(SPACE+"Which student on the card?" );
-                    color = scanner.next();
+                    color = readNext();
                     if (translateColor(color) == -1) return false;
                     cardStudents.add(translateColor(color));
                     System.out.println();
                     System.out.print(SPACE+"Which student in the entrance? ");
-                    color = scanner.next();
+                    color = readNext();
                     if (translateColor(color) == -1) return false;
                     entranceStudents.add(translateColor(color));
                     if (i < 2) {
                         System.out.println();
                         System.out.print(SPACE+"Do you want to move student again? [Y/N] ");
-                        String answer = scanner.next();
+                        String answer = readNext();
                         if (answer.equalsIgnoreCase("n")) break;
                     }
                     if (proxy.useSpecial(special, 0, entranceStudents, cardStudents)) return true;
@@ -300,7 +299,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             } else if (special == 9) {
                 System.out.println();
                 System.out.print(SPACE+"Which color? ");
-                String color = scanner.next();
+                String color = readNext();
                 if (translateColor(color) == -1) return false;
                 return proxy.useSpecial(special, translateColor(color), null, null);
             } else if (special == 10) {
@@ -310,18 +309,18 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 for (int i = 0; i < 2; i++) {
                     System.out.println();
                     System.out.print(SPACE+"Which student on the table? ");
-                    color = scanner.next();
+                    color = readNext();
                     if (translateColor(color) == -1) return false;
                     tableStudents.add(translateColor(color));
                     System.out.println();
                     System.out.print(SPACE+"Which student in the entrance? ");
-                    color = scanner.next();
+                    color = readNext();
                     if (translateColor(color) == -1) return false;
                     entranceStudents.add(translateColor(color));
                     if (i < 1) {
                         System.out.println();
                         System.out.print(SPACE+"Do you want to move student again? [Y/N] ");
-                        String answer = scanner.next();
+                        String answer = readNext();
                         if (answer.equalsIgnoreCase("n")) break;
                     }
                 }
@@ -329,7 +328,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             } else if (special == 11) {
                 System.out.println();
                 System.out.print(SPACE+"Which student do you want to move? Insert color ");
-                String color = scanner.next();
+                String color = readNext();
                 if (translateColor(color) == -1) return false;
                 ArrayList<Integer> color1 = new ArrayList<>();
                 color1.add(translateColor(color));
@@ -337,7 +336,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             } else if (special == 12) {
                 System.out.println();
                 System.out.print(SPACE+"Which color? Insert color ");
-                String color = scanner.next();
+                String color = readNext();
                 if (translateColor(color) == -1) {
                     System.out.println();
                     System.out.print(ANSI_RED+SPACE+"Error, enter an existing color"+ANSI_RESET);
@@ -355,22 +354,19 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
 
     public void playCard() throws IOException, ClassNotFoundException {
         printable.cli();
-        System.out.println();
-        System.out.print(SPACE+"Which card do you want to play? ");
-        String card;
-        try {
-            card = scanner.next();
-        } catch (InputMismatchException e) {
+        while (true) {
             System.out.println();
-            System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
-            return;
-        }
-        String result = proxy.playCard(card);
-        if (!result.equalsIgnoreCase("ok")) System.out.println(result);
-        else {
-            constants.setCardPlayed(true);
-            System.out.println();
-            System.out.println(SPACE+"It's your opponent turn, wait...");
+            System.out.print(SPACE + "Which card do you want to play? ");
+            String card = null;
+            card = readNext();
+            String result = proxy.playCard(card);
+            if (!result.equalsIgnoreCase("ok")) System.out.println(ANSI_RED + SPACE + result + ANSI_RESET);
+            else {
+                constants.setCardPlayed(true);
+                System.out.println();
+                System.out.println(SPACE + "It's your opponent turn, wait...");
+                return;
+            }
         }
     }
 
@@ -387,7 +383,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 while(color==null) {
                     System.out.println();
                     System.out.print(SPACE+"Which student do you want to move? Insert color ");
-                    color = scanner.next();
+                    color = readNext();
                     colorInt = translateColor(color);
                     if(colorInt==-1) {
                         System.out.println();
@@ -398,7 +394,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 while(where==null) {
                     System.out.println();
                     System.out.print(SPACE+"Where do you want to move the student? School or Island ");
-                    where = scanner.next();
+                    where = readNext();
                     if(!where.equalsIgnoreCase("island")&&!where.equalsIgnoreCase("school")){
                         System.out.println();
                         System.out.println(ANSI_RED+SPACE+"Error, insert school or island"+ANSI_RESET);
@@ -409,7 +405,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                     while (islandRef==-1) {
                         System.out.println();
                         System.out.print(SPACE+"Which island? insert the number ");
-                        String intString = scanner.next();
+                        String intString = readNext();
                         islandRef = Integer.parseInt(intString);
                         islandRef = islandRef - 1;
                         if(islandRef<0 || islandRef>=view.getIslandSize()){
@@ -444,7 +440,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 printable.printMotherNature();
                 System.out.println();
                 System.out.print(SPACE+"How many steps do you want to move Mother Nature? Maximum number of steps "+view.getMaxStepsMotherNature()+" ");
-                String intString = scanner.next();
+                String intString = readNext();
                 steps = Integer.parseInt(intString);
                 if(steps>view.getMaxStepsMotherNature()) {
                     System.out.println();
@@ -470,7 +466,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 printable.printCloud();
                 System.out.println();
                 System.out.print(SPACE+"Which cloud do you want? ");
-                String intString = scanner.next();
+                String intString = readNext();
                 cloud = Integer.parseInt(intString);
                 if(cloud<=0 || cloud>view.getNumberOfPlayers()) {
                     cloud = -1;
@@ -551,6 +547,12 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         };
     }
 
+    private String readNext(){
+        String string = scanner.next();
+        scanner.nextLine();
+        return string;
+    }
+
     private void disconnectClient() throws IOException {
         System.out.println(ANSI_RED+SPACE+"One of the player is offline, Game over."+ANSI_RESET);
         socket.close();
@@ -581,9 +583,9 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     @Override
     public void notifyIslandChange(int islandToDelete) {
         if(constants.isStartGame()) {
-            System.out.println();
-            System.out.println("New play: "+"\t"+" island "+islandToDelete+1+" had been united.");
-            System.out.println();
+            //System.out.println();
+            System.out.println("New play: "+"\t"+" island "+(islandToDelete+1)+" had been united.");
+            //System.out.println();
         }
     }
 

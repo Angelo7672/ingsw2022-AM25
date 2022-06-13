@@ -1,9 +1,6 @@
 /**
  * This is the bag class, its job is to hold the 130 student tokens and provide random draws. It also announces when the student tokens are gone
- * @param bag is the list containing the 130 students in no particular order
  * @enum Colour has the following legend: GREEN-->0, RED-->1, YELLOW-->2, PINK-->3, BLUE-->4
- * @method extraction remove the first element of the list and check its color and the integer correspondent
- * @method checkVictory check if the last element has been extracted
  */
 package it.polimi.ingsw.model;
 

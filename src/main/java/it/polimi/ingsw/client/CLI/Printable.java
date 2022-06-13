@@ -24,8 +24,9 @@ public class Printable {
                 ANSI_YELLOW +", Yellow " + view.getStudentsIsland(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsIsland(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsIsland(i)[4]+ANSI_RESET);
     }
     protected void printTowersValue(int i){
+        System.out.println();
         System.out.print("\t"+"Island "+(i+1)+": ");
-        System.out.println("\t"+"     Towers value: " + view.getIslandTowers(i));
+        System.out.println("\t"+"     Island size: " + view.getIslandTowers(i));
         System.out.println();
     }
     protected void printTowersOwner(int i){
@@ -34,7 +35,7 @@ public class Printable {
         else if(view.getTowersColor(i)==1) System.out.println("\t"+"    Towers Team: " + ANSI_BLACK+ "BLACK" + ANSI_RESET);
         else if(view.getTowersColor(i)==2) System.out.println("\t"+"    Towers Team: " + ANSI_WHITE+ "GREY" + ANSI_RESET);
         else if(view.getTowersColor(i)==-1) System.out.println("\t"+"    Towers Team: NO ONE");
-        System.out.println();
+        //System.out.println();
     }
     protected void printMotherNature(){
         System.out.println(UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));//aggiungere
@@ -139,7 +140,7 @@ public class Printable {
             else if(view.getTowersColor(i)==1) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + ANSI_BLACK+ "BLACK" + ANSI_RESET);
             else if(view.getTowersColor(i)==2) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + ANSI_WHITE+ "GREY" + ANSI_RESET);
             else if(view.getTowersColor(i)==-1) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + "NO ONE" + ANSI_RESET);
-            System.out.println(". Towers value: " + view.getIslandTowers(i));
+            System.out.println(". Island size: " + view.getIslandTowers(i));
         }
         System.out.println();
         System.out.println(UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));//aggiungere
