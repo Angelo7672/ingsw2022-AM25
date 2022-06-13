@@ -26,7 +26,7 @@ public class Client {
             try {
                 socket = new Socket("127.0.0.1", 2525);
             } catch (IOException e) {
-                System.err.println("Some errors occurred, try again.");
+                System.out.println(SPACE+ANSI_RED+"Some errors occurred, try again."+ANSI_RESET);
                 return;
             }
             System.out.println(SPACE+"Connection established");
