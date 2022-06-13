@@ -206,7 +206,7 @@ public class VirtualView
         return true;
     }
     public String getCharacter(int playerRef){ return this.schoolBoards.get(playerRef).character; }
-    public String getLastPlayedCard(int playerRef){ return hands.get(playerRef).lastPlayedCard; }
+    public String getLastPlayedCard(int playerRef){ return hands.get(playerRef).getLastPlayedCard(); }
     public String getNickname(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
     public void addNewPlayer(String nickname, String character){
         int player;

@@ -99,22 +99,19 @@ public class PlayerManager  {
     }
 
     public void playCard(int playerRef, Assistant card, ArrayList<Assistant> alreadyPlayedAssistant) throws NotAllowedException{
-        int i = 0;
-
-        if(!players.get(playerRef).hand.remove(card)) throw new NotAllowedException();
+        if(!players.get(playerRef).hand.contains(card)) throw new NotAllowedException();
         else {
             for (Assistant alreadyPlayedCard:alreadyPlayedAssistant) {
                 if (alreadyPlayedCard.equals(card)) {
                     if (players.get(playerRef).hand.size() > alreadyPlayedAssistant.size()) throw new NotAllowedException();    //if the player has more cards than cards played, he definitely has one card different to play
                     else {
-                        if(i > 0) throw new NotAllowedException();  //there is almost one card different
                         if(!(players.get(playerRef).hand.containsAll(alreadyPlayedAssistant) &&
                                 alreadyPlayedAssistant.containsAll(players.get(playerRef).hand)))
-                            throw new NotAllowedException(); //if already played card list is different from hand list throw exception
+                            throw new NotAllowedException(); //if an already played card list is different from hand list throw exception
                     }
                 }
-                i++;
             }
+            players.get(playerRef).hand.remove(card);
         }
     }
     public boolean checkIfCardsFinished(int playerRef){  //Check if the player has played his last card
@@ -251,7 +248,6 @@ public class PlayerManager  {
                 p.school.placeTower(numberOfTower);
                 this.towersListener.notifyTowersChange(0, players.indexOf(p), p.school.getTowers());
             }
-
         }
     }
 

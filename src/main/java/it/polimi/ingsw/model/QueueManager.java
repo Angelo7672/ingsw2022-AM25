@@ -25,6 +25,20 @@ public class QueueManager {
         queue.add(first);
     }
 
+    private String toString(Assistant assistant){
+        if(assistant.equals(Assistant.LION)) return "LION";
+        else if(assistant.equals(Assistant.GOOSE)) return "GOOSE";
+        else if(assistant.equals(Assistant.CAT)) return "CAT";
+        else if(assistant.equals(Assistant.EAGLE)) return "EAGLE";
+        else if(assistant.equals(Assistant.FOX)) return "FOX";
+        else if(assistant.equals(Assistant.LIZARD)) return "LIZARD";
+        else if(assistant.equals(Assistant.OCTOPUS)) return "OCTOPUS";
+        else if(assistant.equals(Assistant.DOG)) return "DOG";
+        else if(assistant.equals(Assistant.ELEPHANT)) return "ELEPHANT";
+        else if(assistant.equals(Assistant.TURTLE)) return "TURTLE";
+        return "NONE";
+    }
+
     public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
         queue.remove(0);
         for(int i = 0; i < numberOfPlayer; i++)
@@ -62,7 +76,7 @@ public class QueueManager {
         playerManager.playCard(playerRef,card,alreadyPlayedAssistant);
         queue.get(queueRef).setValueCard(card.getValue());
         queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
-        this.playedCardListener.notifyPlayedCard(playerRef,String.valueOf(card));
+        this.playedCardListener.notifyPlayedCard(playerRef, toString(card));
 
         if(playerManager.checkIfCardsFinished(playerRef)) return true;  //game will finish at the end of the turn
 
