@@ -20,7 +20,7 @@ import java.util.HashMap;
 public class GUI extends Application {
 
     private static Exit proxy;
-    private static View view;
+    private View view;
     private Socket socket;
     public Stage primaryStage;
     private SceneController currentSceneController;
@@ -30,6 +30,7 @@ public class GUI extends Application {
     private HashMap<String, String> userInfo;
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String LOGIN = "LoginScene.fxml";
+    protected static final String WAITING = "WaitingScene.fxml";
     protected static final String MAIN = "MainScene.fxml";
     private HashMap<String, Scene> scenesMap;
     private HashMap<String, SceneController > sceneControllersMap;
@@ -87,25 +88,6 @@ public class GUI extends Application {
 
 
     public void sceneSetup(Stage stage, String sceneName) {
-        /*
-        Parent root = null;
-
-        for(String sceneName : sceneNames) {
-            FXMLLoader loader = new FXMLLoader();
-            try {
-                loader.setLocation(getClass().getResource(sceneName));
-                root = loader.load();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            SceneController controller = loader.getController();
-            scenesMap.put(sceneName, new Scene(root));
-            sceneControllersMap.put(sceneName, controller);
-            controller.setGUI(this);
-            controller.setProxy(proxy);
-
-        }*/
 
         loadScene(stage, sceneName);
 
@@ -141,12 +123,6 @@ public class GUI extends Application {
         currentSceneController.setGUI(this);
         currentSceneController.setProxy(proxy);
         sceneControllersMap.put(sceneName, currentSceneController);
-        /*
-        stage.setScene(currentScene);
-        stage.centerOnScreen();
-        stage.show();*/
-
-        //stage.setScene(scenesMap.get(sceneName));
 
         System.out.println("Current scene: " + currentScene);
         System.out.println("Current controller: " + currentSceneController);
@@ -170,7 +146,7 @@ public class GUI extends Application {
     }
 
     public void switchScene(String sceneName) {
-        System.out.println("switched scene to "+ sceneName);
+        System.out.println("switched scene to " + sceneName);
         loadScene(primaryStage, sceneName);
         System.out.println("loaded scene" + sceneName);
         if (sceneName == LOGIN) {
@@ -181,8 +157,29 @@ public class GUI extends Application {
             initializeMainScene();
             //loadScene(stage, MAIN);
 
+        } else if (sceneName == WAITING) {
+            Platform.runLater(()->{
+                try {
+                    System.out.println("view not started yet");
+
+                    View view = proxy.startView();
+                    if(view!=null){
+                        this.view=view;
+                        System.out.println("view started");
+                        switchScene(MAIN);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                primaryStage.show();
+            });
+
         }
-        primaryStage.show();
     }
 
     public void setSocket(Socket socket) {
@@ -216,18 +213,7 @@ public class GUI extends Application {
     public void initializeMainScene() {
         System.out.println("initializeMainScene");
         Platform.runLater(()->{
-            try {
-                System.out.println("view not started yet");
-                this.view = proxy.startView();//this.view = new View(2, true); //
-                System.out.println("view started");
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             setupView(controller);
             controller.setView(this.view);

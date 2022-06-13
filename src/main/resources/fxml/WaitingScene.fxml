@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.WaitingSceneController">
+   <children>
+      <Label layoutX="14.0" layoutY="86.0" prefHeight="27.0" prefWidth="250.0" text="Waiting for other players...">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+   </children>
+</AnchorPane>

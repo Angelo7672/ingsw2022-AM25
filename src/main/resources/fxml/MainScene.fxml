@@ -146,7 +146,7 @@
       <AnchorPane layoutX="783.0" layoutY="21.0" prefHeight="200.0" prefWidth="200.0" />
       <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
-            <AnchorPane prefHeight="404.0" prefWidth="224.0" style="-fx-background-image: D:\Users\Ginny\Documents\GitHub\ingsw2022-AM25\src\main\resources\graphics\schoolboard;" BorderPane.alignment="CENTER" />
+            <AnchorPane prefHeight="404.0" prefWidth="224.0" style="-fx-background-image: url('D:\Users\Ginny\Documents\GitHub\ingsw2022-AM25\src\main\resources\graphics\schoolboard');" BorderPane.alignment="CENTER" />
          </left>
          <right>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />

@@ -225,6 +225,7 @@ public class Proxy_c implements Exit{
                         synchronized (lock2){
                             view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());
                             lock2.notify();
+                            System.out.println("notify called");
                         }
                     }
                     else if(tmp instanceof UserInfoAnswer) {

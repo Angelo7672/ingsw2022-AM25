@@ -56,7 +56,7 @@ public class LoginSceneController implements SceneController{
         System.out.println(currentNickname +", "+ currentCharacter);
         if(currentNickname!="" && currentCharacter!="") {
             if (proxy.setupConnection(currentNickname, currentCharacter)){
-                gui.switchScene(GUI.MAIN);
+                gui.switchScene(GUI.WAITING);
 
             System.out.println("SetupConnection done");
         }
