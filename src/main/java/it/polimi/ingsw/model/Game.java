@@ -134,14 +134,14 @@ public class Game implements GameManager{
 
         if(numberOfPlayer == 2 || numberOfPlayer ==4 ) {
             for (int j = 0; j < numberOfPlayer && !lastTurn; j++) {
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 3 && !lastTurn; i++) {
                     cloudsManager.refreshCloudStudents(bag.extraction(), j);
                     lastTurn = bag.checkVictory();
                 }
             }
         } else if(numberOfPlayer == 3) {
             for (int j = 0; j < numberOfPlayer && !lastTurn; j++) {
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < 4 && !lastTurn; i++) {
                     cloudsManager.refreshCloudStudents(bag.extraction(), j);
                     lastTurn = bag.checkVictory();
                 }

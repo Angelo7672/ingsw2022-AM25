@@ -13,7 +13,6 @@ public class PlayerManager  {
 
     protected TowersListener towersListener;
     protected ProfessorsListener professorsListener;
-    protected SpecialListener specialListener;
     protected CoinsListener coinsListener;
     protected PlayedCardListener playedCardListener;
     protected StudentsListener studentsListener;
@@ -205,7 +204,7 @@ public class PlayerManager  {
             this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
         }
     }
-    public int getStudentEntrance(int playerRef, int colour){ return players.get(playerRef).school.getStudentEntrance(colour); }
+    private int getStudentEntrance(int playerRef, int colour){ return players.get(playerRef).school.getStudentEntrance(colour); }
     public void removeStudentEntrance(int playerRef, int colour) throws NotAllowedException{
         players.get(playerRef).school.removeStudentEntrance(colour);
         this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
@@ -231,7 +230,7 @@ public class PlayerManager  {
         players.get(playerRef).school.removeProfessor(colour);
         this.professorsListener.notifyProfessors(playerRef, colour,getProfessor(playerRef, colour));
     }
-    public boolean getProfessor(int playerRef, int colour){ return players.get(playerRef).school.getProfessor(colour); }
+    private boolean getProfessor(int playerRef, int colour){ return players.get(playerRef).school.getProfessor(colour); }
     public int getProfessorPropriety(int color) { return professorPropriety[color]; }
 
     public boolean removeTower(Team team, int numberOfTower) {
@@ -255,7 +254,6 @@ public class PlayerManager  {
 
         }
     }
-    public int getTowers(int playerRef){ return players.get(playerRef).school.getTowers(); }
 
     public Team getTeam(int playerRef){ return players.get(playerRef).getTeam(); }
 
