@@ -248,8 +248,11 @@ public class PlayerManager  {
     }
     public void placeTower(Team team, int numberOfTower){
         for (Player p : players) {
-            if (p.getTeam().equals(team)) p.school.placeTower(numberOfTower);
-            this.towersListener.notifyTowersChange(0, players.indexOf(p), p.school.getTowers());
+            if (p.getTeam().equals(team)){
+                p.school.placeTower(numberOfTower);
+                this.towersListener.notifyTowersChange(0, players.indexOf(p), p.school.getTowers());
+            }
+
         }
     }
     public int getTowers(int playerRef){ return players.get(playerRef).school.getTowers(); }
