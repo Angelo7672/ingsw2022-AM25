@@ -94,7 +94,7 @@ public class Controller implements ServerController{
         for(int i = 0; i < currentUser; i++)
             alreadyPlayedCard.add(getLastPlayedCard(gameManager.readQueue(i)));
 
-        try { roundController.setEnd(gameManager.playCard(playerRef,currentUser,chosenAssistants,alreadyPlayedCard));
+        try { roundController.setEnd(gameManager.playCard(playerRef, currentUser, chosenAssistants, alreadyPlayedCard));
         }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
 
