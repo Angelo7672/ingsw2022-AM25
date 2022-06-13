@@ -3,12 +3,16 @@ package it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.controller.listeners.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -51,8 +55,19 @@ public class MainSceneController implements SceneController, TowersListener, Pro
     @FXML private ImageView schoolBoard4;
 
     @FXML private Button useSpecialButton;
-
     @FXML private ImageView motherNature;
+    @FXML private ImageView character1;
+    @FXML private AnchorPane islandsPane;
+    @FXML private AnchorPane school1;
+    @FXML private AnchorPane school2;
+    @FXML private AnchorPane school3;
+    @FXML private AnchorPane school4;
+    @FXML private AnchorPane userInfo1;
+    @FXML private AnchorPane userInfo2;
+    @FXML private HBox player1Box;
+    @FXML private HBox player2Box;
+    @FXML private VBox player3Box;
+    @FXML private VBox player4Box;
 
     public MainSceneController(){
         this.userInfo=new HashMap<>();
@@ -62,32 +77,41 @@ public class MainSceneController implements SceneController, TowersListener, Pro
 
 
     public void startMainScene() {
-        if (numberOfPlayers == 2) {
-            schoolBoard3.setVisible(false);
-            schoolBoard4.setVisible(false);
-        } else if (numberOfPlayers == 3)
-            schoolBoard4.setVisible(false);
+        Platform.runLater(()->{
+            if (numberOfPlayers == 2) {
+                player3Box.setVisible(false);
+                player4Box.setVisible(false);
+            } else if (numberOfPlayers == 3)
+                player4Box.setVisible(false);
 
-        if (expertMode == false) {
-            useSpecialButton.setVisible(false);
-        }
-        System.out.println("startMainScene");
-        try {
-            if(proxy.startPlanningPhase()) {
-                gamePhase = 1;
-                //showCards();
+            if (expertMode == false) {
+                useSpecialButton.setVisible(false);
             }
-            else
-                System.out.println("errore");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            for(int i=0; i<numberOfPlayers; i++){
+                //userInfo.
+            }
+            System.out.println("startMainScene");
+            try {
+                if(proxy.startPlanningPhase()) {
+                    gamePhase = 1;
+                    //showCards();
+                }
+                else
+                    System.out.println("errore");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     public void showCards(){
         //fa comparire la finestra con le carte
+        Stage stage = new Stage();
+        gui.loadScene(stage, GUI.CARDS);
+
     }
 
 

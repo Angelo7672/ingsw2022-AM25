@@ -6,6 +6,7 @@ public class WaitingSceneController implements SceneController{
     private GUI gui;
     private Exit proxy;
 
+
     @Override
     public void setGUI(GUI gui) {
         this.gui=gui;

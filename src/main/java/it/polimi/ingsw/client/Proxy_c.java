@@ -172,9 +172,11 @@ public class Proxy_c implements Exit{
     }
 
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
+        /*
         send(new CheckSpecial(special));
         tempObj = receive();
-        return ((UseSpecialAnswer)tempObj).getMessage().equals("ok");
+        return ((UseSpecialAnswer)tempObj).getMessage().equals("ok");*/
+        return true;
     }
 
     public boolean useSpecial(int special, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException {

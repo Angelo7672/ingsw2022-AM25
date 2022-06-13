@@ -32,6 +32,8 @@ public class GUI extends Application {
     protected static final String LOGIN = "LoginScene.fxml";
     protected static final String WAITING = "WaitingScene.fxml";
     protected static final String MAIN = "MainScene.fxml";
+    protected static final String CARDS = "CardsScene.fxml";
+
     private HashMap<String, Scene> scenesMap;
     private HashMap<String, SceneController > sceneControllersMap;
     private ArrayList<String> sceneNames;
@@ -132,9 +134,7 @@ public class GUI extends Application {
     }
 
 
-
     public void setupView(MainSceneController controller) {
-
         view.setCoinsListener(controller);
         view.setInhibitedListener(controller);
         view.setIslandListener(controller);
@@ -151,35 +151,13 @@ public class GUI extends Application {
         System.out.println("loaded scene" + sceneName);
         if (sceneName == LOGIN) {
             initializeLoginScene();
-            //loadScene(stage, LOGIN);
-
         } else if (sceneName == MAIN) {
             initializeMainScene();
-            //loadScene(stage, MAIN);
-
         } else if (sceneName == WAITING) {
-            Platform.runLater(()->{
-                try {
-                    System.out.println("view not started yet");
-
-                    View view = proxy.startView();
-                    if(view!=null){
-                        this.view=view;
-                        System.out.println("view started");
-                        switchScene(MAIN);
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                primaryStage.show();
-            });
+            setView();
 
         }
+        primaryStage.show();
     }
 
     public void setSocket(Socket socket) {
@@ -190,6 +168,30 @@ public class GUI extends Application {
         this.proxy = proxy;
     }
 
+    public void setView(){
+        Platform.runLater(()->{
+            try {
+                System.out.println("view not started yet");
+
+                View view = proxy.startView();
+                if(view!=null){
+                    this.view=view;
+                    System.out.println("view started");
+                    switchScene(MAIN);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        });
+
+
+    }
 
     public void initializeLoginScene() {
         System.out.println("initializeLoginScene");
@@ -222,7 +224,6 @@ public class GUI extends Application {
             controller.setExpertMode(view.getExpertMode());
             for (int i = 0; i < view.getNumberOfPlayers(); i++)
                 controller.setUserInfo(view.getNickname(i), view.getCharacter(i));
-
                     controller.startMainScene();
                     primaryStage.setScene(scenesMap.get(MAIN));
                     primaryStage.show();

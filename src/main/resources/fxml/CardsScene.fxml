@@ -1,14 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fxml.CardsScene"
-            prefHeight="400.0" prefWidth="600.0" >
 
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxml.CardsScene">
+   <children>
+      <Button fx:id="lionButton" layoutX="38.0" layoutY="45.0" mnemonicParsing="false" onAction="#setPlayedCard" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fitHeight="143.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/assistants/lion_1.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="gooseButton" layoutX="145.0" layoutY="45.0" mnemonicParsing="false" onAction="#setPlayedCard" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fitHeight="143.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/assistants/goose_2.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="catButton" layoutX="250.0" layoutY="45.0" mnemonicParsing="false" onAction="#setPlayedCard" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fitHeight="143.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/assistants/cat_3.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="eagleButton" layoutX="355.0" layoutY="45.0" mnemonicParsing="false" onAction="#setPlayedCard" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fitHeight="143.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/assistants/eagle_4.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="foxButton" layoutX="460.0" layoutY="45.0" mnemonicParsing="false" onAction="#setPlayedCard" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fitHeight="143.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/assistants/fox_5.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="lizardButton" layoutX="39.0" layoutY="197.0" mnemonicParsing="false" onAction="#setPlayedCard" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fitHeight="143.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/assistants/lizard_6.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="octopusButton" layoutX="146.0" layoutY="197.0" mnemonicParsing="false" onAction="#setPlayedCard" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fitHeight="143.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/assistants/octopus_7.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="dogButton" layoutX="251.0" layoutY="197.0" mnemonicParsing="false" onAction="#setPlayedCard" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fitHeight="143.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/assistants/dog_8.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="elephantButton" layoutX="356.0" layoutY="197.0" mnemonicParsing="false" onAction="#setPlayedCard" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fitHeight="143.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/assistants/elephant_9.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="turtleButton" layoutX="461.0" layoutY="197.0" mnemonicParsing="false" onAction="#setPlayedCard" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fitHeight="143.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/assistants/turtle_10.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="confirmButton" layoutX="274.0" layoutY="351.0" mnemonicParsing="false" onAction="#confirmPressed" text="Confirm" />
+      <Label layoutX="179.0" layoutY="7.0" prefHeight="31.0" prefWidth="249.0" text="Choose an assistant card">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
+   </children>
 </AnchorPane>
