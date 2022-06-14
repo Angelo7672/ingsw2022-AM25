@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.GUI.GUI;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Scanner;
 
 public class Client {

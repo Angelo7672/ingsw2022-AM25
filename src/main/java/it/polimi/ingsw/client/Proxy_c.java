@@ -66,7 +66,18 @@ public class Proxy_c implements Exit{
             return false;
         }
         return true;
+    }
 
+    public String getPhase() throws IOException {
+        send(new GenericMessage("Ready for play!"));
+        tempObj = receive();
+        if(tempObj instanceof PlayCard){
+            return ((PlayCard) tempObj).getMessage();
+        }
+        if(tempObj instanceof StartTurn){
+            return ((StartTurn) tempObj).getMessage();
+        }
+        return null;
     }
 
     public boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
@@ -172,15 +183,25 @@ public class Proxy_c implements Exit{
     }
 
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
-        /*
         send(new CheckSpecial(special));
         tempObj = receive();
-        return ((UseSpecialAnswer)tempObj).getMessage().equals("ok");*/
-        return true;
+        if(tempObj instanceof GenericMessage) return ((GenericMessage) tempObj).getMessage().equals("ok");
+        return false;
     }
 
-    public boolean useSpecial(int special, int ref, ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException {
-        send(new UseSpecial(special, ref, color1, color2));
+    public boolean useSpecial(int special,ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException {
+        send(new UseSpecial(special,color1, color2));
+        tempObj = receive();
+        return ((GenericAnswer)tempObj).getMessage().equals("ok");
+    }
+    public boolean useSpecial(int special, int ref) throws IOException {
+        send(new UseSpecial(special, ref));
+        tempObj = receive();
+        return ((GenericAnswer)tempObj).getMessage().equals("ok");
+    }
+
+    public boolean useSpecial(int special, int playerRef, int ref) throws IOException {
+        send(new UseSpecial(special, playerRef, ref));
         tempObj = receive();
         return ((GenericAnswer)tempObj).getMessage().equals("ok");
     }
@@ -208,11 +229,6 @@ public class Proxy_c implements Exit{
         return tmp;
     }
 
-    @Override
-    public String getWinner(){
-        return winner;
-    }
-
     private void startReceive(){
         receive = new Thread(() -> {
             ArrayList<Answer> answersTmpList = new ArrayList<>();
@@ -227,7 +243,6 @@ public class Proxy_c implements Exit{
                         synchronized (lock2){
                             view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());
                             lock2.notify();
-                            System.out.println("notify called");
                         }
                     }
                     else if(tmp instanceof UserInfoAnswer) {
@@ -312,6 +327,12 @@ public class Proxy_c implements Exit{
                         synchronized (lock2) {
                             if (view == null) lock2.wait();
                             view.setInhibited((InhibitedIslandMessage) tmp);
+                        }
+                    }
+                    else if(tmp instanceof UseSpecialAnswer){
+                        synchronized (lock2) {
+                            if (view == null) lock2.wait();
+                            view.setSpecialUsed((UseSpecialAnswer) tmp);
                         }
                     }
                     else if(tmp instanceof UnifiedIsland) {

@@ -191,6 +191,7 @@ public class Game implements GameManager{
         students = cloudsManager.removeStudents(cloudRef);
         for(int i = 0; i < 5 ; i++)
             playerManager.setStudentEntrance(playerRef,i,students[i]);
+        setSpecial(0,0);
     }
 
     @Override
@@ -268,10 +269,9 @@ public class Game implements GameManager{
     public void setSpecial(int indexSpecial, int refSpecial){
         this.indexSpecial = indexSpecial;
         this.refSpecial = refSpecial;
-
     }
 
-    public int findName(int index){
+    /*public int findName(int index){
         if(roundStrategies.get(index).getName().equals("special1")) return 2;
         if(roundStrategies.get(index).getName().equals("special5")) return 1;
         if(roundStrategies.get(index).getName().equals("special7")) return 3;
@@ -279,7 +279,7 @@ public class Game implements GameManager{
         if(roundStrategies.get(index).getName().equals("special11")) return 2;
         if(roundStrategies.get(index).getName().equals("special12")) return 1;
         return -1;
-    }
+    }*/
     @Override
     public ArrayList<Integer> getExtractedSpecials() { return extractedSpecials; }
 

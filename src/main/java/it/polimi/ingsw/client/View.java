@@ -33,6 +33,7 @@ public class View {
     private int motherNaturePos;
     private String winner;
     private boolean disconnected;
+    private int special;
 
     public View(int numberOfPlayers, boolean expertMode){
         this.numberOfPlayers = numberOfPlayers;
@@ -152,6 +153,11 @@ public class View {
     }
     public void setNumberOfCards(NumberOfCardsMessage msg){
         hands.get(msg.getPlayerRef()).setNumberOfCards(msg.getNumberOfCards());
+    }
+
+    public void setSpecialUsed(UseSpecialAnswer msg){
+        special = msg.getSpecialIndex();
+        specialListener.notifySpecial(msg.getSpecialIndex(), msg.getPlayerRef());
     }
 
     public void setSpecials(ArrayList<Special> specials){

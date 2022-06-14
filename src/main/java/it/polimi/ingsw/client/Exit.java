@@ -19,11 +19,17 @@ public interface Exit {
 
     boolean savedGame(String decision) throws IOException;
 
+    String getPhase() throws IOException;
+
     boolean readyForLogin() throws IOException;
 
     boolean checkSpecial(int special)  throws IOException, ClassNotFoundException ;
 
-    boolean useSpecial(int special, int i, ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException ;
+    boolean useSpecial(int special, ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException ;
+
+    boolean useSpecial(int special, int ref) throws IOException;
+
+    boolean useSpecial(int special, int ref, int color) throws IOException;
 
     String playCard(String card) throws IOException, ClassNotFoundException;
 
@@ -36,8 +42,6 @@ public interface Exit {
     String chooseCloud(int cloud) throws IOException, ClassNotFoundException;
 
     boolean startPlanningPhase() throws ClassNotFoundException, IOException;
-
-    String getWinner();
 
     Answer getMessage();
 }
