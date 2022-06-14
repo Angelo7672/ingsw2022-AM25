@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.listeners.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
@@ -9,11 +11,40 @@ import static it.polimi.ingsw.model.Team.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IslandManagerTest {
-/*
+    IslandsManager islandsManager;
+
+    @BeforeEach
+    void initialization(){
+        islandsManager = new IslandsManager();
+        islandsManager.islandListener = new IslandListener() {
+            @Override
+            public void notifyIslandChange(int islandToDelete) {}
+        };
+        islandsManager.towersListener = new TowersListener() {
+            @Override
+            public void notifyTowersChange(int place, int componentRef, int towersNumber) {}
+
+            @Override
+            public void notifyTowerColor(int islandRef, int newColor) {}
+        };
+        islandsManager.motherPositionListener = new MotherPositionListener() {
+            @Override
+            public void notifyMotherPosition(int newMotherPosition) {}
+        };
+        islandsManager.inhibitedListener = new InhibitedListener() {
+            @Override
+            public void notifyInhibited(int islandRef, int isInhibited) {}
+        };
+        islandsManager.studentListener = new StudentsListener() {
+            @Override
+            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
+        };
+        islandsManager.islandsInitialize();
+    }
+
     @Test
     @DisplayName("Test if the island of Mother Nature and the one in front are empty")
     void setupIslandMotherTest() {
-        IslandsManager islandsManager = new IslandsManager();
         assertEquals(0, islandsManager.getStudent(islandsManager.getMotherPos(), 0));
         assertEquals(0, islandsManager.getStudent(islandsManager.circularArray(islandsManager.getMotherPos(), 6), 0));
     }
@@ -21,7 +52,6 @@ public class IslandManagerTest {
     @Test
     @DisplayName("Test if islands are filled correctly")
     void setupIslandTest() {
-        IslandsManager islandsManager = new IslandsManager();
         ArrayList<Integer> numStudentPerIsland = new ArrayList<>();
         for(int i=0; i<12; i++){ //count the number of student on each island and fill the array
             int numStudents = 0;
@@ -30,7 +60,7 @@ public class IslandManagerTest {
         }
         for(int i=0; i<12; i++) {
             if (i != islandsManager.getMotherPos() && i != islandsManager.circularArray(islandsManager.getMotherPos(), 6)){
-                assertEquals(1, numStudentPerIsland.get(i)); //controllo nelle isole al di fuori delle due escluse
+                assertEquals(1, numStudentPerIsland.get(i)); //check number of students = 1
             }
             else {
                 assertEquals(0, numStudentPerIsland.get(i));
@@ -42,7 +72,6 @@ public class IslandManagerTest {
     @Test
     @DisplayName("Test if checkVitcory return true when there are only 3 islands")
     void checkVictoryTest(){
-        IslandsManager islandsManager = new IslandsManager();
         assertEquals(false, islandsManager.checkVictory());
         islandsManager.towerChange(0,WHITE);
         islandsManager.towerChange(2, WHITE);
@@ -63,7 +92,6 @@ public class IslandManagerTest {
     @Test
     @DisplayName("Test returned array of towerChange")
     void towerChangeTest(){
-        IslandsManager islandsManager = new IslandsManager();
         int[] returnItem = new int[2];
         returnItem = islandsManager.towerChange(0, WHITE); //if old team not equals new one and is no one
         assertEquals(1, returnItem[0]);
@@ -84,8 +112,7 @@ public class IslandManagerTest {
     void getSetMethod(){
 
         //student methods
-        IslandsManager islandsManager = new IslandsManager();
-        islandsManager.incStudent(0, 0);
+        islandsManager.incStudent(0, 0,1);
         assertEquals(1, islandsManager.getStudent(0,0));
 
         //mother methods
@@ -113,5 +140,4 @@ public class IslandManagerTest {
 
 
     }
-*/
 }
