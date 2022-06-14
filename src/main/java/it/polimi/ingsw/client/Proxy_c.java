@@ -35,6 +35,7 @@ public class Proxy_c implements Exit{
         lock1 = new Object();
         lock2 = new Object();
         winner = null;
+        view = new View();
     }
 
     public boolean readyForLogin() throws IOException {
@@ -250,108 +251,111 @@ public class Proxy_c implements Exit{
                     }
                     else if(tmp instanceof GameInfoAnswer) {
                         synchronized (lock2){
-                            view = new View(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());
+                            view.initializedView(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());
                             lock2.notify();
                         }
                     }
                     else if(tmp instanceof UserInfoAnswer) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setUserInfo((UserInfoAnswer) tmp);
                         }
                     }
                     else if(tmp instanceof LastCardMessage) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setLastCard((LastCardMessage) tmp);
                         }
                     }
                     else if(tmp instanceof NumberOfCardsMessage) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setNumberOfCards((NumberOfCardsMessage) tmp);
                         }
                     }
                     else if(tmp instanceof HandAfterRestoreAnswer){
                         synchronized (lock2){
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.restoreCards(((HandAfterRestoreAnswer) tmp).getHand());
                         }
                     }
                     else if(tmp instanceof SchoolStudentMessage) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setSchoolStudents((SchoolStudentMessage) tmp);
                         }
                     }
                     else if(tmp instanceof ProfessorMessage) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setProfessors((ProfessorMessage) tmp);
                         }
                     }
                     else if(tmp instanceof SchoolTowersMessage) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setSchoolTowers((SchoolTowersMessage) tmp);
                         }
                     }
                     else if(tmp instanceof CoinsMessage) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setCoins((CoinsMessage) tmp);
                         }
                     }
                     else if(tmp instanceof CloudStudentMessage) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setClouds((CloudStudentMessage) tmp);
                         }
                     }
                     else if(tmp instanceof IslandStudentMessage) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setStudentsIsland((IslandStudentMessage) tmp);
                         }
                     }
                     else if(tmp instanceof MotherPositionMessage) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setMotherPosition((MotherPositionMessage) tmp);
                         }
                     }
                     else if(tmp instanceof IslandTowersNumberMessage) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setIslandTowers((IslandTowersNumberMessage) tmp);
                         }
                     }
                     else if(tmp instanceof IslandTowersColorMessage) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setTowersColor((IslandTowersColorMessage) tmp);
                         }
                     }
                     else if(tmp instanceof InhibitedIslandMessage) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setInhibited((InhibitedIslandMessage) tmp);
                         }
                     }
                     else if(tmp instanceof UseSpecialAnswer){
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setSpecialUsed((UseSpecialAnswer) tmp);
                         }
                     }
                     else if(tmp instanceof UnifiedIsland) {
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.removeUnifiedIsland((UnifiedIsland) tmp);
                         }
                     }
                     else if(tmp instanceof SetSpecialAnswer) {
+                        synchronized (lock2) {
+                            if (!view.isInitializedView()) lock2.wait();
 
+                        }
                     }
                     else if(tmp instanceof DisconnectedAnswer){
                         synchronized (lock2) {

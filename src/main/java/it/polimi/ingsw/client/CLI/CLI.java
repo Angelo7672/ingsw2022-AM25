@@ -517,7 +517,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             do {
                 System.out.println();
                 printable.printMotherNature();
-                System.out.println();
                 System.out.print(SPACE+"How many steps do you want to move Mother Nature? Maximum number of steps "+view.getMaxStepsMotherNature()+" ");
                 String intString = readNext();
                 steps = Integer.parseInt(intString);

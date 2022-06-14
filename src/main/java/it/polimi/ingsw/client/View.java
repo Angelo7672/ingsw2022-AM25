@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class View {
 
-    private final int numberOfPlayers;
+    private int numberOfPlayers;
     private int turnCounter;
     private ArrayList<SchoolBoard> schoolBoards;
     private ArrayList<Island> islands;
@@ -17,7 +17,7 @@ public class View {
     private ArrayList<Hand> hands;
     private ArrayList<Special> specials; //specials keeps the 3 special character for the game
     private ArrayList<Assistant> cards;
-    private final boolean expertMode;
+    private boolean expertMode;
     private TowersListener towersListener;
     private CoinsListener coinsListener;
     private InhibitedListener inhibitedListener;
@@ -33,11 +33,10 @@ public class View {
     private int motherNaturePos;
     private String winner;
     private boolean disconnected;
+    private boolean initializedView;
     private int special;
 
-    public View(int numberOfPlayers, boolean expertMode){
-        this.numberOfPlayers = numberOfPlayers;
-        this.expertMode = expertMode;
+    public View(){
         this.schoolBoards = new ArrayList<>();
         this.hands = new ArrayList<>();
         this.clouds = new ArrayList<>();
@@ -45,6 +44,12 @@ public class View {
         this.specials = new ArrayList<>();
         this.cards = new ArrayList<>();
 
+    }
+
+    public void initializedView(int numberOfPlayers, boolean expertMode){
+        this.numberOfPlayers = numberOfPlayers;
+        this.expertMode = expertMode;
+        initializedView = true;
         for(int i=0; i<numberOfPlayers; i++) {
             hands.add(new Hand());
             clouds.add(new Cloud());
@@ -115,7 +120,6 @@ public class View {
             schoolBoards.get(msg.getComponentRef()).setStudentsTable(msg.getColor(), msg.getNewValue());
             this.studentsListener.notifyStudentsChange(1, msg.getComponentRef(), msg.getColor(), msg.getNewValue());
         }
-
     }
     public void setSchoolTowers(SchoolTowersMessage msg){
         schoolBoards.get(msg.getPlayerRef()).setTowersNumber(msg.getTowers());
@@ -286,6 +290,10 @@ public class View {
     public void setDisconnected(boolean disconnected) throws IOException {
         this.disconnected = disconnected;
         disconnectedListener.notifyDisconnected();
+    }
+
+    public boolean isInitializedView() {
+        return initializedView;
     }
 
 
