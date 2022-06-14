@@ -12,25 +12,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class BagTest {
     Bag bag;
 
-
     @BeforeEach
     void initialization() {
         bag = new Bag();
         bag.bagListener = new BagListener() {
             @Override
-            public void notifyBagExtraction() {
-
-            }
-
+            public void notifyBagExtraction() {}
             @Override
-            public void notifyBag(List<Integer> bag) {
-
-            }
+            public void notifyBag(List<Integer> bag) {}
         };
-
         bag.bagInitialize();
-
-
     }
 
     @Test

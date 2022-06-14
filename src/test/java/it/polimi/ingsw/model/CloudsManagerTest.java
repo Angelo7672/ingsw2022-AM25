@@ -1,11 +1,24 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.listeners.StudentsListener;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.Assert.assertEquals;
 
 class CloudsManagerTest {
+    CloudsManager cloudsManager1;
+
+    @BeforeEach
+    void initialization(){
+        cloudsManager1 = new CloudsManager(3);
+        cloudsManager1.studentsListener = new StudentsListener() {
+            @Override
+            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
+            }
+        };
+    }
 /*
     @Test
     @DisplayName("Tests if the number of students returned is correct for 2 players")
