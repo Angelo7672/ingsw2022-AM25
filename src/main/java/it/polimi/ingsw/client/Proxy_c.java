@@ -70,8 +70,11 @@ public class Proxy_c implements Exit{
     }
 
     public String getPhase() throws IOException {
+        System.out.println("get phase");
         send(new GenericMessage("Ready for play!"));
         tempObj = receive();
+        System.out.println(tempObj);
+        if(tempObj instanceof GenericAnswer) System.out.println(((GenericAnswer) tempObj).getMessage());
         if(tempObj instanceof PlayCard){
             return ((PlayCard) tempObj).getMessage();
         }
@@ -367,7 +370,6 @@ public class Proxy_c implements Exit{
                     }
                 }catch (IOException | ClassNotFoundException e) {
                     try {
-                        System.err.println("Client disconnected, game over.");
                         socket.close();
                         return;
                     } catch (IOException ex) {

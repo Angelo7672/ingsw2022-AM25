@@ -37,12 +37,14 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     public void setup() throws IOException, ClassNotFoundException, InterruptedException {
-        boolean restoreGame=false;
+        boolean savedGame=false;
+        boolean gameRestored = false;
         System.out.println();
         System.out.println(SPACE+"Waiting for server...");
         String result = proxy.first();
         if(result.equals("SavedGame")){
-            restoreGame = true;
+            savedGame = true;
+
             if(!savedGame()){
                 setupGame();
                 setupConnection();
@@ -50,13 +52,15 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             else {
                 System.out.println();
                 System.out.println(SPACE + "Setup Connection done, waiting for players...");
+                gameRestored = true;
             }
         }
         else if(result.equals("SetupGame")) {
             setupGame();
         }
         else if(result.equals("LoginRestore")){
-            restoreGame = true;
+            savedGame = true;
+            gameRestored = true;
             loginRestore();
             System.out.println();
             System.out.println(SPACE+"Setup Connection done, waiting for players...");
@@ -68,7 +72,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             scanner.close();
             setActive(false);
         }
-        if(!restoreGame) {
+        if(!savedGame) {
             setupConnection();
         }
         view = proxy.startView();
@@ -86,7 +90,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         printable = new Printable(view);
         System.out.println();
         System.out.println(SPACE+"Game is started! Wait for your turn...");
-        if(restoreGame){
+        if(gameRestored){
             setPhase();
         }
     }
@@ -564,7 +568,11 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             constants.setEndTurn(false);
             constants.setPlanningPhaseStarted(false);
         }
-        else System.out.println(result);
+        else {
+            System.out.println();
+            System.out.println(ANSI_RED+SPACE+result+ANSI_RESET);
+            System.out.println();
+        }
     }
 
     @Override
@@ -629,12 +637,14 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     private void disconnectClient() throws IOException {
+        System.out.println();
         System.out.println(ANSI_RED+SPACE+"One of the player is offline, Game over."+ANSI_RESET);
         socket.close();
         setActive(false);
     }
 
     private void winner() throws IOException {
+        System.out.println();
         System.out.println(ANSI_RED+SPACE+"Game over, the winner is "+view.getWinner()+"."+ANSI_RESET);
         socket.close();
         setActive(false);
