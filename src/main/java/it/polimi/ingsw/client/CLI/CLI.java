@@ -241,17 +241,17 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             printable.printSpecialList();
             do {
                 System.out.println();
-                System.out.print(SPACE+"Which special do you want to use? Insert special index ");
+                System.out.print(SPACE+"Which special do you want to use? Insert the number ");
                 String intString = readNext();
                 special = Integer.parseInt(intString);
             } while (special == -1);
-            special = special-1;
             if(!proxy.checkSpecial(special)) {
                 System.out.println();
                 System.out.println(ANSI_RED+SPACE+"Error, special not present"+ANSI_RESET);
                 useSpecial();
             }
-            if(special(special)) return;
+            if(special==2 || special==4 || special==6 || special==8 ) return;
+            special(special);
         }
         System.out.println();
         System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);

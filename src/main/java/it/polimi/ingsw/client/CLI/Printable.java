@@ -130,7 +130,7 @@ public class Printable {
         System.out.println();
         System.out.println(UNDERLINE+"SPECIALS"+ANSI_RESET);
         for(int i=0; i<3; i++){
-            System.out.print("\t"+"special "+(i+1)+": "+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
+            System.out.print("\t"+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
             if(specialArray(view.getSpecialName(i))) System.out.println(". Students: "+ ANSI_GREEN +" Green "+ view.getSpecialStudents(i)[0] + ANSI_RED  + ", Red " + view.getSpecialStudents(i)[1] +
                     ANSI_YELLOW +", Yellow " + view.getSpecialStudents(i)[2] + ANSI_PURPLE + ", Pink " + view.getSpecialStudents(i)[3] + ANSI_BLUE + ", Blue " + view.getSpecialStudents(i)[4]+ANSI_RESET);
             if(view.getNoEntry(i)!=-1) System.out.println(". No Entry tiles: "+view.getNoEntry(i));

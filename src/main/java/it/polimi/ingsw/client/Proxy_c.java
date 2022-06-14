@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.message.*;
+import it.polimi.ingsw.client.message.special.*;
 import it.polimi.ingsw.server.answer.*;
 import it.polimi.ingsw.server.answer.viewmessage.*;
 
@@ -183,25 +184,30 @@ public class Proxy_c implements Exit{
     }
 
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
-        send(new CheckSpecial(special));
+        send(new UseSpecial(special));
         tempObj = receive();
         if(tempObj instanceof GenericMessage) return ((GenericMessage) tempObj).getMessage().equals("ok");
         return false;
     }
 
     public boolean useSpecial(int special,ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException {
-        send(new UseSpecial(special,color1, color2));
+        if(special == 7) send(new Special7Message(color1, color2));
+        else if(special == 10) send(new Special10Message(color1, color2));
         tempObj = receive();
         return ((GenericAnswer)tempObj).getMessage().equals("ok");
     }
     public boolean useSpecial(int special, int ref) throws IOException {
-        send(new UseSpecial(special, ref));
+        if(special == 3) send(new Special3Message(ref));
+        else if(special == 5) send(new Special5Message(ref));
+        else if(special == 9) send(new Special9Message(ref));
+        else if(special == 11) send(new Special11Message(ref));
+        else if(special == 12) send(new Special12Message(ref));
         tempObj = receive();
         return ((GenericAnswer)tempObj).getMessage().equals("ok");
     }
 
     public boolean useSpecial(int special, int playerRef, int ref) throws IOException {
-        send(new UseSpecial(special, playerRef, ref));
+        send(new Special1Message(playerRef, ref));
         tempObj = receive();
         return ((GenericAnswer)tempObj).getMessage().equals("ok");
     }
