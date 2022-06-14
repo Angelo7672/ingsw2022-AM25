@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.MainSceneController">
    <children>
@@ -28,7 +27,7 @@
                   <Image url="@../graphics/island2.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="76.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="76.0" layoutY="226.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../graphics/island1.png" />
                </image>
@@ -38,7 +37,7 @@
                   <Image url="@../graphics/island3.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="100.0" fitWidth="100.0" layoutY="149.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="19.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../graphics/island3.png" />
                </image>
@@ -53,17 +52,17 @@
                   <Image url="@../graphics/island1.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="522.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="532.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../graphics/island2.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="568.0" layoutY="126.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="584.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../graphics/island3.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="24.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="52.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../graphics/island2.png" />
                </image>
@@ -73,33 +72,29 @@
                   <Image url="@../graphics/island1.png" />
                </image>
             </ImageView>
-            <Label layoutX="248.0" layoutY="159.0" text="It's x turn!">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Label>
-            <ImageView fx:id="motherNature" fitHeight="39.0" fitWidth="42.0" layoutX="26.0" layoutY="156.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="motherNature" fitHeight="39.0" fitWidth="42.0" layoutX="50.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../graphics/wooden_pieces/mother_nature.png" />
                </image>
             </ImageView>
-            <Button fx:id="useSpecialButton" layoutX="226.0" layoutY="199.0" mnemonicParsing="false" text="Use a special character" visible="false" />
+            <Button fx:id="useSpecialButton" layoutX="274.0" layoutY="199.0" mnemonicParsing="false" text="Use a special card" visible="false" />
          </children>
       </AnchorPane>
       <HBox fx:id="player2Box" layoutX="291.0" layoutY="-4.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="170.0" prefWidth="539.0" AnchorPane.topAnchor="5.0">
          <children>
             <AnchorPane fx:id="userInfo2" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="160.0" prefWidth="127.0">
                <children>
-                  <ImageView fitHeight="151.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                  <ImageView fx:id="character2" fitHeight="151.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <image>
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="nickname2" layoutX="18.0" layoutY="151.0" text="nickname" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="school2" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ImageView fx:id="schoolBoard2" fitHeight="160.0" fitWidth="370.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" AnchorPane.topAnchor="10.0">
+                  <ImageView fitHeight="160.0" fitWidth="370.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" AnchorPane.topAnchor="10.0">
                      <image>
                         <Image url="@../graphics/schoolboard.png" />
                      </image>
@@ -148,7 +143,7 @@
             </AnchorPane>
          </children>
       </HBox>
-      <VBox fx:id="player4Box" layoutX="50.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="170.0" AnchorPane.leftAnchor="5.0">
+      <VBox fx:id="player3Box" layoutX="50.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="170.0" AnchorPane.leftAnchor="5.0">
          <children>
             <AnchorPane fx:id="school3" prefHeight="371.0" prefWidth="238.0">
                <children>
@@ -159,13 +154,14 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="160.0" prefWidth="127.0">
+            <AnchorPane fx:id="userInfo3" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="160.0" prefWidth="127.0">
                <children>
-                  <ImageView fitHeight="151.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                  <ImageView fx:id="character3" fitHeight="151.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <image>
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="nickname3" layoutX="113.0" layoutY="14.0" text="nickname" />
                </children>
             </AnchorPane>
          </children>
@@ -174,7 +170,7 @@
          <children>
             <AnchorPane fx:id="school1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="142.0" prefWidth="365.0">
                <children>
-                  <ImageView fx:id="schoolBoard1" fitHeight="160.0" fitWidth="370.0" layoutX="-2.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0">
+                  <ImageView fitHeight="160.0" fitWidth="370.0" layoutX="-2.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0">
                      <image>
                         <Image url="@../graphics/schoolboard.png" />
                      </image>
@@ -223,29 +219,31 @@
             </AnchorPane>
             <AnchorPane fx:id="userInfo1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="160.0" prefWidth="127.0">
                <children>
-                  <ImageView fx:id="character1" fitHeight="151.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                  <ImageView fx:id="character1" fitHeight="151.0" fitWidth="89.0" layoutX="19.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="6.0587005615234375" AnchorPane.leftAnchor="19.0" AnchorPane.topAnchor="19.0">
                      <image>
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="nickname1" layoutX="27.0" layoutY="5.0" text="nickname" />
                </children>
             </AnchorPane>
          </children>
       </HBox>
-      <VBox fx:id="player3Box" layoutX="1005.0" layoutY="96.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="170.0" AnchorPane.rightAnchor="5.0">
+      <VBox fx:id="player4Box" layoutX="1005.0" layoutY="96.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="170.0" AnchorPane.rightAnchor="5.0">
          <children>
-            <AnchorPane prefHeight="157.0" prefWidth="240.0">
+            <AnchorPane fx:id="userInfo4" prefHeight="157.0" prefWidth="240.0">
                <children>
-                  <ImageView fitHeight="151.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="5.0">
+                  <ImageView fx:id="character4" fitHeight="151.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="5.0">
                      <image>
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="nickname4" layoutX="14.0" layoutY="117.0" text="nickname" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="school4" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ImageView fx:id="schoolBoard4" fitHeight="370.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="5.0">
+                  <ImageView fitHeight="370.0" fitWidth="160.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="5.0">
                      <image>
                         <Image url="@../graphics/schoolboard_vertical.png" />
                      </image>
