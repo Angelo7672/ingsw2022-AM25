@@ -71,11 +71,8 @@ public class Proxy_c implements Exit{
     }
 
     public String getPhase() throws IOException {
-        System.out.println("get phase");
         send(new GenericMessage("Ready to play!"));
         tempObj = receive();
-        System.out.println(tempObj);
-        if(tempObj instanceof GenericAnswer) System.out.println(((GenericAnswer) tempObj).getMessage());
         if(tempObj instanceof PlayCard){
             return ((PlayCard) tempObj).getMessage();
         }
