@@ -36,11 +36,9 @@ class BagTest {
         }
     }
 
-
-   /* @Test
-    @DisplayName("Third test: extracts 130 students and check the victory")
+   @Test
+    @DisplayName("Third test: extracts 120 students and check the victory")
     void checkVictory(){
-        Bag bag = new Bag();
         int tmp;
 
         for(int i = 0; i < 119; i++) {
@@ -50,5 +48,4 @@ class BagTest {
         tmp = bag.extraction();
         assertTrue(bag.checkVictory(),"The bag be empty");
     }
-*/
 }

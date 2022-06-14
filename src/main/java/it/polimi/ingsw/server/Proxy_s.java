@@ -47,6 +47,7 @@ public class Proxy_s implements Exit {
 
         try {
             System.out.println("Waiting for players ...");
+
             VirtualClient firstClient = new VirtualClient(serverSocket.accept(), server, this, limiter);
             System.out.println("Connected players: " + limiter);
             user.add(firstClient);
@@ -54,35 +55,25 @@ public class Proxy_s implements Exit {
             VirtualClient secondClient = new VirtualClient(serverSocket.accept(), server, this, limiter);   //There must be two players to play
             System.out.println("Connected players: " + limiter);
             user.add(secondClient);
+
             if(connectionsAllowed == -1) synchronized (this) { this.wait(); }
+
             while (limiter < connectionsAllowed) {
                 VirtualClient virtualClient = new VirtualClient(serverSocket.accept(), server, this, limiter);
                 System.out.println("Connected players: " + limiter);
                 user.add(virtualClient);
             }
-            /*if(connectionsAllowed < limiter){
-                if(limiter - connectionsAllowed == 1){
-                    user.get(2).closeSocket();
-                    user.remove(2);
-                }
-                else if(limiter - connectionsAllowed == 2){
-                    user.get(3).closeSocket();
-                    user.remove(3);
-                    user.get(2).closeSocket();
-                    user.remove(2);
-                }
-            }*/
+
             for(int i = 1; i < connectionsAllowed; i++)
                 executor.submit(user.get(i));
 
             soldOut.start();
-
             synchronized (this){ this.wait(); }
+
             if(restoreGame){
                 server.restoreGame();
                 virtualClientInOrderAfterRestore();
-            }
-            else {
+            } else {
                 server.createGame();
                 server.initializeGame();
             }

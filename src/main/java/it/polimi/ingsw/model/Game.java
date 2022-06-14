@@ -27,7 +27,7 @@ public class Game implements GameManager{
         this.roundStrategies = new ArrayList<>();
         this.numberOfPlayer = numberOfPlayer;
         this.bag = new Bag();
-        this.cloudsManager = new CloudsManager(numberOfPlayer);
+        this.cloudsManager = new CloudsManager(numberOfPlayer,this.bag);
         this.playerManager = new PlayerManager(numberOfPlayer,this.bag);
         this.islandsManager = new IslandsManager();
         this.queueManager = new QueueManager(numberOfPlayer,this.playerManager);
@@ -113,12 +113,6 @@ public class Game implements GameManager{
         else if(string.equalsIgnoreCase("TURTLE")) return Assistant.TURTLE;
         return Assistant.NONE;
     }
-    private String toString(Team team){
-        if(team.equals(Team.WHITE)) return "WHITE";
-        else if(team.equals(Team.BLACK)) return "BLACK";
-        else if(team.equals(Team.GREY)) return "GREY";
-        return "NONE";
-    }
     private Team stringToTeam(String string){
         if(string.equalsIgnoreCase("WHITE")) return Team.WHITE;
         else if(string.equalsIgnoreCase("BLACK")) return Team.BLACK;
@@ -127,26 +121,7 @@ public class Game implements GameManager{
     }
 
     @Override
-    public boolean refreshStudentsCloud(){  //Poi da cambiare e mettere tutto in cloudManager
-        boolean lastTurn = false;   //if true, the students are finished
-
-        if(numberOfPlayer == 2 || numberOfPlayer ==4 ) {
-            for (int j = 0; j < numberOfPlayer && !lastTurn; j++) {
-                for (int i = 0; i < 3 && !lastTurn; i++) {
-                    cloudsManager.refreshCloudStudents(bag.extraction(), j);
-                    lastTurn = bag.checkVictory();
-                }
-            }
-        } else if(numberOfPlayer == 3) {
-            for (int j = 0; j < numberOfPlayer && !lastTurn; j++) {
-                for (int i = 0; i < 4 && !lastTurn; i++) {
-                    cloudsManager.refreshCloudStudents(bag.extraction(), j);
-                    lastTurn = bag.checkVictory();
-                }
-            }
-        }
-        return lastTurn;
-    }
+    public boolean refreshStudentsCloud(){ return cloudsManager.refreshStudentsCloud(); }
     @Override
     public void queueForPlanificationPhase(){ queueManager.queueForPlanificationPhase(); }
     @Override

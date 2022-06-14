@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.Assert.assertEquals;
 
 class CloudsManagerTest {
-    CloudsManager cloudsManager1;
+   /* CloudsManager cloudsManager1;
 
     @BeforeEach
     void initialization(){
