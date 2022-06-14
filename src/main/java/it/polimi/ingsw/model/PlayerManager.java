@@ -94,7 +94,7 @@ public class PlayerManager  {
         this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef));
         ArrayList<String> hand = new ArrayList<>();
         for (Assistant c:cards)
-            hand.add(assistantToString(c));
+            hand.add(String.valueOf(c));
         this.playedCardListener.notifyHand(playerRef,hand);
     }
 

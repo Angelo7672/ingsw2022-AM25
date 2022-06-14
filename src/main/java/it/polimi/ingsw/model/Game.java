@@ -198,7 +198,7 @@ public class Game implements GameManager{
     public int readQueue(int pos){ return queueManager.readQueue(pos); }
 
     @Override
-    public String oneLastRide(){ return toString(playerManager.checkVictory()); }
+    public String oneLastRide(){ return String.valueOf(playerManager.checkVictory()); }
 
     @Override
     public boolean useSpecialLite(int indexSpecial, int playerRef){

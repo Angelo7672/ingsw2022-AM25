@@ -85,8 +85,7 @@ public class Proxy_s implements Exit {
                 server.createGame();
                 server.initializeGame();
             }
-            server.startGame();
-
+            if(!restoreGame) server.startGame();
         } catch (IOException e) {
             System.err.println(e.getMessage());
             server.exitError();

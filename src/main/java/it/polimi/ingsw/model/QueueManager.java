@@ -76,7 +76,7 @@ public class QueueManager {
         playerManager.playCard(playerRef,card,alreadyPlayedAssistant);
         queue.get(queueRef).setValueCard(card.getValue());
         queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
-        this.playedCardListener.notifyPlayedCard(playerRef, toString(card));
+        this.playedCardListener.notifyPlayedCard(playerRef, String.valueOf(card));
 
         if(playerManager.checkIfCardsFinished(playerRef)) return true;  //game will finish at the end of the turn
 

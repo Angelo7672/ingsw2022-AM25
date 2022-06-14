@@ -498,10 +498,26 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     synchronized (setupLocker) {
                         clientInitialization = true;  //controlla bene, questo fa ricevere il ready for play card
                         setupLocker.wait();
-                        readyPlanningPhase();
+                        if(proxy.isRestoreGame()) readyToPlay();
+                        else readyPlanningPhase();
                     }
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
+        }
+        private void readyToPlay(){
+            GenericMessage msg = (GenericMessage) setupMsg;
+
+            try{
+                if(!msg.getMessage().equals("Ready to play!")){
+                    send(new GenericAnswer("error"));
+                    synchronized (errorLocker) {
+                        clientInitialization = true;
+                        error = true;
+                        errorLocker.wait();
+                        readyToPlay();
+                    }
+                }else server.startGame();
+            } catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void readyPlanningPhase(){
             GenericMessage msg = (GenericMessage) setupMsg;
