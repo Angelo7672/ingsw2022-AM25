@@ -1,4 +1,4 @@
-package it.polimi.ingsw.controller.listeners;
+package it.polimi.ingsw.listeners;
 
 public interface TowersListener {
     public void notifyTowersChange(int place, int componentRef, int towersNumber);

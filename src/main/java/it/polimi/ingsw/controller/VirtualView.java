@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.listeners.*;
+import it.polimi.ingsw.listeners.*;
 import it.polimi.ingsw.server.ControllerServer;
 
 import java.io.*;

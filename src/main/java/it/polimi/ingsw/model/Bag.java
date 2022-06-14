@@ -4,7 +4,7 @@
  */
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.listeners.BagListener;
+import it.polimi.ingsw.listeners.BagListener;
 
 import java.util.ArrayList;
 import java.util.Collections;

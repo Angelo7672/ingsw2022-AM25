@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.listeners.StudentsListener;
+import it.polimi.ingsw.listeners.StudentsListener;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;

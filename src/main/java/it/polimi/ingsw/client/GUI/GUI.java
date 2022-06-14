@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.controller.listeners.*;
+import it.polimi.ingsw.listeners.*;
 import it.polimi.ingsw.server.answer.SavedGameAnswer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -198,6 +198,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 View view = proxy.startView();
                 if(view!=null){
                     this.view=view;
+                    setupView();
                     System.out.println("view started");
                     switchScene(MAIN);
                 }
@@ -211,6 +212,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
 
         });
+
 
 
     }
@@ -238,7 +240,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         System.out.println("initializeMainScene");
 
         Platform.runLater(()->{
-            setupView();
+
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setNumberOfPlayers(view.getNumberOfPlayers());
             controller.setExpertMode(view.getExpertMode());
@@ -246,6 +248,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 controller.setUserInfo(view.getNickname(i), view.getCharacter(i), i);
 
             controller.startMainScene();
+            controller.showCards();
         });
     }
 

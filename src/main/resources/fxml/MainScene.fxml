@@ -78,6 +78,56 @@
                </image>
             </ImageView>
             <Button fx:id="useSpecialButton" layoutX="274.0" layoutY="199.0" mnemonicParsing="false" text="Use a special card" visible="false" />
+            <ImageView fitHeight="19.0" fitWidth="18.0" layoutX="118.0" layoutY="265.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="19.0" fitWidth="18.0" layoutX="241.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="19.0" fitWidth="18.0" layoutX="382.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="19.0" fitWidth="18.0" layoutX="499.0" layoutY="284.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="19.0" fitWidth="18.0" layoutX="616.0" layoutY="264.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="19.0" fitWidth="18.0" layoutX="330.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="19.0" fitWidth="18.0" layoutX="575.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="19.0" fitWidth="18.0" layoutX="450.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="19.0" fitWidth="18.0" layoutX="199.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="19.0" fitWidth="18.0" layoutX="93.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <HBox fx:id="player2Box" layoutX="291.0" layoutY="-4.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="170.0" prefWidth="539.0" AnchorPane.topAnchor="5.0">

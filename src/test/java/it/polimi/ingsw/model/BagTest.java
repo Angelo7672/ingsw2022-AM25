@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.VirtualView;
-import it.polimi.ingsw.controller.listeners.BagListener;
+import it.polimi.ingsw.listeners.BagListener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

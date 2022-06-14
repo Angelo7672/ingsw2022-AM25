@@ -1,4 +1,4 @@
-package it.polimi.ingsw.controller.listeners;
+package it.polimi.ingsw.listeners;
 
 public interface IslandListener {
     public void notifyIslandChange(int islandToDelete);

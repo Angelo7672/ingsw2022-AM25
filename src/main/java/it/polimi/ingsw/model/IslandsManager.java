@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.listeners.*;
+import it.polimi.ingsw.listeners.*;
 
 import java.util.ArrayList;
 import java.util.Collections;

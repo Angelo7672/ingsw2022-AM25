@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxml.CardsScene">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.CardsSceneController">
    <children>
       <Button fx:id="lionButton" layoutX="38.0" layoutY="45.0" mnemonicParsing="false" onAction="#setPlayedCard" prefHeight="135.0" prefWidth="78.0">
          <graphic>

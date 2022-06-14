@@ -2,13 +2,13 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.View;
-import it.polimi.ingsw.controller.listeners.*;
+import it.polimi.ingsw.listeners.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -16,12 +16,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
-public class MainSceneController<wizardImage> implements SceneController, TowersListener, ProfessorsListener,PlayedCardListener,
+public class MainSceneController implements SceneController, TowersListener, ProfessorsListener,PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener {
 
     private GUI gui;
@@ -74,6 +74,11 @@ public class MainSceneController<wizardImage> implements SceneController, Towers
     @FXML private ImageView character3;
     @FXML private ImageView character4;
 
+    @FXML private Label nickname1;
+    @FXML private Label nickname2;
+    @FXML private Label nickname3;
+    @FXML private Label nickname4;
+
 
     @FXML private HBox player1Box;
     @FXML private HBox player2Box;
@@ -113,16 +118,13 @@ public class MainSceneController<wizardImage> implements SceneController, Towers
             charactersImageMap.put(2, character3);
             charactersImageMap.put(3, character4);
 
-            Image image;
             for(int i=0; i<numberOfPlayers; i++){
-                //nickname= nicknamesMap.get(i);
+                setNickname(nicknamesMap.get(i), i);
                 charactersImageMap.get(i).setImage(characterToImage(charactersMap.get(i)));
-                
-                //image= new Image();
-                //charactersImageMap.get(i).set
-                
             }
-            /*
+        });/*
+        Platform.runLater(()->{
+
             System.out.println("startMainScene");
             try {
                 if(proxy.startPlanningPhase()) {
@@ -135,8 +137,8 @@ public class MainSceneController<wizardImage> implements SceneController, Towers
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
-        });
+            }
+        });*/
 
     }
     public Image characterToImage(String characterName) {
@@ -151,17 +153,39 @@ public class MainSceneController<wizardImage> implements SceneController, Towers
             image = new Image(KING);
         }
         return image;
-    }/*
+    }
     public void setNickname(String nickname, int playerRef){
         if(playerRef==0){
-
+            nickname1.setText(nickname);
+        } else if(playerRef==1){
+            nickname2.setText(nickname);
+        } else if(playerRef==2){
+            nickname3.setText(nickname);
+        } else if(playerRef==3){
+            nickname4.setText(nickname);
         }
-    }*/
+    }
 
     public void showCards(){
         //fa comparire la finestra con le carte
-        Stage stage = new Stage();
-        gui.loadScene(stage, GUI.CARDS);
+        Platform.runLater(()-> {
+
+            System.out.println("startMainScene");
+            try {
+                if (proxy.startPlanningPhase()) {
+                    gamePhase = 1;
+                    Stage stage = new Stage();
+                    gui.loadScene(stage, GUI.CARDS);
+                } else
+                    System.out.println("errore");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        });
+
 
     }
 
