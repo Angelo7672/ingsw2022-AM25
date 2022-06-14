@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
+import it.polimi.ingsw.controller.listeners.*;
 import it.polimi.ingsw.server.answer.SavedGameAnswer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -17,7 +18,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GUI extends Application {
+public class GUI extends Application implements TowersListener, ProfessorsListener, PlayedCardListener,
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener {
 
     private static Exit proxy;
     private View view;
@@ -27,7 +29,8 @@ public class GUI extends Application {
     private Scene currentScene;
     private int numberOfPlayers;
     private boolean expertMode;
-    private HashMap<String, String> userInfo;
+    private HashMap<Integer, String> nicknames;
+    private HashMap<Integer, String> characters;
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String LOGIN = "LoginScene.fxml";
     protected static final String WAITING = "WaitingScene.fxml";
@@ -44,7 +47,8 @@ public class GUI extends Application {
 
     public GUI() {
 
-        userInfo = new HashMap<>();
+        nicknames = new HashMap<>();
+        characters = new HashMap<>();
         scenesMap = new HashMap<>();
         sceneControllersMap = new HashMap<>();
         sceneNames=new ArrayList<>();
@@ -60,7 +64,6 @@ public class GUI extends Application {
         primaryStage.centerOnScreen();
         primaryStage.show();
 
-        //sceneSetup(stage, );
 
         String result = null;
         try {
@@ -88,7 +91,7 @@ public class GUI extends Application {
 
     }
 
-
+    /*
     public void sceneSetup(Stage stage, String sceneName) {
 
         loadScene(stage, sceneName);
@@ -106,7 +109,7 @@ public class GUI extends Application {
         stage.centerOnScreen();
         stage.show();
 
-    }
+    }*/
 
     public void loadScene(Stage stage, String sceneName) {
 
@@ -133,7 +136,7 @@ public class GUI extends Application {
         stage.centerOnScreen();
     }
 
-
+    /*
     public void setupView(MainSceneController controller) {
         view.setCoinsListener(controller);
         view.setInhibitedListener(controller);
@@ -143,6 +146,16 @@ public class GUI extends Application {
         view.setProfessorsListener(controller);
         view.setStudentsListener(controller);
         view.setTowersListener(controller);
+    }*/
+    public void setupView(){
+        view.setCoinsListener(this);
+        view.setInhibitedListener(this);
+        view.setIslandListener(this);
+        view.setMotherPositionListener(this);
+        view.setPlayedCardListener(this);
+        view.setProfessorsListener(this);
+        view.setStudentsListener(this);
+        view.setTowersListener(this);
     }
 
     public void switchScene(String sceneName) {
@@ -150,9 +163,18 @@ public class GUI extends Application {
         loadScene(primaryStage, sceneName);
         System.out.println("loaded scene" + sceneName);
         if (sceneName == LOGIN) {
-            initializeLoginScene();
+            //initializeLoginScene();
         } else if (sceneName == MAIN) {
             initializeMainScene();
+            /*Platform.runLater(()->{
+                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+                setupView(controller);
+                controller.setView(this.view);
+                controller.initialize();
+                controller.startMainScene();
+            });*/
+
+            //primaryStage.show();
         } else if (sceneName == WAITING) {
             setView();
 
@@ -214,21 +236,67 @@ public class GUI extends Application {
 
     public void initializeMainScene() {
         System.out.println("initializeMainScene");
+
         Platform.runLater(()->{
-
+            setupView();
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            setupView(controller);
-            controller.setView(this.view);
-
             controller.setNumberOfPlayers(view.getNumberOfPlayers());
             controller.setExpertMode(view.getExpertMode());
             for (int i = 0; i < view.getNumberOfPlayers(); i++)
-                controller.setUserInfo(view.getNickname(i), view.getCharacter(i));
-                    controller.startMainScene();
-                    primaryStage.setScene(scenesMap.get(MAIN));
-                    primaryStage.show();
-        });
+                controller.setUserInfo(view.getNickname(i), view.getCharacter(i), i);
 
+            controller.startMainScene();
+        });
+    }
+
+
+    @Override
+    public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
+
+    }
+
+    @Override
+    public void notifyInhibited(int islandRef, int isInhibited) {
+
+    }
+
+    @Override
+    public void notifyIslandChange(int islandToDelete) {
+
+    }
+
+    @Override
+    public void notifyMotherPosition(int newMotherPosition) {
+
+    }
+
+    @Override
+    public void notifyPlayedCard(int playerRef, String assistantCard) {
+
+    }
+
+    @Override
+    public void notifyHand(int playerRef, ArrayList<String> hand) {
+
+    }
+
+    @Override
+    public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
+
+    }
+
+    @Override
+    public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
+
+    }
+
+    @Override
+    public void notifyTowersChange(int place, int componentRef, int towersNumber) {
+
+    }
+
+    @Override
+    public void notifyTowerColor(int islandRef, int newColor) {
 
     }
 }
