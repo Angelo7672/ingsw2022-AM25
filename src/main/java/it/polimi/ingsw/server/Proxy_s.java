@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.server.answer.SoldOutAnswer;
+import it.polimi.ingsw.server.expertmode.ExpertGame;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -85,7 +86,7 @@ public class Proxy_s implements Exit {
                 server.createGame();
                 server.initializeGame();
             }
-            if(!restoreGame) server.startGame();
+            server.startGame();
         } catch (IOException e) {
             System.err.println(e.getMessage());
             server.exitError();
@@ -176,6 +177,11 @@ public class Proxy_s implements Exit {
     public void setSpecial(int specialRef){
         for (VirtualClient client:user)
             client.setSpecial(specialRef);
+    }
+    @Override
+    public void setExpertGame(ExpertGame expertGame){
+        for (VirtualClient client:user)
+            client.setExpertGame(expertGame);
     }
     @Override
     public void sendUsedSpecial(int playerRef, int indexSpecial){

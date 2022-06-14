@@ -46,7 +46,6 @@ public class Controller implements ServerController{
     @Override
     public void createGame(){
         this.gameManager = new Game(expertMode, numberOfPlayers);
-        if(expertMode) server.setExpertGame();
 
         gameManager.setStudentsListener(virtualView);
         gameManager.setTowerListener(virtualView);
@@ -66,7 +65,9 @@ public class Controller implements ServerController{
         for(int i = 0; i < numberOfPlayers; i++)
             server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
 
-        gameManager.initializeGame(); }
+        gameManager.initializeGame();
+        if(expertMode) server.setExpertGame();
+    }
     @Override
     public void restoreVirtualView(){ virtualView.restoreVirtualView(); }
     @Override

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.server.expertmode.ExpertGame;
+
 import java.util.ArrayList;
 
 public interface Exit {
@@ -26,6 +28,7 @@ public interface Exit {
     void towerChangeColorOnIsland(int islandRef, int newColor);
     void islandInhibited(int islandRef, int isInhibited);
     void setSpecial(int specialRef);
+    void setExpertGame(ExpertGame expertGame);
     void sendUsedSpecial(int playerRef, int indexSpecial);
     void sendHandAfterRestore(int playerRef, ArrayList<String> hand);
 }

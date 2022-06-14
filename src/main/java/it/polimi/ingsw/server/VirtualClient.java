@@ -268,12 +268,14 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void towersChangeOnIsland(int islandRef, int towersNumber){ send(new IslandTowersNumberMessage(islandRef,towersNumber)); }
     public void towerChangeColorOnIsland(int islandRef, int newColor){ send(new IslandTowersColorMessage(islandRef,newColor)); }
     public void islandInhibited(int islandRef, int isInhibited){ send(new InhibitedIslandMessage(islandRef,isInhibited)); }
-    public void setSpecial(int specialRef){ send(new SetSpecialAnswer(specialRef)); }
+    public void setSpecial(int specialRef){ send(new SetSpecialAnswer(specialRef)); System.out.println(specialRef);}
     public void sendUsedSpecial(int playerRef, int indexSpecial){ send(new UseSpecialAnswer(playerRef,indexSpecial)); }
     public void sendHandAfterRestore(ArrayList<String> hand){ send(new HandAfterRestoreAnswer(hand)); }
 
     public void setPlayerRef(int playerRef) { this.playerRef = playerRef; }
     public int getPlayerRef() { return playerRef; }
+
+    public void setExpertGame(ExpertGame expertGame){ this.expertGame = expertGame; }
     public void setSpecial1() { this.special1 = true; }
     public void setSpecial3() { this.special3 = true; }
     public void setSpecial5() { this.special5 = true; }
@@ -305,7 +307,6 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 roundPartTwo = new RoundPartTwo(expertMode,virtualClient);
                 roundPartOne.start();
                 roundPartTwo.start();
-                if (expertMode) expertGame = server.getExpertGame();
             }catch (InterruptedException e) { e.printStackTrace(); }
         }
 
@@ -516,7 +517,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         errorLocker.wait();
                         readyToPlay();
                     }
-                }else server.startGame();
+                }
             } catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void readyPlanningPhase(){

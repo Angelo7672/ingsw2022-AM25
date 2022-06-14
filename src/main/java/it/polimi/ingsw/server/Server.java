@@ -62,7 +62,10 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public void startGame(){ controller.startGame(); }
     @Override
-    public void setExpertGame(){ expertGame = new ExpertGame(this, controller.getExtractedSpecials()); }
+    public void setExpertGame(){
+        expertGame = new ExpertGame(this, controller.getExtractedSpecials());
+        proxy.setExpertGame(expertGame);
+    }
     @Override
     public ExpertGame getExpertGame(){ return expertGame; }
     @Override
