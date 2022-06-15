@@ -165,9 +165,9 @@ public class Proxy_s implements Exit {
             client.islandInhibited(islandRef, isInhibited);
     }
     @Override
-    public void setSpecial(int specialRef){
+    public void setSpecial(int specialRef, int cost){
         for (VirtualClient client:user)
-            client.setSpecial(specialRef);
+            client.setSpecial(specialRef,cost);
     }
     @Override
     public void setExpertGame(ExpertGame expertGame){

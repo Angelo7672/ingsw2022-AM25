@@ -268,7 +268,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void towersChangeOnIsland(int islandRef, int towersNumber){ send(new IslandTowersNumberMessage(islandRef,towersNumber)); }
     public void towerChangeColorOnIsland(int islandRef, int newColor){ send(new IslandTowersColorMessage(islandRef,newColor)); }
     public void islandInhibited(int islandRef, int isInhibited){ send(new InhibitedIslandMessage(islandRef,isInhibited)); }
-    public void setSpecial(int specialRef){ send(new SetSpecialAnswer(specialRef)); System.out.println(specialRef);}
+    public void setSpecial(int specialRef, int cost){ send(new SetSpecialAnswer(specialRef,cost)); System.out.println(specialRef); System.out.println(cost);}
     public void sendUsedSpecial(int playerRef, int indexSpecial){ send(new UseSpecialAnswer(playerRef,indexSpecial)); }
     public void sendHandAfterRestore(ArrayList<String> hand){ send(new HandAfterRestoreAnswer(hand)); }
 

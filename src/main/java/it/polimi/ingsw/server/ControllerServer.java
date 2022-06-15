@@ -26,7 +26,7 @@ public interface ControllerServer {
     void towersChangeOnIsland(int islandRef, int towersNumber);
     void towerChangeColorOnIsland(int islandRef, int newColor);
     void islandInhibited(int islandRef, int isInhibited);
-    void setSpecial(int specialRef);
+    void setSpecial(int specialRef, int cost);
     void sendUsedSpecial(int playerRef, int indexSpecial);
     void sendHandAfterRestore(int playerRef, ArrayList<String> hand);
 }

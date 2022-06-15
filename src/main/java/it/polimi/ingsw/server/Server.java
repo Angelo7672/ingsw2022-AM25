@@ -187,7 +187,7 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public void islandInhibited(int islandRef, int isInhibited){ proxy.islandInhibited(islandRef, isInhibited); }
     @Override
-    public void setSpecial(int specialRef){ proxy.setSpecial(specialRef); }
+    public void setSpecial(int specialRef, int cost){ proxy.setSpecial(specialRef, cost); }
     @Override
     public void sendUsedSpecial(int playerRef, int indexSpecial){ proxy.sendUsedSpecial(playerRef, indexSpecial); }
     @Override

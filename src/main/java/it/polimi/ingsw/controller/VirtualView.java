@@ -18,7 +18,7 @@ public class VirtualView
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
     private ArrayList<Hand> hands;
-    private ArrayList<Integer> specialList; //specials keeps the 3 special character for the game
+    private ArrayList<Special> specialList; //specials keeps the 3 special character for the game
     private List<Integer> bag;
     private ArrayList<Queue> queue;
     private transient ControllerServer server;
@@ -317,10 +317,18 @@ public class VirtualView
         server.sendUsedSpecial(playerRef, specialRef);
     }
     @Override
-    public void notifySpecialList(ArrayList<Integer> specialList) {
-        this.specialList = specialList;
-        for(Integer special:specialList)
-            server.setSpecial(special);
+    public void notifySpecialList(ArrayList<Integer> specialList, ArrayList<Integer> cost) {
+        for(int i = 0; i < 3; i++){
+            specialList.add(
+                    specialList.get(i),
+                    cost.get(i)
+            );
+            server.setSpecial(
+                    specialList.get(i),
+                    cost.get(i)
+            );
+        }
+
     }
 
     private class TurnInfo implements Serializable{
@@ -334,6 +342,19 @@ public class VirtualView
         }
         public int getCurrentUser() { return currentUser; }
         public String getPhase() { return phase; }
+    }
+    private class Special implements Serializable{
+        private final int indexSpecial;
+        private int cost;
+
+        public Special(int indexSpecial, int cost) {
+            this.indexSpecial = indexSpecial;
+            this.cost = cost;
+        }
+
+        public void incSpecialCost(){ cost++; }
+        public int getIndexSpecial() { return indexSpecial; }
+        public int getCost() { return cost; }
     }
     //private class SchoolBoard keeps the state of each player's school board
     private class SchoolBoard implements Serializable{

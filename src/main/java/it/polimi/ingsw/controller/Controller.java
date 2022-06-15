@@ -85,6 +85,8 @@ public class Controller implements ServerController{
 
     @Override
     public ArrayList<Integer> getExtractedSpecials(){ return gameManager.getExtractedSpecials(); }
+    @Override
+    public ArrayList<Integer> getSpecialCost(){ return gameManager.getSpecialCost(); }
 
     //Planning Phase
     public String getLastPlayedCard(int playerRef){ return virtualView.getLastPlayedCard(playerRef); }

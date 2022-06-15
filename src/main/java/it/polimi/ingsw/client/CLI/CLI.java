@@ -709,8 +709,9 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             System.out.println("Player "+view.getNickname(playerRef)+" used "+view.getSpecialName(specialRef));
         }
     }
+
     @Override
-    public void notifySpecialList(ArrayList<Integer> specialsList) {
+    public void notifySpecialList(ArrayList<Integer> specialsList, ArrayList<Integer> cost) {
         if(constants.isStartGame()) {
 
         }

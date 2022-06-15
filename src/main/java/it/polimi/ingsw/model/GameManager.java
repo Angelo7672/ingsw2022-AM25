@@ -9,6 +9,7 @@ import java.util.List;
 public interface GameManager {
     void initializeGame();
     ArrayList<Integer> getExtractedSpecials();
+    ArrayList<Integer> getSpecialCost();
 
     //Planification Phase
     boolean refreshStudentsCloud();

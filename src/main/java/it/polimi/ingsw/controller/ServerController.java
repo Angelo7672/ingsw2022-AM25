@@ -12,6 +12,7 @@ public interface ServerController {
     void restoreGame();
     void startGame();
     ArrayList<Integer> getExtractedSpecials();
+    ArrayList<Integer> getSpecialCost();
 
     int checkRestoreNickname(String nickname);
     boolean userLoginNickname(String nickname);

@@ -50,8 +50,11 @@ public class Game implements GameManager{
 
             ArrayList<Integer> random = new ArrayList<>();
             for(int i = 1; i <= 12; i++)
-                random.add(i);
+                random.add(i);  //I have 12 int ordered now
             Collections.shuffle(random);
+            for(int i = 3; i < 12; i++)
+                random.remove(i);   //now I have 3 random int
+            Collections.sort(random);
 
             for(int i = 0; i < 3; i++) {
                 roundStrategies.add(
@@ -63,10 +66,8 @@ public class Game implements GameManager{
                         random.get(i)
                 );
             }
-            Collections.sort(extractedSpecials);    //I want an ordered array (required in server)
-            this.specialListener.notifySpecialList(extractedSpecials);
+            this.specialListener.notifySpecialList(extractedSpecials,getSpecialCost());
         }
-
     }
     @Override
     public void schoolRestore(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, String team){
@@ -178,7 +179,7 @@ public class Game implements GameManager{
     @Override
     public boolean useSpecialLite(int indexSpecial, int playerRef){
         if(affordSpecial(indexSpecial, playerRef)) {
-            setSpecial(indexSpecial, -1); //cos'è ref?
+            setSpecial(indexSpecial, -1);
             this.specialListener.notifySpecial(indexSpecial, playerRef);
             playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
             roundStrategies.get(indexSpecial).increaseCost();
@@ -186,7 +187,6 @@ public class Game implements GameManager{
         setSpecial(0, -1);
         return true;
     }
-
     @Override
     public boolean useSpecialSimple(int indexSpecial, int playerRef, int ref){
         boolean checker = false;
@@ -257,6 +257,16 @@ public class Game implements GameManager{
     }*/
     @Override
     public ArrayList<Integer> getExtractedSpecials() { return extractedSpecials; }
+    @Override
+    public ArrayList<Integer> getSpecialCost(){
+        ArrayList<Integer> cost = new ArrayList<>();
+        for(Integer special:extractedSpecials)
+            cost.add(
+                    roundStrategies.get(special)
+                            .getCost()
+            );
+        return cost;
+    }
 
     @Override
     public void setStudentsListener(StudentsListener listener){
