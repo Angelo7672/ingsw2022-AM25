@@ -32,6 +32,8 @@ public class RoundSpecial5 extends RoundStrategy{
     public String getName(){
         return special.getName();
     }
+    @Override
+    public int getNoEntry(){ return special.getNoEntry(); } //it's needed for restore
 
     @Override
     public void effect(){

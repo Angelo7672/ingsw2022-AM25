@@ -250,6 +250,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void closeSocket(){
         try {
             send(new DisconnectedAnswer());
+            System.out.println("disconnesso: "+playerRef);
             this.socket.close();
         }catch (IOException e){ clientConnectionExpired(e); }
     }
@@ -382,9 +383,8 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
 
             try {
                 if (msg.getPlayersNumber() >= 2 && msg.getPlayersNumber() <= 4) {
-                    proxy.setConnectionsAllowed(msg.getPlayersNumber());
                     server.startController(msg.getPlayersNumber(),msg.getExpertMode());
-                    synchronized (proxy){ proxy.notify(); }
+                    proxy.setConnectionsAllowed(msg.getPlayersNumber());
                     send(new GenericAnswer("ok"));
                     synchronized (setupLocker) {
                         clientInitialization = true;

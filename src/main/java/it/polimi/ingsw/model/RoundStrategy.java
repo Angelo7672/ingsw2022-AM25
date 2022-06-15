@@ -112,6 +112,8 @@ public abstract class RoundStrategy {
     public boolean effect(int ref, int color){ return false; }
     public boolean effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){ return false; }
 
+    public int getNoEntry(){ return -1; }
+
     abstract public int getCost();
     abstract public void increaseCost();
     abstract public String getName();
