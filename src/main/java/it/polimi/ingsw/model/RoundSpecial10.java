@@ -20,7 +20,7 @@ public class RoundSpecial10 extends RoundStrategy{
                     playerManager.transferStudent(playerRef, entranceStudent.get(i), true, false);
                     playerManager.removeStudentTable(playerRef, tableStudent.get(i));
                 }catch (NotAllowedException notAllowedException){ return false; }
-                //playerManager.setStudentEntrance(playerRef, tableStudent.get(i));
+                playerManager.setStudentEntrance(playerRef, tableStudent.get(i), 1);
             }
             return true;
         }

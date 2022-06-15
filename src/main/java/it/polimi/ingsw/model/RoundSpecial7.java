@@ -10,10 +10,16 @@ public class RoundSpecial7 extends RoundStrategy{
     public RoundSpecial7(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         special = new Special7();
-        int[] extraction = {0,0,0,0,0};
-        for(int i=0; i<6; i++)
-            extraction[bag.extraction()]++;
+    }
 
+    @Override
+    public void initializeSpecial(){
+        int[] extraction = {0,0,0,0,0};
+
+        for(int i = 0; i < 6; i++) {
+            extraction[bag.extraction()]++;
+            //metti notify qui per bag.extraction()
+        }
         special.setup(extraction);
     }
 
@@ -22,7 +28,8 @@ public class RoundSpecial7 extends RoundStrategy{
         if(playerManager.checkStudentsEntrance(entranceStudent, playerRef) && special.checkStudents(cardStudent)) {
             for (int i = 0; i < entranceStudent.size(); i++) {
                 special.effect(cardStudent.get(i), entranceStudent.get(i));
-                //playerManager.setStudentEntrance(playerRef, cardStudent.get(i));
+                //metti qui notify per entranceStudent.get(i)
+                playerManager.setStudentEntrance(playerRef, cardStudent.get(i), 1);
                 try { playerManager.removeStudentEntrance(playerRef, entranceStudent.get(i));
                 }catch (NotAllowedException notAllowedException){ return false; }
             }
@@ -31,8 +38,6 @@ public class RoundSpecial7 extends RoundStrategy{
         return false;
     }
 
-    @Override
-    public int getStudents(int color){return special.getStudent(color);}
     @Override
     public int getCost(){ return special.getCost(); }
     @Override
@@ -49,6 +54,7 @@ public class RoundSpecial7 extends RoundStrategy{
             for(int i=0; i<5;i++)
                 students[i]+=color[i];
         }
+
         public int getStudent(int color){ return students[color]; }
 
         @Override

@@ -21,6 +21,8 @@ public abstract class RoundStrategy {
         this.queueManager = queueManager;
     }
 
+    public void initializeSpecial(){}
+
     protected boolean conquestIsland(int islandRef, int noColor, int playerRef){
         Team teamStronger = highInfluenceTeam(islandRef, noColor, playerRef);
         Team teamWeaker = Team.NONE;
@@ -106,10 +108,9 @@ public abstract class RoundStrategy {
     }
 
     public void effect(){}
-    public boolean effect(int ref){return false;}
-    public boolean effect(int ref, int color){return false;}
+    public boolean effect(int ref){ return false; }
+    public boolean effect(int ref, int color){ return false; }
     public boolean effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){ return false; }
-    public int getStudents(int color){return -1;}
 
     abstract public int getCost();
     abstract public void increaseCost();
