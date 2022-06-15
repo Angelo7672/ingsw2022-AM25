@@ -254,18 +254,19 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
-        /*
-        Platform.runLater(()->{
+
+        Platform.runLater(() -> {
             //loadScene(primaryStage, MAIN);
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             switch (place) {
                 case 0 -> controller.setStudentsEntrance(componentRef, color, newStudentsValue);
                 case 1 -> controller.setStudentsTable(componentRef, color, newStudentsValue);
                 case 2 -> controller.setStudentsIsland(componentRef, color, newStudentsValue);
-                case 3 -> controller.setStudentsCloud(componentRef, color, newStudentsValue);
+                //case 3 -> controller.setStudentsCloud(componentRef, color, newStudentsValue);
             }
-        });*/
+        });
     }
+
 
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {

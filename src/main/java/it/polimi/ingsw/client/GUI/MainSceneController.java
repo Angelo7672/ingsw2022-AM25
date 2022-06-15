@@ -218,6 +218,16 @@ public class MainSceneController implements SceneController {
         charactersMap.put(playerRef, character);
     }
 
+    public void setStudentsEntrance(int componentRef, int color, int newStudentsValue){
+
+    }
+    public void setStudentsTable(int componentRef, int color, int newStudentsValue){
+
+    }
+    public void setStudentsIsland(int componentRef, int color, int newStudentsValue){
+
+    }
+
 
 
 
