@@ -56,16 +56,15 @@ public class Proxy_s implements Exit {
             System.out.println("Connected players: " + limiter);
             user.add(secondClient);
 
-            if(connectionsAllowed == -1) synchronized (this) { this.wait(); }
+            while(connectionsAllowed == -1) synchronized (this) { this.wait(); }
+            executor.submit(secondClient);
 
             while (limiter < connectionsAllowed) {
                 VirtualClient virtualClient = new VirtualClient(serverSocket.accept(), server, this, limiter);
-                System.out.println("Connected players: " + limiter);
                 user.add(virtualClient);
+                System.out.println("Connected players: " + limiter);
+                executor.submit(virtualClient);
             }
-
-            for(int i = 1; i < connectionsAllowed; i++)
-                executor.submit(user.get(i));
 
             soldOut.start();
             synchronized (this){ this.wait(); }
@@ -208,7 +207,10 @@ public class Proxy_s implements Exit {
         if(clientReady == connectionsAllowed) synchronized (this){ this.notify(); }
     }
     public int getConnectionsAllowed() { return connectionsAllowed; }
-    public void setConnectionsAllowed(int connectionsAllowed) { this.connectionsAllowed = connectionsAllowed; }
+    public void setConnectionsAllowed(int connectionsAllowed) {
+        this.connectionsAllowed = connectionsAllowed;
+        synchronized (this){ this.notify(); }
+    }
     public boolean isRestoreGame() { return restoreGame; }
     public void setRestoreGame(boolean restoreGame) { this.restoreGame = restoreGame; }
     private void virtualClientInOrderAfterRestore(){ Collections.sort(user, VirtualClient::compareTo); }

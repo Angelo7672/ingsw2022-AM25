@@ -52,8 +52,9 @@ public class Game implements GameManager{
             for(int i = 1; i <= 12; i++)
                 random.add(i);  //I have 12 int ordered now
             Collections.shuffle(random);
-            for(int i = 3; i < 12; i++)
-                random.remove(i);   //now I have 3 random int
+            while(random.size() != 3)
+                random.remove(0);
+            //now I have 3 random int
             Collections.sort(random);
 
             for(int i = 0; i < 3; i++) {
@@ -260,9 +261,9 @@ public class Game implements GameManager{
     @Override
     public ArrayList<Integer> getSpecialCost(){
         ArrayList<Integer> cost = new ArrayList<>();
-        for(Integer special:extractedSpecials)
+        for(int i = 0; i < 3; i++)
             cost.add(
-                    roundStrategies.get(special)
+                    roundStrategies.get(i)
                             .getCost()
             );
         return cost;

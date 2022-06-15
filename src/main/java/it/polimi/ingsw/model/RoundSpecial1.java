@@ -6,9 +6,16 @@ public class RoundSpecial1 extends RoundStrategy{
     public RoundSpecial1(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         this.special = new Special1();
+    }
+
+    @Override
+    public void initializeSpecial(){
         int[] extraction = {0,0,0,0,0};
-        for(int i=0; i<4; i++)
+
+        for(int i=0; i<4; i++) {
             extraction[bag.extraction()]++;
+            //metti notify qui per bag.extraction()
+        }
         special.setup(extraction);
     }
 
@@ -17,27 +24,21 @@ public class RoundSpecial1 extends RoundStrategy{
         if(getStudents(color) > 0){
             int extracted = bag.extraction();
             special.effect(color, extracted);
+            //metti notified qui per extracted
             islandsManager.incStudent(islandRef, color, 1);
             return true;
         }
         return false;
     }
 
-    @Override
-    public int getStudents(int color){return special.getStudent(color);}
+    private int getStudents(int color){ return special.getStudent(color); }
 
     @Override
-    public int getCost(){
-        return special.getCost();
-    }
+    public int getCost(){ return special.getCost(); }
     @Override
-    public void increaseCost(){
-        special.increaseCost();
-    }
+    public void increaseCost(){ special.increaseCost(); }
     @Override
-    public String getName(){
-        return special.getName();
-    }
+    public String getName(){ return special.getName(); }
 
     private class Special1 extends Special {
         private int[] students= {0,0,0,0,0};

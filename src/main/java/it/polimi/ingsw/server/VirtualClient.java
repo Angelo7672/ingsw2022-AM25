@@ -250,6 +250,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void closeSocket(){
         try {
             send(new DisconnectedAnswer());
+            System.out.println("disconnesso: "+playerRef);
             this.socket.close();
         }catch (IOException e){ clientConnectionExpired(e); }
     }
@@ -268,7 +269,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void towersChangeOnIsland(int islandRef, int towersNumber){ send(new IslandTowersNumberMessage(islandRef,towersNumber)); }
     public void towerChangeColorOnIsland(int islandRef, int newColor){ send(new IslandTowersColorMessage(islandRef,newColor)); }
     public void islandInhibited(int islandRef, int isInhibited){ send(new InhibitedIslandMessage(islandRef,isInhibited)); }
-    public void setSpecial(int specialRef, int cost){ send(new SetSpecialAnswer(specialRef,cost)); System.out.println(specialRef); System.out.println(cost);}
+    public void setSpecial(int specialRef, int cost){ send(new SetSpecialAnswer(specialRef,cost)); System.out.println("special"+specialRef); System.out.println("cost:"+cost);}
     public void sendUsedSpecial(int playerRef, int indexSpecial){ send(new UseSpecialAnswer(playerRef,indexSpecial)); }
     public void sendHandAfterRestore(ArrayList<String> hand){ send(new HandAfterRestoreAnswer(hand)); }
 
@@ -382,9 +383,8 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
 
             try {
                 if (msg.getPlayersNumber() >= 2 && msg.getPlayersNumber() <= 4) {
-                    proxy.setConnectionsAllowed(msg.getPlayersNumber());
                     server.startController(msg.getPlayersNumber(),msg.getExpertMode());
-                    synchronized (proxy){ proxy.notify(); }
+                    proxy.setConnectionsAllowed(msg.getPlayersNumber());
                     send(new GenericAnswer("ok"));
                     synchronized (setupLocker) {
                         clientInitialization = true;

@@ -25,7 +25,7 @@ public class Client {
         String graph = scanner.next();
         if(graph.equalsIgnoreCase("CLI")) {
             try {
-                socket = new Socket("192.168.0.1", 2525);
+                socket = new Socket("127.0.0.1", 2525);
             } catch (IOException e) {
                 System.out.println(SPACE+ANSI_RED+"Some errors occurred, try again."+ANSI_RESET);
                 return;

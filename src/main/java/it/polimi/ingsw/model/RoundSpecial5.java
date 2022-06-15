@@ -1,11 +1,8 @@
 package it.polimi.ingsw.model;
 
-import java.util.ArrayList;
 
 public class RoundSpecial5 extends RoundStrategy{
     Special5 special;
-    ArrayList<Integer> null1;
-    ArrayList<Integer> null2;
 
     public RoundSpecial5(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
@@ -14,9 +11,10 @@ public class RoundSpecial5 extends RoundStrategy{
 
     @Override
     public boolean effect(int islandRef){
-        if(special.getNoEntry()>0){
+        if(special.getNoEntry() > 0){
             islandsManager.increaseInhibited(islandRef);
             special.decreaseNoEntry();
+            //metti notify
             return true;
         }
         return false;
@@ -34,14 +32,19 @@ public class RoundSpecial5 extends RoundStrategy{
     public String getName(){
         return special.getName();
     }
+    @Override
+    public int getNoEntry(){ return special.getNoEntry(); } //it's needed for restore
 
     @Override
     public void effect(){
         int inhibitedIsland = 0;
-        for (int i = 0; i<islandsManager.size(); i++){
+        for (int i = 0; i<islandsManager.size(); i++)
             if(islandsManager.getInhibited(i)>0) inhibitedIsland+=islandsManager.getInhibited(i);
+
+        if(inhibitedIsland<(4-special.getNoEntry())){
+            special.increaseNoEntry();
+            //metti notify
         }
-        if(inhibitedIsland<(4-special.getNoEntry())) special.increaseNoEntry();
     }
 
     private class Special5 extends Special{
@@ -49,14 +52,12 @@ public class RoundSpecial5 extends RoundStrategy{
 
         public Special5(){
             super(2, "special5");
-            noEntry=4;
+            noEntry = 4;
         }
-
 
         public int getNoEntry(){
             return noEntry;
         }
-
         public void increaseNoEntry(){
             noEntry+=1;
         }
