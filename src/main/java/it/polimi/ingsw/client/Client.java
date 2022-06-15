@@ -44,17 +44,9 @@ public class Client {
             System.out.println(SPACE+"Connection established");
             GUI gui = new GUI();
             Proxy_c proxy = new Proxy_c(socket);
-            View view;
             gui.setSocket(socket);
             gui.setProxy(proxy);
-            /*try {
-                view = proxy.startView();
-                gui.setView(view);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
+            System.out.println(SPACE+"GUI is starting...");
             gui.main(null);
 
         }

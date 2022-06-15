@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
+import it.polimi.ingsw.client.PlayerConstants;
 import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.listeners.*;
@@ -25,34 +26,26 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private View view;
     private Socket socket;
     public Stage primaryStage;
-    private SceneController currentSceneController;
-    private Scene currentScene;
-    private int numberOfPlayers;
-    private boolean expertMode;
-    private HashMap<Integer, String> nicknames;
-    private HashMap<Integer, String> characters;
+
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String LOGIN = "LoginScene.fxml";
     protected static final String WAITING = "WaitingScene.fxml";
     protected static final String MAIN = "MainScene.fxml";
     protected static final String CARDS = "CardsScene.fxml";
+    private PlayerConstants constants;
 
-    private HashMap<String, Scene> scenesMap;
-    private HashMap<String, SceneController > sceneControllersMap;
-    private ArrayList<String> sceneNames;
+    private HashMap<String, Scene> scenesMap; //maps the scene name with the scene itself
+    private HashMap<String, SceneController > sceneControllersMap; // maps the scene name with the scene controller
 
     public static void main(String[] args) {
         launch();
     }
 
     public GUI() {
-
-        nicknames = new HashMap<>();
-        characters = new HashMap<>();
         scenesMap = new HashMap<>();
         sceneControllersMap = new HashMap<>();
-        sceneNames=new ArrayList<>();
-
+        constants = new PlayerConstants();
+        view = new View();
     }
 
     @Override
@@ -64,6 +57,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         primaryStage.centerOnScreen();
         primaryStage.show();
 
+        scenesSetup();
 
         String result = null;
         try {
@@ -75,78 +69,29 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
         if(result.equals("SavedGame")){
             SavedGameAnswer savedGame = (SavedGameAnswer) proxy.getMessage();
-            //if(!savedGame()){
-            //    loadScene(stage,SETUP);
-            //}
+            //da scrivere
         }
         else if (result.equals("SetupGame")) {
-            loadScene(stage, SETUP);
-            //sceneSetup(stage, SETUP);
+            primaryStage.setScene(scenesMap.get(SETUP));
+            primaryStage.centerOnScreen();
+
         } else if (result.equals("Server Sold Out")) {
             System.out.println(result);
-        } else if (result.equals("Not first")) {
-            loadScene(stage, LOGIN);
-            //sceneSetup(stage, LOGIN);
-        }
 
+        } else if (result.equals("Not first")) {
+            primaryStage.setScene(scenesMap.get(LOGIN));
+            primaryStage.centerOnScreen();
+        }
     }
 
-    /*
-    public void sceneSetup(Stage stage, String sceneName) {
-
-        loadScene(stage, sceneName);
-
-        if (sceneName == LOGIN) {
-            initializeLoginScene();
-            //loadScene(stage, LOGIN);
-
-        } else if (sceneName == MAIN) {
-            initializeMainScene();
-            //loadScene(stage, MAIN);
-
-        }
+    //used to load a scene in a new stage (window), instead of the primaryStage
+    public void loadScene(String sceneName) {
+        Stage stage = new Stage();
         stage.setScene(scenesMap.get(sceneName));
         stage.centerOnScreen();
-        stage.show();
-
-    }*/
-
-    public void loadScene(Stage stage, String sceneName) {
-
-        Parent root = null;
-        FXMLLoader loader = new FXMLLoader();
-        try {
-            loader.setLocation(getClass().getResource("/fxml/" + sceneName));
-            root = loader.load();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        currentScene = new Scene(root);
-        scenesMap.put(sceneName, currentScene);
-        currentSceneController = loader.getController();
-        currentSceneController.setGUI(this);
-        currentSceneController.setProxy(proxy);
-        sceneControllersMap.put(sceneName, currentSceneController);
-
-        System.out.println("Current scene: " + currentScene);
-        System.out.println("Current controller: " + currentSceneController);
-
-        stage.setScene(currentScene);
-        stage.centerOnScreen();
     }
 
-    /*
-    public void setupView(MainSceneController controller) {
-        view.setCoinsListener(controller);
-        view.setInhibitedListener(controller);
-        view.setIslandListener(controller);
-        view.setMotherPositionListener(controller);
-        view.setPlayedCardListener(controller);
-        view.setProfessorsListener(controller);
-        view.setStudentsListener(controller);
-        view.setTowersListener(controller);
-    }*/
+    //set the GUI as listener for the updates from the View
     public void setupView(){
         view.setCoinsListener(this);
         view.setInhibitedListener(this);
@@ -157,29 +102,52 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         view.setStudentsListener(this);
         view.setTowersListener(this);
     }
+    //called when the GUI is launched, load all the scenes in advance, mapping them and setting the controllers
+    public void scenesSetup() {
 
-    public void switchScene(String sceneName) {
-        System.out.println("switched scene to " + sceneName);
-        loadScene(primaryStage, sceneName);
-        System.out.println("loaded scene" + sceneName);
-        if (sceneName == LOGIN) {
-            //initializeLoginScene();
-        } else if (sceneName == MAIN) {
-            initializeMainScene();
-            /*Platform.runLater(()->{
-                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-                setupView(controller);
-                controller.setView(this.view);
-                controller.initialize();
-                controller.startMainScene();
-            });*/
-
-            //primaryStage.show();
-        } else if (sceneName == WAITING) {
-            setView();
-
+        String[] scenes = new String[]{SETUP, LOGIN, MAIN, CARDS};
+        try {
+            for(String scene: scenes) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + scene));
+                scenesMap.put(scene, new Scene(loader.load()));
+                SceneController controller = loader.getController();
+                controller.setGUI(this);
+                controller.setProxy(proxy);
+                sceneControllersMap.put(scene, controller);
+            }
+        } catch(IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    //switch the scene, keeps the same stage
+    //initialize the scene if necessary, passing parameters to the controller
+    public void switchScene(String sceneName) {
+        primaryStage.setScene(scenesMap.get(sceneName));
+        System.out.println("switched to scene: "+ sceneName);
         primaryStage.show();
+        primaryStage.centerOnScreen();
+
+        if (sceneName.equals(LOGIN)) {
+            //initializeLoginScene();
+
+        } else if (sceneName.equals(MAIN)) {
+            initializeMainScene();
+
+        } else if (sceneName.equals(WAITING)) {
+            //switched to when login is completed, calls setView
+            FXMLLoader loader = new FXMLLoader();
+            Parent root = null;
+            try {
+                loader.setLocation(getClass().getResource("/fxml/" + sceneName));
+                root = loader.load();
+                primaryStage.setScene(new Scene(root));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("currently showing WAITING scene");
+            setView();
+        }
     }
 
     public void setSocket(Socket socket) {
@@ -190,6 +158,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         this.proxy = proxy;
     }
 
+    //tries to start the view while the gui is in WaitingScene, if succedes switches to main scene
     public void setView(){
         Platform.runLater(()->{
             try {
@@ -197,12 +166,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
                 View view = proxy.startView();
                 if(view!=null){
-                    this.view=view;
+                    this.view = view;
                     setupView();
                     System.out.println("view started");
                     switchScene(MAIN);
                 }
-
+                else System.out.println("Errore");
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -210,13 +179,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         });
-
-
-
     }
-
+    /*
     public void initializeLoginScene() {
         System.out.println("initializeLoginScene");
         Platform.runLater(()->{
@@ -232,10 +197,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 e.printStackTrace();
             }
         });
+    }*/
 
-
-    }
-
+    //called when main scene is set in switchScene method
     public void initializeMainScene() {
         System.out.println("initializeMainScene");
 
@@ -248,7 +212,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 controller.setUserInfo(view.getNickname(i), view.getCharacter(i), i);
 
             controller.startMainScene();
-            controller.showCards();
+            //controller.showCards();
         });
     }
 
@@ -291,7 +255,18 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
 
+        Platform.runLater(() -> {
+            //loadScene(primaryStage, MAIN);
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            switch (place) {
+                case 0 -> controller.setStudentsEntrance(componentRef, color, newStudentsValue);
+                case 1 -> controller.setStudentsTable(componentRef, color, newStudentsValue);
+                case 2 -> controller.setStudentsIsland(componentRef, color, newStudentsValue);
+                //case 3 -> controller.setStudentsCloud(componentRef, color, newStudentsValue);
+            }
+        });
     }
+
 
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
