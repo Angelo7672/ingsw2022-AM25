@@ -25,9 +25,6 @@ public class MainSceneController implements SceneController {
 
     private GUI gui;
     private View view;
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
     private Exit proxy;
     private int numberOfPlayers;
     private boolean expertMode;
