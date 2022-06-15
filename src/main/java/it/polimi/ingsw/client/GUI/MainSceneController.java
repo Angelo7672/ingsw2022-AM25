@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.listeners.*;
 import javafx.application.Platform;
+import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,7 +19,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class MainSceneController implements SceneController {
@@ -38,6 +41,11 @@ public class MainSceneController implements SceneController {
     private final String WITCH = "/graphics/character_witch.png";
     private final String SAMURAI = "/graphics/character_samurai.png";
     private final String KING = "/graphics/character_king.png";
+
+    private int[] students;
+    private HashMap<Integer, int[]> tableStudentsMap;
+
+    private ImageView studentTable;
 
 
     @FXML private Button useSpecialButton;
@@ -75,6 +83,11 @@ public class MainSceneController implements SceneController {
         this.charactersImageMap =new HashMap<>();
         this.numberOfPlayers=4;
         this.expertMode=false;
+        students= new int[]{0,0,0,0,0};
+        tableStudentsMap=new HashMap<>();
+
+        studentTable = new ImageView("/ ");
+        //studentTable.setFitHeight();
     }
 
     /*
@@ -105,6 +118,7 @@ public class MainSceneController implements SceneController {
             for(int i=0; i<numberOfPlayers; i++){
                 setNickname(nicknamesMap.get(i), i);
                 charactersImageMap.get(i).setImage(characterToImage(charactersMap.get(i)));
+                tableStudentsMap.put(i, new int[]{0,0,0,0,0});
             }
         });/*
         Platform.runLater(()->{
@@ -206,9 +220,24 @@ public class MainSceneController implements SceneController {
     public void setStudentsEntrance(int componentRef, int color, int newStudentsValue){
 
     }
-    public void setStudentsTable(int componentRef, int color, int newStudentsValue){
+    public void setStudentsTable(int schoolRef, int color, int newStudentsValue){
 
+        int i=0;
+        switch (schoolRef){
+
+            case 1 -> {
+                //school1.getChildren().add(i, );
+                school1.getChildren().get(3).setLayoutX(school1.getChildren().get(i).getLayoutX());
+                //AnchorPane island = (AnchorPane) islandsPane.lookup("#island4");
+                //island.lookup()
+                //school1.getChildren().get()
+
+
+
+            }
+        }
     }
+
     public void setStudentsIsland(int componentRef, int color, int newStudentsValue){
 
     }

@@ -140,12 +140,12 @@
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Label>
-                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                  <Label id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Label>
-                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                  <Label id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
@@ -973,7 +973,10 @@
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="nickname2" layoutX="18.0" layoutY="151.0" text="nickname" />
+                  <Label id="nickname2" fx:id="nickname2" layoutX="10.0" layoutY="145.0" text="nickname">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font></Label>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="school2" prefHeight="200.0" prefWidth="200.0">
@@ -1021,6 +1024,11 @@
                   <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="23.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="118.19999999999999" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="306.6" AnchorPane.topAnchor="25.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="127.0" fitWidth="29.0" layoutX="316.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/studentsAll_vertical2.png" />
                      </image>
                   </ImageView>
                </children>
@@ -1076,277 +1084,11 @@
                         <Image url="@../graphics/wooden_pieces/black_tower.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="132.0" layoutY="227.0" preserveRatio="true">
+                  <ImageView fitHeight="26.0" fitWidth="127.0" layoutX="25.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                        <Image url="@../graphics/wooden_pieces/studentsAll_flipped.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="132.0" layoutY="86.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="132.0" layoutY="104.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="132.0" layoutY="122.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="132.0" layoutY="140.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                       </image>
-                    </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="132.0" layoutY="158.0" preserveRatio="true">
-                         <image>
-                            <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                         </image>
-                      </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="132.0" layoutY="176.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                       </image>
-                    </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="132.0" layoutY="212.0" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                           </image>
-                    </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="132.0" layoutY="194.0" preserveRatio="true">
-                         <image>
-                            <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                         </image>
-                      </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="132.0" layoutY="230.0" preserveRatio="true">
-                         <image>
-                            <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                         </image>
-                      </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="132.0" layoutY="68.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="108.0" layoutY="230.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                       </image>
-                    </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="108.0" layoutY="86.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                       </image>
-                    </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="108.0" layoutY="104.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                       </image>
-                    </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="108.0" layoutY="122.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                       </image>
-                    </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="108.0" layoutY="140.0" preserveRatio="true">
-                         <image>
-                            <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                         </image>
-                      </ImageView>
-                      <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="108.0" layoutY="158.0" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                           </image>
-                        </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="108.0" layoutY="176.0" preserveRatio="true">
-                         <image>
-                            <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                         </image>
-                      </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="108.0" layoutY="212.0" preserveRatio="true">
-                             <image>
-                                <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                             </image>
-                      </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="108.0" layoutY="194.0" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                           </image>
-                        </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="108.0" layoutY="230.0" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                           </image>
-                        </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="108.0" layoutY="68.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                       </image>
-                    </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="80.0" layoutY="68.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="80.0" layoutY="227.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                       </image>
-                    </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="80.0" layoutY="86.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                       </image>
-                    </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="80.0" layoutY="104.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                       </image>
-                    </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="80.0" layoutY="122.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                       </image>
-                    </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="80.0" layoutY="140.0" preserveRatio="true">
-                         <image>
-                            <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                         </image>
-                      </ImageView>
-                      <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="80.0" layoutY="158.0" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                           </image>
-                        </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="80.0" layoutY="176.0" preserveRatio="true">
-                         <image>
-                            <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                         </image>
-                      </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="80.0" layoutY="212.0" preserveRatio="true">
-                             <image>
-                                <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                             </image>
-                      </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="80.0" layoutY="194.0" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                           </image>
-                        </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="80.0" layoutY="230.0" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                           </image>
-                        </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="80.0" layoutY="68.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                       </image>
-                    </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="55.0" layoutY="68.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-              <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="55.0" layoutY="86.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                       </image>
-                    </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="55.0" layoutY="104.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                       </image>
-                    </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="55.0" layoutY="122.0" preserveRatio="true">
-                       <image>
-                          <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                       </image>
-                    </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="55.0" layoutY="140.0" preserveRatio="true">
-                         <image>
-                            <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                         </image>
-                      </ImageView>
-                      <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="55.0" layoutY="158.0" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                           </image>
-                        </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="55.0" layoutY="176.0" preserveRatio="true">
-                         <image>
-                            <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                         </image>
-                      </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="55.0" layoutY="212.0" preserveRatio="true">
-                             <image>
-                                <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                             </image>
-                      </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="55.0" layoutY="194.0" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                           </image>
-                        </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="55.0" layoutY="230.0" preserveRatio="true">
-                           <image>
-                              <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                           </image>
-                        </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="28.0" layoutY="68.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                    <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="28.0" layoutY="86.0" preserveRatio="true">
-                             <image>
-                                <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                             </image>
-                          </ImageView>
-                          <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="28.0" layoutY="104.0" preserveRatio="true">
-                             <image>
-                                <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                             </image>
-                          </ImageView>
-                          <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="28.0" layoutY="122.0" preserveRatio="true">
-                             <image>
-                                <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                             </image>
-                          </ImageView>
-                          <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="28.0" layoutY="140.0" preserveRatio="true">
-                               <image>
-                                  <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                               </image>
-                            </ImageView>
-                            <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="28.0" layoutY="158.0" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                                 </image>
-                              </ImageView>
-                          <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="28.0" layoutY="176.0" preserveRatio="true">
-                               <image>
-                                  <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                               </image>
-                            </ImageView>
-                          <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="28.0" layoutY="212.0" preserveRatio="true">
-                                   <image>
-                                      <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                                   </image>
-                            </ImageView>
-                          <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="28.0" layoutY="194.0" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                                 </image>
-                              </ImageView>
-                          <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="28.0" layoutY="230.0" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                                 </image>
-                              </ImageView>
-
 
                </children>
             </AnchorPane>
@@ -1357,7 +1099,7 @@
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="nickname3" contentDisplay="CENTER" layoutX="10.0" layoutY="124.0" prefHeight="18.0" prefWidth="89.0" text="nickname" textAlignment="CENTER" wrapText="true">
+                  <Label id="nickname3" fx:id="nickname4" contentDisplay="CENTER" layoutX="10.0" layoutY="124.0" prefHeight="18.0" prefWidth="89.0" text="nickname" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
@@ -1415,6 +1157,11 @@
                         <Image url="@../graphics/wooden_pieces/white_tower.png" />
                      </image>
                   </ImageView>
+                  <ImageView fitHeight="127.0" fitWidth="29.0" layoutX="23.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/studentsAll_vertical.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="userInfo1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="160.0" prefWidth="127.0">
@@ -1424,7 +1171,7 @@
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="nickname1" layoutX="18.0" layoutY="124.0" text="nickname">
+                  <Label id="nickname1" fx:id="nickname1" layoutX="18.0" layoutY="124.0" text="nickname">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
@@ -1442,7 +1189,10 @@
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="nickname4" layoutX="73.0" layoutY="127.0" text="nickname" />
+                  <Label id="nickname4" fx:id="nickname4" layoutX="73.0" layoutY="125.0" text="nickname">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font></Label>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="school4" prefHeight="200.0" prefWidth="200.0">
@@ -1467,7 +1217,7 @@
                         <Image url="@../graphics/wooden_pieces/black_tower.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="20.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="283.6" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="14.400000000000006" AnchorPane.topAnchor="46.0">
+                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="84.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="283.6" AnchorPane.leftAnchor="84.0" AnchorPane.rightAnchor="46.400000000000006" AnchorPane.topAnchor="46.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/black_tower.png" />
                      </image>
@@ -1487,11 +1237,18 @@
                         <Image url="@../graphics/wooden_pieces/black_tower.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="84.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="283.6" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="110.4" AnchorPane.topAnchor="46.0">
+                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="116.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="283.6" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="14.400000000000006" AnchorPane.topAnchor="46.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/black_tower.png" />
                      </image>
                   </ImageView>
+                  <ImageView fitHeight="26.0" fitWidth="127.0" layoutX="22.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/studentsAll.png" />
+                     </image>
+                  </ImageView>
+
+
                </children>
             </AnchorPane>
          </children>
