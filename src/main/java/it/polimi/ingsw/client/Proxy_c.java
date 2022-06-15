@@ -118,7 +118,7 @@ public class Proxy_c implements Exit{
     public View startView() throws IOException, ClassNotFoundException, InterruptedException {
         send(new GenericMessage("Ready to start"));
         synchronized (lock2){
-            if(view == null) lock2.wait();
+            if(!view.isInitializedView()) lock2.wait();
         }
         return view;
     }
