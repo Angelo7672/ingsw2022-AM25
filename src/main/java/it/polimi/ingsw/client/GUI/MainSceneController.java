@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class MainSceneController implements SceneController, TowersListener, ProfessorsListener,PlayedCardListener,
-        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener {
+public class MainSceneController implements SceneController {
 
     private GUI gui;
     private View view;
@@ -175,7 +174,7 @@ public class MainSceneController implements SceneController, TowersListener, Pro
                 if (proxy.startPlanningPhase()) {
                     gamePhase = 1;
                     Stage stage = new Stage();
-                    gui.loadScene(stage, GUI.CARDS);
+                    gui.loadScene(GUI.CARDS);
                 } else
                     System.out.println("errore");
             } catch (ClassNotFoundException e) {
@@ -219,65 +218,7 @@ public class MainSceneController implements SceneController, TowersListener, Pro
         charactersMap.put(playerRef, character);
     }
 
-    @Override
-    public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
 
-    }
-
-    @Override
-    public void notifyInhibited(int islandRef, int isInhibited) {
-
-    }
-
-    @Override
-    public void notifyIslandChange(int islandToDelete) {
-
-    }
-
-    @Override
-    public void notifyMotherPosition(int newMotherPosition) {
-
-    }
-
-    @Override
-    public void notifyPlayedCard(int playerRef, String assistantCard) {
-
-    }
-
-    @Override
-    public void notifyHand(int playerRef, ArrayList<String> hand) {
-
-    }
-
-    @Override
-    public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
-
-    }
-
-
-
-    @Override
-    public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
-        if(place==0)
-            System.out.println("student in entrance");
-        else if(place==1){
-            System.out.println("students at table");
-        } else if(place==2)
-            System.out.println("student in island");
-        else if(place==3){
-            System.out.println("students on cloud");
-        }
-    }
-
-    @Override
-    public void notifyTowersChange(int place, int componentRef, int towersNumber) {
-
-    }
-
-    @Override
-    public void notifyTowerColor(int islandRef, int newColor) {
-
-    }
 
 
 
