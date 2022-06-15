@@ -7,6 +7,7 @@ import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.listeners.*;
 import it.polimi.ingsw.server.answer.SavedGameAnswer;
 
+import java.awt.desktop.SystemEventListener;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -34,9 +35,10 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         active = true;
         constants = new PlayerConstants();
         proxy = new Proxy_c(socket);
+        proxy.setDisconnectedListener(this);
     }
 
-    public void setup() throws IOException, ClassNotFoundException, InterruptedException {
+    private void setup() throws IOException, ClassNotFoundException, InterruptedException {
         boolean savedGame=false;
         boolean gameRestored = false;
         System.out.println();
@@ -75,6 +77,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         if(!savedGame) {
             setupConnection();
         }
+        //view.setDisconnectedListener(this);
         view = proxy.startView();
         view.setCoinsListener(this);
         view.setInhibitedListener(this);
@@ -84,9 +87,8 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         view.setProfessorsListener(this);
         view.setStudentsListener(this);
         view.setTowersListener(this);
-        view.setDisconnectedListener(this);
-        view.setWinnerListener(this);
         view.setSpecialListener(this);
+        view.setWinnerListener(this);
         printable = new Printable(view);
         System.out.println();
         System.out.println(SPACE+"Game is started! Wait for your turn...");
@@ -109,7 +111,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         }
     }
 
-    public void setupConnection() throws IOException, ClassNotFoundException {
+    private void setupConnection() throws IOException, ClassNotFoundException {
         while (true) {
             ArrayList<String> chosenCharacters = proxy.getChosenCharacters();
             ArrayList<String> availableCharacters = new ArrayList<>();
@@ -146,7 +148,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         }
     }
 
-    public void setupGame(){
+    private void setupGame(){
         int numberOfPlayers;
         String expertMode;
         while (true){
@@ -231,11 +233,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         }
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public void useSpecial() throws IOException, ClassNotFoundException {
+    private void useSpecial() throws IOException, ClassNotFoundException {
         System.out.println();
         System.out.print(SPACE+"Do you want to use a special card? [y/n] ");
         String answer = readNext();
@@ -249,7 +247,13 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 String intString = readNext();
                 special = Integer.parseInt(intString);
             } while (special == -1);
-            if(!proxy.checkSpecial(special)) {
+            int specialIndex = view.getSpecialIndex(special);
+            if(specialIndex == -1){
+                System.out.println();
+                System.out.println(ANSI_RED+SPACE+"Error, special not present"+ANSI_RESET);
+                useSpecial();
+            }
+            if(!proxy.checkSpecial(specialIndex)) {
                 System.out.println();
                 System.out.println(ANSI_RED+SPACE+"Error, special not present"+ANSI_RESET);
                 useSpecial();
@@ -428,7 +432,8 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         }
     }
 
-    public void playCard() throws IOException, ClassNotFoundException {
+    private void playCard() throws IOException, ClassNotFoundException {
+        System.out.println("play card");
         printable.cli();
         while (true) {
             System.out.println();
@@ -449,7 +454,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         }
     }
 
-    public void moveStudents() {
+    private void moveStudents() {
         printable.cli();
         boolean finished = false;
         do {
@@ -511,7 +516,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         constants.setStudentMoved(true);
     }
 
-    public void moveMotherNature() throws IOException, ClassNotFoundException {
+    private void moveMotherNature() throws IOException, ClassNotFoundException {
         int steps = -1;
         try {
             do {
@@ -536,7 +541,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         else System.out.println(result);
     }
 
-    public void chooseCloud() throws IOException, ClassNotFoundException {
+    private void chooseCloud() throws IOException, ClassNotFoundException {
         int cloud = -1;
         constants.setEndTurn(true);
         try{
@@ -596,12 +601,16 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         scanner.close();
     }
 
-    public void turn() throws IOException, ClassNotFoundException {
+    private void setActive(boolean active) {
+        this.active = active;
+    }
+
+    private void turn() throws IOException, ClassNotFoundException {
         if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) useSpecial();
         phaseHandler(constants.lastPhase());
     }
 
-    public void phaseHandler(String phase) throws IOException, ClassNotFoundException {
+    private void phaseHandler(String phase) throws IOException, ClassNotFoundException {
         if(!constants.isStartGame()) constants.setStartGame(true);
         if(phase.equals("PlayCard")) {
             playCard();
@@ -640,13 +649,16 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         System.out.println(ANSI_RED+SPACE+"One of the player is offline, Game over."+ANSI_RESET);
         socket.close();
         setActive(false);
+        System.exit(-1);
     }
 
     private void winner() throws IOException {
+        printable.cli();
         System.out.println();
         System.out.println(ANSI_RED+SPACE+"Game over, the winner is "+view.getWinner()+"."+ANSI_RESET);
         socket.close();
         setActive(false);
+        System.exit(0);
     }
 
     @Override
@@ -660,7 +672,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     public void notifyInhibited(int islandRef, int isInhibited) {
         if(constants.isStartGame()) {
             System.out.println();
-            System.out.println("New play: "+"\t"+" island "+islandRef+" No Entry tiles: "+isInhibited);
+            System.out.println("New play: "+"\t"+"\t"+"island "+islandRef+" No Entry tiles: "+isInhibited);
         }
     }
 
@@ -668,7 +680,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     public void notifyIslandChange(int islandToDelete) {
         if(constants.isStartGame()) {
             //System.out.println();
-            System.out.println("New play: "+"\t"+" island "+(islandToDelete+1)+" had been united.");
+            System.out.println("New play: "+"\t"+"\t"+" island "+(islandToDelete+1)+" had been united.");
             //System.out.println();
         }
     }
@@ -716,7 +728,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
 
         }
     }
-
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {

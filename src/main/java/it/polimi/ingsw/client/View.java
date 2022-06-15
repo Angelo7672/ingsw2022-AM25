@@ -32,9 +32,8 @@ public class View {
     private int maxStepsMotherNature;
     private int motherNaturePos;
     private String winner;
-    private boolean disconnected;
-    private boolean initializedView;
     private int special;
+    private boolean initializedView;
 
     public View(){
         this.schoolBoards = new ArrayList<>();
@@ -78,7 +77,7 @@ public class View {
 
         if(expertMode){
             for (int i=0; i<3; i++){
-                specials.add(new Special(0, ""));
+                specials.add(new Special(0, -1));
             }
         }
     }
@@ -170,7 +169,7 @@ public class View {
             //this.specialListener.notifySpecialName(s.getName());
     }
     public void setSpecialCost(int cost, int special){specials.get(special).setCost(cost);}
-    public void setSpecialName(String name, int special){specials.get(special).setName(name);}
+    public void setSpecialName(int name, int special){specials.get(special).setName(name);}
     public void setSpecialStudents(int color, int newValue, int special){specials.get(special).setStudents(color, newValue);}
     public void setNoEntry(int noEntry, int special){specials.get(special).setNoEntry(noEntry);}
 
@@ -204,9 +203,7 @@ public class View {
 
     public int getIslandTowers(int islandRef){ return islands.get(islandRef).getTowersNumber();}
     public int getTowersColor(int islandRef){ return islands.get(islandRef).getTowersColor();}
-    public int getMotherPosition(){
-        return motherNaturePos;
-    }
+    public int getMotherPosition(){return motherNaturePos;}
     public int getMaxStepsMotherNature(){return maxStepsMotherNature;}
     public int[] getStudentsIsland(int islandRef){ return islands.get(islandRef).getStudents();}
     public int getInhibited(int islandRef){ return islands.get(islandRef).isInhibited; }
@@ -232,9 +229,19 @@ public class View {
     public boolean getExpertMode(){return expertMode;}
 
     public int getSpecialCost(int special){return specials.get(special).getCost();}
-    public String getSpecialName(int special){return specials.get(special).getName();}
+    public int getSpecialName(int special){return specials.get(special).getName();}
     public int[]  getSpecialStudents(int special){return specials.get(special).getStudents();}
     public int getNoEntry(int special){return specials.get(special).getNoEntry();}
+    public int getSpecialIndex(int special){
+        int specialIndex=-1;
+        for(int i=0; i<specials.size(); i++){
+            if(specials.get(i).getName() == special){
+                specialIndex = i;
+                break;
+            }
+        }
+        return specialIndex;
+    }
 
     public void setTowersListener(TowersListener towersListener) {
         this.towersListener = towersListener;
@@ -272,10 +279,6 @@ public class View {
         this.studentsListener = studentsListener;
     }
 
-    public void setDisconnectedListener(DisconnectedListener disconnectedListener) {
-        this.disconnectedListener = disconnectedListener;
-    }
-
     public void setWinnerListener(WinnerListener winnerListener){this.winnerListener=winnerListener;}
 
     public String getWinner() {
@@ -287,15 +290,9 @@ public class View {
         winnerListener.notifyWinner();
     }
 
-    public void setDisconnected(boolean disconnected) throws IOException {
-        this.disconnected = disconnected;
-        disconnectedListener.notifyDisconnected();
-    }
-
     public boolean isInitializedView() {
         return initializedView;
     }
-
 
     private class SchoolBoard {
         String nickname;
@@ -424,11 +421,11 @@ public class View {
 
     private class Special{
         private int cost;
-        private String name;
+        private int name;
         private int[]  students;
         private int noEntry;
 
-        private Special(int cost, String name) {
+        private Special(int cost, int name) {
             this.cost = cost;
             this.name = name;
             students = new int[]{0, 0, 0, 0, 0};
@@ -438,7 +435,7 @@ public class View {
         public int getCost() {
             return cost;
         }
-        public String getName() {
+        public int getName() {
             return name;
         }
         public int[] getStudents(){ return students;}
@@ -449,7 +446,7 @@ public class View {
         public void setCost(int cost){
             this.cost = cost;
         }
-        public void setName(String name){
+        public void setName(int name){
             this.name=name;
         }
         public void setStudents(int color, int newStudentsValue) {

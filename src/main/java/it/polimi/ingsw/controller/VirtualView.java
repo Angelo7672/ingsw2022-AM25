@@ -10,7 +10,7 @@ import java.util.List;
 //virtual View class listen to changes in model classes through specific listener interfaces
 public class VirtualView
         implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
-        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, BagListener,
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, BagListener, NoEntryListener, SpecialStudentsListener,
         QueueListener, Serializable {
     private GameInfo gameInfo;
     private TurnInfo turnInfo;
@@ -328,6 +328,16 @@ public class VirtualView
                     cost.get(i)
             );
         }
+
+    }
+
+    @Override
+    public void notifyNoEntry(int newValue) {
+
+    }
+
+    @Override
+    public void specialStudentsNotify(int special, int color, int newValue) {
 
     }
 

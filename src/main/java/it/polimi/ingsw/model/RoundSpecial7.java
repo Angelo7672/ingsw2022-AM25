@@ -1,15 +1,27 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.listeners.BagListener;
+import it.polimi.ingsw.listeners.SpecialStudentsListener;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;
 
 public class RoundSpecial7 extends RoundStrategy{
-    Special7 special;
+    private Special7 special;
+    private SpecialStudentsListener specialStudentsListener;
+    private BagListener bagListener;
 
     public RoundSpecial7(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         special = new Special7();
+    }
+
+    public void setStudentsListener(SpecialStudentsListener specialStudentsListener) {
+        this.specialStudentsListener = specialStudentsListener;
+    }
+
+    public void setBagListener(BagListener bagListener){
+        this.bagListener = bagListener;
     }
 
     @Override
@@ -18,6 +30,7 @@ public class RoundSpecial7 extends RoundStrategy{
 
         for(int i = 0; i < 6; i++) {
             extraction[bag.extraction()]++;
+            bagListener.notifyBagExtraction();
             //metti notify qui per bag.extraction()
         }
         special.setup(extraction);
@@ -28,6 +41,8 @@ public class RoundSpecial7 extends RoundStrategy{
         if(playerManager.checkStudentsEntrance(entranceStudent, playerRef) && special.checkStudents(cardStudent)) {
             for (int i = 0; i < entranceStudent.size(); i++) {
                 special.effect(cardStudent.get(i), entranceStudent.get(i));
+                specialStudentsListener.specialStudentsNotify(7, cardStudent.get(i), special.getStudent(cardStudent.get(i)));
+                specialStudentsListener.specialStudentsNotify(7, entranceStudent.get(i), special.getStudent(entranceStudent.get(i)));
                 //metti qui notify per entranceStudent.get(i)
                 playerManager.setStudentEntrance(playerRef, cardStudent.get(i), 1);
                 try { playerManager.removeStudentEntrance(playerRef, entranceStudent.get(i));

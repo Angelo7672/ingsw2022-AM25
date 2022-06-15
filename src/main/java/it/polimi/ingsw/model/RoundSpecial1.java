@@ -1,7 +1,12 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.listeners.BagListener;
+import it.polimi.ingsw.listeners.SpecialStudentsListener;
+
 public class RoundSpecial1 extends RoundStrategy{
     Special1 special;
+    private SpecialStudentsListener specialStudentsListener;
+    private BagListener bagListener;
     
     public RoundSpecial1(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
@@ -14,7 +19,7 @@ public class RoundSpecial1 extends RoundStrategy{
 
         for(int i=0; i<4; i++) {
             extraction[bag.extraction()]++;
-            //metti notify qui per bag.extraction()
+            bagListener.notifyBagExtraction();
         }
         special.setup(extraction);
     }
@@ -23,12 +28,22 @@ public class RoundSpecial1 extends RoundStrategy{
     public boolean effect(int islandRef, int color){
         if(getStudents(color) > 0){
             int extracted = bag.extraction();
+            bagListener.notifyBagExtraction();
             special.effect(color, extracted);
-            //metti notified qui per extracted
+            specialStudentsListener.specialStudentsNotify(1, color, special.getStudent(color));
+            specialStudentsListener.specialStudentsNotify(1, extracted, special.getStudent(extracted));
             islandsManager.incStudent(islandRef, color, 1);
             return true;
         }
         return false;
+    }
+
+    public void setStudentsListener(SpecialStudentsListener specialStudentsListener) {
+        this.specialStudentsListener = specialStudentsListener;
+    }
+
+    public void setBagListener(BagListener bagListener){
+        this.bagListener = bagListener;
     }
 
     private int getStudents(int color){ return special.getStudent(color); }

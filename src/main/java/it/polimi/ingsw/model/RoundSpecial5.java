@@ -1,8 +1,11 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.listeners.NoEntryListener;
+
 public class RoundSpecial5 extends RoundStrategy{
     Special5 special;
+    NoEntryListener noEntryListener;
 
     public RoundSpecial5(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
@@ -14,10 +17,14 @@ public class RoundSpecial5 extends RoundStrategy{
         if(special.getNoEntry() > 0){
             islandsManager.increaseInhibited(islandRef);
             special.decreaseNoEntry();
-            //metti notify
+            noEntryListener.notifyNoEntry(special.getNoEntry());
             return true;
         }
         return false;
+    }
+
+    public void setNoEntryListener(NoEntryListener noEntryListener){
+        this.noEntryListener = noEntryListener;
     }
 
     @Override
@@ -43,7 +50,7 @@ public class RoundSpecial5 extends RoundStrategy{
 
         if(inhibitedIsland<(4-special.getNoEntry())){
             special.increaseNoEntry();
-            //metti notify
+            noEntryListener.notifyNoEntry(special.getNoEntry());
         }
     }
 

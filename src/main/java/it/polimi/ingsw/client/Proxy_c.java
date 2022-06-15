@@ -2,6 +2,8 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.message.*;
 import it.polimi.ingsw.client.message.special.*;
+import it.polimi.ingsw.listeners.DisconnectedListener;
+import it.polimi.ingsw.listeners.WinnerListener;
 import it.polimi.ingsw.server.answer.*;
 import it.polimi.ingsw.server.answer.viewmessage.*;
 
@@ -9,9 +11,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
-public class Proxy_c implements Exit{
+public class Proxy_c implements Exit {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
     private final Socket socket;
@@ -23,6 +27,8 @@ public class Proxy_c implements Exit{
     private final Object lock1;
     private final Object lock2;
     private String winner;
+    private boolean disconnected;
+    private DisconnectedListener disconnectedListener;
 
     public Proxy_c(Socket socket) throws IOException{
         this.socket = socket;
@@ -240,7 +246,7 @@ public class Proxy_c implements Exit{
         receive = new Thread(() -> {
             ArrayList<Answer> answersTmpList = new ArrayList<>();
             Answer tmp;
-            while (true){
+            while (!disconnected){
                 try {
                     tmp = (Answer) inputStream.readObject();
                     if(tmp instanceof PongAnswer){
@@ -355,14 +361,15 @@ public class Proxy_c implements Exit{
                         }
                     }
                     else if(tmp instanceof DisconnectedAnswer){
-                        synchronized (lock2) {
-                            if (view == null) lock2.wait();
-                            view.setDisconnected(true);
-                        }
+                        System.out.println("disconnected");
+                        disconnected = true;
+                        answersTmpList.clear();
+                        disconnectedListener.notifyDisconnected();
                     }
                     else if(tmp instanceof GameOverAnswer){
+                        System.out.println("winner");
                         synchronized (lock2) {
-                            if (view == null) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setWinner(((GameOverAnswer) tmp).getWinner());
                         }
                     }
@@ -388,13 +395,20 @@ public class Proxy_c implements Exit{
                         if(answersList.size()!=0) lock1.notify();
                 }
             }
+            try {
+                inputStream.close();
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
         receive.start();
     }
 
     private void startPing() {
         ping = new Thread(() -> {
-        while (true) {
+            int pingCounter;
+        while (!disconnected) {
             try {
                 Thread.sleep(5000);
                 send(new PingMessage());
@@ -408,8 +422,9 @@ public class Proxy_c implements Exit{
         ping.start();
     }
 
-    private void stopPing(){
-        ping.interrupt();
+    @Override
+    public void setDisconnectedListener(DisconnectedListener disconnectedListener) {
+        this.disconnectedListener = disconnectedListener;
     }
 
 }

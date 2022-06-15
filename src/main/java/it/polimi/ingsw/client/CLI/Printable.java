@@ -24,9 +24,8 @@ public class Printable {
                 ANSI_YELLOW +", Yellow " + view.getStudentsIsland(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsIsland(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsIsland(i)[4]+ANSI_RESET);
     }
     protected void printTowersValue(int i){
-        System.out.println();
         System.out.print("\t"+"Island "+(i+1)+": ");
-        System.out.println("\t"+"     Island size: " + view.getIslandTowers(i));
+        System.out.println("\t"+"\t"+"Island size: " + view.getIslandTowers(i));
         System.out.println();
     }
     protected void printTowersOwner(int i){
@@ -35,7 +34,7 @@ public class Printable {
         else if(view.getTowersColor(i)==1) System.out.println("\t"+"    Towers Team: " + ANSI_BLACK+ "BLACK" + ANSI_RESET);
         else if(view.getTowersColor(i)==2) System.out.println("\t"+"    Towers Team: " + ANSI_WHITE+ "GREY" + ANSI_RESET);
         else if(view.getTowersColor(i)==-1) System.out.println("\t"+"    Towers Team: NO ONE");
-        //System.out.println();
+        System.out.println();
     }
     protected void printMotherNature(){
         System.out.println(UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));//aggiungere
@@ -89,39 +88,36 @@ public class Printable {
     }
 
     protected void printTowersChange(int place, int componentRef){
+        System.out.println();
         System.out.print("New play: " + "\t");
-        switch (place){
-            case(0): {
+        switch (place) {
+            case (0) -> {
                 printNickname(componentRef);
                 printSchoolTowers(componentRef);
-                break;
             }
-            case(1): printTowersValue(componentRef); break;
+            case (1) -> printTowersValue(componentRef);
         }
         System.out.println();
     }
 
     protected void printStudentsChange(int place, int componentRef){
         switch (place) {
-            case (0): {
+            case (0) -> {
                 System.out.println();
                 System.out.print("New play: " + "\t");
                 printNickname(componentRef);
                 printEntrance(componentRef);
-                break;
             }
-            case (1): {
+            case (1) -> {
                 System.out.println();
                 System.out.print("New play: " + "\t");
                 printNickname(componentRef);
                 printTable(componentRef);
-                break;
             }
-            case (2): {
+            case (2) -> {
                 System.out.println();
                 System.out.print("New play: " + "\t");
                 printIslandStudent(componentRef);
-                break;
             }
         }
     }
@@ -130,7 +126,7 @@ public class Printable {
         System.out.println();
         System.out.println(UNDERLINE+"SPECIALS"+ANSI_RESET);
         for(int i=0; i<3; i++){
-            System.out.print("\t"+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
+            System.out.print("\t"+"Special "+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
             if(specialArray(view.getSpecialName(i))) System.out.println(". Students: "+ ANSI_GREEN +" Green "+ view.getSpecialStudents(i)[0] + ANSI_RED  + ", Red " + view.getSpecialStudents(i)[1] +
                     ANSI_YELLOW +", Yellow " + view.getSpecialStudents(i)[2] + ANSI_PURPLE + ", Pink " + view.getSpecialStudents(i)[3] + ANSI_BLUE + ", Blue " + view.getSpecialStudents(i)[4]+ANSI_RESET);
             if(view.getNoEntry(i)!=-1) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
@@ -201,7 +197,7 @@ public class Printable {
         if(view.getExpertMode()){
             System.out.println(UNDERLINE+"SPECIALS"+ANSI_RESET);
             for(int i=0; i<3; i++){
-                System.out.print("\t"+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
+                System.out.print("\t"+"Special "+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
                 if(specialArray(view.getSpecialName(i))) System.out.println(". Students: "+ ANSI_GREEN +" Green "+ view.getSpecialStudents(i)[0] + ANSI_RED  + ", Red " + view.getSpecialStudents(i)[1] +
                         ANSI_YELLOW +", Yellow " + view.getSpecialStudents(i)[2] + ANSI_PURPLE + ", Pink " + view.getSpecialStudents(i)[3] + ANSI_BLUE + ", Blue " + view.getSpecialStudents(i)[4]+ANSI_RESET);
                 if(view.getNoEntry(i)!=-1) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
@@ -209,10 +205,10 @@ public class Printable {
         }
     }
 
-    private boolean specialArray(String name){
-        if(name.equalsIgnoreCase("special1")) return true;
-        if(name.equalsIgnoreCase("special7")) return true;
-        if(name.equalsIgnoreCase("special8")) return true;
+    private boolean specialArray(int name){
+        if(name == 1) return true;
+        if(name == 7) return true;
+        if(name == 8) return true;
         return false;
     }
 }

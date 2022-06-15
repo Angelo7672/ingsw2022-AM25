@@ -1,11 +1,15 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.listeners.BagListener;
+import it.polimi.ingsw.listeners.SpecialStudentsListener;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;
 
 public class RoundSpecial11 extends RoundStrategy{
     Special11 special;
+    private SpecialStudentsListener specialStudentsListener;
+    private BagListener bagListener;
 
     public RoundSpecial11(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
@@ -18,7 +22,7 @@ public class RoundSpecial11 extends RoundStrategy{
 
         for(int i = 0; i < 4; i++) {
             extraction[bag.extraction()]++;
-            //metti notify qui per bag.extraction()
+            bagListener.notifyBagExtraction();
         }
         special.setup(extraction);
     }
@@ -29,11 +33,21 @@ public class RoundSpecial11 extends RoundStrategy{
             try { playerManager.setStudentTable(playerRef, color, 1);
             }catch (NotAllowedException notAllowedException){ return false; }
             int extracted = bag.extraction();
+            bagListener.notifyBagExtraction();
             special.effect(color, extracted);
-            //metti qui notify per extracted
+            specialStudentsListener.specialStudentsNotify(11, color, special.getStudent(color));
+            specialStudentsListener.specialStudentsNotify(11, extracted, special.getStudent(extracted));
             return true;
         }
         return false;
+    }
+
+    public void setStudentsListener(SpecialStudentsListener specialStudentsListener) {
+        this.specialStudentsListener = specialStudentsListener;
+    }
+
+    public void setBagListener(BagListener bagListener){
+        this.bagListener = bagListener;
     }
 
     private int getStudents(int color){return special.getStudent(color);}
