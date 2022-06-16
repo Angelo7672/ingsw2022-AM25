@@ -80,11 +80,15 @@ public class Controller implements ServerController{
         for(int i = 0; i < numberOfPlayers; i++)
             server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
         virtualView.restoreGame();
+        for(int i = 0; i < numberOfPlayers; i++)
+            server.lastCardPlayedFromAPlayer(i, virtualView.getLastPlayedCard(i));
+        System.out.println("fine restore");
     }
     @Override
     public void startGame(){
         this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers,jumpPhaseForRestore);
         roundController.start();
+        System.out.println("game on");
     }
 
     @Override
