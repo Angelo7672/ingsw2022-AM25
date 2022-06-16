@@ -1,18 +1,16 @@
 package it.polimi.ingsw.model;
 
 public abstract class Special {
-
     private int cost;
     private String name;
 
     public Special(int cost, String name){
-        this.cost=cost;
-        this.name=name;
+        this.cost = cost;
+        this.name = name;
     }
 
-    //increase di uno?
     public void increaseCost(){
-        cost+=1;
+        cost++;
     }
     public String getName(){
         return name;

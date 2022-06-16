@@ -51,6 +51,7 @@ public class Game implements GameManager{
             Collections.sort(random);
 
             for (int i = 0; i < 3; i++) {
+                System.out.println("e' uscito "+random.get(i));
                 roundStrategies.add(
                         roundStrategyFactor.getRoundStrategy(
                                 random.get(i)
@@ -60,7 +61,27 @@ public class Game implements GameManager{
                         random.get(i)
                 );
             }
+            System.out.println(roundStrategies.get(0).getName() +"-"+roundStrategies.get(1).getName()+"-"+roundStrategies.get(2).getName());
         }
+    }
+    private Assistant stringToAssistant(String string){
+        if(string.equalsIgnoreCase("LION")) return Assistant.LION;
+        else if(string.equalsIgnoreCase("GOOSE")) return Assistant.GOOSE;
+        else if(string.equalsIgnoreCase("CAT")) return Assistant.CAT;
+        else if(string.equalsIgnoreCase("EAGLE")) return Assistant.EAGLE;
+        else if(string.equalsIgnoreCase("FOX")) return Assistant.FOX;
+        else if(string.equalsIgnoreCase("LIZARD")) return Assistant.LIZARD;
+        else if(string.equalsIgnoreCase("OCTOPUS")) return Assistant.OCTOPUS;
+        else if(string.equalsIgnoreCase("DOG")) return Assistant.DOG;
+        else if(string.equalsIgnoreCase("ELEPHANT")) return Assistant.ELEPHANT;
+        else if(string.equalsIgnoreCase("TURTLE")) return Assistant.TURTLE;
+        return Assistant.NONE;
+    }
+    private Team stringToTeam(String string){
+        if(string.equalsIgnoreCase("WHITE")) return Team.WHITE;
+        else if(string.equalsIgnoreCase("BLACK")) return Team.BLACK;
+        else if(string.equalsIgnoreCase("GREY")) return Team.GREY;
+        return Team.NONE;
     }
 
     @Override
@@ -104,26 +125,6 @@ public class Game implements GameManager{
     @Override
     public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
         queueManager.queueRestore(playerRef,valueCard,maxMoveMotherNature);
-    }
-
-    private Assistant stringToAssistant(String string){
-        if(string.equalsIgnoreCase("LION")) return Assistant.LION;
-        else if(string.equalsIgnoreCase("GOOSE")) return Assistant.GOOSE;
-        else if(string.equalsIgnoreCase("CAT")) return Assistant.CAT;
-        else if(string.equalsIgnoreCase("EAGLE")) return Assistant.EAGLE;
-        else if(string.equalsIgnoreCase("FOX")) return Assistant.FOX;
-        else if(string.equalsIgnoreCase("LIZARD")) return Assistant.LIZARD;
-        else if(string.equalsIgnoreCase("OCTOPUS")) return Assistant.OCTOPUS;
-        else if(string.equalsIgnoreCase("DOG")) return Assistant.DOG;
-        else if(string.equalsIgnoreCase("ELEPHANT")) return Assistant.ELEPHANT;
-        else if(string.equalsIgnoreCase("TURTLE")) return Assistant.TURTLE;
-        return Assistant.NONE;
-    }
-    private Team stringToTeam(String string){
-        if(string.equalsIgnoreCase("WHITE")) return Team.WHITE;
-        else if(string.equalsIgnoreCase("BLACK")) return Team.BLACK;
-        else if(string.equalsIgnoreCase("GREY")) return Team.GREY;
-        return Team.NONE;
     }
 
     @Override
@@ -188,6 +189,7 @@ public class Game implements GameManager{
             this.specialListener.notifySpecial(indexSpecial, playerRef);
             playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
             roundStrategies.get(indexSpecial).increaseCost();
+            this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(indexSpecial).getCost());
         } else return false;
         setSpecial(0, -1);
         return true;
@@ -203,6 +205,7 @@ public class Game implements GameManager{
             if(checker) {
                 playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
                 roundStrategies.get(indexSpecial).increaseCost();
+                this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(indexSpecial).getCost());
             }
             setSpecial(0, -1);
         }
@@ -220,6 +223,7 @@ public class Game implements GameManager{
             if(checker) {
                 playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
                 roundStrategies.get(indexSpecial).increaseCost();
+                this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(indexSpecial).getCost());
             }
             setSpecial(0, -1);
         }
@@ -237,6 +241,7 @@ public class Game implements GameManager{
             if(checker) {
                 playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
                 roundStrategies.get(indexSpecial).increaseCost();
+                this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(indexSpecial).getCost());
             }
             setSpecial(0, -1);
         }
@@ -265,11 +270,13 @@ public class Game implements GameManager{
     @Override
     public ArrayList<Integer> getSpecialCost(){
         ArrayList<Integer> cost = new ArrayList<>();
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 3; i++) {
             cost.add(
                     roundStrategies.get(i)
                             .getCost()
             );
+            System.out.println("special "+ roundStrategies.get(i).getName() +" costa "+roundStrategies.get(i).getCost());
+        }
         return cost;
     }
 
