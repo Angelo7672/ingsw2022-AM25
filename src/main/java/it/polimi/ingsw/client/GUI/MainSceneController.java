@@ -45,7 +45,6 @@ public class MainSceneController implements SceneController {
 
 
     @FXML private Button useSpecialButton;
-    @FXML private ImageView motherNature;
     @FXML private AnchorPane islandsPane;
     @FXML private AnchorPane school1;
     @FXML private AnchorPane school2;
@@ -90,6 +89,7 @@ public class MainSceneController implements SceneController {
     }*/
     public void startMainScene() {
         Platform.runLater(()->{
+            System.out.println("startMainScene");
             if (numberOfPlayers == 2) {
                 player3Box.setVisible(false);
                 player4Box.setVisible(false);
@@ -109,11 +109,11 @@ public class MainSceneController implements SceneController {
             }
             AnchorPane island;
 
-            for(int i=1; i<=12; i++){
+            for(int i=1; i<=12; i++){ //starts from 1 because 0 is useSpecialButton
                 island = (AnchorPane) islandsPane.getChildren().get(i);
-                System.out.println("Island: "+island);
-                islandsMap.put(i, island);
+                islandsMap.put(i-1, island);
             }
+            gui.isMainScene=true;
         });
         /*
         Platform.runLater(()->{
@@ -132,8 +132,24 @@ public class MainSceneController implements SceneController {
                 e.printStackTrace();
             }
         });*/
-
     }
+    public void setMotherPosition(int islandRef){
+        System.out.println("trying to set Mother Position");
+        ImageView motherNature;
+        System.out.println("about to start for loop");
+        for(int i=0; i<islandsMap.size(); i++){
+            System.out.println("in for loop");
+            motherNature = (ImageView) islandsMap.get(i).getChildren().get(1); //children 1 is always MotherNature
+            System.out.println("This node is: "+islandsMap.get(i).getChildren().get(1));
+            if(islandRef == i){
+                motherNature.setVisible(true);
+                System.out.println("MotherNAture should be visible on island "+ i);
+            } else
+                motherNature.setVisible(false);
+        }
+    }
+
+
     public Image characterToImage(String characterName) {
         Image image = null;
         if (characterName.equalsIgnoreCase("WIZARD")) {
@@ -235,11 +251,29 @@ public class MainSceneController implements SceneController {
         }*/
     }
 
-    public void setStudentsIsland(int componentRef, int color, int newStudentsValue){
+    public void setStudentsIsland(int islandRef, int color, int newStudentsValue){
+        AnchorPane island = islandsMap.get(islandRef);
+        Label studentLabel;
+        if(color == 0){
+            studentLabel= (Label) island.getChildren().get(8);
+            studentLabel.setText(String.valueOf(newStudentsValue));
+        } else if(color == 1){
+            studentLabel= (Label) island.getChildren().get(9);
+            studentLabel.setText(String.valueOf(newStudentsValue));
+        } else if(color == 2) {
+            studentLabel = (Label) island.getChildren().get(10);
+            studentLabel.setText(String.valueOf(newStudentsValue));
+        } else if(color == 3) {
+            studentLabel = (Label) island.getChildren().get(11);
+            studentLabel.setText(String.valueOf(newStudentsValue));
+        } else if(color == 4) {
+            studentLabel = (Label) island.getChildren().get(12);
+            studentLabel.setText(String.valueOf(newStudentsValue));
+        }
 
     }
 
-    public void setMotherPosition(int motherPosition){
+    public void setStudentsCloud(int componentRef, int color, int newStudentsValue){
 
     }
 
