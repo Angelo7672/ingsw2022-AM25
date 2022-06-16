@@ -6,16 +6,16 @@ import java.util.ArrayList;
 
 public class InfoSpecial1or7or11Answer implements Answer {
     private final int studentColor;
-    private final boolean addOrRemove;
+    private final int value;
     private final int specialIndex;
 
-    public InfoSpecial1or7or11Answer(int specialIndex, int studentColor, boolean addOrRemove) {
+    public InfoSpecial1or7or11Answer(int specialIndex, int studentColor, int value) {
         this.specialIndex = specialIndex;
         this.studentColor = studentColor;
-        this.addOrRemove = addOrRemove;
+        this.value = value;
     }
 
     public int getStudentColor() { return studentColor; }
     public int getSpecialIndex() { return specialIndex; }
-    public boolean isAddOrRemove() { return addOrRemove; }
+    public int getValue() { return value; }
 }

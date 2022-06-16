@@ -26,7 +26,7 @@ public class RoundSpecial7 extends RoundStrategy{
         for(int i = 0; i < 6; i++) {
             extracted = bag.extraction();
             extraction[extracted]++;
-            specialStudentsListener.specialStudentsNotify(1, extracted, true);
+            specialStudentsListener.specialStudentsNotify(1, extracted, getStudents(extracted));
         }
         special.setup(extraction);
     }
@@ -36,8 +36,8 @@ public class RoundSpecial7 extends RoundStrategy{
         if(playerManager.checkStudentsEntrance(entranceStudent, playerRef) && special.checkStudents(cardStudent)) {
             for (int i = 0; i < entranceStudent.size(); i++) {
                 special.effect(cardStudent.get(i), entranceStudent.get(i)); //cardStudent.get(i) is the student I remove, entranceStudent.get(i) is the which one I add
-                specialStudentsListener.specialStudentsNotify(7, cardStudent.get(i), false);
-                specialStudentsListener.specialStudentsNotify(7, entranceStudent.get(i), true);
+                specialStudentsListener.specialStudentsNotify(7, cardStudent.get(i), getStudents(cardStudent.get(i)));
+                specialStudentsListener.specialStudentsNotify(7, entranceStudent.get(i), getStudents(entranceStudent.get(i)));
                 playerManager.setStudentEntrance(playerRef, cardStudent.get(i), 1);
                 try { playerManager.removeStudentEntrance(playerRef, entranceStudent.get(i));
                 }catch (NotAllowedException notAllowedException){ return false; }
@@ -53,6 +53,7 @@ public class RoundSpecial7 extends RoundStrategy{
     public void increaseCost(){ special.increaseCost(); }
     @Override
     public String getName(){ return special.getName(); }
+    private int getStudents(int color){ return special.getStudent(color); }
 
     private class Special7 extends Special {
         int[] students = {0,0,0,0,0};

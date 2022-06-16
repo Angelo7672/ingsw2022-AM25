@@ -23,7 +23,7 @@ public class RoundSpecial11 extends RoundStrategy{
         for(int i = 0; i < 4; i++) {
             extracted = bag.extraction();
             extraction[extracted]++;
-            specialStudentsListener.specialStudentsNotify(1, extracted, true);
+            specialStudentsListener.specialStudentsNotify(1, extracted, getStudents(extracted));
         }
         special.setup(extraction);
     }
@@ -35,8 +35,8 @@ public class RoundSpecial11 extends RoundStrategy{
             }catch (NotAllowedException notAllowedException){ return false; }
             int extracted = bag.extraction();
             special.effect(color, extracted);   //color is the student I remove, extracted is the which one I add
-            specialStudentsListener.specialStudentsNotify(11, color, false);
-            specialStudentsListener.specialStudentsNotify(11, extracted, true);
+            specialStudentsListener.specialStudentsNotify(11, color, getStudents(color));
+            specialStudentsListener.specialStudentsNotify(11, extracted, getStudents(extracted));
             return true;
         }
         return false;

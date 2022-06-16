@@ -218,7 +218,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         }catch (SocketException socketException){ clientConnectionExpired(socketException);
         }catch (IOException | ClassNotFoundException e){
             System.err.println(e.getMessage());
-            System.out.println("Client disconnected!");
+            System.out.println("Client " + playerRef + " disconnected!");
             connectionExpired = true;
             proxy.clientDisconnected(playerRef);
             server.exitError();
@@ -233,16 +233,16 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void sendStartTurn(){ send(new StartTurn()); }
     public void sendWinner(String winner){ send(new GameOverAnswer(winner)); }
 
-    public void send(Answer serverAnswer){
+    public synchronized void send(Answer serverAnswer){
         try {
+            output.reset();
             output.writeObject(serverAnswer);
             output.flush();
-            output.reset();
         }catch (IOException e){ clientConnectionExpired(e); }
     }
     private void clientConnectionExpired(IOException e){
         System.err.println(e.getMessage());
-        System.out.println("Client disconnected!");
+        System.out.println("Client " + playerRef + " disconnected!");
         connectionExpired = true;
         proxy.clientDisconnected(playerRef);
         server.exitError();
@@ -250,7 +250,6 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void closeSocket(){
         try {
             send(new DisconnectedAnswer());
-            System.out.println("disconnesso: "+playerRef);
             this.socket.close();
         }catch (IOException e){ clientConnectionExpired(e); }
     }
@@ -272,7 +271,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void setSpecial(int specialRef, int cost){ send(new SetSpecialAnswer(specialRef,cost)); System.out.println("special"+specialRef); System.out.println("cost:"+cost);}
     public void sendUsedSpecial(int playerRef, int indexSpecial){ send(new UseSpecialAnswer(playerRef,indexSpecial)); }
     public void sendHandAfterRestore(ArrayList<String> hand){ send(new HandAfterRestoreAnswer(hand)); }
-    public void sendInfoSpecial1or7or11(int specialIndex, int studentColor, boolean addOrRemove){ send(new InfoSpecial1or7or11Answer(specialIndex,studentColor,addOrRemove)); }
+    public void sendInfoSpecial1or7or11(int specialIndex, int studentColor, int value){ send(new InfoSpecial1or7or11Answer(specialIndex,studentColor,value)); }
     public void sendInfoSpecial5(int cards){ send(new InfoSpecial5Answer(cards)); }
 
     public void setPlayerRef(int playerRef) { this.playerRef = playerRef; }

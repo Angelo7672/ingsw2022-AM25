@@ -333,8 +333,8 @@ public class VirtualView
         server.sendInfoSpecial5(cards);
     }
     @Override
-    public void specialStudentsNotify(int specialIndex, int color, boolean addOrRemove) {
-        server.sendInfoSpecial1or7or11(specialIndex, color, addOrRemove);
+    public void specialStudentsNotify(int specialIndex, int color, int value) {
+        server.sendInfoSpecial1or7or11(specialIndex, color, value);
     }
 
     private class TurnInfo implements Serializable{

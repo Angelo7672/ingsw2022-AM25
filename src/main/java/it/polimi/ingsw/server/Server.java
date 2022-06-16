@@ -193,7 +193,7 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public void sendHandAfterRestore(int playerRef, ArrayList<String> hand){ proxy.sendHandAfterRestore(playerRef, hand); }
     @Override
-    public void sendInfoSpecial1or7or11(int specialIndex, int studentColor, boolean addOrRemove){ proxy.sendInfoSpecial1or7or11(specialIndex, studentColor, addOrRemove); }
+    public void sendInfoSpecial1or7or11(int specialIndex, int studentColor, int value){ proxy.sendInfoSpecial1or7or11(specialIndex, studentColor, value); }
     @Override
     public void sendInfoSpecial5(int cards){ proxy.sendInfoSpecial5(cards); }
 
