@@ -16,77 +16,72 @@
             <Button fx:id="useSpecialButton" layoutX="274.0" layoutY="199.0" mnemonicParsing="false" text="Use a special card" visible="false" />
             <AnchorPane fx:id="island1" layoutX="-30.0" layoutY="103.0" prefHeight="190.0" prefWidth="175.0">
                <children>
-                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                  <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                      <image>
                         <Image url="@../graphics/island1.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature11" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                  <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/mother_nature.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                  <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/black_tower.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                  <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                  <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Label>
-                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                  <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Label>
-                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                  <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Label>
-                  <Label layoutX="122.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                  <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Label>
-                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                  <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Label>
-                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                  <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
@@ -95,874 +90,819 @@
             </AnchorPane>
             <AnchorPane fx:id="island2" layoutX="60.0" prefHeight="190.0" prefWidth="175.0">
                <children>
-                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/island1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature111" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/mother_nature.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="122.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="island12" layoutX="10.0" layoutY="230.0" prefHeight="190.0" prefWidth="175.0">
-               <children>
-                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/island1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature1111" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/mother_nature.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="122.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-               </children>
+                 <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                    <image>
+                       <Image url="@../graphics/island1.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/mother_nature.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                    </image>
+                 </ImageView>
+                 <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                    <font>
+                       <Font name="System Bold" size="19.0" />
+                    </font>
+                 </Label>
+                 <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                    <font>
+                       <Font name="System Bold" size="19.0" />
+                    </font>
+                 </Label>
+                 <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                    <font>
+                       <Font name="System Bold" size="19.0" />
+                    </font>
+                 </Label>
+                 <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                    <font>
+                       <Font name="System Bold" size="19.0" />
+                    </font>
+                 </Label>
+                 <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                    <font>
+                       <Font name="System Bold" size="19.0" />
+                    </font>
+                 </Label>
+                 <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
+                    <font>
+                       <Font name="System Bold" size="19.0" />
+                    </font>
+                 </Label>
+              </children>
             </AnchorPane>
             <AnchorPane fx:id="island3" layoutX="200.0" layoutY="-25.0" prefHeight="190.0" prefWidth="175.0">
-               <children>
-                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/island1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature1112" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/mother_nature.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="122.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-               </children>
+              <children>
+                    <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                       <image>
+                          <Image url="@../graphics/island1.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/mother_nature.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                 </children>
             </AnchorPane>
             <AnchorPane fx:id="island4" layoutX="350.0" layoutY="-28.0" prefHeight="190.0" prefWidth="175.0">
                <children>
-                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/island1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature11121" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/mother_nature.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="122.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-               </children>
+                     <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                        <image>
+                           <Image url="@../graphics/island1.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/mother_nature.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                        </image>
+                     </ImageView>
+                     <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                        <font>
+                           <Font name="System Bold" size="19.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                        <font>
+                           <Font name="System Bold" size="19.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                        <font>
+                           <Font name="System Bold" size="19.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                        <font>
+                           <Font name="System Bold" size="19.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                        <font>
+                           <Font name="System Bold" size="19.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
+                        <font>
+                           <Font name="System Bold" size="19.0" />
+                        </font>
+                     </Label>
+                  </children>
             </AnchorPane>
             <AnchorPane fx:id="island5" layoutX="500.0" layoutY="-18.0" prefHeight="190.0" prefWidth="175.0">
                <children>
-                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/island1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature111211" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/mother_nature.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="122.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-               </children>
+                     <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                        <image>
+                           <Image url="@../graphics/island1.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/mother_nature.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                        <image>
+                           <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                        </image>
+                     </ImageView>
+                     <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                        <font>
+                           <Font name="System Bold" size="19.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                        <font>
+                           <Font name="System Bold" size="19.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                        <font>
+                           <Font name="System Bold" size="19.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                        <font>
+                           <Font name="System Bold" size="19.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                        <font>
+                           <Font name="System Bold" size="19.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
+                        <font>
+                           <Font name="System Bold" size="19.0" />
+                        </font>
+                     </Label>
+                  </children>
             </AnchorPane>
-            <AnchorPane fx:id="island11" layoutX="147.0" layoutY="267.0" prefHeight="190.0" prefWidth="175.0">
+            <AnchorPane fx:id="island6" layoutX="650.0" layoutY="7.0" prefHeight="190.0" prefWidth="175.0">
+              <children>
+                    <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                       <image>
+                          <Image url="@../graphics/island1.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/mother_nature.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                 </children>
+            </AnchorPane>
+            <AnchorPane fx:id="island7" layoutX="700.0" layoutY="130.0" prefHeight="190.0" prefWidth="175.0">
+             <children>
+                   <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                      <image>
+                         <Image url="@../graphics/island1.png" />
+                      </image>
+                   </ImageView>
+                   <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                      <image>
+                         <Image url="@../graphics/wooden_pieces/mother_nature.png" />
+                      </image>
+                   </ImageView>
+                   <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                      <image>
+                         <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                      </image>
+                   </ImageView>
+                   <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                      <image>
+                         <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                      </image>
+                   </ImageView>
+                   <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                      <image>
+                         <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                      </image>
+                   </ImageView>
+                   <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                      <image>
+                         <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                      </image>
+                   </ImageView>
+                   <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                      <image>
+                         <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                      </image>
+                   </ImageView>
+                   <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                      <image>
+                         <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                      </image>
+                   </ImageView>
+                   <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                      <font>
+                         <Font name="System Bold" size="19.0" />
+                      </font>
+                   </Label>
+                   <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                      <font>
+                         <Font name="System Bold" size="19.0" />
+                      </font>
+                   </Label>
+                   <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                      <font>
+                         <Font name="System Bold" size="19.0" />
+                      </font>
+                   </Label>
+                   <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                      <font>
+                         <Font name="System Bold" size="19.0" />
+                      </font>
+                   </Label>
+                   <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                      <font>
+                         <Font name="System Bold" size="19.0" />
+                      </font>
+                   </Label>
+                   <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
+                      <font>
+                         <Font name="System Bold" size="19.0" />
+                      </font>
+                   </Label>
+                </children>
+            </AnchorPane>
+            <AnchorPane fx:id="island8" layoutX="630.0" layoutY="250.0" prefHeight="190.0" prefWidth="175.0">
+              <children>
+                    <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                       <image>
+                          <Image url="@../graphics/island1.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/mother_nature.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                 </children>
+            </AnchorPane>
+            <AnchorPane fx:id="island9" layoutX="480.0" layoutY="270.0" prefHeight="190.0" prefWidth="175.0">
+              <children>
+                    <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                       <image>
+                          <Image url="@../graphics/island1.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/mother_nature.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                 </children>
+            </AnchorPane>
+            <AnchorPane fx:id="island10" layoutX="320.0" layoutY="270.0" prefHeight="190.0" prefWidth="175.0">
+  <children>
+                    <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                       <image>
+                          <Image url="@../graphics/island1.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/mother_nature.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                       <image>
+                          <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                       </image>
+                    </ImageView>
+                    <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                    <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
+                       <font>
+                          <Font name="System Bold" size="19.0" />
+                       </font>
+                    </Label>
+                 </children>
+            </AnchorPane>
+            <AnchorPane fx:id="island11" layoutX="160.0" layoutY="270.0" prefHeight="190.0" prefWidth="175.0">
+             <children>
+                       <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                          <image>
+                             <Image url="@../graphics/island1.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                          <image>
+                             <Image url="@../graphics/wooden_pieces/mother_nature.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                          <image>
+                             <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                          <image>
+                             <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                          <image>
+                             <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                          <image>
+                             <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                          <image>
+                             <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                          </image>
+                       </ImageView>
+                       <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                          <image>
+                             <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                          </image>
+                       </ImageView>
+                       <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                          <font>
+                             <Font name="System Bold" size="19.0" />
+                          </font>
+                       </Label>
+                       <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                          <font>
+                             <Font name="System Bold" size="19.0" />
+                          </font>
+                       </Label>
+                       <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                          <font>
+                             <Font name="System Bold" size="19.0" />
+                          </font>
+                       </Label>
+                       <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                          <font>
+                             <Font name="System Bold" size="19.0" />
+                          </font>
+                       </Label>
+                       <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                          <font>
+                             <Font name="System Bold" size="19.0" />
+                          </font>
+                       </Label>
+                       <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
+                          <font>
+                             <Font name="System Bold" size="19.0" />
+                          </font>
+                       </Label>
+                    </children>
+            </AnchorPane>
+            <AnchorPane fx:id="island12" layoutX="30.0" layoutY="225.0" prefHeight="190.0" prefWidth="175.0">
                <children>
-                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/island1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature1112111" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/mother_nature.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="122.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="island10" layoutX="300.0" layoutY="275.0" prefHeight="190.0" prefWidth="175.0">
-               <children>
-                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/island1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature11121111" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/mother_nature.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="122.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="island9" layoutX="450.0" layoutY="270.0" prefHeight="190.0" prefWidth="175.0">
-               <children>
-                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/island1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature111211111" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/mother_nature.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="122.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="island8" layoutX="590.0" layoutY="250.0" prefHeight="190.0" prefWidth="175.0">
-               <children>
-                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/island1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature112" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/mother_nature.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="122.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="island6" layoutX="640.0" layoutY="10.0" prefHeight="190.0" prefWidth="175.0">
-               <children>
-                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/island1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature1121" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/mother_nature.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="122.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="island7" layoutX="690.0" layoutY="140.0" prefHeight="190.0" prefWidth="175.0">
-               <children>
-                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/island1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="motherNature1122" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/mother_nature.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="122.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-         </children>
+                 <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                    <image>
+                       <Image url="@../graphics/island1.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/mother_nature.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                    </image>
+                 </ImageView>
+                 <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                    <image>
+                       <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                    </image>
+                 </ImageView>
+                 <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                    <font>
+                       <Font name="System Bold" size="19.0" />
+                    </font>
+                 </Label>
+                 <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                    <font>
+                       <Font name="System Bold" size="19.0" />
+                    </font>
+                 </Label>
+                 <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                    <font>
+                       <Font name="System Bold" size="19.0" />
+                    </font>
+                 </Label>
+                 <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                    <font>
+                       <Font name="System Bold" size="19.0" />
+                    </font>
+                 </Label>
+                 <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                    <font>
+                       <Font name="System Bold" size="19.0" />
+                    </font>
+                 </Label>
+                 <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
+                    <font>
+                       <Font name="System Bold" size="19.0" />
+                    </font>
+                 </Label>
+              </children>
+             </AnchorPane>
+          </children>
       </AnchorPane>
       <HBox fx:id="player2Box" layoutX="346.0" layoutY="-20.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="183.0" prefWidth="534.0" AnchorPane.topAnchor="5.0">
          <children>
@@ -973,7 +913,7 @@
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
-                  <Label id="nickname2" fx:id="nickname2" layoutX="10.0" layoutY="145.0" text="nickname">
+                  <Label id="nickname2" layoutX="10.0" layoutY="145.0" text="nickname">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font></Label>
@@ -1026,11 +966,58 @@
                         <Image url="@../graphics/wooden_pieces/black_tower.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="127.0" fitWidth="29.0" layoutX="316.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="321.0" layoutY="28.0" preserveRatio="true">
                      <image>
-                        <Image url="@../graphics/wooden_pieces/studentsAll_vertical2.png" />
+                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                      </image>
                   </ImageView>
+                  <AnchorPane id="table2" layoutX="115.0" layoutY="22.0" prefHeight="127.0" prefWidth="198.0" />
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="321.0" layoutY="53.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="321.0" layoutY="80.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="321.0" layoutY="106.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="321.0" layoutY="132.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="350.0" layoutY="23.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="351.0" layoutY="50.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="351.0" layoutY="76.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="351.0" layoutY="103.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="351.0" layoutY="129.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <AnchorPane id="professorPane2" layoutX="82.0" layoutY="18.0" prefHeight="150.0" prefWidth="40.0" />
                </children>
             </AnchorPane>
          </children>
@@ -1084,11 +1071,58 @@
                         <Image url="@../graphics/wooden_pieces/black_tower.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="26.0" fitWidth="127.0" layoutX="25.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="131.0" layoutY="23.0" preserveRatio="true">
                      <image>
-                        <Image url="@../graphics/wooden_pieces/studentsAll_flipped.png" />
+                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
                      </image>
                   </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="105.0" layoutY="23.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="80.0" layoutY="23.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="53.0" layoutY="23.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="26.0" layoutY="23.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="31.0" layoutY="-5.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="58.0" layoutY="-5.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="85.0" layoutY="-5.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="110.0" layoutY="-5.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="136.0" layoutY="-5.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <AnchorPane id="table3" layoutX="6.0" layoutY="58.0" prefHeight="198.0" prefWidth="160.0" />
+                  <AnchorPane id="professorsPane3" layoutX="8.0" layoutY="256.0" prefHeight="26.0" prefWidth="160.0" />
 
                </children>
             </AnchorPane>
@@ -1099,7 +1133,7 @@
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
-                  <Label id="nickname3" fx:id="nickname4" contentDisplay="CENTER" layoutX="10.0" layoutY="124.0" prefHeight="18.0" prefWidth="89.0" text="nickname" textAlignment="CENTER" wrapText="true">
+                  <Label id="nickname3" contentDisplay="CENTER" layoutX="10.0" layoutY="124.0" prefHeight="18.0" prefWidth="89.0" text="nickname" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
@@ -1157,11 +1191,58 @@
                         <Image url="@../graphics/wooden_pieces/white_tower.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="127.0" fitWidth="29.0" layoutX="23.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+                  <AnchorPane id="table1" layoutX="58.0" layoutY="17.0" prefHeight="127.0" prefWidth="198.0" />
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="27.0" layoutY="123.0" preserveRatio="true">
                      <image>
-                        <Image url="@../graphics/wooden_pieces/studentsAll_vertical.png" />
+                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                      </image>
                   </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="27.0" layoutY="95.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="27.0" layoutY="70.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="27.0" layoutY="45.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="27.0" layoutY="18.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="8.0" layoutY="15.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="8.0" layoutY="42.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="8.0" layoutY="66.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="8.0" layoutY="92.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="8.0" layoutY="119.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <AnchorPane id="professorsPane1" layoutX="250.0" layoutY="10.0" prefHeight="150.0" prefWidth="40.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="userInfo1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="160.0" prefWidth="127.0">
@@ -1171,7 +1252,7 @@
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
-                  <Label id="nickname1" fx:id="nickname1" layoutX="18.0" layoutY="124.0" text="nickname">
+                  <Label id="nickname1" layoutX="18.0" layoutY="124.0" text="nickname">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
@@ -1189,7 +1270,7 @@
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
-                  <Label id="nickname4" fx:id="nickname4" layoutX="73.0" layoutY="125.0" text="nickname">
+                  <Label id="nickname4" layoutX="73.0" layoutY="125.0" text="nickname">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font></Label>
@@ -1242,11 +1323,58 @@
                         <Image url="@../graphics/wooden_pieces/black_tower.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="26.0" fitWidth="127.0" layoutX="22.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true">
+                  <AnchorPane id="table4" layoutX="6.0" layoutY="112.0" prefHeight="198.0" prefWidth="160.0" />
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="127.0" layoutY="321.0" preserveRatio="true">
                      <image>
-                        <Image url="@../graphics/wooden_pieces/studentsAll.png" />
+                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                      </image>
                   </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="102.0" layoutY="321.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="76.0" layoutY="321.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="50.0" layoutY="321.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="23.0" layoutY="321.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="30.0" layoutY="341.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="54.0" layoutY="341.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="79.0" layoutY="341.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="131.0" layoutY="341.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="107.0" layoutY="341.0" text="1">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <AnchorPane id="professorsPane4" layoutX="4.0" layoutY="86.0" prefHeight="26.0" prefWidth="160.0" />
 
 
                </children>

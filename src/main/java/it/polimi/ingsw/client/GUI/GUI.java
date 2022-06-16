@@ -234,17 +234,18 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
-
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        //controller.setMotherPosition(newMotherPosition);
     }
 
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
-
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
     }
 
     @Override
     public void notifyHand(int playerRef, ArrayList<String> hand) {
-
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
     }
 
     @Override
@@ -254,7 +255,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
-
+        /*
         Platform.runLater(() -> {
             //loadScene(primaryStage, MAIN);
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
@@ -264,7 +265,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 case 2 -> controller.setStudentsIsland(componentRef, color, newStudentsValue);
                 //case 3 -> controller.setStudentsCloud(componentRef, color, newStudentsValue);
             }
-        });
+        });*/
     }
 
 

@@ -33,19 +33,15 @@ public class MainSceneController implements SceneController {
     private boolean expertMode;
     private HashMap<Integer, String> nicknamesMap;
     private HashMap<Integer, String> charactersMap;
-    private HashMap<Integer, String> teamsMap;
     private HashMap<Integer, ImageView> charactersImageMap;
+    private HashMap<Integer, AnchorPane> islandsMap;
+
     private int gamePhase;
 
     private final String WIZARD = "/graphics/character_wizard.png";
     private final String WITCH = "/graphics/character_witch.png";
     private final String SAMURAI = "/graphics/character_samurai.png";
     private final String KING = "/graphics/character_king.png";
-
-    private int[] students;
-    private HashMap<Integer, int[]> tableStudentsMap;
-
-    private ImageView studentTable;
 
 
     @FXML private Button useSpecialButton;
@@ -66,12 +62,6 @@ public class MainSceneController implements SceneController {
     @FXML private ImageView character3;
     @FXML private ImageView character4;
 
-    @FXML private Label nickname1;
-    @FXML private Label nickname2;
-    @FXML private Label nickname3;
-    @FXML private Label nickname4;
-
-
     @FXML private HBox player1Box;
     @FXML private HBox player2Box;
     @FXML private VBox player3Box;
@@ -83,11 +73,8 @@ public class MainSceneController implements SceneController {
         this.charactersImageMap =new HashMap<>();
         this.numberOfPlayers=4;
         this.expertMode=false;
-        students= new int[]{0,0,0,0,0};
-        tableStudentsMap=new HashMap<>();
+        this.islandsMap= new HashMap<>();
 
-        studentTable = new ImageView("/ ");
-        //studentTable.setFitHeight();
     }
 
     /*
@@ -110,6 +97,7 @@ public class MainSceneController implements SceneController {
                 player4Box.setVisible(false);
 
             useSpecialButton.setVisible(expertMode);
+
             charactersImageMap.put(0, character1);
             charactersImageMap.put(1, character2);
             charactersImageMap.put(2, character3);
@@ -118,9 +106,16 @@ public class MainSceneController implements SceneController {
             for(int i=0; i<numberOfPlayers; i++){
                 setNickname(nicknamesMap.get(i), i);
                 charactersImageMap.get(i).setImage(characterToImage(charactersMap.get(i)));
-                tableStudentsMap.put(i, new int[]{0,0,0,0,0});
             }
-        });/*
+            AnchorPane island;
+
+            for(int i=1; i<=12; i++){
+                island = (AnchorPane) islandsPane.getChildren().get(i);
+                System.out.println("Island: "+island);
+                islandsMap.put(i, island);
+            }
+        });
+        /*
         Platform.runLater(()->{
 
             System.out.println("startMainScene");
@@ -153,14 +148,19 @@ public class MainSceneController implements SceneController {
         return image;
     }
     public void setNickname(String nickname, int playerRef){
+        Label nicknameLabel;
         if(playerRef==0){
-            nickname1.setText(nickname);
+            nicknameLabel= (Label) userInfo1.getChildren().get(1);
+            nicknameLabel.setText(nickname);
         } else if(playerRef==1){
-            nickname2.setText(nickname);
+            nicknameLabel= (Label) userInfo2.getChildren().get(1);
+            nicknameLabel.setText(nickname);
         } else if(playerRef==2){
-            nickname3.setText(nickname);
-        } else if(playerRef==3){
-            nickname4.setText(nickname);
+            nicknameLabel= (Label) userInfo3.getChildren().get(1);
+            nicknameLabel.setText(nickname);
+        } else if(playerRef==3) {
+            nicknameLabel= (Label) userInfo4.getChildren().get(1);
+            nicknameLabel.setText(nickname);
         }
     }
 
@@ -221,7 +221,7 @@ public class MainSceneController implements SceneController {
 
     }
     public void setStudentsTable(int schoolRef, int color, int newStudentsValue){
-
+        /*
         int i=0;
         switch (schoolRef){
 
@@ -231,14 +231,15 @@ public class MainSceneController implements SceneController {
                 //AnchorPane island = (AnchorPane) islandsPane.lookup("#island4");
                 //island.lookup()
                 //school1.getChildren().get()
-
-
-
             }
-        }
+        }*/
     }
 
     public void setStudentsIsland(int componentRef, int color, int newStudentsValue){
+
+    }
+
+    public void setMotherPosition(int motherPosition){
 
     }
 
