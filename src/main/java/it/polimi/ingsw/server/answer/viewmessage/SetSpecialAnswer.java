@@ -12,4 +12,8 @@ public class SetSpecialAnswer implements Answer{
     }
 
     public int getSpecialRef() { return specialRef; }
+
+    public int getCost() {
+        return cost;
+    }
 }

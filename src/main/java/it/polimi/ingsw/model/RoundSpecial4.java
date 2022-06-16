@@ -34,7 +34,6 @@ public class RoundSpecial4 extends RoundStrategy{
     public String getName(){ return special.getName(); }
 
     private class Special4 extends Special {
-        //non fa niente qua, fa solo muovere madre natura di due passi in piu
         public Special4(){
             super(1, "special4");
         }

@@ -345,7 +345,7 @@ public class Proxy_c implements Exit {
                     else if(tmp instanceof UseSpecialAnswer){
                         synchronized (lock2) {
                             if (!view.isInitializedView()) lock2.wait();
-                            view.setSpecialUsed((UseSpecialAnswer) tmp);
+                            view.setSpecialUsed(((UseSpecialAnswer) tmp).getSpecialIndex(), ((UseSpecialAnswer) tmp).getPlayerRef());
                         }
                     }
                     else if(tmp instanceof UnifiedIsland) {
@@ -355,9 +355,22 @@ public class Proxy_c implements Exit {
                         }
                     }
                     else if(tmp instanceof SetSpecialAnswer) {
+                        System.out.println(((SetSpecialAnswer) tmp).getCost());
                         synchronized (lock2) {
                             if (!view.isInitializedView()) lock2.wait();
-
+                            view.setSpecial(((SetSpecialAnswer) tmp).getSpecialRef(), ((SetSpecialAnswer) tmp).getCost());
+                        }
+                    }
+                    else if(tmp instanceof InfoSpecial1or7or11Answer){
+                        synchronized (lock2){
+                            if(!view.isInitializedView()) lock2.wait();
+                            view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmp).getStudentColor(), ((InfoSpecial1or7or11Answer) tmp).getValue(), ((InfoSpecial1or7or11Answer) tmp).getSpecialIndex());
+                        }
+                    }
+                    else if(tmp instanceof InfoSpecial5Answer){
+                        synchronized (lock2){
+                            if(!view.isInitializedView()) lock2.wait();
+                            view.setNoEntry(((InfoSpecial5Answer) tmp).getCards());
                         }
                     }
                     else if(tmp instanceof DisconnectedAnswer){
