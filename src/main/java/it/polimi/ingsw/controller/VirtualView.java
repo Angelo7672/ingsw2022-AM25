@@ -323,12 +323,8 @@ public class VirtualView
                     cost.get(i)
             );
     }
-
     @Override
-    public void notifyIncreasedCost(int specialRef, int newCost) {
-
-    }
-
+    public void notifyIncreasedCost(int specialRef, int newCost) { server.setSpecial(specialRef, newCost); }
     @Override
     public void notifyNoEntry(int cards) {
         server.sendInfoSpecial5(cards);
