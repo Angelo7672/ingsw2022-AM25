@@ -25,24 +25,11 @@ public class QueueManager {
         queue.add(first);
     }
 
-    private String toString(Assistant assistant){
-        if(assistant.equals(Assistant.LION)) return "LION";
-        else if(assistant.equals(Assistant.GOOSE)) return "GOOSE";
-        else if(assistant.equals(Assistant.CAT)) return "CAT";
-        else if(assistant.equals(Assistant.EAGLE)) return "EAGLE";
-        else if(assistant.equals(Assistant.FOX)) return "FOX";
-        else if(assistant.equals(Assistant.LIZARD)) return "LIZARD";
-        else if(assistant.equals(Assistant.OCTOPUS)) return "OCTOPUS";
-        else if(assistant.equals(Assistant.DOG)) return "DOG";
-        else if(assistant.equals(Assistant.ELEPHANT)) return "ELEPHANT";
-        else if(assistant.equals(Assistant.TURTLE)) return "TURTLE";
-        return "NONE";
-    }
-
     public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
         queue.remove(0);
         for(int i = 0; i < numberOfPlayer; i++)
             queue.add(new Queue(playerRef.get(i),valueCard.get(i),maxMoveMotherNature.get(i)));
+        listenMyQueue();
     }
     public void queueForPlanificationPhase(){
         int firstInQueue;
@@ -63,13 +50,7 @@ public class QueueManager {
         }
         //The first player is the one who played first in the previous action phase, then proceeds clockwise. The distribution of players at the table is arranged clockwise in this order 1 2 3 4
         if (firstInQueue != 0) Collections.rotate(queue,-firstInQueue);
-
-        for(int i = 0; i < numberOfPlayer; i++){
-            this.queueListener.notifyQueue(i, queue.get(i).getPlayerRef());
-            this.queueListener.notifyValueCard(i, queue.get(i).getValueCard());
-            this.queueListener.notifyMaxMove(i, queue.get(i).getMaxMoveMotherNature());
-        }
-
+        listenMyQueue();
     }
 
     public boolean playCard(int playerRef, int queueRef, Assistant card, ArrayList<Assistant> alreadyPlayedAssistant) throws NotAllowedException {
@@ -85,8 +66,11 @@ public class QueueManager {
 
     public void inOrderForActionPhase(){
         Collections.sort(queue, Queue::compareTo);
+        listenMyQueue();
+    }
 
-        for(int i=0; i<numberOfPlayer; i++){
+    private void listenMyQueue(){
+        for(int i = 0; i < numberOfPlayer; i++){
             this.queueListener.notifyQueue(i, queue.get(i).getPlayerRef());
             this.queueListener.notifyValueCard(i, queue.get(i).getValueCard());
             this.queueListener.notifyMaxMove(i, queue.get(i).getMaxMoveMotherNature());
