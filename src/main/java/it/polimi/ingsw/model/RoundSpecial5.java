@@ -23,6 +23,7 @@ public class RoundSpecial5 extends RoundStrategy{
         return false;
     }
 
+    @Override
     public void setNoEntryListener(NoEntryListener noEntryListener){
         this.noEntryListener = noEntryListener;
     }

@@ -58,6 +58,10 @@ public class Controller implements ServerController{
         gameManager.setInhibitedListener(virtualView);
         gameManager.setBagListener(virtualView);
         gameManager.setQueueListener(virtualView);
+        if(expertMode){
+            gameManager.setSpecialStudentsListener(virtualView);
+            gameManager.setNoEntryListener(virtualView);
+        }
     }
     @Override
     public void initializeGame(){   //new game

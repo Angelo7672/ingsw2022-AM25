@@ -272,6 +272,8 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void setSpecial(int specialRef, int cost){ send(new SetSpecialAnswer(specialRef,cost)); System.out.println("special"+specialRef); System.out.println("cost:"+cost);}
     public void sendUsedSpecial(int playerRef, int indexSpecial){ send(new UseSpecialAnswer(playerRef,indexSpecial)); }
     public void sendHandAfterRestore(ArrayList<String> hand){ send(new HandAfterRestoreAnswer(hand)); }
+    public void sendInfoSpecial1or7or11(int specialIndex, int studentColor, boolean addOrRemove){ send(new InfoSpecial1or7or11Answer(specialIndex,studentColor,addOrRemove)); }
+    public void sendInfoSpecial5(int cards){ send(new InfoSpecial5Answer(cards)); }
 
     public void setPlayerRef(int playerRef) { this.playerRef = playerRef; }
     public int getPlayerRef() { return playerRef; }

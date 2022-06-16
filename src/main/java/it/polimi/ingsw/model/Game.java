@@ -37,27 +37,20 @@ public class Game implements GameManager{
 
         Round round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         roundStrategies.add(round);
-    }
 
-    @Override
-    public void initializeGame(){
-        bag.bagInitialize();
-        playerManager.initializeSchool();
-        islandsManager.islandsInitialize();
-
-        if(expertMode){
+        if(expertMode) {
             RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
 
             ArrayList<Integer> random = new ArrayList<>();
-            for(int i = 1; i <= 12; i++)
+            for (int i = 1; i <= 12; i++)
                 random.add(i);  //I have 12 int ordered now
             Collections.shuffle(random);
-            while(random.size() != 3)
+            while (random.size() != 3)
                 random.remove(0);
             //now I have 3 random int
             Collections.sort(random);
 
-            for(int i = 0; i < 3; i++) {
+            for (int i = 0; i < 3; i++) {
                 roundStrategies.add(
                         roundStrategyFactor.getRoundStrategy(
                                 random.get(i)
@@ -67,7 +60,18 @@ public class Game implements GameManager{
                         random.get(i)
                 );
             }
-            this.specialListener.notifySpecialList(extractedSpecials,getSpecialCost());
+        }
+    }
+
+    @Override
+    public void initializeGame(){
+        bag.bagInitialize();
+        playerManager.initializeSchool();
+        islandsManager.islandsInitialize();
+        if(expertMode) {
+            specialListener.notifySpecialList(extractedSpecials, getSpecialCost());
+            for (int i = 0; i < 3; i++)
+                roundStrategies.get(i).initializeSpecial();
         }
     }
     @Override
@@ -301,4 +305,14 @@ public class Game implements GameManager{
     public void setBagListener(BagListener listener) { bag.bagListener = listener; }
     @Override
     public void setQueueListener(QueueListener listener) { queueManager.queueListener = listener; }
+    @Override
+    public void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener){
+        for(int i = 0; i < 3; i++)
+            roundStrategies.get(i).setSpecialStudentsListener(specialStudentsListener);
+    }
+    @Override
+    public void setNoEntryListener(NoEntryListener noEntryListener){
+        for(int i = 0; i < 3; i++)
+            roundStrategies.get(i).setNoEntryListener(noEntryListener);
+    }
 }

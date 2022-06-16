@@ -179,8 +179,16 @@ public class Proxy_s implements Exit {
             client.sendUsedSpecial(playerRef,indexSpecial);
     }
     @Override
-    public void sendHandAfterRestore(int playerRef, ArrayList<String> hand){
-        user.get(playerRef).sendHandAfterRestore(hand);
+    public void sendHandAfterRestore(int playerRef, ArrayList<String> hand){ user.get(playerRef).sendHandAfterRestore(hand); }
+    @Override
+    public void sendInfoSpecial1or7or11(int specialIndex, int studentColor, boolean addOrRemove){
+        for (VirtualClient client:user)
+            client.sendInfoSpecial1or7or11(specialIndex, studentColor, addOrRemove);
+    }
+    @Override
+    public void sendInfoSpecial5(int cards) {
+        for (VirtualClient client : user)
+            client.sendInfoSpecial5(cards);
     }
 
     @Override

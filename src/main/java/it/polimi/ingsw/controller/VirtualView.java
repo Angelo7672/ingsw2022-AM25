@@ -301,7 +301,6 @@ public class VirtualView
         islands.get(islandRef).setInhibited(isInhibited);
         server.islandInhibited(islandRef, isInhibited);
     }
-
     @Override
     public void notifyBagExtraction() { bag.remove(0); }
     @Override
@@ -328,17 +327,14 @@ public class VirtualView
                     cost.get(i)
             );
         }
-
     }
-
     @Override
-    public void notifyNoEntry(int newValue) {
-
+    public void notifyNoEntry(int cards) {
+        server.sendInfoSpecial5(cards);
     }
-
     @Override
-    public void specialStudentsNotify(int special, int color, int newValue) {
-
+    public void specialStudentsNotify(int specialIndex, int color, boolean addOrRemove) {
+        server.sendInfoSpecial1or7or11(specialIndex, color, addOrRemove);
     }
 
     private class TurnInfo implements Serializable{

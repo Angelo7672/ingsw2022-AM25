@@ -6,7 +6,6 @@ import it.polimi.ingsw.listeners.SpecialStudentsListener;
 public class RoundSpecial1 extends RoundStrategy{
     Special1 special;
     private SpecialStudentsListener specialStudentsListener;
-    private BagListener bagListener;
     
     public RoundSpecial1(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
@@ -16,10 +15,12 @@ public class RoundSpecial1 extends RoundStrategy{
     @Override
     public void initializeSpecial(){
         int[] extraction = {0,0,0,0,0};
+        int extracted;
 
-        for(int i=0; i<4; i++) {
-            extraction[bag.extraction()]++;
-            bagListener.notifyBagExtraction();
+        for(int i = 0; i < 4; i++) {
+            extracted = bag.extraction();
+            extraction[extracted]++;
+            specialStudentsListener.specialStudentsNotify(1, extracted, true);
         }
         special.setup(extraction);
     }
@@ -28,23 +29,17 @@ public class RoundSpecial1 extends RoundStrategy{
     public boolean effect(int islandRef, int color){
         if(getStudents(color) > 0){
             int extracted = bag.extraction();
-            bagListener.notifyBagExtraction();
-            special.effect(color, extracted);
-            specialStudentsListener.specialStudentsNotify(1, color, special.getStudent(color));
-            specialStudentsListener.specialStudentsNotify(1, extracted, special.getStudent(extracted));
+            special.effect(color, extracted);   //color is the student I remove, extracted is the which one I add
+            specialStudentsListener.specialStudentsNotify(1, color, false);
+            specialStudentsListener.specialStudentsNotify(1, extracted, true);
             islandsManager.incStudent(islandRef, color, 1);
             return true;
         }
         return false;
     }
 
-    public void setStudentsListener(SpecialStudentsListener specialStudentsListener) {
-        this.specialStudentsListener = specialStudentsListener;
-    }
-
-    public void setBagListener(BagListener bagListener){
-        this.bagListener = bagListener;
-    }
+    @Override
+    public void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener) { this.specialStudentsListener = specialStudentsListener; }
 
     private int getStudents(int color){ return special.getStudent(color); }
 

@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.listeners.BagListener;
+import it.polimi.ingsw.listeners.NoEntryListener;
+import it.polimi.ingsw.listeners.SpecialStudentsListener;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;
@@ -22,6 +25,8 @@ public abstract class RoundStrategy {
     }
 
     public void initializeSpecial(){}
+    public void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener){}
+    public void setNoEntryListener(NoEntryListener noEntryListener){}
 
     protected boolean conquestIsland(int islandRef, int noColor, int playerRef){
         Team teamStronger = highInfluenceTeam(islandRef, noColor, playerRef);

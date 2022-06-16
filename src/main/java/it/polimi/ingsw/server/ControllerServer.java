@@ -29,4 +29,6 @@ public interface ControllerServer {
     void setSpecial(int specialRef, int cost);
     void sendUsedSpecial(int playerRef, int indexSpecial);
     void sendHandAfterRestore(int playerRef, ArrayList<String> hand);
+    void sendInfoSpecial1or7or11(int specialIndex, int studentColor, boolean addOrRemove);
+    void sendInfoSpecial5(int cards);
 }

@@ -9,29 +9,24 @@ import java.util.ArrayList;
 public class RoundSpecial7 extends RoundStrategy{
     private Special7 special;
     private SpecialStudentsListener specialStudentsListener;
-    private BagListener bagListener;
 
     public RoundSpecial7(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         special = new Special7();
     }
 
-    public void setStudentsListener(SpecialStudentsListener specialStudentsListener) {
-        this.specialStudentsListener = specialStudentsListener;
-    }
-
-    public void setBagListener(BagListener bagListener){
-        this.bagListener = bagListener;
-    }
+    @Override
+    public void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener) { this.specialStudentsListener = specialStudentsListener; }
 
     @Override
     public void initializeSpecial(){
         int[] extraction = {0,0,0,0,0};
+        int extracted;
 
         for(int i = 0; i < 6; i++) {
-            extraction[bag.extraction()]++;
-            bagListener.notifyBagExtraction();
-            //metti notify qui per bag.extraction()
+            extracted = bag.extraction();
+            extraction[extracted]++;
+            specialStudentsListener.specialStudentsNotify(1, extracted, true);
         }
         special.setup(extraction);
     }
@@ -40,10 +35,9 @@ public class RoundSpecial7 extends RoundStrategy{
     public boolean effect(int playerRef, ArrayList<Integer> entranceStudent, ArrayList<Integer> cardStudent){
         if(playerManager.checkStudentsEntrance(entranceStudent, playerRef) && special.checkStudents(cardStudent)) {
             for (int i = 0; i < entranceStudent.size(); i++) {
-                special.effect(cardStudent.get(i), entranceStudent.get(i));
-                specialStudentsListener.specialStudentsNotify(7, cardStudent.get(i), special.getStudent(cardStudent.get(i)));
-                specialStudentsListener.specialStudentsNotify(7, entranceStudent.get(i), special.getStudent(entranceStudent.get(i)));
-                //metti qui notify per entranceStudent.get(i)
+                special.effect(cardStudent.get(i), entranceStudent.get(i)); //cardStudent.get(i) is the student I remove, entranceStudent.get(i) is the which one I add
+                specialStudentsListener.specialStudentsNotify(7, cardStudent.get(i), false);
+                specialStudentsListener.specialStudentsNotify(7, entranceStudent.get(i), true);
                 playerManager.setStudentEntrance(playerRef, cardStudent.get(i), 1);
                 try { playerManager.removeStudentEntrance(playerRef, entranceStudent.get(i));
                 }catch (NotAllowedException notAllowedException){ return false; }

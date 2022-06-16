@@ -44,6 +44,8 @@ public interface GameManager {
     void setInhibitedListener(InhibitedListener listener);
     void setBagListener(BagListener listener);
     void setQueueListener(QueueListener listener);
+    void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener);
+    void setNoEntryListener(NoEntryListener noEntryListener);
 
     //Restore game
     void schoolRestore(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, String team);

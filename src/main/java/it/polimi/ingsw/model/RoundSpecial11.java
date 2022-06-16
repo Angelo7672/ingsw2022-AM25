@@ -9,20 +9,21 @@ import java.util.ArrayList;
 public class RoundSpecial11 extends RoundStrategy{
     Special11 special;
     private SpecialStudentsListener specialStudentsListener;
-    private BagListener bagListener;
 
     public RoundSpecial11(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-        special =new Special11();
+        special = new Special11();
     }
 
     @Override
     public void initializeSpecial(){
         int[] extraction = {0,0,0,0,0};
+        int extracted;
 
         for(int i = 0; i < 4; i++) {
-            extraction[bag.extraction()]++;
-            bagListener.notifyBagExtraction();
+            extracted = bag.extraction();
+            extraction[extracted]++;
+            specialStudentsListener.specialStudentsNotify(1, extracted, true);
         }
         special.setup(extraction);
     }
@@ -33,22 +34,16 @@ public class RoundSpecial11 extends RoundStrategy{
             try { playerManager.setStudentTable(playerRef, color, 1);
             }catch (NotAllowedException notAllowedException){ return false; }
             int extracted = bag.extraction();
-            bagListener.notifyBagExtraction();
-            special.effect(color, extracted);
-            specialStudentsListener.specialStudentsNotify(11, color, special.getStudent(color));
-            specialStudentsListener.specialStudentsNotify(11, extracted, special.getStudent(extracted));
+            special.effect(color, extracted);   //color is the student I remove, extracted is the which one I add
+            specialStudentsListener.specialStudentsNotify(11, color, false);
+            specialStudentsListener.specialStudentsNotify(11, extracted, true);
             return true;
         }
         return false;
     }
 
-    public void setStudentsListener(SpecialStudentsListener specialStudentsListener) {
-        this.specialStudentsListener = specialStudentsListener;
-    }
-
-    public void setBagListener(BagListener bagListener){
-        this.bagListener = bagListener;
-    }
+    @Override
+    public void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener) { this.specialStudentsListener = specialStudentsListener; }
 
     private int getStudents(int color){return special.getStudent(color);}
     @Override
