@@ -317,16 +317,11 @@ public class VirtualView
     }
     @Override
     public void notifySpecialList(ArrayList<Integer> specialList, ArrayList<Integer> cost) {
-        for(int i = 0; i < 3; i++){
-            specialList.add(
-                    specialList.get(i),
-                    cost.get(i)
-            );
+        for(int i = 0; i < 3; i++)
             server.setSpecial(
                     specialList.get(i),
                     cost.get(i)
             );
-        }
     }
     @Override
     public void notifyNoEntry(int cards) {
