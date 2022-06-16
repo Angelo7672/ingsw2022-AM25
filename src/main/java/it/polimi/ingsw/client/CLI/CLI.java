@@ -730,6 +730,11 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     @Override
+    public void notifyIncreasedCost(int specialRef, int newCost) {
+
+    }
+
+    @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
         if(constants.isStartGame()&&!constants.isEndTurn()) {
             printable.printStudentsChange(place, componentRef);
