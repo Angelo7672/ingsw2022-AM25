@@ -161,7 +161,7 @@ public class MainSceneController implements SceneController {
 
         });
     }
-
+    //viene chiamato ogni volta che la scena principale viene settata a MAIN
     public void startGame(){
         System.out.println("1.startGame method");
         Platform.runLater(()->{
@@ -176,8 +176,9 @@ public class MainSceneController implements SceneController {
                             gui.constants.setPlanningPhaseStarted(true);
                             System.out.println("4. Planning phase started, switch to MAIN");
                             gui.switchScene(GUI.MAIN);
+                            //viene caricata di nuovo la scena MAIN, che chiama di nuovo questo metodo
 
-                        }//else error
+                        }//else
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -185,6 +186,7 @@ public class MainSceneController implements SceneController {
                     }
                 } else {
                     System.out.println("3b.Planning phase started already");
+                    //se la isPlanningPhaseStarted è true, chiama phaseHandler
                     if (!gui.constants.isCloudChosen()&&gui.active) {
                         phaseHandler(gui.constants.lastPhase());
                     }
@@ -194,7 +196,8 @@ public class MainSceneController implements SceneController {
 
         }
 
-
+    //prende in ingresso la fase di gioco e chiama i metodi corrispondenti
+    //ho cercato di farlo simile alla cli, ma potrebbe essere sbagliato
     public void phaseHandler(String phase){
         System.out.println("5. Entered phaseHandler method");
         System.out.println("6. isStartGame? "+gui.constants.isStartGame());
@@ -202,7 +205,7 @@ public class MainSceneController implements SceneController {
             gui.constants.setStartGame(true);
         if(phase.equals("PlayCard")) {
             System.out.println("PLAY CARD, about to call showCard method");
-            showCards();
+            showCards(); //carica la nuova scena con le carte
         }
         else if(!gui.constants.isActionPhaseStarted()) {
             try {
@@ -221,7 +224,7 @@ public class MainSceneController implements SceneController {
             }
         }
     }
-
+    //inizializza le isole, nascondendo le torri (che non ci sono a inizio partita)
     public void islandsInitialization(){
         AnchorPane island;
 
@@ -234,6 +237,7 @@ public class MainSceneController implements SceneController {
         }
     }
 
+    //inizializza le scuole, mettendo le torri del colore giusto a seconda del numero di giocatori
     public void schoolsInitialization(){
         ImageView tower;
         for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
@@ -307,7 +311,7 @@ public class MainSceneController implements SceneController {
         //fa comparire la finestra con le carte
         Platform.runLater(()->{
             System.out.println("inside show cards method");
-            gui.loadScene(GUI.CARDS);
+            gui.loadScene(GUI.CARDS); // da qui il "controllo" passa a CardsSceneController
         });
 
     }

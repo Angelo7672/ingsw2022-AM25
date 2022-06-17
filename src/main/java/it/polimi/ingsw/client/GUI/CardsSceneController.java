@@ -59,21 +59,24 @@ public class CardsSceneController implements SceneController{
         System.out.println("CARD SET");
     }
 
+    //quello che succede quando viene premuto il bottone confirm
     @FXML
     void confirmPressed(ActionEvent event) {
         Platform.runLater(()->{
             try {
                 System.out.println("About to call playCard method");
-                String result = proxy.playCard(playedCard);
+                String result = proxy.playCard(playedCard); //qui chiama il metodo del proxy
                 System.out.println("Played card: "+playedCard);
                 System.out.println("Result: "+result);
                 alreadyPlayedCards.add(playedCard);
 
+                //se la risposta è ok, chiude la scena
                 if (result.equalsIgnoreCase("ok")) {
                     gui.constants.setCardPlayed(true);
                     Stage stage = (Stage) confirmButton.getScene().getWindow();
                     stage.close();
                     gui.switchScene(GUI.MAIN);
+                    //questo fa chiamare di nuovo il metodo startGame in MainSceneController
 
                     System.out.println("It's your opponent turn, wait...");
 
