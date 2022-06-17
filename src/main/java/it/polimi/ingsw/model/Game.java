@@ -49,6 +49,7 @@ public class Game implements GameManager{
                 random.remove(0);
             //now I have 3 random int
             Collections.sort(random);
+            System.out.println(random);
 
             for (int i = 0; i < 3; i++) {
                 System.out.println("e' uscito "+random.get(i));
@@ -61,7 +62,8 @@ public class Game implements GameManager{
                         random.get(i)
                 );
             }
-            System.out.println(roundStrategies.get(0).getName() +"-"+roundStrategies.get(1).getName()+"-"+roundStrategies.get(2).getName());
+            System.out.println(roundStrategies.get(1).getName() +"-"+roundStrategies.get(2).getName()+"-"+roundStrategies.get(3).getName());
+
         }
     }
     private Assistant stringToAssistant(String string){

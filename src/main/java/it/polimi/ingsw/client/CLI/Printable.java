@@ -129,7 +129,8 @@ public class Printable {
             System.out.print("\t"+"Special "+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
             if(specialArray(view.getSpecialName(i))) System.out.println(". Students: "+ ANSI_GREEN +" Green "+ view.getSpecialStudents(i)[0] + ANSI_RED  + ", Red " + view.getSpecialStudents(i)[1] +
                     ANSI_YELLOW +", Yellow " + view.getSpecialStudents(i)[2] + ANSI_PURPLE + ", Pink " + view.getSpecialStudents(i)[3] + ANSI_BLUE + ", Blue " + view.getSpecialStudents(i)[4]+ANSI_RESET);
-            if(view.getNoEntry(i)!=-1) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
+            else if(view.getSpecialName(i)==5) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
+            else System.out.println();
         }
     }
 
@@ -209,7 +210,7 @@ public class Printable {
                 System.out.print("\t"+"Special "+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
                 if(specialArray(view.getSpecialName(i))) System.out.println(". Students: "+ ANSI_GREEN +" Green "+ view.getSpecialStudents(i)[0] + ANSI_RED  + ", Red " + view.getSpecialStudents(i)[1] +
                         ANSI_YELLOW +", Yellow " + view.getSpecialStudents(i)[2] + ANSI_PURPLE + ", Pink " + view.getSpecialStudents(i)[3] + ANSI_BLUE + ", Blue " + view.getSpecialStudents(i)[4]+ANSI_RESET);
-                if(view.getSpecialName(i)==5) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
+                else if(view.getSpecialName(i)==5) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
                 else System.out.println();
             }
         }
@@ -218,7 +219,7 @@ public class Printable {
     private boolean specialArray(int name){
         if(name == 1) return true;
         if(name == 7) return true;
-        if(name == 8) return true;
+        if(name == 11) return true;
         return false;
     }
 }

@@ -342,20 +342,19 @@ public class Proxy_c implements Exit {
                             view.setInhibited((InhibitedIslandMessage) tmp);
                         }
                     }
-                    else if(tmp instanceof UseSpecialAnswer){
-                        synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
-                            view.setSpecialUsed(((UseSpecialAnswer) tmp).getSpecialIndex(), ((UseSpecialAnswer) tmp).getPlayerRef());
-                        }
-                    }
                     else if(tmp instanceof UnifiedIsland) {
                         synchronized (lock2) {
                             if (!view.isInitializedView()) lock2.wait();
                             view.removeUnifiedIsland((UnifiedIsland) tmp);
                         }
                     }
+                    else if(tmp instanceof UseSpecialAnswer){
+                        synchronized (lock2) {
+                            if (!view.isInitializedView()) lock2.wait();
+                            view.setSpecialUsed(((UseSpecialAnswer) tmp).getSpecialIndex(), ((UseSpecialAnswer) tmp).getPlayerRef());
+                        }
+                    }
                     else if(tmp instanceof SetSpecialAnswer) {
-                        System.out.println(((SetSpecialAnswer) tmp).getCost());
                         synchronized (lock2) {
                             if (!view.isInitializedView()) lock2.wait();
                             view.setSpecial(((SetSpecialAnswer) tmp).getSpecialRef(), ((SetSpecialAnswer) tmp).getCost());
@@ -364,6 +363,7 @@ public class Proxy_c implements Exit {
                     else if(tmp instanceof InfoSpecial1or7or11Answer){
                         synchronized (lock2){
                             if(!view.isInitializedView()) lock2.wait();
+                            System.out.println("Student special update "+((InfoSpecial1or7or11Answer) tmp).getValue()+"int colore "+((InfoSpecial1or7or11Answer) tmp).getStudentColor());
                             view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmp).getStudentColor(), ((InfoSpecial1or7or11Answer) tmp).getValue(), ((InfoSpecial1or7or11Answer) tmp).getSpecialIndex());
                         }
                     }
@@ -374,13 +374,11 @@ public class Proxy_c implements Exit {
                         }
                     }
                     else if(tmp instanceof DisconnectedAnswer){
-                        System.out.println("disconnected");
                         disconnected = true;
                         answersTmpList.clear();
                         disconnectedListener.notifyDisconnected();
                     }
                     else if(tmp instanceof GameOverAnswer){
-                        System.out.println("winner");
                         synchronized (lock2) {
                             if (!view.isInitializedView()) lock2.wait();
                             view.setWinner(((GameOverAnswer) tmp).getWinner());
