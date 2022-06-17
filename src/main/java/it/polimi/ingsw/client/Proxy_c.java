@@ -121,7 +121,7 @@ public class Proxy_c implements Exit {
         return (msg.getCharacterAlreadyChosen());
     }
 
-    public View startView() throws IOException, ClassNotFoundException, InterruptedException {
+    public View startView() throws IOException, InterruptedException {
         send(new GenericMessage("Ready to start"));
         synchronized (lock2){
             if(!view.isInitializedView()) lock2.wait();
@@ -193,6 +193,7 @@ public class Proxy_c implements Exit {
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
         send(new UseSpecial(special));
         tempObj = receive();
+        System.out.println(tempObj);
         if(tempObj instanceof GenericMessage) return ((GenericMessage) tempObj).getMessage().equals("ok");
         return false;
     }
@@ -363,7 +364,6 @@ public class Proxy_c implements Exit {
                     else if(tmp instanceof InfoSpecial1or7or11Answer){
                         synchronized (lock2){
                             if(!view.isInitializedView()) lock2.wait();
-                            System.out.println("Student special update "+((InfoSpecial1or7or11Answer) tmp).getValue()+"int colore "+((InfoSpecial1or7or11Answer) tmp).getStudentColor());
                             view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmp).getStudentColor(), ((InfoSpecial1or7or11Answer) tmp).getValue(), ((InfoSpecial1or7or11Answer) tmp).getSpecialIndex());
                         }
                     }

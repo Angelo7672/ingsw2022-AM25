@@ -7,7 +7,6 @@ import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.listeners.*;
 import it.polimi.ingsw.server.answer.SavedGameAnswer;
 
-import java.awt.desktop.SystemEventListener;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -252,8 +251,8 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             } while (special == -1);
             if(!proxy.checkSpecial(special)) {
                 System.out.println();
-                System.out.println(ANSI_RED+SPACE+"Error, special not present"+ANSI_RESET);
-                useSpecial();
+                System.out.println(ANSI_RED+SPACE+"Move not allowed"+ANSI_RESET);
+                turn();
             }
             if(special==2 || special==4 || special==6 || special==8 ) return;
             if(special(special)) {
@@ -263,7 +262,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         }
         System.out.println();
         System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
-        useSpecial();
+        turn();
     }
 
     private boolean special(int special) throws IOException, ClassNotFoundException {
@@ -670,8 +669,8 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     @Override
     public void notifyInhibited(int islandRef, int isInhibited) {
         if(constants.isStartGame()) {
-            System.out.println();
             System.out.println("New play: "+"\t"+"\t"+"island "+islandRef+" No Entry tiles: "+isInhibited);
+            System.out.println();
         }
     }
 
@@ -680,7 +679,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         if(constants.isStartGame()) {
             //System.out.println();
             System.out.println("New play: "+"\t"+"\t"+" island "+(islandToDelete+1)+" had been united.");
-            //System.out.println();
+            System.out.println();
         }
     }
 
@@ -688,7 +687,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     public void notifyMotherPosition(int newMotherPosition) {
         if(constants.isStartGame()) {
             System.out.println();
-            System.out.print("New play: "+"\t"+"\t");
             printable.printMotherNature();
         }
     }
@@ -715,9 +713,9 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     @Override
     public void notifySpecial(int specialRef, int playerRef) {
         if(constants.isStartGame()) {
-            System.out.println();
             System.out.print("New play: "+"\t"+"\t");
             System.out.println("Player "+view.getNickname(playerRef)+" used special "+view.getSpecialName(specialRef));
+            System.out.println();
         }
     }
 
@@ -767,9 +765,9 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     @Override
     public void notifyNoEntry(int newValue) {
         if(constants.isStartGame()) {
-            System.out.println();
             System.out.print("New play: "+"\t"+"\t");
             System.out.println("No Entry tiles: "+newValue);
+            System.out.println();
         }
     }
 

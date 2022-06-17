@@ -44,7 +44,6 @@ public class View {
         this.islands = new ArrayList<>();
         this.specials = new ArrayList<>();
         this.cards = new ArrayList<>();
-
     }
 
     public void initializedView(int numberOfPlayers, boolean expertMode){
@@ -76,9 +75,21 @@ public class View {
         }
         cards.add(Assistant.LION); cards.add(Assistant.GOOSE); cards.add(Assistant.CAT); cards.add(Assistant.EAGLE); cards.add(Assistant.FOX);
         cards.add(Assistant.LIZARD); cards.add(Assistant.OCTOPUS); cards.add(Assistant.DOG); cards.add(Assistant.ELEPHANT); cards.add(Assistant.TURTLE);
-
     }
 
+    //Mother
+    public void setMotherPosition(MotherPositionMessage msg) {
+        motherNaturePos = msg.getMotherPosition();
+        this.motherPositionListener.notifyMotherPosition(msg.getMotherPosition());
+    }
+    public void setMaxStepsMotherNature(int steps){
+        maxStepsMotherNature = steps;
+    }
+
+    public int getMotherPosition(){return motherNaturePos;}
+    public int getMaxStepsMotherNature(){return maxStepsMotherNature;}
+
+    //Islands
     public void setIslandTowers(IslandTowersNumberMessage msg) {
         islands.get(msg.getIslandRef()).setTowersNumber(msg.getTowersNumber());
         this.towersListener.notifyTowersChange(1, msg.getIslandRef(), msg.getTowersNumber());
@@ -87,26 +98,26 @@ public class View {
         islands.get(msg.getIslandRef()).setStudentsIsland(msg.getColor(), msg.getNewValue());
         this.studentsListener.notifyStudentsChange(2, msg.getIslandRef(), msg.getColor(),msg.getNewValue());
     }
-    public void setMotherPosition(MotherPositionMessage msg) {
-        motherNaturePos = msg.getMotherPosition();
-        this.motherPositionListener.notifyMotherPosition(msg.getMotherPosition());
-    }
-    public void setMaxStepsMotherNature(int steps){
-        maxStepsMotherNature = steps;
-    }
     public void setTowersColor(IslandTowersColorMessage msg){
         islands.get(msg.getIslandRef()).setTowersColor(msg.getColor());
         this.towersListener.notifyTowerColor(msg.getIslandRef(), msg.getColor());
-    }
-    public void setInhibited(InhibitedIslandMessage msg) {
-        islands.get(msg.getIslandRef()).setInhibited(msg.getInhibited());
-        this.inhibitedListener.notifyInhibited(msg.getIslandRef(),msg.getInhibited() );
     }
     public void removeUnifiedIsland(UnifiedIsland msg){
         islands.remove(msg.getUnifiedIsland());
         this.islandListener.notifyIslandChange(msg.getUnifiedIsland());
     }
+    public void setInhibited(InhibitedIslandMessage msg) {
+        islands.get(msg.getIslandRef()).setInhibited(msg.getInhibited());
+        this.inhibitedListener.notifyInhibited(msg.getIslandRef(),msg.getInhibited() );
+    }
 
+    public int getIslandSize(){return islands.size();}
+    public int getIslandTowers(int islandRef){ return islands.get(islandRef).getTowersNumber();}
+    public int getTowersColor(int islandRef){ return islands.get(islandRef).getTowersColor();}
+    public int[] getStudentsIsland(int islandRef){ return islands.get(islandRef).getStudents();}
+    public int getInhibited(int islandRef){ return islands.get(islandRef).isInhibited; }
+
+    //School
     public void setSchoolStudents(SchoolStudentMessage msg){
         if(msg.getMessage().equalsIgnoreCase("Entrance")) {
             schoolBoards.get(msg.getComponentRef()).setStudentsEntrance(msg.getColor(), msg.getNewValue());
@@ -118,7 +129,8 @@ public class View {
         }
     }
     public void setSchoolTowers(SchoolTowersMessage msg){
-        schoolBoards.get(msg.getPlayerRef()).setTowersNumber(msg.getTowers());
+        if(msg.getTowers()<0) schoolBoards.get(msg.getPlayerRef()).setTowersNumber(0);
+        else schoolBoards.get(msg.getPlayerRef()).setTowersNumber(msg.getTowers());
         this.towersListener.notifyTowersChange(0, msg.getPlayerRef(),msg.getTowers());
     }
     public void setProfessors(ProfessorMessage msg){
@@ -130,16 +142,28 @@ public class View {
         schoolBoards.get(msg.getPlayerRef()).setCharacter(msg.getCharacter());
         //this.userInfoListener(playerRef, nickname, character);
     }
+    public void setCoins(CoinsMessage msg){
+        hands.get(msg.getPlayerRef()).setCoins(msg.getPlayerRef());
+        this.coinsListener.notifyNewCoinsValue(msg.getPlayerRef(), hands.get(msg.getPlayerRef()).coins);}
 
+    public String getNickname(int playerRef){ return schoolBoards.get(playerRef).getNickname();}
+    public String getCharacter(int playerRef){return schoolBoards.get(playerRef).getCharacter();}
+    public int[] getStudentsEntrance(int playerRef){return schoolBoards.get(playerRef).getEntranceStudent();}
+    public int[] getStudentsTable(int playerRef){return schoolBoards.get(playerRef).getTableStudent();}
+    public String getTeam(int playerRef){return schoolBoards.get(playerRef).getTeam();}
+    public int getSchoolTowers(int playerRef){ return schoolBoards.get(playerRef).getTowers();}
+    public boolean[] getProfessors(int playerRef){ return schoolBoards.get(playerRef).getProfessors();}
+    public int getCoins(int playerRef){ return hands.get(playerRef).getCoins();}
+
+    //Clouds
     public void setClouds(CloudStudentMessage msg){
         clouds.get(msg.getCloudRef()).setCloudStudents(msg.getColor(), msg.getNewValue());
         this.studentsListener.notifyStudentsChange(3, msg.getCloudRef(), msg.getColor(), msg.getNewValue());
     }
 
-    public void setCoins(CoinsMessage msg){
-        hands.get(msg.getPlayerRef()).setCoins(msg.getPlayerRef());
-        this.coinsListener.notifyNewCoinsValue(msg.getPlayerRef(), hands.get(msg.getPlayerRef()).coins);}
+    public int[] getStudentsCloud(int cloudRef){ return clouds.get(cloudRef).getStudents();}
 
+    //Cards
     public void setLastCard(LastCardMessage msg){
         if(turnCounter == numberOfPlayers){
             turnCounter=0;
@@ -148,13 +172,45 @@ public class View {
             }
         }
         turnCounter++;
+        System.out.println(msg.getCard());
         hands.get(msg.getPlayerRef()).setLastCard(msg.getCard());
         this.playedCardListener.notifyPlayedCard(msg.getPlayerRef(),msg.getCard());
     }
     public void setNumberOfCards(NumberOfCardsMessage msg){
         hands.get(msg.getPlayerRef()).setNumberOfCards(msg.getNumberOfCards());
     }
+    public void setCards(String card){
+        int index=-1;
+        for (int i = 0; i < cards.size(); i++) {
+            if(cards.get(i).toString().equalsIgnoreCase(card)){
+                index = i;
+                break;
+            }
+        }
+        setMaxStepsMotherNature(cards.get(index).getMovement());
+        cards.remove(index);
+    }
+    public void restoreCards(ArrayList<String> hand){
+        for (int i = 0; i < cards.size(); i++) {
+            boolean thereIs = false;
+            for(int j=0; j<hand.size(); j++){
+                if(cards.get(i).toString().equals(hand.get(j))) {
+                    thereIs = true;
+                    break;
+                }
+            }
+            if(!thereIs) {
+                cards.remove(i);
+                i--;
+            }
+        }
+    }
 
+    public String getLastCard(int playerRef){return hands.get(playerRef).getLastCard();}
+    public ArrayList<Assistant> getCards(){ return cards; }
+    public int getNumberOfCards(int playerRef){return hands.get(playerRef).getNumberOfCards();}
+
+    //Special
     public void setSpecialUsed(int specialIndex, int playerRef){
         specialUsed = specialIndex;
         specialListener.notifySpecial(specialIndex, playerRef);
@@ -183,64 +239,9 @@ public class View {
         noEntryListener.notifyNoEntry(noEntry);
     }
 
-    public void setCards(String card){
-        int index=-1;
-        for (int i = 0; i < cards.size(); i++) {
-            if(cards.get(i).toString().equalsIgnoreCase(card)){
-                index = i;
-                break;
-            }
-        }
-        setMaxStepsMotherNature(cards.get(index).getMovement());
-        cards.remove(index);
-    }
-
-    public void restoreCards(ArrayList<String> hand){
-        for (int i = 0; i < cards.size(); i++) {
-            boolean thereIs = false;
-            for(int j=0; j<hand.size(); j++){
-                if(cards.get(i).toString().equals(hand.get(j))) {
-                    thereIs = true;
-                    break;
-                }
-            }
-            if(!thereIs) {
-                cards.remove(i);
-                i--;
-            }
-        }
-    }
-
-    public int getIslandTowers(int islandRef){ return islands.get(islandRef).getTowersNumber();}
-    public int getTowersColor(int islandRef){ return islands.get(islandRef).getTowersColor();}
-    public int getMotherPosition(){return motherNaturePos;}
-    public int getMaxStepsMotherNature(){return maxStepsMotherNature;}
-    public int[] getStudentsIsland(int islandRef){ return islands.get(islandRef).getStudents();}
-    public int getInhibited(int islandRef){ return islands.get(islandRef).isInhibited; }
-
-    public String getNickname(int playerRef){ return schoolBoards.get(playerRef).getNickname();}
-    public String getCharacter(int playerRef){return schoolBoards.get(playerRef).getCharacter();}
-    public int[] getStudentsEntrance(int playerRef){return schoolBoards.get(playerRef).getEntranceStudent();}
-    public int[] getStudentsTable(int playerRef){return schoolBoards.get(playerRef).getTableStudent();}
-    public String getTeam(int playerRef){return schoolBoards.get(playerRef).getTeam();}
-    public int getSchoolTowers(int playerRef){ return schoolBoards.get(playerRef).getTowers();}
-    public boolean[] getProfessors(int playerRef){ return schoolBoards.get(playerRef).getProfessors();}
-
-    public int[] getStudentsCloud(int cloudRef){ return clouds.get(cloudRef).getStudents();}
-
-    public int getCoins(int playerRef){ return hands.get(playerRef).getCoins();}
-    public String getLastCard(int playerRef){return hands.get(playerRef).getLastCard();}
-    public int getNumberOfCards(int playerRef){return hands.get(playerRef).getNumberOfCards();}
-
-    public ArrayList<Assistant> getCards(){ return cards; }
-
-    public int getIslandSize(){return islands.size();}
-    public int getNumberOfPlayers(){return numberOfPlayers;}
-    public boolean getExpertMode(){return expertMode;}
-
     public int getSpecialCost(int special){return specials.get(special).getCost();}
     public int getSpecialName(int special){return specials.get(special).getName();}
-    public int[]  getSpecialStudents(int special){return specials.get(special).getStudents();}
+    public int[] getSpecialStudents(int special){return specials.get(special).getStudents();}
     public int getNoEntry(int special){return specials.get(special).getNoEntry();}
     public int getSpecialIndex(int special){
         int specialIndex=-1;
@@ -253,6 +254,21 @@ public class View {
         return specialIndex;
     }
 
+    //Game info
+    public int getNumberOfPlayers(){return numberOfPlayers;}
+    public boolean getExpertMode(){return expertMode;}
+    public String getWinner() {
+        return winner;
+    }
+    public void setWinner(String winner) throws IOException {
+        this.winner = winner;
+        winnerListener.notifyWinner();
+    }
+    public boolean isInitializedView() {
+        return initializedView;
+    }
+
+    //Listeners
     public void setTowersListener(TowersListener towersListener) {
         this.towersListener = towersListener;
     }
@@ -276,18 +292,6 @@ public class View {
     }
     public void setWinnerListener(WinnerListener winnerListener){this.winnerListener=winnerListener;}
 
-    public String getWinner() {
-        return winner;
-    }
-
-    public void setWinner(String winner) throws IOException {
-        this.winner = winner;
-        winnerListener.notifyWinner();
-    }
-
-    public boolean isInitializedView() {
-        return initializedView;
-    }
 
     private class SchoolBoard {
         String nickname;
@@ -347,6 +351,7 @@ public class View {
             return team;
         }
     }
+
     private class Island{
         int[] studentsIsland;
         int towersNumber;
@@ -375,6 +380,7 @@ public class View {
         public int getTowersColor(){return towersColor;}
         public int getIsInhibited(){return isInhibited;}
     }
+
     private class Cloud {
         int[] students;
 

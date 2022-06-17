@@ -37,7 +37,7 @@ public class Printable {
         System.out.println();
     }
     protected void printMotherNature(){
-        System.out.println(UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));//aggiungere
+        System.out.println("New play: "+"\t"+"\t"+UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));
         System.out.println();
     }
     protected void printNickname(int i){
@@ -52,20 +52,20 @@ public class Printable {
                 ANSI_YELLOW + ", Yellow " + view.getStudentsTable(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsTable(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsTable(i)[4]+ANSI_RESET);
     }
     protected void printProf(int i){
-        System.out.println();
         System.out.print("New play: "+"\t");
         printNickname(i);
         System.out.println("\t"+" Professor: " + ANSI_GREEN + "Green "+ view.getProfessors(i)[0] + ANSI_RED  + ", Red " + view.getProfessors(i)[1] +
                 ANSI_YELLOW + ", Yellow " + view.getProfessors(i)[2] +ANSI_PURPLE + ", Pink " + view.getProfessors(i)[3] + ANSI_BLUE+ ", Blue " + view.getProfessors(i)[4]+ANSI_RESET);
+        System.out.println();
     }
     protected void printSchoolTowers(int i){
         System.out.println("\t" + "Towers number: " + view.getSchoolTowers(i) + ".");
     }
     protected void printCoins(int i){
-        System.out.println();
         System.out.print("New play: ");
         printNickname(i);
         System.out.println("\t"+" Coins: " + view.getCoins(i));
+        System.out.println();
     }
     protected void printCloud(){
         System.out.println(UNDERLINE+"CLOUDS:"+ANSI_RESET);
@@ -88,7 +88,6 @@ public class Printable {
     }
 
     protected void printTowersChange(int place, int componentRef){
-        System.out.println();
         System.out.print("New play: " + "\t");
         switch (place) {
             case (0) -> {
@@ -103,27 +102,26 @@ public class Printable {
     protected void printStudentsChange(int place, int componentRef){
         switch (place) {
             case (0) -> {
-                System.out.println();
                 System.out.print("New play: " + "\t");
                 printNickname(componentRef);
                 printEntrance(componentRef);
+                System.out.println();
             }
             case (1) -> {
-                System.out.println();
                 System.out.print("New play: " + "\t");
                 printNickname(componentRef);
                 printTable(componentRef);
+                System.out.println();
             }
             case (2) -> {
-                System.out.println();
                 System.out.print("New play: " + "\t");
                 printIslandStudent(componentRef);
+                System.out.println();
             }
         }
     }
 
     protected void printSpecialList(){
-        System.out.println();
         System.out.println(UNDERLINE+"SPECIALS"+ANSI_RESET);
         for(int i=0; i<3; i++){
             System.out.print("\t"+"Special "+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
@@ -132,6 +130,7 @@ public class Printable {
             else if(view.getSpecialName(i)==5) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
             else System.out.println();
         }
+        System.out.println();
     }
 
     protected void printSpecialStudents(int special){
