@@ -926,49 +926,9 @@
                         <Image url="@../graphics/schoolboard.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="-6.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="118.19999999999999" AnchorPane.leftAnchor="-5.0" AnchorPane.rightAnchor="334.6" AnchorPane.topAnchor="25.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="-5.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="23.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="23.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="51.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="-5.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="77.19999999999999" AnchorPane.leftAnchor="-5.0" AnchorPane.rightAnchor="334.6" AnchorPane.topAnchor="66.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="51.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="23.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="118.19999999999999" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="306.6" AnchorPane.topAnchor="25.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane id="table2" layoutX="115.0" layoutY="22.0" prefHeight="127.0" prefWidth="198.0" />
-                  <AnchorPane id="professorPane2" layoutX="82.0" layoutY="18.0" prefHeight="150.0" prefWidth="40.0" />
-                  <AnchorPane id="entrancePane2" layoutX="306.0" layoutY="10.0" prefHeight="160.0" prefWidth="62.0">
+                  <AnchorPane id="table2" fx:id="tablePane2" layoutX="115.0" layoutY="22.0" prefHeight="127.0" prefWidth="198.0" />
+                  <AnchorPane id="professorPane2" fx:id="professorsPane2" layoutX="82.0" layoutY="18.0" prefHeight="150.0" prefWidth="40.0" />
+                  <AnchorPane id="entrancePane2" fx:id="entrancePane2" layoutX="306.0" layoutY="10.0" prefHeight="160.0" prefWidth="62.0">
                      <children>
                         <ImageView id="greenStudent" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="121.0" preserveRatio="true">
                            <image>
@@ -1022,6 +982,50 @@
                         </Label>
                      </children>
                   </AnchorPane>
+                  <AnchorPane fx:id="towerPane2" layoutX="1.0" layoutY="10.0" prefHeight="160.0" prefWidth="90.0">
+                     <children>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="-5.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="23.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="-5.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="23.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="51.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="-5.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="23.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="51.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
                </children>
             </AnchorPane>
          </children>
@@ -1035,49 +1039,9 @@
                         <Image url="@../graphics/schoolboard_vertical.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="56.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="9.600000000000023" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="74.4" AnchorPane.topAnchor="320.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="56.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="49.60000000000002" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="106.4" AnchorPane.topAnchor="280.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="88.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="49.60000000000002" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="74.4" AnchorPane.topAnchor="280.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="56.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="49.60000000000002" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="42.400000000000006" AnchorPane.topAnchor="280.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="120.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="9.600000000000023" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="10.400000000000006" AnchorPane.topAnchor="320.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="120.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="49.60000000000002" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="10.400000000000006" AnchorPane.topAnchor="280.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="88.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="9.600000000000023" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="42.400000000000006" AnchorPane.topAnchor="320.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="24.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="9.600000000000023" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="106.4" AnchorPane.topAnchor="320.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane id="table3" layoutX="6.0" layoutY="58.0" prefHeight="198.0" prefWidth="160.0" />
-                  <AnchorPane id="professorsPane3" layoutX="8.0" layoutY="256.0" prefHeight="26.0" prefWidth="160.0" />
-                  <AnchorPane layoutX="6.0" layoutY="3.0" prefHeight="58.0" prefWidth="170.0">
+                  <AnchorPane id="table3" fx:id="tablePane3" layoutX="6.0" layoutY="58.0" prefHeight="198.0" prefWidth="160.0" />
+                  <AnchorPane id="professorsPane3" fx:id="professorsPane3" layoutX="8.0" layoutY="256.0" prefHeight="26.0" prefWidth="160.0" />
+                  <AnchorPane fx:id="entrancePane3" layoutX="6.0" layoutY="3.0" prefHeight="58.0" prefWidth="170.0">
                      <children>
                         <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="126.0" layoutY="18.0" preserveRatio="true">
                            <image>
@@ -1131,6 +1095,50 @@
                         </Label>
                      </children>
                   </AnchorPane>
+                  <AnchorPane fx:id="towerPane3" layoutX="11.0" layoutY="282.0" prefHeight="88.0" prefWidth="160.0">
+                     <children>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/grey_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/grey_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="76.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/grey_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="108.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/grey_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="12.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/grey_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="44.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/grey_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="76.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/grey_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="108.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/grey_tower.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
 
                </children>
             </AnchorPane>
@@ -1159,98 +1167,106 @@
                         <Image url="@../graphics/schoolboard.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="277.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="115.4" AnchorPane.leftAnchor="277.0" AnchorPane.rightAnchor="56.60000000000002" AnchorPane.topAnchor="15.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/white_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="333.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="115.4" AnchorPane.leftAnchor="333.0" AnchorPane.rightAnchor="0.6000000000000227" AnchorPane.topAnchor="15.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/white_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="305.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="70.4" AnchorPane.leftAnchor="305.0" AnchorPane.rightAnchor="28.600000000000023" AnchorPane.topAnchor="60.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/white_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="40.0" fitWidth="48.0" layoutX="305.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="115.4" AnchorPane.leftAnchor="305.0" AnchorPane.rightAnchor="28.600000000000023" AnchorPane.topAnchor="15.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/white_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="333.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="70.4" AnchorPane.leftAnchor="333.0" AnchorPane.rightAnchor="0.6000000000000227" AnchorPane.topAnchor="60.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/white_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="277.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="25.400000000000006" AnchorPane.leftAnchor="305.0" AnchorPane.rightAnchor="28.600000000000023" AnchorPane.topAnchor="105.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/white_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="333.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="70.4" AnchorPane.leftAnchor="277.0" AnchorPane.rightAnchor="56.60000000000002" AnchorPane.topAnchor="60.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/white_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="333.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="25.400000000000006" AnchorPane.leftAnchor="333.0" AnchorPane.rightAnchor="0.6000000000000227" AnchorPane.topAnchor="105.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/white_tower.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane id="table1" layoutX="58.0" layoutY="17.0" prefHeight="127.0" prefWidth="198.0" />
-                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="27.0" layoutY="123.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="27.0" layoutY="95.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="27.0" layoutY="70.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="27.0" layoutY="45.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="27.0" layoutY="18.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="8.0" layoutY="15.0" text="1">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="8.0" layoutY="42.0" text="1">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="8.0" layoutY="66.0" text="1">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="8.0" layoutY="92.0" text="1">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="8.0" layoutY="119.0" text="1">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <AnchorPane id="professorsPane1" layoutX="250.0" layoutY="10.0" prefHeight="150.0" prefWidth="40.0" />
+                  <AnchorPane id="table1" fx:id="tablePane1" layoutX="58.0" layoutY="17.0" prefHeight="127.0" prefWidth="198.0" />
+                  <AnchorPane id="professorsPane1" fx:id="professorsPane1" layoutX="250.0" layoutY="10.0" prefHeight="150.0" prefWidth="40.0" />
+                  <AnchorPane fx:id="towerPane1" layoutX="285.0" layoutY="5.0" prefHeight="160.0" prefWidth="90.0">
+                     <children>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="-5.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/white_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="23.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/white_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="51.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/white_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="-5.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/white_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="23.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/white_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="51.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/white_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="-5.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/white_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="23.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/white_tower.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane id="entrancePane2" fx:id="entrancePane1" prefHeight="160.0" prefWidth="62.0">
+                     <children>
+                        <ImageView id="greenStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="18.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView id="redStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="44.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView id="yellowStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="70.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView id="pinkStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="97.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView id="blueStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="123.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                           </image>
+                        </ImageView>
+                        <Label id="greenLabel" layoutX="8.0" layoutY="15.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                        <Label id="redLabel" layoutX="8.0" layoutY="42.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                        <Label id="blueLabel" layoutX="8.0" layoutY="67.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                        <Label id="blueLabel" layoutX="8.0" layoutY="92.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                        <Label id="blueLabel" layoutX="8.0" layoutY="118.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="userInfo1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="160.0" prefWidth="127.0">
@@ -1291,98 +1307,106 @@
                         <Image url="@../graphics/schoolboard_vertical.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="84.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="329.6" AnchorPane.leftAnchor="52.0" AnchorPane.rightAnchor="78.4" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="116.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="329.6" AnchorPane.leftAnchor="84.0" AnchorPane.rightAnchor="46.400000000000006" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="52.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="329.6" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="110.4" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="84.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="283.6" AnchorPane.leftAnchor="84.0" AnchorPane.rightAnchor="46.400000000000006" AnchorPane.topAnchor="46.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="20.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="329.6" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="14.400000000000006" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="20.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="283.6" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="110.4" AnchorPane.topAnchor="46.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="52.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="283.6" AnchorPane.leftAnchor="52.0" AnchorPane.rightAnchor="78.4" AnchorPane.topAnchor="46.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="116.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="283.6" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="14.400000000000006" AnchorPane.topAnchor="46.0">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/black_tower.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane id="table4" layoutX="6.0" layoutY="112.0" prefHeight="198.0" prefWidth="160.0" />
-                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="127.0" layoutY="321.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="102.0" layoutY="321.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="76.0" layoutY="321.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="50.0" layoutY="321.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="23.0" layoutY="321.0" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="30.0" layoutY="341.0" text="1">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="54.0" layoutY="341.0" text="1">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="79.0" layoutY="341.0" text="1">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="131.0" layoutY="341.0" text="1">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="107.0" layoutY="341.0" text="1">
-                     <font>
-                        <Font name="System Bold" size="19.0" />
-                     </font>
-                  </Label>
-                  <AnchorPane id="professorsPane4" layoutX="4.0" layoutY="86.0" prefHeight="26.0" prefWidth="160.0" />
+                  <AnchorPane id="table4" fx:id="tablePane4" layoutX="6.0" layoutY="112.0" prefHeight="198.0" prefWidth="160.0" />
+                  <AnchorPane id="professorsPane4" fx:id="professorsPane4" layoutX="4.0" layoutY="86.0" prefHeight="26.0" prefWidth="160.0" />
+                  <AnchorPane fx:id="towerPane4" layoutX="10.0" prefHeight="88.0" prefWidth="160.0">
+                     <children>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="76.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="108.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="12.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="44.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="76.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="108.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/black_tower.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="entrancePane4" layoutY="305.0" prefHeight="66.0" prefWidth="160.0">
+                     <children>
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="21.0" layoutY="19.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="48.0" layoutY="18.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="75.0" layoutY="18.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="100.0" layoutY="18.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="126.0" layoutY="18.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="26.0" layoutY="38.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="54.0" layoutY="38.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="80.0" layoutY="38.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="105.0" layoutY="38.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="131.0" layoutY="38.0" text="1">
+                           <font>
+                              <Font name="System Bold" size="19.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
 
 
                </children>

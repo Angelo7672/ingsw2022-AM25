@@ -6,6 +6,7 @@ import it.polimi.ingsw.listeners.*;
 import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -18,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,6 +35,7 @@ public class MainSceneController implements SceneController {
     private boolean expertMode;
     private HashMap<Integer, String> nicknamesMap;
     private HashMap<Integer, String> charactersMap;
+    private HashMap<Integer, String> teamsMap;
     private HashMap<Integer, ImageView> charactersImageMap;
     private HashMap<Integer, AnchorPane> islandsMap;
 
@@ -43,9 +46,27 @@ public class MainSceneController implements SceneController {
     private final String SAMURAI = "/graphics/character_samurai.png";
     private final String KING = "/graphics/character_king.png";
 
+    private final String GREENPROF = "/graphics/wooden_pieces/greenProf3D.png";
+    private final String REDPROF = "/graphics/wooden_pieces/redProf3D.png";
+    private final String YELLOWPROF = "/graphics/wooden_pieces/yellowProf3D.png";
+    private final String PINKPROF = "/graphics/wooden_pieces/pinkProf3D.png";
+    private final String BLUEPROF = "/graphics/wooden_pieces/blueProf3D.png";
+
+    private final String GREENSTUDENT = "/graphics/wooden_pieces/greenStudent3D.png";
+    private final String REDSTUDENT = "/graphics/wooden_pieces/redStudent3D.png";
+    private final String YELLOWSTUDENT = "/graphics/wooden_pieces/yellowStudent3D.png";
+    private final String PINKSTUDENT = "/graphics/wooden_pieces/pinkStudent3D.png";
+    private final String BLUESTUDENT = "/graphics/wooden_pieces/blueStudent3D.png";
+
+    private final String BLACKTOWER = "/graphics/wooden_pieces/black_tower.png";
+    private final String WHITETOWER = "/graphics/wooden_pieces/white_tower.png";
+    private final String GREYTOWER = "/graphics/wooden_pieces/grey_tower.png";
+
+
 
     @FXML private Button useSpecialButton;
     @FXML private AnchorPane islandsPane;
+
     @FXML private AnchorPane school1;
     @FXML private AnchorPane school2;
     @FXML private AnchorPane school3;
@@ -66,6 +87,32 @@ public class MainSceneController implements SceneController {
     @FXML private VBox player3Box;
     @FXML private VBox player4Box;
 
+
+    //entrata di ogni scuola
+    @FXML private AnchorPane entrancePane1;
+    @FXML private AnchorPane entrancePane2;
+    @FXML private AnchorPane entrancePane3;
+    @FXML private AnchorPane entrancePane4;
+
+    //tavola di ongi scuola
+    @FXML private AnchorPane tablePane1;
+    @FXML private AnchorPane tablePane2;
+    @FXML private AnchorPane tablePane3;
+    @FXML private AnchorPane tablePane4;
+
+
+    @FXML private AnchorPane professorsPane1;
+    @FXML private AnchorPane professorsPane2;
+    @FXML private AnchorPane professorsPane3;
+    @FXML private AnchorPane professorsPane4;
+
+
+    @FXML private AnchorPane towerPane1;
+    @FXML private AnchorPane towerPane2;
+    @FXML private AnchorPane towerPane3;
+    @FXML private AnchorPane towerPane4;
+
+
     public MainSceneController(){
         this.nicknamesMap =new HashMap<>();
         this.charactersMap =new HashMap<>();
@@ -73,6 +120,7 @@ public class MainSceneController implements SceneController {
         this.numberOfPlayers=4;
         this.expertMode=false;
         this.islandsMap= new HashMap<>();
+        this.teamsMap = new HashMap<>();
 
     }
 
@@ -93,8 +141,19 @@ public class MainSceneController implements SceneController {
             if (numberOfPlayers == 2) {
                 player3Box.setVisible(false);
                 player4Box.setVisible(false);
-            } else if (numberOfPlayers == 3)
+                teamsMap.put(0, WHITETOWER);
+                teamsMap.put(1, BLACKTOWER);
+            } else if (numberOfPlayers == 3) {
                 player4Box.setVisible(false);
+                teamsMap.put(0, WHITETOWER);
+                teamsMap.put(1, BLACKTOWER);
+                teamsMap.put(2, GREYTOWER);
+            }  else {
+                teamsMap.put(0, WHITETOWER);
+                teamsMap.put(1, WHITETOWER);
+                teamsMap.put(2, BLACKTOWER);
+                teamsMap.put(3, BLACKTOWER);
+            }
 
             useSpecialButton.setVisible(expertMode);
 
@@ -113,6 +172,8 @@ public class MainSceneController implements SceneController {
                 island = (AnchorPane) islandsPane.getChildren().get(i);
                 islandsMap.put(i-1, island);
             }
+
+
             gui.isMainScene=true;
         });
         /*
@@ -233,9 +294,51 @@ public class MainSceneController implements SceneController {
         charactersMap.put(playerRef, character);
     }
 
-    public void setStudentsEntrance(int componentRef, int color, int newStudentsValue){
+    public void setStudentsEntrance(int playerRef, int color, int newStudentsValue){/*
+        Label studentLabel;
+        ImageView studentImage;
+        switch (playerRef){
+            case 0 -> {
+                studentLabel= (Label) entrancePane1.getChildren(color+4).setText(String.valueOf(newStudentsValue));
+                studentImage = (ImageView) entrancePane1.getChildren(color);
+                if(newStudentsValue!= 0){
+                    studentLabel.setVisible(true);
+                    studentImage.setVisible(true);
+                }
+            }
+            case 1 -> {
+                studentLabel= (Label) entrancePane2.getChildren(color+4).setText(String.valueOf(newStudentsValue));
+                studentImage = (ImageView) entrancePane2.getChildren(color);
+                if(newStudentsValue!= 0){
+                    studentLabel.setVisible(true);
+                    studentImage.setVisible(true);
+                }
+            }
+            case 2 -> {
+                studentLabel= (Label) entrancePane3.getChildren(color+4).setText(String.valueOf(newStudentsValue));
+                studentImage = (ImageView) entrancePane3.getChildren(color);
+                if(newStudentsValue!= 0){
+                    studentLabel.setVisible(true);
+                    studentImage.setVisible(true);
+                }
+            }
+            case 3 -> {
+                studentLabel= (Label) entrancePane4.getChildren(color+4).setText(String.valueOf(newStudentsValue));
+                studentImage = (ImageView) entrancePane4.getChildren(color);
+                if(newStudentsValue!= 0){
+                    studentLabel.setVisible(true);
+                    studentImage.setVisible(true);
+                }
+            }
 
+
+
+        }
+       // entrancePane1
+*/
     }
+
+
     public void setStudentsTable(int schoolRef, int color, int newStudentsValue){
         /*
         int i=0;

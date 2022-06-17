@@ -38,6 +38,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected boolean isMainScene;
     private int initialMotherPosition;
     private ArrayList<int[]> initialStudentsIsland;
+    private ArrayList<int []> initialStudentsEntrance;
 
     private HashMap<String, Scene> scenesMap; //maps the scene name with the scene itself
     private HashMap<String, SceneController > sceneControllersMap; // maps the scene name with the scene controller
@@ -246,6 +247,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setMotherPosition(initialMotherPosition);
             System.out.println("sending initial position:"+initialMotherPosition);
+            for(int i=0; i<initialStudentsEntrance.size(); i++){
+                for(int j=0; j<5; j++){
+                    controller.setStudentsEntrance(i,j, initialStudentsEntrance.get(i)[j] );
+                }
+            }
+
         });
 
     }
@@ -281,7 +288,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
             else{
                 switch (place) {
-                    //case 0 -> this.initialStudentsEntrance.get(componentRef)[color]=newStudentsValue;
+                    case 0 -> this.initialStudentsEntrance.get(componentRef)[color]=newStudentsValue;
                     case 2 -> this.initialStudentsIsland.get(componentRef)[color]=newStudentsValue;
                 }
 
@@ -293,12 +300,20 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
+        Platform.runLater(()->{
 
+        });
     }
 
     @Override
     public void notifyTowerColor(int islandRef, int newColor) {
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        Platform.runLater(()->{
+            if(isMainScene){
+                //controller.setTowerColor()
+            }
 
+        });
     }
 }
 
