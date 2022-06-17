@@ -7,14 +7,7 @@ public enum Team {
     GREY(2);
     private int team;
 
-    Team(int team){
-        this.team=team;
-    }
+    Team(int team){ this.team = team; }
 
-    public int getTeam() {
-        return team;
-    }
-    public void setTeam(int value){
-        this.team=value;
-    }
+    public int getTeam() { return team; }
 }

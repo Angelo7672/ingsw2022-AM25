@@ -154,10 +154,7 @@ public class IslandsManager {
         }
         return false;
     }
-    public boolean checkVictory(){
-        if(islands.size()==3) return true;
-        return false;
-    }
+    public boolean checkVictory() { return islands.size() <= 3; }
 
     //public momentaneo
     public int circularArray(int pos, int number){  //add numbers to not leave the array

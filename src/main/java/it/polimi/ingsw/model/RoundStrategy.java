@@ -36,13 +36,13 @@ public abstract class RoundStrategy {
         if(teamStronger != Team.NONE){
             infoTower = islandsManager.towerChange(islandRef,teamStronger);
             victory1 = islandsManager.checkVictory();
-            victory2 = playerManager.removeTower(teamStronger,infoTower[0]);
+            victory2 = playerManager.removeTower(teamStronger, infoTower[0]);
             if(infoTower[1] == 0) teamWeaker = Team.WHITE;
             else if(infoTower[1] == 1) teamWeaker = Team.BLACK;
             else if(infoTower[1] == 2) teamWeaker = Team.GREY;
             playerManager.placeTower(teamWeaker,infoTower[0]);
         }
-        if(victory1 || victory2) return true;
+        if(victory1 || victory2){ System.out.println("conquestIsland - EndGame");return true; }
 
         return false;
     }

@@ -7,112 +7,54 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
     PlayerManager playerManager2P, playerManager3P, playerManager4P;
-    Bag bag1, bag2, bag3;
+    Bag bag;
 
     @BeforeEach
-    void initialization(){
-        bag1 = new Bag(); bag2 = new Bag(); bag3 = new Bag();
-        bag1.bagListener = new BagListener() {
+    void initialization() {
+        bag = new Bag();
+        bag.bagListener = new BagListener() {
             @Override
             public void notifyBagExtraction() {}
             @Override
             public void notifyBag(List<Integer> bag) {}
         };
-        bag2.bagListener = new BagListener() {
-            @Override
-            public void notifyBagExtraction() {}
-            @Override
-            public void notifyBag(List<Integer> bag) {}
-        };
-        bag3.bagListener = new BagListener() {
-            @Override
-            public void notifyBagExtraction() {}
-            @Override
-            public void notifyBag(List<Integer> bag) {}
-        };
-        bag1.bagInitialize(); bag2.bagInitialize(); bag3.bagInitialize();
-
-        playerManager2P = new PlayerManager(2,bag1);
-        playerManager3P = new PlayerManager(3,bag2);
-        playerManager4P = new PlayerManager(4,bag3);
-        playerManager2P.towersListener = new TowersListener() {
-            @Override
-            public void notifyTowersChange(int place, int componentRef, int towersNumber) {}
-            @Override
-            public void notifyTowerColor(int islandRef, int newColor) {}
-        };
-        playerManager3P.towersListener = new TowersListener() {
-            @Override
-            public void notifyTowersChange(int place, int componentRef, int towersNumber) {}
-            @Override
-            public void notifyTowerColor(int islandRef, int newColor) {}
-        };
-        playerManager4P.towersListener = new TowersListener() {
-            @Override
-            public void notifyTowersChange(int place, int componentRef, int towersNumber) {}
-            @Override
-            public void notifyTowerColor(int islandRef, int newColor) {}
-        };
-        playerManager2P.professorsListener = new ProfessorsListener() {
-            @Override
-            public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {}
-        };
-        playerManager3P.professorsListener = new ProfessorsListener() {
-            @Override
-            public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {}
-        };
-        playerManager4P.professorsListener = new ProfessorsListener() {
-            @Override
-            public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {}
-        };
-        playerManager2P.coinsListener = new CoinsListener() {
-            @Override
-            public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {}
-        };
-        playerManager3P.coinsListener = new CoinsListener() {
-            @Override
-            public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {}
-        };
-        playerManager4P.coinsListener = new CoinsListener() {
-            @Override
-            public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {}
-        };
-        playerManager2P.playedCardListener = new PlayedCardListener() {
-            @Override
-            public void notifyPlayedCard(int playerRef, String assistantCard) {}
-            @Override
-            public void notifyHand(int playerRef, ArrayList<String> hand) {}
-        };
-        playerManager3P.playedCardListener = new PlayedCardListener() {
-            @Override
-            public void notifyPlayedCard(int playerRef, String assistantCard) {}
-            @Override
-            public void notifyHand(int playerRef, ArrayList<String> hand) {}
-        };
-        playerManager4P.playedCardListener = new PlayedCardListener() {
-            @Override
-            public void notifyPlayedCard(int playerRef, String assistantCard) {}
-            @Override
-            public void notifyHand(int playerRef, ArrayList<String> hand) {}
-        };
-        playerManager2P.studentsListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-        };
-        playerManager3P.studentsListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-        };
-        playerManager4P.studentsListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-        };
+        bag.bagInitialize();
+        playerManager2P = new PlayerManager(2, bag);
+        playerManager3P = new PlayerManager(3, bag);
+        playerManager4P = new PlayerManager(4, bag);
+        for (PlayerManager playerManager : Arrays.asList(playerManager2P, playerManager3P, playerManager4P)) {
+            playerManager.towersListener = new TowersListener() {
+                @Override
+                public void notifyTowersChange(int place, int componentRef, int towersNumber) {}
+                @Override
+                public void notifyTowerColor(int islandRef, int newColor) {}
+            };
+            playerManager.professorsListener = new ProfessorsListener() {
+                @Override
+                public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {}
+            };
+            playerManager.coinsListener = new CoinsListener() {
+                @Override
+                public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {}
+            };
+            playerManager.playedCardListener = new PlayedCardListener() {
+                @Override
+                public void notifyPlayedCard(int playerRef, String assistantCard) {}
+                @Override
+                public void notifyHand(int playerRef, ArrayList<String> hand) {}
+            };
+            playerManager.studentsListener = new StudentsListener() {
+                @Override
+                public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
+            };
+        }
     }
 
     @Test

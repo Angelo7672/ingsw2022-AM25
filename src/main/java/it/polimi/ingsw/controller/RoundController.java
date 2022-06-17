@@ -29,6 +29,7 @@ public class RoundController extends Thread{
             else if(jumpToActionPhase) jumpToActionPhase = false;
             actionPhase();
             if (end) {
+                System.out.println("RoundController - EndGame");
                 controller.oneLastRide();
                 server.gameOver();
             }
@@ -36,7 +37,7 @@ public class RoundController extends Thread{
     }
 
     private synchronized void planningPhase(){
-        end = gameManager.refreshStudentsCloud();
+        setEnd(gameManager.refreshStudentsCloud());
         gameManager.queueForPlanificationPhase();
         for(controller.setCurrentUser(0); controller.getCurrentUser() < numberOfPlayers; controller.incrCurrentUser()){
             server.unlockPlanningPhase(gameManager.readQueue(controller.getCurrentUser()));

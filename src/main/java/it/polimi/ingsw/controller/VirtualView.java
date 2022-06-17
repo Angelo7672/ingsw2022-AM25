@@ -144,7 +144,6 @@ public class VirtualView
                 int[] studentsEntrance = schoolBoardsTmp.get(i).getStudentsEntrance();
                 int[] studentsTable = schoolBoardsTmp.get(i).getStudentsTable();
                 int towers = schoolBoardsTmp.get(i).getTowersNumber();
-                System.out.println(i+" "+towers);
                 boolean[] professors = schoolBoardsTmp.get(i).getProfessors();
                 String team = schoolBoardsTmp.get(i).getTeam();
                 controller.schoolRestore(i,studentsEntrance,studentsTable,towers,professors,team);

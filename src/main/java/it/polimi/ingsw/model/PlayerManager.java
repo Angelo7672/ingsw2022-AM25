@@ -334,7 +334,7 @@ public class PlayerManager  {
             private void placeTower(int number) { towers+=number; }
             private void removeTower(int number) { towers-=number ; }
             private int getTowers() { return towers; }
-            private boolean towerExpired(){ return getTowers() == 0; } //Check if the player has built his last tower
+            private boolean towerExpired(){ return getTowers() <= 0; } //Check if the player has built his last tower
         }
     }
 }
