@@ -149,7 +149,6 @@ public class MainSceneController implements SceneController {
             System.out.println(towersMap+"\n");
 
             AnchorPane island;
-
             for(int i=1; i<=12; i++){ //starts from 1 because 0 is useSpecialButton
                 island = (AnchorPane) islandsPane.getChildren().get(i);
                 islandsMap.put(i-1, island);
@@ -180,10 +179,20 @@ public class MainSceneController implements SceneController {
     }
 
     public void islandsInitialization(){
-        /*for(int i=0; i<12; i++){
-            for(int j=0; j<islandsMap.get(i).getChildren().size();j++)
-                islandsMap.get(i).getChildren().get(j+1).setVisible(false);
-        }*/
+        System.out.println("Island initialization");
+        AnchorPane island;
+        System.out.println(islandsMap+ " is island map ");
+
+        for(int i=0; i<12; i++){
+            island = islandsMap.get(i);
+            System.out.println("Island:" +island);
+            System.out.println("Index: "+i);
+
+            for(int j=1; j<=13;j++) {
+                island.getChildren().get(j).setVisible(false);
+                System.out.println("Child :"+island.getChildren().get(j));
+            }
+        }
 
     }
 
@@ -194,21 +203,17 @@ public class MainSceneController implements SceneController {
             }
         }*/
         ImageView tower;
+        for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
+            tower = (ImageView) towersMap.get(0).getChildren().get(i);
+            tower.setImage(new Image(WHITETOWER));
+        }
         if(numberOfPlayers==2){
-            for(int i=0; i<towersMap.get(0).getChildren().size(); i++){
-                tower = (ImageView) towersMap.get(0).getChildren().get(i);
-                tower.setImage(new Image(WHITETOWER));
-            }
             for(int i=0; i<towersMap.get(1).getChildren().size(); i++){
                 tower = (ImageView) towersMap.get(1).getChildren().get(i);
                 tower.setImage(new Image(BLACKTOWER));
             }
         }
         if(numberOfPlayers==3){
-            for(int i=0; i<towersMap.get(0).getChildren().size(); i++){
-                tower = (ImageView) towersMap.get(0).getChildren().get(i);
-                tower.setImage(new Image(WHITETOWER));
-            }
             for(int i=0; i<towersMap.get(1).getChildren().size(); i++){
                 tower = (ImageView) towersMap.get(1).getChildren().get(i);
                 tower.setImage(new Image(BLACKTOWER));
@@ -219,10 +224,6 @@ public class MainSceneController implements SceneController {
             }
         }
         if(numberOfPlayers==4) {
-            for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
-                tower = (ImageView) towersMap.get(0).getChildren().get(i);
-                tower.setImage(new Image(WHITETOWER));
-            }
             for (int i = 0; i < towersMap.get(1).getChildren().size(); i++) {
                 tower = (ImageView) towersMap.get(1).getChildren().get(i);
                 tower.setImage(new Image(WHITETOWER));
@@ -286,16 +287,8 @@ public class MainSceneController implements SceneController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         });
 
-
-    }
-
-
-    public void setView(View view){
-        this.view=view;
-        System.out.println("view set");
     }
 
     @Override
@@ -376,22 +369,12 @@ public class MainSceneController implements SceneController {
     public void setStudentsIsland(int islandRef, int color, int newStudentsValue){
         AnchorPane island = islandsMap.get(islandRef);
         Label studentLabel;
-        if(color == 0){
-            studentLabel= (Label) island.getChildren().get(8);
-            studentLabel.setText(String.valueOf(newStudentsValue));
-        } else if(color == 1){
-            studentLabel= (Label) island.getChildren().get(9);
-            studentLabel.setText(String.valueOf(newStudentsValue));
-        } else if(color == 2) {
-            studentLabel = (Label) island.getChildren().get(10);
-            studentLabel.setText(String.valueOf(newStudentsValue));
-        } else if(color == 3) {
-            studentLabel = (Label) island.getChildren().get(11);
-            studentLabel.setText(String.valueOf(newStudentsValue));
-        } else if(color == 4) {
-            studentLabel = (Label) island.getChildren().get(12);
-            studentLabel.setText(String.valueOf(newStudentsValue));
-        }
+        ImageView studentImage;
+        studentImage= (ImageView) island.getChildren().get(color+3);
+        studentLabel= (Label) island.getChildren().get(color+8);
+        studentLabel.setText(String.valueOf(newStudentsValue));
+        studentImage.setVisible(true);
+        studentLabel.setVisible(true);
 
     }
 

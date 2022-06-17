@@ -253,12 +253,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         Platform.runLater(()->{
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setMotherPosition(initialMotherPosition);
-            System.out.println("sending initial position:"+initialMotherPosition);
-
             for(int i=0; i< view.getNumberOfPlayers(); i++){
-                System.out.println("Sending students in entrance: school "+i);
                 for(int j=0; j<5; j++){
                     controller.setStudentsEntrance(i,j, initialStudentsEntrance.get(i)[j] );
+                }
+            }
+            for(int i=0; i< initialStudentsIsland.size(); i++){
+                for(int j=0; j<5; j++){
+                    controller.setStudentsIsland(i,j, initialStudentsIsland.get(i)[j] );
                 }
             }
 
@@ -284,9 +286,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
         Platform.runLater(() -> {
-        System.out.println("notify Student change has been called");
-        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            System.out.println("InitialStudentsEntrance "+initialStudentsEntrance);
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
 
             if(isMainScene){
                 switch (place) {
@@ -311,8 +311,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
                     case 3 -> controller.setStudentsCloud(componentRef, color, newStudentsValue);
                 }
-
-
             }
         });
     }

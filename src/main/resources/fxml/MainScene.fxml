@@ -16,72 +16,72 @@
             <Button fx:id="useSpecialButton" layoutX="350.0" layoutY="199.0" mnemonicParsing="false" text="Use a special card" visible="false" />
             <AnchorPane fx:id="island1" layoutX="-30.0" layoutY="103.0" prefHeight="190.0" prefWidth="175.0">
                <children>
-                  <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                  <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                      <image>
                         <Image url="@../graphics/island1.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
+                  <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/mother_nature.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="towerImage" fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
+                  <ImageView fitHeight="48.0" fitWidth="51.0" layoutX="91.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="51.400000000000006" AnchorPane.topAnchor="23.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/black_tower.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="greenImage" fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
+                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="45.0" layoutY="80.0" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="137.4" AnchorPane.topAnchor="80.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="redImage" fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="70.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="yellowImage" fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="95.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="pinkImage" fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
+                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="106.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="93.19999999999999" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="66.4" AnchorPane.topAnchor="80.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="blueImage" fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="135.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
                      <image>
                         <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="greenLabel" layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
+                  <Label layoutX="49.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="64.19999999999999" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="144.60000000000002" AnchorPane.topAnchor="98.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Label>
-                  <Label fx:id="redLabel" layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
+                  <Label layoutX="73.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="120.60000000000001" AnchorPane.topAnchor="98.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Label>
-                  <Label fx:id="yellowLabel" layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
+                  <Label layoutX="97.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.60000000000001" AnchorPane.topAnchor="98.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Label>
-                  <Label fx:id="pinkLabel" layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
+                  <Label layoutX="123.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="70.60000000000002" AnchorPane.topAnchor="98.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Label>
-                  <Label fx:id="blueLabel" layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
+                  <Label layoutX="148.0" layoutY="98.0" text="1" AnchorPane.bottomAnchor="65.19999999999999" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="45.60000000000002" AnchorPane.topAnchor="98.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Label>
-                  <Label fx:id="towerLabel" layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
+                  <Label layoutX="109.0" layoutY="39.0" text="1" textFill="#fff8f8" AnchorPane.bottomAnchor="124.19999999999999" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="84.60000000000001" AnchorPane.topAnchor="39.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
