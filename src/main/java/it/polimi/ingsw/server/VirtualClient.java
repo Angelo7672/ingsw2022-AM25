@@ -716,7 +716,10 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     cloudLocker = false;
                     go = true;
                     while (go) {
-                        if (actionMsg instanceof ChosenCloud) chooseCloud();
+                        if (actionMsg instanceof ChosenCloud){
+                            chooseCloud();
+                            go = false;
+                        }
                         else if (expertMode) {
                             if (actionMsg instanceof UseSpecial) {
                                 if (!expertGame.effect(
