@@ -26,13 +26,15 @@ public class View {
     private PlayedCardListener playedCardListener;
     private ProfessorsListener professorsListener;
     private SpecialListener specialListener;
+    private NoEntryListener noEntryListener;
+    private SpecialStudentsListener specialStudentsListener;
     private StudentsListener studentsListener;
     private WinnerListener winnerListener;
     private DisconnectedListener disconnectedListener;
     private int maxStepsMotherNature;
     private int motherNaturePos;
     private String winner;
-    private int special;
+    private int specialUsed;
     private boolean initializedView;
 
     public View(){
@@ -75,11 +77,6 @@ public class View {
         cards.add(Assistant.LION); cards.add(Assistant.GOOSE); cards.add(Assistant.CAT); cards.add(Assistant.EAGLE); cards.add(Assistant.FOX);
         cards.add(Assistant.LIZARD); cards.add(Assistant.OCTOPUS); cards.add(Assistant.DOG); cards.add(Assistant.ELEPHANT); cards.add(Assistant.TURTLE);
 
-        if(expertMode){
-            for (int i=0; i<3; i++){
-                specials.add(new Special(0, -1));
-            }
-        }
     }
 
     public void setIslandTowers(IslandTowersNumberMessage msg) {
@@ -158,20 +155,33 @@ public class View {
         hands.get(msg.getPlayerRef()).setNumberOfCards(msg.getNumberOfCards());
     }
 
-    public void setSpecialUsed(UseSpecialAnswer msg){
-        special = msg.getSpecialIndex();
-        specialListener.notifySpecial(msg.getSpecialIndex(), msg.getPlayerRef());
+    public void setSpecialUsed(int specialIndex, int playerRef){
+        specialUsed = specialIndex;
+        specialListener.notifySpecial(specialIndex, playerRef);
     }
-
-    public void setSpecials(ArrayList<Special> specials){
-        this.specials = specials;
-        //for(Special s: specials)
-            //this.specialListener.notifySpecialName(s.getName());
+    public void setSpecial(int name, int cost){
+        if(specials.size()<3) specials.add(new Special(cost, name));
+        else {
+            int specialIndex = getSpecialIndex(name);
+            specials.get(specialIndex).setCost(cost);
+        }
     }
-    public void setSpecialCost(int cost, int special){specials.get(special).setCost(cost);}
-    public void setSpecialName(int name, int special){specials.get(special).setName(name);}
-    public void setSpecialStudents(int color, int newValue, int special){specials.get(special).setStudents(color, newValue);}
-    public void setNoEntry(int noEntry, int special){specials.get(special).setNoEntry(noEntry);}
+    public void setSpecialStudents(int color, int newValue, int special){
+        int specialIndex = getSpecialIndex(special);
+        specials.get(specialIndex).setStudents(color, newValue);
+        specialStudentsListener.specialStudentsNotify(getSpecialName(specialIndex),color,newValue);
+    }
+    public void setNoEntry(int noEntry){
+        int special=-1;
+        for (int i = 0; i < specials.size(); i++) {
+            if(specials.get(i).getName()==5){
+                special=i;
+                break;
+            }
+        }
+        specials.get(special).setNoEntry(noEntry);
+        noEntryListener.notifyNoEntry(noEntry);
+    }
 
     public void setCards(String card){
         int index=-1;
@@ -246,39 +256,24 @@ public class View {
     public void setTowersListener(TowersListener towersListener) {
         this.towersListener = towersListener;
     }
-
     public void setCoinsListener(CoinsListener coinsListener) {
         this.coinsListener = coinsListener;
     }
-
-    public void setInhibitedListener(InhibitedListener inhibitedListener) {
-        this.inhibitedListener = inhibitedListener;
-    }
-
+    public void setInhibitedListener(InhibitedListener inhibitedListener) {this.inhibitedListener = inhibitedListener;}
     public void setIslandListener(IslandListener islandListener) {
         this.islandListener = islandListener;
     }
-
-    public void setMotherPositionListener(MotherPositionListener motherPositionListener) {
-        this.motherPositionListener = motherPositionListener;
-    }
-
-    public void setPlayedCardListener(PlayedCardListener playedCardListener) {
-        this.playedCardListener = playedCardListener;
-    }
-
-    public void setProfessorsListener(ProfessorsListener professorsListener) {
-        this.professorsListener = professorsListener;
-    }
-
+    public void setMotherPositionListener(MotherPositionListener motherPositionListener) {this.motherPositionListener = motherPositionListener;}
+    public void setPlayedCardListener(PlayedCardListener playedCardListener) {this.playedCardListener = playedCardListener;}
+    public void setProfessorsListener(ProfessorsListener professorsListener) {this.professorsListener = professorsListener;}
     public void setSpecialListener(SpecialListener specialListener) {
         this.specialListener = specialListener;
     }
-
+    public void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener){this.specialStudentsListener = specialStudentsListener;};
+    public void setNoEntryListener(NoEntryListener noEntryListener){this.noEntryListener = noEntryListener;}
     public void setStudentsListener(StudentsListener studentsListener) {
         this.studentsListener = studentsListener;
     }
-
     public void setWinnerListener(WinnerListener winnerListener){this.winnerListener=winnerListener;}
 
     public String getWinner() {

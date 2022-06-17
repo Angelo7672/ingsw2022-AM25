@@ -46,7 +46,6 @@ public abstract class RoundStrategy {
 
         return false;
     }
-
     protected Team highInfluenceTeam(int islandRef, int noColor, int playerRef) {
         int[] studentOnIsland = new int[5];
         int professorOwner;

@@ -17,20 +17,20 @@ public class RoundStrategyFactory {
         this.bag = bag;
     }
     public RoundStrategy getRoundStrategy(int i){
-        switch (i){
-            case(1): return new RoundSpecial1(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            case(2): return new RoundSpecial2(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            case(3): return new RoundSpecial3(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            case(4): return new RoundSpecial4(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            case(5): return new RoundSpecial5(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            case(6): return new RoundSpecial6(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            case(7): return new RoundSpecial7(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            case(8): return new RoundSpecial8(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            case(9): return new RoundSpecial9(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            case(10): return new RoundSpecial10(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            case(11): return new RoundSpecial11(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            case(12): return new RoundSpecial12(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            default: return null;
-        }
+        return switch (i) {
+            case (1) -> new RoundSpecial1(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+            case (2) -> new RoundSpecial2(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+            case (3) -> new RoundSpecial3(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+            case (4) -> new RoundSpecial4(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+            case (5) -> new RoundSpecial5(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+            case (6) -> new RoundSpecial6(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+            case (7) -> new RoundSpecial7(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+            case (8) -> new RoundSpecial8(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+            case (9) -> new RoundSpecial9(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+            case (10) -> new RoundSpecial10(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+            case (11) -> new RoundSpecial11(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+            case (12) -> new RoundSpecial12(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+            default -> null;
+        };
     }
 }

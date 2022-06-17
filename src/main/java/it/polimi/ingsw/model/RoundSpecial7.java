@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.listeners.BagListener;
 import it.polimi.ingsw.listeners.SpecialStudentsListener;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
@@ -26,7 +25,6 @@ public class RoundSpecial7 extends RoundStrategy{
         for(int i = 0; i < 6; i++) {
             extracted = bag.extraction();
             extraction[extracted]++;
-            specialStudentsListener.specialStudentsNotify(1, extracted, getStudents(extracted));
         }
         special.setup(extraction);
     }
@@ -61,8 +59,11 @@ public class RoundSpecial7 extends RoundStrategy{
         public Special7(){ super(1, "special7"); }
 
         public void setup(int[] color){
-            for(int i=0; i<5;i++)
+            for(int i=0; i<5;i++){
                 students[i]+=color[i];
+                specialStudentsListener.specialStudentsNotify(7, i, students[i]);
+            }
+
         }
 
         public int getStudent(int color){ return students[color]; }

@@ -24,40 +24,27 @@ public class PlayerManager  {
         this.professorPropriety = new int[]{-1,-1,-1,-1,-1};    //-1 indicates that no one owns that professor
 
         if (numberOfPlayer == 2) {
-            Player g1 = new Player(Team.WHITE, numberOfPlayer);
+            Player g1 = new Player(Team.WHITE);
             players.add(g1);            //insert the firstPlayer in the player list
-            Player g2 = new Player(Team.BLACK, numberOfPlayer);
+            Player g2 = new Player(Team.BLACK);
             players.add(g2);
         } else if (numberOfPlayer == 3) {
-            Player g1 = new Player(Team.WHITE, numberOfPlayer);
+            Player g1 = new Player(Team.WHITE);
             players.add(g1);
-            Player g2 = new Player(Team.BLACK, numberOfPlayer);
+            Player g2 = new Player(Team.BLACK);
             players.add(g2);
-            Player g3 = new Player(Team.GREY, numberOfPlayer);
+            Player g3 = new Player(Team.GREY);
             players.add(g3);
         } else if (numberOfPlayer == 4) {
-            Player g1 = new Player(Team.WHITE, numberOfPlayer);
+            Player g1 = new Player(Team.WHITE);
             players.add(g1);
-            Player g2 = new Player(Team.WHITE, numberOfPlayer);
+            Player g2 = new Player(Team.WHITE);
             players.add(g2);
-            Player g3 = new Player(Team.BLACK, numberOfPlayer);
+            Player g3 = new Player(Team.BLACK);
             players.add(g3);
-            Player g4 = new Player(Team.BLACK, numberOfPlayer);
+            Player g4 = new Player(Team.BLACK);
             players.add(g4);
         }
-    }
-
-    private String assistantToString(Assistant assistant){
-        if(assistant.equals(Assistant.LION)) return "LION";
-        else if(assistant.equals(Assistant.GOOSE)) return "GOOSE";
-        else if(assistant.equals(Assistant.CAT)) return "CAT";
-        else if(assistant.equals(Assistant.EAGLE)) return "EAGLE";
-        else if(assistant.equals(Assistant.FOX)) return "FOX";
-        else if(assistant.equals(Assistant.LIZARD)) return "LIZARD";
-        else if(assistant.equals(Assistant.OCTOPUS)) return "OCTOPUS";
-        else if(assistant.equals(Assistant.ELEPHANT)) return "ELEPHANT";
-        else if(assistant.equals(Assistant.TURTLE)) return "TURTLE";
-        return "NULL";
     }
 
     public void initializeSchool(){
@@ -67,6 +54,14 @@ public class PlayerManager  {
         }else if(numberOfPlayer == 3){
             for(int j = 0; j < numberOfPlayer; j++)
                 for (int i = 0; i < 9; i++) setStudentEntrance(j,bag.extraction(),1);
+        }
+        if (numberOfPlayer == 2 || numberOfPlayer == 4){
+            placeTower(Team.WHITE,8);
+            placeTower(Team.BLACK,8);
+        } else{
+            placeTower(Team.WHITE,6);
+            placeTower(Team.BLACK,6);
+            placeTower(Team.GREY,6);
         }
         for(Player p:players)
             p.initializeHand();
@@ -276,11 +271,11 @@ public class PlayerManager  {
         private List<Assistant> hand;
         private School school;
 
-        private Player(Team team, int numberOfPlayer) {
+        private Player(Team team) {
             this.team = team;
             this.coins = 1;
             this.hand = new ArrayList<>();
-            this.school = new School(numberOfPlayer);
+            this.school = new School();
         }
 
         public void initializeHand(){
@@ -307,12 +302,10 @@ public class PlayerManager  {
             private int studentEntrance[];
             private int studentsTable[];
 
-            private School(int numberOfPlayer) {
+            private School() {
                 this.professors = new boolean[]{false, false, false, false, false};
                 this.studentEntrance = new int[]{0, 0, 0, 0, 0};
                 this.studentsTable = new int[]{0, 0, 0, 0, 0};
-                if (numberOfPlayer == 2 || numberOfPlayer == 4) this.towers = 8;
-                else this.towers = 6;
             }
 
             private void setProfessor(int colour) { professors[colour] = true; }

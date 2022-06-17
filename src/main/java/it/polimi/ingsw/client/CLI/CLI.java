@@ -15,7 +15,8 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class CLI implements Runnable, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
-        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, WinnerListener, DisconnectedListener{
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, WinnerListener, DisconnectedListener,
+        SpecialStudentsListener, NoEntryListener{
 
     private final Exit proxy;
     private final Scanner scanner;
@@ -89,6 +90,8 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         view.setTowersListener(this);
         view.setSpecialListener(this);
         view.setWinnerListener(this);
+        view.setSpecialStudentsListener(this);
+        view.setNoEntryListener(this);
         printable = new Printable(view);
         System.out.println();
         System.out.println(SPACE+"Game is started! Wait for your turn...");
@@ -239,7 +242,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         String answer = readNext();
         if (answer.equalsIgnoreCase("n")) return;
         else if (answer.equalsIgnoreCase("y")) {
-            int special = -1;
+            int special=-1;
             printable.printSpecialList();
             do {
                 System.out.println();
@@ -247,19 +250,16 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 String intString = readNext();
                 special = Integer.parseInt(intString);
             } while (special == -1);
-            int specialIndex = view.getSpecialIndex(special);
-            if(specialIndex == -1){
-                System.out.println();
-                System.out.println(ANSI_RED+SPACE+"Error, special not present"+ANSI_RESET);
-                useSpecial();
-            }
-            if(!proxy.checkSpecial(specialIndex)) {
+            if(!proxy.checkSpecial(special)) {
                 System.out.println();
                 System.out.println(ANSI_RED+SPACE+"Error, special not present"+ANSI_RESET);
                 useSpecial();
             }
             if(special==2 || special==4 || special==6 || special==8 ) return;
-            special(special);
+            if(special(special)) {
+                constants.setSpecialUsed(true);
+                System.out.print(SPACE+"Special used");
+            }
         }
         System.out.println();
         System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
@@ -433,7 +433,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     private void playCard() throws IOException, ClassNotFoundException {
-        System.out.println("play card");
         printable.cli();
         while (true) {
             System.out.println();
@@ -718,7 +717,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         if(constants.isStartGame()) {
             System.out.println();
             System.out.print("New play: "+"\t"+"\t");
-            System.out.println("Player "+view.getNickname(playerRef)+" used "+view.getSpecialName(specialRef));
+            System.out.println("Player "+view.getNickname(playerRef)+" used special "+view.getSpecialName(specialRef));
         }
     }
 
@@ -765,4 +764,19 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         winner();
     }
 
+    @Override
+    public void notifyNoEntry(int newValue) {
+        if(constants.isStartGame()) {
+            System.out.println();
+            System.out.print("New play: "+"\t"+"\t");
+            System.out.println("No Entry tiles: "+newValue);
+        }
+    }
+
+    @Override
+    public void specialStudentsNotify(int special, int color, int value) {
+        if(constants.isStartGame()) {
+            printable.printSpecialStudents(special);
+        }
+    }
 }

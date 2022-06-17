@@ -129,8 +129,17 @@ public class Printable {
             System.out.print("\t"+"Special "+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
             if(specialArray(view.getSpecialName(i))) System.out.println(". Students: "+ ANSI_GREEN +" Green "+ view.getSpecialStudents(i)[0] + ANSI_RED  + ", Red " + view.getSpecialStudents(i)[1] +
                     ANSI_YELLOW +", Yellow " + view.getSpecialStudents(i)[2] + ANSI_PURPLE + ", Pink " + view.getSpecialStudents(i)[3] + ANSI_BLUE + ", Blue " + view.getSpecialStudents(i)[4]+ANSI_RESET);
-            if(view.getNoEntry(i)!=-1) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
+            else if(view.getSpecialName(i)==5) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
+            else System.out.println();
         }
+    }
+
+    protected void printSpecialStudents(int special){
+        System.out.println();
+        System.out.print("New play: "+"\t"+"\t");
+        System.out.print("Special "+view.getSpecialName(special)+" students: "+view.getSpecialName(special));
+        System.out.println("\t"+"\t"+"\t"+ ANSI_GREEN + " Green " + view.getSpecialStudents(special)[0] + ANSI_RED  + ", Red " + view.getSpecialStudents(special)[1] +
+                ANSI_YELLOW + ", Yellow " + view.getSpecialStudents(special)[2] + ANSI_PURPLE + ", Pink " + view.getSpecialStudents(special)[3] + ANSI_BLUE + ", Blue " + view.getSpecialStudents(special)[4]+ANSI_RESET);
     }
 
     protected void cli(){
@@ -195,12 +204,14 @@ public class Printable {
         }
 
         if(view.getExpertMode()){
+            System.out.println();
             System.out.println(UNDERLINE+"SPECIALS"+ANSI_RESET);
             for(int i=0; i<3; i++){
                 System.out.print("\t"+"Special "+view.getSpecialName(i)+": Cost "+view.getSpecialCost(i));
                 if(specialArray(view.getSpecialName(i))) System.out.println(". Students: "+ ANSI_GREEN +" Green "+ view.getSpecialStudents(i)[0] + ANSI_RED  + ", Red " + view.getSpecialStudents(i)[1] +
                         ANSI_YELLOW +", Yellow " + view.getSpecialStudents(i)[2] + ANSI_PURPLE + ", Pink " + view.getSpecialStudents(i)[3] + ANSI_BLUE + ", Blue " + view.getSpecialStudents(i)[4]+ANSI_RESET);
-                if(view.getNoEntry(i)!=-1) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
+                else if(view.getSpecialName(i)==5) System.out.println(". No Entry tiles: "+view.getNoEntry(i));
+                else System.out.println();
             }
         }
     }
@@ -208,7 +219,7 @@ public class Printable {
     private boolean specialArray(int name){
         if(name == 1) return true;
         if(name == 7) return true;
-        if(name == 8) return true;
+        if(name == 11) return true;
         return false;
     }
 }

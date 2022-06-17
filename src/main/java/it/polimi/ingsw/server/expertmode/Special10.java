@@ -16,7 +16,7 @@ public class Special10 implements Special{
     @Override
     public void effect(int playerRef, VirtualClient user){
         VirtualClient virtualClient = user;
-        boolean checker = false;
+        boolean checker;
 
         try {
             virtualClient.setSpecial10();
