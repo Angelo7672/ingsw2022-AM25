@@ -57,6 +57,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         for(int i=0; i<12; i++){
             initialStudentsIsland.add(new int[]{0,0,0,0,0});
         }
+        initialStudentsEntrance = new ArrayList<>();
+        for(int i=0; i<4; i++){
+            initialStudentsEntrance.add(new int[]{0,0,0,0,0});
+        }
+
     }
 
     @Override
@@ -93,6 +98,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             primaryStage.setScene(scenesMap.get(LOGIN));
             primaryStage.centerOnScreen();
         }
+
+
     }
 
     //used to load a scene in a new stage (window), instead of the primaryStage
@@ -247,7 +254,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setMotherPosition(initialMotherPosition);
             System.out.println("sending initial position:"+initialMotherPosition);
-            for(int i=0; i<initialStudentsEntrance.size(); i++){
+
+            for(int i=0; i< view.getNumberOfPlayers(); i++){
+                System.out.println("Sending students in entrance: school "+i);
                 for(int j=0; j<5; j++){
                     controller.setStudentsEntrance(i,j, initialStudentsEntrance.get(i)[j] );
                 }
@@ -277,6 +286,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         Platform.runLater(() -> {
         System.out.println("notify Student change has been called");
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            System.out.println("InitialStudentsEntrance "+initialStudentsEntrance);
 
             if(isMainScene){
                 switch (place) {
@@ -286,10 +296,20 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                         case 3 -> controller.setStudentsCloud(componentRef, color, newStudentsValue);
                     }
             }
+
             else{
+                int[] students;
                 switch (place) {
-                    case 0 -> this.initialStudentsEntrance.get(componentRef)[color]=newStudentsValue;
-                    case 2 -> this.initialStudentsIsland.get(componentRef)[color]=newStudentsValue;
+                    case 0 -> {
+                        students= initialStudentsEntrance.get(componentRef);
+                        students[color]= newStudentsValue;
+                    }
+                    case 2 -> {
+                        students= initialStudentsIsland.get(componentRef);
+                        students[color]= newStudentsValue;
+                    }
+
+                    case 3 -> controller.setStudentsCloud(componentRef, color, newStudentsValue);
                 }
 
 
