@@ -62,11 +62,10 @@ public class Controller implements ServerController{
             gameManager.setSpecialStudentsListener(virtualView);
             gameManager.setNoEntryListener(virtualView);
         }
-        server.sendGameInfo(numberOfPlayers, expertMode);   //at every client
     }
     @Override
     public void initializeGame(){   //new game
-
+        server.sendGameInfo(numberOfPlayers, expertMode);   //at every client
         for(int i = 0; i < numberOfPlayers; i++)
             server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
 
@@ -77,18 +76,17 @@ public class Controller implements ServerController{
     public void restoreVirtualView(){ virtualView.restoreVirtualView(); }
     @Override
     public void restoreGame(){  //restore game
+        server.sendGameInfo(numberOfPlayers, expertMode);   //at every client
         for(int i = 0; i < numberOfPlayers; i++)
             server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
         virtualView.restoreGame();
-        for(int i = 0; i < numberOfPlayers; i++)
-            server.lastCardPlayedFromAPlayer(i, virtualView.getLastPlayedCard(i));
         System.out.println("fine restore");
     }
     @Override
     public void startGame(){
         this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers,jumpPhaseForRestore);
         roundController.start();
-        System.out.println("game on");
+        System.out.println("GAME ON!");
     }
 
     @Override

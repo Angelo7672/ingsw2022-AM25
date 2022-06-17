@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.GameInfo;
 import it.polimi.ingsw.controller.ServerController;
 
-import it.polimi.ingsw.controller.VirtualView;
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 import it.polimi.ingsw.server.expertmode.ExpertGame;

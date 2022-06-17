@@ -144,6 +144,7 @@ public class VirtualView
                 int[] studentsEntrance = schoolBoardsTmp.get(i).getStudentsEntrance();
                 int[] studentsTable = schoolBoardsTmp.get(i).getStudentsTable();
                 int towers = schoolBoardsTmp.get(i).getTowersNumber();
+                System.out.println(i+" "+towers);
                 boolean[] professors = schoolBoardsTmp.get(i).getProfessors();
                 String team = schoolBoardsTmp.get(i).getTeam();
                 controller.schoolRestore(i,studentsEntrance,studentsTable,towers,professors,team);
@@ -170,6 +171,8 @@ public class VirtualView
                 int coins = handsTmp.get(i).getCoins();
                 controller.handAndCoinsRestore(i,cards,coins);
             }
+            for(int i = 0; i < numberOfPlayers; i++)
+                server.lastCardPlayedFromAPlayer(i, getLastPlayedCard(i));
             //Bag Restore
             controller.bagRestore(bagTmp);
 
@@ -314,6 +317,9 @@ public class VirtualView
     @Override
     public void notifySpecial(int specialRef, int playerRef) {  //notify use of a special by a player
         server.sendUsedSpecial(playerRef, specialRef);
+        for(Special special:specialList)
+            if(special.getIndexSpecial() == specialRef)
+                special.incSpecialCost();
     }
     @Override
     public void notifySpecialList(ArrayList<Integer> specialList, ArrayList<Integer> cost) {
