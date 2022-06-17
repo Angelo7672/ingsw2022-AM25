@@ -36,7 +36,7 @@ public class Game implements GameManager{
         refSpecial = -1;
 
         Round round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-        roundStrategies.add(round);
+        roundStrategies.add(round); //normal turn without expert
 
         if(expertMode) {
             RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
@@ -49,10 +49,8 @@ public class Game implements GameManager{
                 random.remove(0);
             //now I have 3 random int
             Collections.sort(random);
-            System.out.println(random);
 
             for (int i = 0; i < 3; i++) {
-                System.out.println("e' uscito "+random.get(i));
                 roundStrategies.add(
                         roundStrategyFactor.getRoundStrategy(
                                 random.get(i)
@@ -62,8 +60,6 @@ public class Game implements GameManager{
                         random.get(i)
                 );
             }
-            System.out.println(roundStrategies.get(1).getName() +"-"+roundStrategies.get(2).getName()+"-"+roundStrategies.get(3).getName());
-
         }
     }
     private Assistant stringToAssistant(String string){
@@ -250,8 +246,11 @@ public class Game implements GameManager{
 
         return checker;
     }
-    private Boolean affordSpecial(int indexSpecial, int playerRef){
-        return playerManager.getCoins(playerRef) >= roundStrategies.get(indexSpecial).getCost();
+    private boolean affordSpecial(int indexSpecial, int playerRef){
+        for(int i = 0; i < 3; i++)
+            if(indexSpecial == extractedSpecials.get(i))
+                return playerManager.getCoins(playerRef) >= roundStrategies.get(i+1).getCost();
+        return false;
     }
     public void setSpecial(int indexSpecial, int refSpecial){
         this.indexSpecial = indexSpecial;
@@ -272,12 +271,11 @@ public class Game implements GameManager{
     @Override
     public ArrayList<Integer> getSpecialCost(){
         ArrayList<Integer> cost = new ArrayList<>();
-        for(int i = 0; i < 3; i++) {
+        for(int i = 1; i < 4; i++) {
             cost.add(
                     roundStrategies.get(i)
                             .getCost()
             );
-            System.out.println("special "+ roundStrategies.get(i).getName() +" costa "+roundStrategies.get(i).getCost());
         }
         return cost;
     }

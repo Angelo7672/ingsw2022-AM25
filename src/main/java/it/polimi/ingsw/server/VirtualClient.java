@@ -268,7 +268,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void towersChangeOnIsland(int islandRef, int towersNumber){ send(new IslandTowersNumberMessage(islandRef,towersNumber)); }
     public void towerChangeColorOnIsland(int islandRef, int newColor){ send(new IslandTowersColorMessage(islandRef,newColor)); }
     public void islandInhibited(int islandRef, int isInhibited){ send(new InhibitedIslandMessage(islandRef,isInhibited)); }
-    public void setSpecial(int specialRef, int cost){ send(new SetSpecialAnswer(specialRef,cost)); System.out.println("special"+specialRef); System.out.println("cost:"+cost);}
+    public void setSpecial(int specialRef, int cost){ send(new SetSpecialAnswer(specialRef,cost)); }
     public void sendUsedSpecial(int playerRef, int indexSpecial){ send(new UseSpecialAnswer(playerRef,indexSpecial)); }
     public void sendHandAfterRestore(ArrayList<String> hand){ send(new HandAfterRestoreAnswer(hand)); }
     public void sendInfoSpecial1or7or11(int specialIndex, int studentColor, int value){ send(new InfoSpecial1or7or11Answer(specialIndex,studentColor,value)); }
@@ -671,34 +671,68 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             }
                         }else if(expertMode){
                             if(actionMsg instanceof UseSpecial){
+                                System.out.println("Arrivato lo special...");
                                 if (!expertGame.effect(
                                         ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
-                                ) send(new MoveNotAllowedAnswer());
+                                ) {
+                                    System.out.println("...ma non lo puoi usare");
+                                    readyActionPhase = true;
+                                    send(new MoveNotAllowedAnswer());
+                                    synchronized (actionLocker) { actionLocker.wait(); }
+                                }
                             }
-                        } else send(new GenericAnswer("error"));
+                        } else{
+                            readyActionPhase = true;
+                            send(new GenericAnswer("error"));
+                            synchronized (actionLocker) { actionLocker.wait(); }
+                        }
                     }
                 }
                 if (motherLocker) {
                     motherLocker = false;
-                    if (actionMsg instanceof MoveMotherNature) moveMotherNature();
-                    else if(expertMode){
-                        if(actionMsg instanceof UseSpecial){
-                            if (!expertGame.effect(
-                                    ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
-                            ) send(new MoveNotAllowedAnswer());
+                    go = true;
+                    while (go) {
+                        if (actionMsg instanceof MoveMotherNature) {
+                            moveMotherNature();
+                            go = false;
+                        } else if (expertMode) {
+                            if (actionMsg instanceof UseSpecial) {
+                                if (!expertGame.effect(
+                                        ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
+                                ) {
+                                    readyActionPhase = true;
+                                    send(new MoveNotAllowedAnswer());
+                                    synchronized (actionLocker) { actionLocker.wait(); }
+                                }
+                            }
+                        } else {
+                            readyActionPhase = true;
+                            send(new GenericAnswer("error"));
+                            synchronized (actionLocker) { actionLocker.wait(); }
                         }
-                    } else send(new GenericAnswer("error"));
+                    }
                 }
                 if (cloudLocker) {
                     cloudLocker = false;
-                    if (actionMsg instanceof ChosenCloud) chooseCloud();
-                    else if(expertMode){
-                        if(actionMsg instanceof UseSpecial){
-                            if (!expertGame.effect(
-                                    ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
-                            ) send(new MoveNotAllowedAnswer());
+                    go = true;
+                    while (go) {
+                        if (actionMsg instanceof ChosenCloud) chooseCloud();
+                        else if (expertMode) {
+                            if (actionMsg instanceof UseSpecial) {
+                                if (!expertGame.effect(
+                                        ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
+                                ) {
+                                    readyActionPhase = true;
+                                    send(new MoveNotAllowedAnswer());
+                                    synchronized (actionLocker) { actionLocker.wait(); }
+                                }
+                            }
+                        } else {
+                            readyActionPhase = true;
+                            send(new GenericAnswer("error"));
+                            synchronized (actionLocker) { actionLocker.wait(); }
                         }
-                    } else send(new GenericAnswer("error"));
+                    }
                 }
             }catch (InterruptedException e) { e.printStackTrace(); }
         }

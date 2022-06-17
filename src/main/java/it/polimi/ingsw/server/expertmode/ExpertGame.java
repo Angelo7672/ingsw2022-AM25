@@ -18,6 +18,7 @@ public class ExpertGame extends Thread{
         this.firstSpecial = extractedSpecial.get(0);
         this.secondSpecial = extractedSpecial.get(1);
         this.thirdSpecial = extractedSpecial.get(2);
+        System.out.println(firstSpecial+" "+secondSpecial+" "+thirdSpecial);
 
         for(Integer special:extractedSpecial){
             switch (special){
@@ -64,17 +65,20 @@ public class ExpertGame extends Thread{
     public boolean effect(int specialRef, int playerRef, VirtualClient user){
         if (specialRef == firstSpecial) {
             specialDeck.effect(0, playerRef, user);
+            System.out.println("Cane");
             return true;
         }
         else if(specialRef == secondSpecial) {
             specialDeck.effect(1, playerRef, user);
+            System.out.println("Gatto");
             return true;
         }
         else if (specialRef == thirdSpecial) {
             specialDeck.effect(2, playerRef, user);
+            System.out.println("topo");
             return true;
         }
-
+        System.out.println("MISS!");
         return false;
     }
 

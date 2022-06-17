@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.listeners.BagListener;
 import it.polimi.ingsw.listeners.SpecialStudentsListener;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
