@@ -26,14 +26,16 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private static Exit proxy;
     private View view;
     private Socket socket;
-    public Stage primaryStage;
+    protected Stage primaryStage;
+
+    protected boolean active;
 
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String LOGIN = "LoginScene.fxml";
     protected static final String WAITING = "WaitingScene.fxml";
     protected static final String MAIN = "MainScene.fxml";
     protected static final String CARDS = "CardsScene.fxml";
-    private PlayerConstants constants;
+    protected PlayerConstants constants;
     private String currentScene;
     protected boolean isMainScene;
     private int initialMotherPosition;
@@ -48,6 +50,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public GUI() {
+        active=true;
         scenesMap = new HashMap<>();
         sceneControllersMap = new HashMap<>();
         constants = new PlayerConstants();
@@ -105,22 +108,21 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     //used to load a scene in a new stage (window), instead of the primaryStage
     public void loadScene(String sceneName) {
         Stage stage = new Stage();
-        stage.setScene(scenesMap.get(sceneName));
         currentScene=sceneName;
+        if(sceneName.equals(CARDS)){
+            Platform.runLater(()->{
+                System.out.println("Inside Load scene method");
+                CardsSceneController controller = (CardsSceneController) sceneControllersMap.get(sceneName);
+                controller.sceneInitialize();
+                stage.setScene(scenesMap.get(sceneName));
+            });
+        }
         stage.centerOnScreen();
+        stage.show();
+        System.out.println("Loaded scene "+sceneName);
+
     }
 
-    //set the GUI as listener for the updates from the View
-    public void setupView(){
-        view.setCoinsListener(this);
-        view.setInhibitedListener(this);
-        view.setIslandListener(this);
-        view.setMotherPositionListener(this);
-        view.setPlayedCardListener(this);
-        view.setProfessorsListener(this);
-        view.setStudentsListener(this);
-        view.setTowersListener(this);
-    }
     //called when the GUI is launched, load all the scenes in advance, mapping them and setting the controllers
     public void scenesSetup() {
 
@@ -151,7 +153,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             //initializeLoginScene();
 
         } else if (sceneName.equals(MAIN)) {
-            //initializeMainScene();
+            MainSceneController controller= (MainSceneController) sceneControllersMap.get(MAIN);
+            System.out.println("-About to start startGame method-");
+            controller.startGame();
+
+            /*MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.startGame();*/
 
         } else if (sceneName.equals(WAITING)) {
             //switched to when login is completed, calls setView
@@ -179,6 +186,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         this.proxy = proxy;
     }
 
+
     //tries to start the view while the gui is in WaitingScene, if succedes switches to main scene
     public void setView(){
         Platform.runLater(()->{
@@ -203,6 +211,17 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
         });
     }
+    //set the GUI as listener for the updates from the View
+    public void setupView(){
+        view.setCoinsListener(this);
+        view.setInhibitedListener(this);
+        view.setIslandListener(this);
+        view.setMotherPositionListener(this);
+        view.setPlayedCardListener(this);
+        view.setProfessorsListener(this);
+        view.setStudentsListener(this);
+        view.setTowersListener(this);
+    }
 
     //called when main scene is set in switchScene method
     public void initializeMainScene() {
@@ -214,9 +233,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             for (int i = 0; i < view.getNumberOfPlayers(); i++)
                 controller.setUserInfo(view.getNickname(i), view.getCharacter(i), i);
 
-            controller.startMainScene();
+            controller.initializeScene();
             sendInitialInformation();
-            //controller.showCards();
+            //controller.startGame(); //problemi
         });
     }
 

@@ -1,16 +1,20 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class CardsSceneController implements SceneController{
     private String playedCard;
     private GUI gui;
     private Exit proxy;
+    private ArrayList<String> alreadyPlayedCards;
 
     @FXML private Button lionButton;
     @FXML private Button gooseButton;
@@ -25,6 +29,9 @@ public class CardsSceneController implements SceneController{
 
     @FXML private Button confirmButton;
 
+    public CardsSceneController(){
+        alreadyPlayedCards= new ArrayList<>();
+    }
 
     @FXML
     public void setPlayedCard(ActionEvent event) {
@@ -49,21 +56,67 @@ public class CardsSceneController implements SceneController{
         } else if(event.getSource()==turtleButton) {
             playedCard = "turtle";
         }
+        System.out.println("CARD SET");
     }
 
     @FXML
     void confirmPressed(ActionEvent event) {
-        try {
-            String answer = proxy.playCard(playedCard);
-            //if(answer==)
-            //
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        Platform.runLater(()->{
+            try {
+                System.out.println("About to call playCard method");
+                String result = proxy.playCard(playedCard);
+                System.out.println("Played card: "+playedCard);
+                System.out.println("Result: "+result);
+                alreadyPlayedCards.add(playedCard);
 
+                if (result.equalsIgnoreCase("ok")) {
+                    gui.constants.setCardPlayed(true);
+                    Stage stage = (Stage) confirmButton.getScene().getWindow();
+                    stage.close();
+                    gui.switchScene(GUI.MAIN);
 
+                    System.out.println("It's your opponent turn, wait...");
+
+                } else if(result.equalsIgnoreCase("move not allowed")){
+                    System.out.println("move not allowed");
+                } else {
+                    System.out.println("Error");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+    public void sceneInitialize(){
+        Platform.runLater(()->{
+            for(String card : alreadyPlayedCards){
+                if(card.equalsIgnoreCase("lion")){
+                    lionButton.setVisible(false);
+                } else if(card.equalsIgnoreCase("goose")){
+                    gooseButton.setVisible(false);
+                } else if(card.equalsIgnoreCase("cat")){
+                    catButton.setVisible(false);
+                } else if(card.equalsIgnoreCase("eagle")){
+                    eagleButton.setVisible(false);
+                } else if(card.equalsIgnoreCase("fox")){
+                    foxButton.setVisible(false);
+                } else if(card.equalsIgnoreCase("lizard")){
+                    lizardButton.setVisible(false);
+                } else if(card.equalsIgnoreCase("octopus")){
+                    octopusButton.setVisible(false);
+                } else if(card.equalsIgnoreCase("dog")){
+                    dogButton.setVisible(false);
+                } else if(card.equalsIgnoreCase("elephant")){
+                    elephantButton.setVisible(false);
+                } else if(card.equalsIgnoreCase("turtle")){
+                    turtleButton.setVisible(false);
+                }
+            }
+        });
 
     }
 

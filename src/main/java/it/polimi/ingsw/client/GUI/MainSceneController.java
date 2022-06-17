@@ -108,7 +108,7 @@ public class MainSceneController implements SceneController {
 
     }
 
-    public void startMainScene() {
+    public void initializeScene() {
         Platform.runLater(()->{
             System.out.println("startMainScene");
             if (numberOfPlayers == 2) {
@@ -158,50 +158,83 @@ public class MainSceneController implements SceneController {
             islandsInitialization();
 
             gui.isMainScene=true;
-        });
-        /*
-        Platform.runLater(()->{
 
-            System.out.println("startMainScene");
-            try {
-                if(proxy.startPlanningPhase()) {
-                    gamePhase = 1;
-                    //showCards();
+        });
+    }
+
+    public void startGame(){
+        System.out.println("1.startGame method");
+        Platform.runLater(()->{
+            System.out.println("2.Active? "+gui.active);
+            if(gui.active){
+                System.out.println("3.isPlanningePhaseStarted? "+gui.constants.isPlanningPhaseStarted());
+                if(!gui.constants.isPlanningPhaseStarted()){
+                    System.out.println("3a.planning phase not started yet");
+                    try {
+                        if(proxy.startPlanningPhase()) {
+                            gui.constants.resetAll();
+                            gui.constants.setPlanningPhaseStarted(true);
+                            System.out.println("4. Planning phase started, switch to MAIN");
+                            gui.switchScene(GUI.MAIN);
+
+                        }//else error
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.out.println("3b.Planning phase started already");
+                    if (!gui.constants.isCloudChosen()&&gui.active) {
+                        phaseHandler(gui.constants.lastPhase());
+                    }
                 }
-                else
-                    System.out.println("errore");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            }
+        });
+
+        }
+
+
+    public void phaseHandler(String phase){
+        System.out.println("5. Entered phaseHandler method");
+        System.out.println("6. isStartGame? "+gui.constants.isStartGame());
+        if(!gui.constants.isStartGame())
+            gui.constants.setStartGame(true);
+        if(phase.equals("PlayCard")) {
+            System.out.println("PLAY CARD, about to call showCard method");
+            showCards();
+        }
+        else if(!gui.constants.isActionPhaseStarted()) {
+            try {
+                gui.constants.setActionPhaseStarted(proxy.startActionPhase());
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
-        });*/
+        }
+        else {
+            switch (phase) {
+                //case ("MoveStudent") -> moveStudents();
+                //case ("MoveMother") -> moveMotherNature();
+                //case ("ChoseCloud") -> chooseCloud();
+            }
+        }
     }
 
     public void islandsInitialization(){
-        System.out.println("Island initialization");
         AnchorPane island;
-        System.out.println(islandsMap+ " is island map ");
 
         for(int i=0; i<12; i++){
             island = islandsMap.get(i);
-            System.out.println("Island:" +island);
-            System.out.println("Index: "+i);
 
             for(int j=1; j<=13;j++) {
                 island.getChildren().get(j).setVisible(false);
-                System.out.println("Child :"+island.getChildren().get(j));
             }
         }
-
     }
 
     public void schoolsInitialization(){
-        /*for(int i=0; i<numberOfPlayers; i++){
-            for(int j=0; j<entrancesMap.get(i).getChildren().size(); j++){
-                entrancesMap.get(i).getChildren().get(j).setVisible(false);
-            }
-        }*/
         ImageView tower;
         for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
             tower = (ImageView) towersMap.get(0).getChildren().get(i);
@@ -272,22 +305,17 @@ public class MainSceneController implements SceneController {
 
     public void showCards(){
         //fa comparire la finestra con le carte
-        Platform.runLater(()-> {
-
-            System.out.println("startMainScene");
-            try {
-                if (proxy.startPlanningPhase()) {
-                    gamePhase = 1;
-                    Stage stage = new Stage();
-                    gui.loadScene(GUI.CARDS);
-                } else
-                    System.out.println("errore");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        Platform.runLater(()->{
+            System.out.println("inside show cards method");
+            gui.loadScene(GUI.CARDS);
         });
+
+    }
+
+    public void moveStudent(){
+
+    }
+    public void moveMotherNature(){
 
     }
 
@@ -315,16 +343,11 @@ public class MainSceneController implements SceneController {
         charactersMap.put(playerRef, character);
     }
     public void setMotherPosition(int islandRef){
-        System.out.println("trying to set Mother Position");
         ImageView motherNature;
-        System.out.println("about to start for loop");
         for(int i=0; i<islandsMap.size(); i++){
-            System.out.println("in for loop");
             motherNature = (ImageView) islandsMap.get(i).getChildren().get(1); //children 1 is always MotherNature
-            System.out.println("This node is: "+islandsMap.get(i).getChildren().get(1));
             if(islandRef == i){
                 motherNature.setVisible(true);
-                System.out.println("MotherNAture should be visible on island "+ i);
             } else
                 motherNature.setVisible(false);
         }
@@ -333,7 +356,6 @@ public class MainSceneController implements SceneController {
     public void setStudentsEntrance(int playerRef, int color, int newStudentsValue) {
         Label studentLabel;
         ImageView studentImage;
-        System.out.println("setting students of color: "+color+" in school "+playerRef+" with a value of "+newStudentsValue);
 
         studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color+5); //Labels are located 5 position after images
         studentLabel.setText(String.valueOf(newStudentsValue));
