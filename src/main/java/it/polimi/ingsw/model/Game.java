@@ -201,6 +201,7 @@ public class Game implements GameManager{
             this.specialListener.notifySpecial(indexSpecial, playerRef);
             checker = roundStrategies.get(indexSpecial).effect(ref);
             if(checker) {
+                //fa outofbound
                 playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
                 roundStrategies.get(indexSpecial).increaseCost();
                 this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(indexSpecial).getCost());

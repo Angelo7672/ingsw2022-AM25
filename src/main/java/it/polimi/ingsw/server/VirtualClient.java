@@ -136,48 +136,56 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     if (tmp instanceof Special1Message) {
                         expertGame.setSpecialMsg(1, tmp);
                         expertGame.wakeUp(1);
+                        System.out.println("Messaggio special ricevuto");
                     } else send(new GenericAnswer("error"));
                 }else if(special3) {
                     special3 = false;
                     if (tmp instanceof Special3Message) {
                         expertGame.setSpecialMsg(3, tmp);
                         expertGame.wakeUp(3);
+                        System.out.println("Messaggio special ricevuto");
                     } else send(new GenericAnswer("error"));
                 }else if(special5) {
                     special5 = false;
                     if (tmp instanceof Special5Message) {
                         expertGame.setSpecialMsg(5, tmp);
                         expertGame.wakeUp(5);
+                        System.out.println("Messaggio special ricevuto");
                     } else send(new GenericAnswer("error"));
                 }else if(special7){
                     special7 = false;
                     if(tmp instanceof Special7Message){
                         expertGame.setSpecialMsg(7, tmp);
                         expertGame.wakeUp(7);
+                        System.out.println("Messaggio special ricevuto");
                     } else send(new GenericAnswer("error"));
                 }else if(special9){
                     special9 = false;
                     if(tmp instanceof Special9Message){
                         expertGame.setSpecialMsg(9, tmp);
                         expertGame.wakeUp(9);
+                        System.out.println("Messaggio special ricevuto");
                     } else send(new GenericAnswer("error"));
                 }else if(special10){
                     special10 = false;
                     if(tmp instanceof Special10Message){
                         expertGame.setSpecialMsg(10, tmp);
                         expertGame.wakeUp(10);
+                        System.out.println("Messaggio special ricevuto");
                     } else send(new GenericAnswer("error"));
                 }else if(special11) {
                     special11 = false;
                     if (tmp instanceof Special11Message) {
                         expertGame.setSpecialMsg(11, tmp);
                         expertGame.wakeUp(11);
+                        System.out.println("Messaggio special ricevuto");
                     } else send(new GenericAnswer("error"));
                 }else if(special12){
                     special12 = false;
                     if(tmp instanceof Special12Message){
                         expertGame.setSpecialMsg(12, tmp);
                         expertGame.wakeUp(12);
+                        System.out.println("Messaggio special ricevuto");
                     } else send(new GenericAnswer("error"));
 
                 } else if (clientInitialization) {  //login msg
