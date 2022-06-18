@@ -29,6 +29,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected Stage primaryStage;
 
     protected boolean active;
+    protected boolean isMainSceneInitialized;
 
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String LOGIN = "LoginScene.fxml";
@@ -64,6 +65,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         for(int i=0; i<4; i++){
             initialStudentsEntrance.add(new int[]{0,0,0,0,0});
         }
+        isMainSceneInitialized=false;
 
     }
 
@@ -101,26 +103,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             primaryStage.setScene(scenesMap.get(LOGIN));
             primaryStage.centerOnScreen();
         }
-
-
-    }
-
-    //used to load a scene in a new stage (window), instead of the primaryStage
-    public void loadScene(String sceneName) {
-        Stage stage = new Stage();
-        currentScene=sceneName;
-        if(sceneName.equals(CARDS)){
-            Platform.runLater(()->{
-                System.out.println("Inside Load scene method");
-                CardsSceneController controller = (CardsSceneController) sceneControllersMap.get(sceneName);
-                controller.sceneInitialize();
-                stage.setScene(scenesMap.get(sceneName));
-            });
-        }
-        stage.centerOnScreen();
-        stage.show();
-        System.out.println("Loaded scene "+sceneName);
-
     }
 
     //called when the GUI is launched, load all the scenes in advance, mapping them and setting the controllers
@@ -145,20 +127,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     //initialize the scene if necessary, passing parameters to the controller
     public void switchScene(String sceneName) {
         primaryStage.setScene(scenesMap.get(sceneName));
-        System.out.println("switched to scene: "+ sceneName);
+        //System.out.println("switched to scene: "+ sceneName);
         primaryStage.show();
         primaryStage.centerOnScreen();
 
-        if (sceneName.equals(LOGIN)) {
-            //initializeLoginScene();
-
-        } else if (sceneName.equals(MAIN)) {
+        if (sceneName.equals(MAIN)) {
             MainSceneController controller= (MainSceneController) sceneControllersMap.get(MAIN);
-            System.out.println("-About to start startGame method-");
             controller.startGame();
-
-            /*MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            controller.startGame();*/
 
         } else if (sceneName.equals(WAITING)) {
             //switched to when login is completed, calls setView
@@ -171,37 +146,27 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println("currently showing WAITING scene");
             setView();
-            //initializeMainScene();
 
         }
     }
-
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
-    public void setProxy(Proxy_c proxy) {
-        this.proxy = proxy;
-    }
-
-
     //tries to start the view while the gui is in WaitingScene, if succedes switches to main scene
     public void setView(){
         Platform.runLater(()->{
             try {
-                System.out.println("view not started yet");
+                //System.out.println("view not started yet");
 
                 View view = proxy.startView();
-                if(view!=null){
+                if(view!=null) {
                     this.view = view;
-                    initializeMainScene();
+                    //System.out.println("view started");
+
                     setupView();
-                    System.out.println("view started");
+                    initializeMainScene();
                     switchScene(MAIN);
-                }
-                else System.out.println("Errore");
+
+                } else System.out.println("Errore");
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -213,6 +178,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
     //set the GUI as listener for the updates from the View
     public void setupView(){
+        //System.out.println("setupView");
         view.setCoinsListener(this);
         view.setInhibitedListener(this);
         view.setIslandListener(this);
@@ -226,18 +192,55 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     //called when main scene is set in switchScene method
     public void initializeMainScene() {
         Platform.runLater(()->{
-            System.out.println("initializeMainScene");
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            //System.out.println("Number of plaeyrs is "+view.getNumberOfPlayers());
+            //System.out.println("Expert mode is "+view.getExpertMode());
+
             controller.setNumberOfPlayers(view.getNumberOfPlayers());
             controller.setExpertMode(view.getExpertMode());
-            for (int i = 0; i < view.getNumberOfPlayers(); i++)
+            for (int i = 0; i < view.getNumberOfPlayers(); i++){
+                //System.out.println("UserName is: "+view.getNickname(i)+" Character is: "+view.getCharacter(i));
                 controller.setUserInfo(view.getNickname(i), view.getCharacter(i), i);
 
+            }
             controller.initializeScene();
             sendInitialInformation();
-            //controller.startGame(); //problemi
+            isMainSceneInitialized=true;
+            //switchScene(MAIN);
         });
     }
+
+    //used to load a scene in a new stage (window), instead of the primaryStage
+    public void loadScene(String sceneName) {
+        Stage stage = new Stage();
+        currentScene=sceneName;
+        if(sceneName.equals(CARDS)){
+            //Platform.runLater(()->{
+                CardsSceneController controller = (CardsSceneController) sceneControllersMap.get(sceneName);
+                controller.sceneInitialize();
+                stage.setScene(scenesMap.get(sceneName));
+            //});
+        }
+        stage.centerOnScreen();
+        stage.show();
+        //System.out.println("Loaded scene "+sceneName);
+
+    }
+
+
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void setProxy(Proxy_c proxy) {
+        this.proxy = proxy;
+    }
+
+
+
+
+
 
 
     @Override
@@ -258,7 +261,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
         Platform.runLater(()->{
-            System.out.println("new mother position is: "+newMotherPosition);
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             if(isMainScene){
                 controller.setMotherPosition(newMotherPosition);
@@ -269,7 +271,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     }
     public void sendInitialInformation(){
-        Platform.runLater(()->{
+        //Platform.runLater(()->{
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setMotherPosition(initialMotherPosition);
             for(int i=0; i< view.getNumberOfPlayers(); i++){
@@ -283,13 +285,16 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 }
             }
 
-        });
+        //});
 
     }
 
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
-        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        Platform.runLater(()->{
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        });
+
     }
 
     @Override

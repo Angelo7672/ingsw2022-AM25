@@ -46,6 +46,7 @@ public class Proxy_c implements Exit {
 
     public boolean readyForLogin() throws IOException {
         send(new GenericMessage("Ready for login!"));
+        System.out.println("MESSAGE SENT: Ready for Login!-2");
         tempObj = receive();
         if(tempObj instanceof LoginRestoreAnswer) return true;
         return false;
@@ -53,6 +54,7 @@ public class Proxy_c implements Exit {
     }
 
     public String first() throws IOException, ClassNotFoundException {
+        System.out.println("MESSAGE SENT: Ready for Login!");
         send(new GenericMessage("Ready for login!"));
         tempObj = receive();
         if(tempObj instanceof SoldOutAnswer) return ((SoldOutAnswer) tempObj).getMessage();
@@ -90,6 +92,7 @@ public class Proxy_c implements Exit {
 
     public boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
         send(new SetupConnection(nickname, character));
+        System.out.println("MESSAGE SENT: setupConnection with: "+nickname+character);
         tempObj = receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
         else return false;
@@ -105,9 +108,11 @@ public class Proxy_c implements Exit {
         else return false;
 
         send(new SetupGame(numberOfPlayers, isExpert));
+        System.out.println("MESSAGE SENT: setupGame with: "+numberOfPlayers+expertMode);
         tempObj = receive();;
         if(!((GenericAnswer)tempObj).getMessage().equals("ok")) return false;
         send(new GenericMessage("Ready for login!"));
+        System.out.println("MESSAGE SENT: Ready for Login");
         tempObj = receive();
         return true;
     }
@@ -122,15 +127,18 @@ public class Proxy_c implements Exit {
     }
 
     public View startView() throws IOException, InterruptedException {
+        System.out.println("MESSAGE SENT: Ready to start");
         send(new GenericMessage("Ready to start"));
         synchronized (lock2){
             if(!view.isInitializedView()) lock2.wait();
         }
+        System.out.println("ANSWER RECEIVED: returning view");
         return view;
     }
 
     public boolean startPlanningPhase() throws ClassNotFoundException, IOException {
         send(new GenericMessage("Ready for Planning Phase"));
+        System.out.println("MESSAGE SENT: Ready for Planning Phase");
         while(true) {
             tempObj = receive();
             if(((PlayCard)tempObj).getMessage().equals("Play card!")){
@@ -141,16 +149,20 @@ public class Proxy_c implements Exit {
 
     public String playCard(String card) throws IOException, ClassNotFoundException {
         send(new CardMessage(card));
+        System.out.println("MESSAGE SENT CardMessage with: "+card);
         tempObj = receive();
         if(tempObj instanceof GenericAnswer) {
             view.setCards(card);
             return ((GenericAnswer)tempObj).getMessage();
         }
-        if(tempObj instanceof MoveNotAllowedAnswer) return ((MoveNotAllowedAnswer) tempObj).getMessage();
+        if(tempObj instanceof MoveNotAllowedAnswer){
+            return ((MoveNotAllowedAnswer) tempObj).getMessage();
+        }
         return "Error, try again";
     }
 
     public boolean startActionPhase() throws IOException, ClassNotFoundException {
+        System.out.println("MESSAGE SENT: Ready for action phase");
         send(new GenericMessage("Ready for Action Phase"));
         while(true) {
             tempObj = receive();
@@ -231,15 +243,19 @@ public class Proxy_c implements Exit {
         }
     }
     public Answer receive() throws IOException {
-        Answer tmp;
+        Answer tmp;;
             synchronized (lock1){
                 try {
-                    if (answersList.size() == 0) lock1.wait();
+                    if (answersList.size() == 0){
+                        lock1.wait();
+                        System.out.println("lock1.wait()");
+                    }
                 }catch (InterruptedException e){
                 }
             tmp = answersList.get(0);
             answersList.remove(0);
         }
+        System.out.println("ANSWER RECEIVED: "+tmp);
         return tmp;
     }
 

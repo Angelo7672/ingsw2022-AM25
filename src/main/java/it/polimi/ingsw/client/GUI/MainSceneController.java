@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -109,7 +110,7 @@ public class MainSceneController implements SceneController {
     }
 
     public void initializeScene() {
-        Platform.runLater(()->{
+        //Platform.runLater(()->{
             System.out.println("startMainScene");
             if (numberOfPlayers == 2) {
                 player3Box.setVisible(false);
@@ -159,24 +160,21 @@ public class MainSceneController implements SceneController {
 
             gui.isMainScene=true;
 
-        });
+        //});
     }
     //viene chiamato ogni volta che la scena principale viene settata a MAIN
     public void startGame(){
-        System.out.println("1.startGame method");
-        Platform.runLater(()->{
-            System.out.println("2.Active? "+gui.active);
+        //Platform.runLater(()->{
             if(gui.active){
-                System.out.println("3.isPlanningePhaseStarted? "+gui.constants.isPlanningPhaseStarted());
                 if(!gui.constants.isPlanningPhaseStarted()){
-                    System.out.println("3a.planning phase not started yet");
                     try {
-                        if(proxy.startPlanningPhase()) {
+                        Boolean result = proxy.startPlanningPhase();
+                        if(result) {
                             gui.constants.resetAll();
                             gui.constants.setPlanningPhaseStarted(true);
-                            System.out.println("4. Planning phase started, switch to MAIN");
-                            gui.switchScene(GUI.MAIN);
+                            //gui.switchScene(GUI.MAIN);
                             //viene caricata di nuovo la scena MAIN, che chiama di nuovo questo metodo
+                            showCards();
 
                         }//else
                     } catch (ClassNotFoundException e) {
@@ -185,29 +183,40 @@ public class MainSceneController implements SceneController {
                         e.printStackTrace();
                     }
                 } else {
-                    System.out.println("3b.Planning phase started already");
                     //se la isPlanningPhaseStarted è true, chiama phaseHandler
                     if (!gui.constants.isCloudChosen()&&gui.active) {
                         phaseHandler(gui.constants.lastPhase());
+                        //System.out.println("-->qui chiamerò phase Handler");
                     }
                 }
             }
-        });
+        //});
 
-        }
+    }
+
+    public void showCards(){
+        //fa comparire la finestra con le carte
+        //Platform.runLater(()->{
+        //System.out.println("inside show cards method");
+        gui.loadScene(GUI.CARDS); // da qui il "controllo" passa a CardsSceneController
+        //});
+
+    }
+
 
     //prende in ingresso la fase di gioco e chiama i metodi corrispondenti
     //ho cercato di farlo simile alla cli, ma potrebbe essere sbagliato
     public void phaseHandler(String phase){
-        System.out.println("5. Entered phaseHandler method");
-        System.out.println("6. isStartGame? "+gui.constants.isStartGame());
-        if(!gui.constants.isStartGame())
+        //System.out.println("5. Entered phaseHandler method");
+        //System.out.println("6. isStartGame? "+gui.constants.isStartGame());
+        if(!gui.constants.isStartGame()){
             gui.constants.setStartGame(true);
-        if(phase.equals("PlayCard")) {
+            gui.switchScene(GUI.MAIN);}
+        /*if(phase.equals("PlayCard")) {
             System.out.println("PLAY CARD, about to call showCard method");
             showCards(); //carica la nuova scena con le carte
-        }
-        else if(!gui.constants.isActionPhaseStarted()) {
+        }*/
+        if(!gui.constants.isActionPhaseStarted()) {
             try {
                 gui.constants.setActionPhaseStarted(proxy.startActionPhase());
             } catch (IOException e) {
@@ -307,14 +316,6 @@ public class MainSceneController implements SceneController {
         }
     }
 
-    public void showCards(){
-        //fa comparire la finestra con le carte
-        Platform.runLater(()->{
-            System.out.println("inside show cards method");
-            gui.loadScene(GUI.CARDS); // da qui il "controllo" passa a CardsSceneController
-        });
-
-    }
 
     public void moveStudent(){
 

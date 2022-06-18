@@ -36,49 +36,48 @@ public class CardsSceneController implements SceneController{
     @FXML
     public void setPlayedCard(ActionEvent event) {
         if(event.getSource()==lionButton){
-            playedCard="lion";
+            playedCard="LION";
         } else if(event.getSource()==gooseButton){
-            playedCard="goose";
+            playedCard="GOOSE";
         } else if(event.getSource()==catButton){
-            playedCard="cat";
+            playedCard="CAT";
         } else if(event.getSource()==eagleButton){
-            playedCard="eagle";
+            playedCard="EAGLE";
         } else if(event.getSource()==foxButton){
-            playedCard="fox";
+            playedCard="FOX";
         } else if(event.getSource()==lizardButton){
-            playedCard="lizard";
+            playedCard="LIZARD";
         } else if(event.getSource()==octopusButton){
-            playedCard="octopus";
+            playedCard="OCTOPUS";
         } else if(event.getSource()==dogButton) {
-            playedCard = "dog";
+            playedCard = "DOG";
         } else if(event.getSource()==elephantButton) {
-            playedCard = "elephant";
+            playedCard = "ELEPHANT";
         } else if(event.getSource()==turtleButton) {
-            playedCard = "turtle";
+            playedCard = "TURTLE";
         }
-        System.out.println("CARD SET");
     }
 
     //quello che succede quando viene premuto il bottone confirm
     @FXML
     void confirmPressed(ActionEvent event) {
-        Platform.runLater(()->{
+        //Platform.runLater(()->{
             try {
-                System.out.println("About to call playCard method");
                 String result = proxy.playCard(playedCard); //qui chiama il metodo del proxy
-                System.out.println("Played card: "+playedCard);
-                System.out.println("Result: "+result);
+                Stage stage = (Stage) confirmButton.getScene().getWindow();
+                stage.close();
                 alreadyPlayedCards.add(playedCard);
 
                 //se la risposta è ok, chiude la scena
                 if (result.equalsIgnoreCase("ok")) {
-                    gui.constants.setCardPlayed(true);
-                    Stage stage = (Stage) confirmButton.getScene().getWindow();
-                    stage.close();
-                    gui.switchScene(GUI.MAIN);
-                    //questo fa chiamare di nuovo il metodo startGame in MainSceneController
+                    //Platform.runLater(()->{
+                        gui.constants.setCardPlayed(true);
+                        //Stage stage = (Stage) confirmButton.getScene().getWindow();
+                        //stage.close();
+                        gui.switchScene(GUI.MAIN);
+                        //questo fa chiamare di nuovo il metodo startGame in MainSceneController
 
-                    System.out.println("It's your opponent turn, wait...");
+                    //});
 
                 } else if(result.equalsIgnoreCase("move not allowed")){
                     System.out.println("move not allowed");
@@ -90,12 +89,12 @@ public class CardsSceneController implements SceneController{
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        });
+        //});
 
     }
 
     public void sceneInitialize(){
-        Platform.runLater(()->{
+        //Platform.runLater(()->{
             for(String card : alreadyPlayedCards){
                 if(card.equalsIgnoreCase("lion")){
                     lionButton.setVisible(false);
@@ -119,7 +118,7 @@ public class CardsSceneController implements SceneController{
                     turtleButton.setVisible(false);
                 }
             }
-        });
+        //});
 
     }
 

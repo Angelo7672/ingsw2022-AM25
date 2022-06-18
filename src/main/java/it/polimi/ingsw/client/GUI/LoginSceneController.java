@@ -53,15 +53,15 @@ public class LoginSceneController implements SceneController{
 
     public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
         currentNickname= this.nicknameBox.getText();
-        System.out.println(currentNickname +", "+ currentCharacter);
+        //System.out.println(currentNickname +", "+ currentCharacter);
         if(currentNickname!="" && currentCharacter!="") {
             if (proxy.setupConnection(currentNickname, currentCharacter)){
+                //System.out.println("SetupConnection done");
                 gui.switchScene(GUI.WAITING);
-                System.out.println("SetupConnection done");
             }
             else {
                 showErrorMessage();
-                Platform.runLater(()->{
+                //Platform.runLater(()->{
                     try {
                         disableCharacters(proxy.getChosenCharacters());
                     } catch (IOException ex) {
@@ -69,7 +69,7 @@ public class LoginSceneController implements SceneController{
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     }
-                });
+                //});
 
             }
         }else
