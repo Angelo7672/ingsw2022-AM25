@@ -92,6 +92,8 @@ public class Proxy_s implements Exit {
     public void startActionPhase(int ref){ user.get(ref).sendStartTurn(); }
     @Override
     public void unlockActionPhase(int ref){ user.get(ref).unlockActionPhase(); }
+    @Override
+    public void sendMaxMovementMotherNature(int ref, int maxMovement){ user.get(ref).sendMaxMovementMotherNature(maxMovement); }
 
     @Override
     public void sendGameInfo(int numberOfPlayers, boolean expertMode){

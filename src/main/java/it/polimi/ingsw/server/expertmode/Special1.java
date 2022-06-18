@@ -22,7 +22,7 @@ public class Special1 implements Special{
             virtualClient.setSpecial1();
             virtualClient.send(new GenericAnswer("ok"));
             System.out.println("Il server ha mandato ok per ricevere messaggio ad hoc dello special");
-            synchronized (this) { this.wait(); }
+            this.wait();
 
             checker = server.useSpecialMedium(1, playerRef, special1Msg.getIslandRef(), special1Msg.getColor());
 
@@ -34,5 +34,5 @@ public class Special1 implements Special{
     @Override
     public void setSpecialMessage(Message msg) { special1Msg = (Special1Message) msg; }
     @Override
-    public void wakeUp() { this.notify(); }
+    public synchronized void wakeUp() { this.notify(); }
 }

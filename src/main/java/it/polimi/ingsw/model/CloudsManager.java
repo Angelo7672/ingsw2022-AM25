@@ -26,23 +26,15 @@ public class CloudsManager{
         }
     }
 
-    public boolean refreshStudentsCloud(){
-        if(numberOfPlayer == 2 || numberOfPlayer ==4 ) {
-            for (int j = 0; j < numberOfPlayer && !lastTurn; j++) {
-                for (int i = 0; i < 3 && !lastTurn; i++) {
+    public void refreshStudentsCloud(){
+        if(numberOfPlayer == 2 || numberOfPlayer ==4 )
+            for (int j = 0; j < numberOfPlayer && !lastTurn; j++)
+                for (int i = 0; i < 3 && !bag.checkVictory(); i++)
                     refreshCloudStudents(bag.extraction(), j);
-                    lastTurn = bag.checkVictory();
-                }
-            }
-        } else if(numberOfPlayer == 3) {
-            for (int j = 0; j < numberOfPlayer && !lastTurn; j++) {
-                for (int i = 0; i < 4 && !lastTurn; i++) {
+        else if(numberOfPlayer == 3)
+            for (int j = 0; j < numberOfPlayer && !lastTurn; j++)
+                for (int i = 0; i < 4 && !bag.checkVictory(); i++)
                     refreshCloudStudents(bag.extraction(), j);
-                    lastTurn = bag.checkVictory();
-                }
-            }
-        }
-        return lastTurn;
     }
     //given the index of a cloud and the color of the student extracted from the bag, add the student to the cloud
     private void refreshCloudStudents(int studentExtracted, int cloudIndex) {

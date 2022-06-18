@@ -126,7 +126,7 @@ public class Game implements GameManager{
     }
 
     @Override
-    public boolean refreshStudentsCloud(){ return cloudsManager.refreshStudentsCloud(); }
+    public void refreshStudentsCloud(){ cloudsManager.refreshStudentsCloud(); }
     @Override
     public void queueForPlanificationPhase(){ queueManager.queueForPlanificationPhase(); }
     @Override
@@ -185,10 +185,14 @@ public class Game implements GameManager{
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, -1);
             this.specialListener.notifySpecial(indexSpecial, playerRef);
-            playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
-            roundStrategies.get(indexSpecial).increaseCost();
-            this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(indexSpecial).getCost());
+            for(int i = 0; i < 3; i++)
+                if(extractedSpecials.get(i) == indexSpecial){
+                    playerManager.removeCoin(playerRef, roundStrategies.get(i).getCost());
+                    roundStrategies.get(i).increaseCost();
+                    this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i).getCost());
+                }
         } else return false;
+
         setSpecial(0, -1);
         return true;
     }
@@ -200,12 +204,13 @@ public class Game implements GameManager{
             setSpecial(indexSpecial, ref);
             this.specialListener.notifySpecial(indexSpecial, playerRef);
             checker = roundStrategies.get(indexSpecial).effect(ref);
-            if(checker) {
-                //fa outofbound
-                playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
-                roundStrategies.get(indexSpecial).increaseCost();
-                this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(indexSpecial).getCost());
-            }
+            if(checker)
+                for(int i = 0; i < 3; i++)
+                    if(extractedSpecials.get(i) == indexSpecial){
+                        playerManager.removeCoin(playerRef, roundStrategies.get(i).getCost());
+                        roundStrategies.get(i).increaseCost();
+                        this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i).getCost());
+                    }
             setSpecial(0, -1);
         }
 
@@ -219,11 +224,13 @@ public class Game implements GameManager{
             setSpecial(indexSpecial, ref);
             this.specialListener.notifySpecial(indexSpecial, playerRef);
             checker = roundStrategies.get(indexSpecial).effect(ref, color);
-            if(checker) {
-                playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
-                roundStrategies.get(indexSpecial).increaseCost();
-                this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(indexSpecial).getCost());
-            }
+            if(checker)
+                for(int i = 0; i < 3; i++)
+                    if(extractedSpecials.get(i) == indexSpecial){
+                        playerManager.removeCoin(playerRef, roundStrategies.get(i).getCost());
+                        roundStrategies.get(i).increaseCost();
+                        this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i).getCost());
+                    }
             setSpecial(0, -1);
         }
 
@@ -237,11 +244,13 @@ public class Game implements GameManager{
             setSpecial(indexSpecial, playerRef);
             this.specialListener.notifySpecial(indexSpecial, playerRef);
             checker = roundStrategies.get(indexSpecial).effect(playerRef, color1, color2);
-            if(checker) {
-                playerManager.removeCoin(playerRef, roundStrategies.get(indexSpecial).getCost());
-                roundStrategies.get(indexSpecial).increaseCost();
-                this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(indexSpecial).getCost());
-            }
+            if(checker)
+                for(int i = 0; i < 3; i++)
+                    if(extractedSpecials.get(i) == indexSpecial){
+                        playerManager.removeCoin(playerRef, roundStrategies.get(i).getCost());
+                        roundStrategies.get(i).increaseCost();
+                        this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i).getCost());
+                    }
             setSpecial(0, -1);
         }
 

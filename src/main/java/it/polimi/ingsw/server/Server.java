@@ -106,6 +106,8 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public void unlockActionPhase(int playerRef){ proxy.unlockActionPhase(playerRef); }
     @Override
+    public void sendMaxMovementMotherNature(int playerRef, int maxMovement){ proxy.sendMaxMovementMotherNature(playerRef,maxMovement); }
+    @Override
     public boolean userMoveStudent(int playerRef, int colour, boolean inSchool, int islandRef){
         try { controller.moveStudent(playerRef, colour, inSchool, islandRef);
         }catch (NotAllowedException exception){ return false; }

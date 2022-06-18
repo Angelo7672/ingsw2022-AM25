@@ -137,361 +137,123 @@ class QueueManagerTest {
         }catch (NotAllowedException notAllowedException) { notAllowedException.printStackTrace(); return; }
     }
 
-    /*@Test
-    @DisplayName("Third test: testing of some planning phases")
-    void aLargeNumberOfActionPhase(){
-        int numberOfPlayer = 4;
-        String[] playerInfo = {"Giorgio","SAMURAI","Marco","KING","Dino","WIZARD","Gloria","WITCH"};
-        PlayerManager playerManager = new PlayerManager(numberOfPlayer,playerInfo);
-        Boolean win;
-        Team winner;
-        int i;
-        int[] studentsGiorgio = new int[]{0,0,1,1,2,2,3,3,4,4};
-
-        for(i = 0; i < 10; i++) playerManager.setStudentEntrance(0,studentsGiorgio[i]);
-        for(i = 0; i < 10; i++) playerManager.transferStudent(0,studentsGiorgio[i],true,false);
-
-        //First hand
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.LION);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win = playerManager.playCard(1, i, Assistant.FOX);   //Second Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win = playerManager.playCard(2, i, Assistant.CAT);   //Third Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.OCTOPUS);   //Fourth Player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-                ()->assertEquals(0,playerManager.readQueue(0),"According to our simulation, the order of play must be 0 2 1 3"),
-                ()->assertEquals(2,playerManager.readQueue(1),"According to our simulation, the order of play must be 0 2 1 3"),
-                ()->assertEquals(1,playerManager.readQueue(2),"According to our simulation, the order of play must be 0 2 1 3"),
-                ()->assertEquals(3,playerManager.readQueue(3),"According to our simulation, the order of play must be 0 2 1 3")
-        );
-        //Second hand
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.EAGLE);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win = playerManager.playCard(1, i, Assistant.CAT);   //Second Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win = playerManager.playCard(2, i, Assistant.OCTOPUS);   //Third Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.LIZARD);   //Fourth Player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-                ()->assertEquals(1,playerManager.readQueue(0),"According to our simulation, the order of play must be 1 0 3 2"),
-                ()->assertEquals(0,playerManager.readQueue(1),"According to our simulation, the order of play must be 1 0 3 2"),
-                ()->assertEquals(3,playerManager.readQueue(2),"According to our simulation, the order of play must be 1 0 3 2"),
-                ()->assertEquals(2,playerManager.readQueue(3),"According to our simulation, the order of play must be 1 0 3 2")
-        );
-        //Third hand
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.FOX);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win = playerManager.playCard(1, i, Assistant.DOG);   //Second Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win = playerManager.playCard(2, i, Assistant.LIZARD);   //Third Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.TURTLE);   //Fourth Player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-                ()->assertEquals(0,playerManager.readQueue(0),"According to our simulation, the order of play must be 0 2 1 3"),
-                ()->assertEquals(2,playerManager.readQueue(1),"According to our simulation, the order of play must be 0 2 1 3"),
-                ()->assertEquals(1,playerManager.readQueue(2),"According to our simulation, the order of play must be 0 2 1 3"),
-                ()->assertEquals(3,playerManager.readQueue(3),"According to our simulation, the order of play must be 0 2 1 3")
-        );
-        //Fourth hand
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.ELEPHANT);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win = playerManager.playCard(1, i, Assistant.LIZARD);   //Second Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win = playerManager.playCard(2, i, Assistant.DOG);   //Third Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.LION);   //Fourth Player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-                ()->assertEquals(3,playerManager.readQueue(0),"According to our simulation, the order of play must be 3 1 2 0"),
-                ()->assertEquals(1,playerManager.readQueue(1),"According to our simulation, the order of play must be 3 1 2 0"),
-                ()->assertEquals(2,playerManager.readQueue(2),"According to our simulation, the order of play must be 3 1 2 0"),
-                ()->assertEquals(0,playerManager.readQueue(3),"According to our simulation, the order of play must be 3 1 2 0")
-        );
-        //Fifth hand
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.CAT);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win = playerManager.playCard(1, i, Assistant.EAGLE);   //Second Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win = playerManager.playCard(2, i, Assistant.TURTLE);   //Third Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.FOX);   //Fourth Player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-                ()->assertEquals(0,playerManager.readQueue(0),"According to our simulation, the order of play must be 0 1 3 2"),
-                ()->assertEquals(1,playerManager.readQueue(1),"According to our simulation, the order of play must be 0 1 3 2"),
-                ()->assertEquals(3,playerManager.readQueue(2),"According to our simulation, the order of play must be 0 1 3 2"),
-                ()->assertEquals(2,playerManager.readQueue(3),"According to our simulation, the order of play must be 0 1 3 2")
-        );
-        //Sixth hand
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.LIZARD);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win = playerManager.playCard(1, i, Assistant.LION);   //Second Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win= playerManager.playCard(2, i, Assistant.FOX);   //Third Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.CAT);   //Fourth Player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-                ()->assertEquals(1,playerManager.readQueue(0),"According to our simulation, the order of play must be 1 3 2 0"),
-                ()->assertEquals(3,playerManager.readQueue(1),"According to our simulation, the order of play must be 1 3 2 0"),
-                ()->assertEquals(2,playerManager.readQueue(2),"According to our simulation, the order of play must be 1 3 2 0"),
-                ()->assertEquals(0,playerManager.readQueue(3),"According to our simulation, the order of play must be 1 3 2 0")
-        );
-        //Seventh hand
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.DOG);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win = playerManager.playCard(1, i, Assistant.OCTOPUS);   //Second Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win = playerManager.playCard(2, i, Assistant.LION);   //Third Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.EAGLE);   //Fourth Player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-                ()->assertEquals(2,playerManager.readQueue(0),"According to our simulation, the order of play must be 2 3 1 0"),
-                ()->assertEquals(3,playerManager.readQueue(1),"According to our simulation, the order of play must be 2 3 1 0"),
-                ()->assertEquals(1,playerManager.readQueue(2),"According to our simulation, the order of play must be 2 3 1 0"),
-                ()->assertEquals(0,playerManager.readQueue(3),"According to our simulation, the order of play must be 2 3 1 0")
-        );
-        //Eighth hand
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.GOOSE);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win = playerManager.playCard(1, i, Assistant.ELEPHANT);   //Second Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win = playerManager.playCard(2, i, Assistant.EAGLE);   //Third Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.DOG);   //Fourth Player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-                ()->assertEquals(0,playerManager.readQueue(0),"According to our simulation, the order of play must be 0 2 3 1"),
-                ()->assertEquals(2,playerManager.readQueue(1),"According to our simulation, the order of play must be 0 2 3 1"),
-                ()->assertEquals(3,playerManager.readQueue(2),"According to our simulation, the order of play must be 0 2 3 1"),
-                ()->assertEquals(1,playerManager.readQueue(3),"According to our simulation, the order of play must be 0 2 3 1")
-        );
-        //Nineth hand
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.TURTLE);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win= playerManager.playCard(1, i, Assistant.GOOSE);   //Second Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win = playerManager.playCard(2, i, Assistant.ELEPHANT);   //Third Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.GOOSE);   //Fourth Player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-                ()->assertEquals(1,playerManager.readQueue(0),"According to our simulation, the order of play must be 1 3 2 0"),
-                ()->assertEquals(3,playerManager.readQueue(1),"According to our simulation, the order of play must be 1 3 2 0"),
-                ()->assertEquals(2,playerManager.readQueue(2),"According to our simulation, the order of play must be 1 3 2 0"),
-                ()->assertEquals(0,playerManager.readQueue(3),"According to our simulation, the order of play must be 1 3 2 0")
-        );
-        //Tenth hand
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.OCTOPUS);   //First Player
-                assertTrue(win, "Cards over");
-            }else if(playerManager.readQueue(i) == 1){
-                playerManager.playCard(1, i, Assistant.TURTLE);   //Second Player
-            }else if(playerManager.readQueue(i) == 2){
-                playerManager.playCard(2, i, Assistant.GOOSE);   //Third Player
-            }else if(playerManager.readQueue(i) == 3){
-                playerManager.playCard(3, i, Assistant.ELEPHANT);   //Fourth Player
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-                ()->assertEquals(2,playerManager.readQueue(0),"According to our simulation, the order of play must be 2 0 3 1"),
-                ()->assertEquals(0,playerManager.readQueue(1),"According to our simulation, the order of play must be 2 0 3 1"),
-                ()->assertEquals(3,playerManager.readQueue(2),"According to our simulation, the order of play must be 2 0 3 1"),
-                ()->assertEquals(1,playerManager.readQueue(3),"According to our simulation, the order of play must be 2 0 3 1")
-        );
-        //GAME OVER, Cards over
-        assertTrue(playerManager.checkVictory().equals(Team.WHITE),"Giorgio is the player with the most influence and belongs to Team WHITE");
-    }
-
    @Test
-   @DisplayName("Fourth test: extreme cases")
+   @DisplayName("Third test: extreme cases")
    void extremeCases(){
-        int numberOfPlayer = 4;
-        String[] playerInfo = {"Giorgio","SAMURAI","Marco","KING","Dino","WIZARD","Gloria","WITCH"};
-        PlayerManager playerManager = new PlayerManager(numberOfPlayer,playerInfo);
-        Boolean win;
-        int i;
+       int numberOfPlayer = 4;
+       boolean win, checker = false;
+       ArrayList<Assistant> alreadyPlayedCards = new ArrayList<>();
+       ArrayList<Assistant> alreadyPlayedCards1 = new ArrayList<>();
 
-        //This first part serves, based on the cards that will be played, just to know who will start the next planning phase
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.LION);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win = playerManager.playCard(1, i, Assistant.FOX);   //Second Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win = playerManager.playCard(2, i, Assistant.CAT);   //Third Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.OCTOPUS);   //Fourth Player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
+       try {
+           queueManager4P.queueForPlanificationPhase();
+           for(int i = 0; i < numberOfPlayer; i++) {
+               if(queueManager4P.readQueue(i) == 0){
+                   queueManager4P.playCard(0, i, Assistant.FOX, alreadyPlayedCards);    //First Player
+                   queueManager4P.playCard(0, i, Assistant.LIZARD, alreadyPlayedCards);
+                   queueManager4P.playCard(0, i, Assistant.OCTOPUS, alreadyPlayedCards);
+                   queueManager4P.playCard(0, i, Assistant.DOG, alreadyPlayedCards);
+                   queueManager4P.playCard(0, i, Assistant.ELEPHANT, alreadyPlayedCards);
+                   queueManager4P.playCard(0, i, Assistant.TURTLE, alreadyPlayedCards);
+               }else if(queueManager4P.readQueue(i) == 1){
+                   queueManager4P.playCard(1, i, Assistant.LION, alreadyPlayedCards);   //Second Player
+                   queueManager4P.playCard(1, i, Assistant.CAT, alreadyPlayedCards);
+                   queueManager4P.playCard(1, i, Assistant.LIZARD, alreadyPlayedCards);
+                   queueManager4P.playCard(1, i, Assistant.OCTOPUS, alreadyPlayedCards);
+                   queueManager4P.playCard(1, i, Assistant.DOG, alreadyPlayedCards);
+                   queueManager4P.playCard(1, i, Assistant.ELEPHANT, alreadyPlayedCards);
+                   queueManager4P.playCard(1, i, Assistant.TURTLE, alreadyPlayedCards);
+               }else if(queueManager4P.readQueue(i) == 2){
+                   queueManager4P.playCard(2, i, Assistant.LION, alreadyPlayedCards);   //Third Player
+                   queueManager4P.playCard(2, i, Assistant.FOX, alreadyPlayedCards);
+                   queueManager4P.playCard(2, i, Assistant.LIZARD, alreadyPlayedCards);
+                   queueManager4P.playCard(2, i, Assistant.OCTOPUS, alreadyPlayedCards);
+                   queueManager4P.playCard(2, i, Assistant.DOG, alreadyPlayedCards);
+                   queueManager4P.playCard(2, i, Assistant.ELEPHANT, alreadyPlayedCards);
+                   queueManager4P.playCard(2, i, Assistant.TURTLE, alreadyPlayedCards);
+               }else if(queueManager4P.readQueue(i) == 3){
+                   queueManager4P.playCard(3, i, Assistant.LION, alreadyPlayedCards);   //Fourth Player
+                   queueManager4P.playCard(3, i, Assistant.CAT, alreadyPlayedCards);
+                   queueManager4P.playCard(3, i, Assistant.FOX, alreadyPlayedCards);
+                   queueManager4P.playCard(3, i, Assistant.LIZARD, alreadyPlayedCards);
+                   queueManager4P.playCard(3, i, Assistant.DOG, alreadyPlayedCards);
+                   queueManager4P.playCard(3, i, Assistant.ELEPHANT, alreadyPlayedCards);
+                   queueManager4P.playCard(3, i, Assistant.TURTLE, alreadyPlayedCards);
+               }
+           }
 
-        //Player 0 starts; the previous step was for this
-        //Order of play: 0 1 2 3
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.TURTLE);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win = playerManager.playCard(1, i, Assistant.LION);   //Second Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win = playerManager.playCard(2, i, Assistant.TURTLE);   //Third Player, card already played by the first player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.LION);   //Fourth Player, card already played by the second player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-                ()->assertEquals(1,playerManager.readQueue(0),"The second player played LION"),
-                ()->assertEquals(3,playerManager.readQueue(1),"The fourth player played LION"),
-                ()->assertEquals(0,playerManager.readQueue(2),"The first player played TURTLE"),
-                ()->assertEquals(2,playerManager.readQueue(3),"The third player played TURTLE")
-        );
-        //Player 1 starts (previous planning phase); order of play: 1 2 3 0
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.DOG);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win = playerManager.playCard(1, i, Assistant.DOG);   //Second Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win = playerManager.playCard(2, i, Assistant.DOG);   //Third Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.DOG);   //Fourth Player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-               ()->assertEquals(1,playerManager.readQueue(0),"All players have played DOG, the order 1 2 3 0"),
-               ()->assertEquals(2,playerManager.readQueue(1),"All players have played DOG, the order 1 2 3 0"),
-               ()->assertEquals(3,playerManager.readQueue(2),"All players have played DOG, the order 1 2 3 0"),
-               ()->assertEquals(0,playerManager.readQueue(3),"All players have played DOG, the order 1 2 3 0")
-        );
-        //Player 1 starts (previous planning phase); order of play: 1 2 3 0
-        playerManager.queueForPlanificationPhase(numberOfPlayer);
-        for(i = 0; i < numberOfPlayer; i++) {
-            if(playerManager.readQueue(i) == 0){
-                win = playerManager.playCard(0, i, Assistant.CAT);   //First Player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 1){
-                win = playerManager.playCard(1, i, Assistant.EAGLE);   //Second Player, card already played by the second player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 2){
-                win = playerManager.playCard(2, i, Assistant.EAGLE);   //Third Player, card already played by the second player
-                assertFalse(win, "Nobody won this round");
-            }else if(playerManager.readQueue(i) == 3){
-                win = playerManager.playCard(3, i, Assistant.EAGLE);   //Fourth Player, card already played by the third player
-                assertFalse(win, "Nobody won this round");
-            }
-        }
-        playerManager.inOrderForActionPhase();
-        assertAll(
-                ()->assertEquals(0,playerManager.readQueue(0),"The first player played CAT"),
-                ()->assertEquals(1,playerManager.readQueue(1),"The second player played EAGLE"),
-                ()->assertEquals(2,playerManager.readQueue(2),"The third player played EAGLE"),
-                ()->assertEquals(3,playerManager.readQueue(3),"The fourth player played EAGLE")
-        );
-    }*/
+           //This first part serves, based on the cards that will be played, just to know who will start the next planning phase
+           for(int i = 0; i < numberOfPlayer; i++) {
+               if(queueManager4P.readQueue(i) == 0){
+                   win = queueManager4P.playCard(0, i, Assistant.LION, alreadyPlayedCards);   //First Player
+                   assertFalse(win, "Nobody won this round");
+               }else if(queueManager4P.readQueue(i) == 1){
+                   win = queueManager4P.playCard(1, i, Assistant.FOX, alreadyPlayedCards);   //Second Player
+                   assertFalse(win, "Nobody won this round");
+               }else if(queueManager4P.readQueue(i) == 2){
+                   win = queueManager4P.playCard(2, i, Assistant.CAT, alreadyPlayedCards);   //Third Player
+                   assertFalse(win, "Nobody won this round");
+               }else if(queueManager4P.readQueue(i) == 3){
+                   win = queueManager4P.playCard(3, i, Assistant.OCTOPUS, alreadyPlayedCards);   //Fourth Player
+                   assertFalse(win, "Nobody won this round");
+               }
+           }
+           queueManager4P.inOrderForActionPhase();
+
+           //Player 0 starts; the previous step was for this
+           //Order of play: 0 1 2 3
+           queueManager4P.queueForPlanificationPhase();
+           for(int i = 0; i < numberOfPlayer; i++) {
+               if(queueManager4P.readQueue(i) == 0){
+                   win = queueManager4P.playCard(0, i, Assistant.EAGLE, alreadyPlayedCards);   //First Player
+                   alreadyPlayedCards.add(Assistant.EAGLE);
+                   assertFalse(win, "Nobody won this round");
+               }else if(queueManager4P.readQueue(i) == 1){
+                   win = queueManager4P.playCard(1, i, Assistant.GOOSE, alreadyPlayedCards);   //Second Player
+                   alreadyPlayedCards.add(Assistant.GOOSE);
+                   assertFalse(win, "Nobody won this round");
+               }else if(queueManager4P.readQueue(i) == 2){
+                   win = queueManager4P.playCard(2, i, Assistant.GOOSE, alreadyPlayedCards);   //Third Player, card already played by the first player
+                   alreadyPlayedCards.add(Assistant.GOOSE);
+                   assertFalse(win, "Nobody won this round");
+               }else if(queueManager4P.readQueue(i) == 3){
+                   win = queueManager4P.playCard(3, i, Assistant.EAGLE, alreadyPlayedCards);   //Fourth Player, card already played by the second player
+                   alreadyPlayedCards.add(Assistant.EAGLE);
+                   assertFalse(win, "Nobody won this round");
+               }
+           }
+           queueManager4P.inOrderForActionPhase();
+           assertAll(
+                   ()->assertEquals(1,queueManager4P.readQueue(0),"The second player played GOOSE"),
+                   ()->assertEquals(2,queueManager4P.readQueue(1),"The third player played GOOSE"),
+                   ()->assertEquals(0,queueManager4P.readQueue(2),"The first player played EAGLE"),
+                   ()->assertEquals(3,queueManager4P.readQueue(3),"The fourth player played EAGLE")
+           );
+       }catch (NotAllowedException notAllowedException){ notAllowedException.printStackTrace(); return; }
+
+       //Player 1 starts (previous planning phase); order of play: 1 2 3 0
+       try{
+           queueManager4P.queueForPlanificationPhase();
+           for(int i = 0; i < numberOfPlayer; i++) {
+               if(queueManager4P.readQueue(i) == 0){
+                   win = queueManager4P.playCard(0, i, Assistant.GOOSE, alreadyPlayedCards1);   //First Player
+                   alreadyPlayedCards1.add(Assistant.GOOSE);
+                   assertFalse(win, "First player has already a card");
+               }else if(queueManager4P.readQueue(i) == 1){
+                   win = queueManager4P.playCard(1, i, Assistant.EAGLE, alreadyPlayedCards1);   //Second Player
+                   alreadyPlayedCards1.add(Assistant.EAGLE);
+                   assertTrue(win, "Second's card finished");
+               }else if(queueManager4P.readQueue(i) == 2){
+                   win = queueManager4P.playCard(2, i, Assistant.EAGLE, alreadyPlayedCards1);   //Third Player
+                   alreadyPlayedCards1.add(Assistant.EAGLE);
+                   assertTrue(win, "Third's card finished");
+               }else if(queueManager4P.readQueue(i) == 3){
+                   win = queueManager4P.playCard(3, i, Assistant.GOOSE, alreadyPlayedCards1);   //Fourth Player
+                   alreadyPlayedCards1.add(Assistant.GOOSE);
+                   assertTrue(win, "Fourth's card finished");
+               }
+           }
+       }catch (NotAllowedException notAllowedException){ checker = true; }
+       assertTrue(checker, "The first player had a different card from those already played to play");
+    }
 }

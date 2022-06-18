@@ -307,7 +307,10 @@ public class VirtualView
         server.islandInhibited(islandRef, isInhibited);
     }
     @Override
-    public void notifyBagExtraction() { bag.remove(0); }
+    public void notifyBagExtraction() {
+        bag.remove(0);
+        if(bag.isEmpty()) controller.setEnd(true);
+    }
     @Override
     public void notifyBag(List<Integer> bag) { this.bag = bag; }
     @Override
@@ -315,7 +318,12 @@ public class VirtualView
     @Override
     public void notifyValueCard(int queueRef, int valueCard) { queue.get(queueRef).setValueCard(valueCard); }
     @Override
-    public void notifyMaxMove(int queueRef, int maxMove) { queue.get(queueRef).setMaxMoveMotherNature(maxMove); }
+    public void notifyMaxMove(int queueRef, int maxMove) {
+        queue.get(queueRef).setMaxMoveMotherNature(maxMove);
+        server.sendMaxMovementMotherNature(
+                queue.get(queueRef).getPlayerRef(), maxMove
+        );
+    }
     @Override
     public void notifySpecial(int specialRef, int playerRef) {  //notify use of a special by a player
         server.sendUsedSpecial(playerRef, specialRef);

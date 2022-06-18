@@ -38,9 +38,7 @@ public class Bag {
         return colorExtracted;
     }
 
-    public boolean checkVictory(){      //must be called every time an extraction is made
-        return bag.isEmpty();
-    }
+    public boolean checkVictory(){ return bag.isEmpty(); }     //must be called every time an extraction is made
 
     public void fillBag(int color, int num){
         for(int i = 0; i < num; i++)

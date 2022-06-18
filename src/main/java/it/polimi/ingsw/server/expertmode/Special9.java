@@ -14,7 +14,7 @@ public class Special9 implements Special{
     public Special9(Entrance server) { this.server = server; }
 
     @Override
-    public void effect(int playerRef, VirtualClient user){
+    public synchronized void effect(int playerRef, VirtualClient user){
         VirtualClient virtualClient = user;
         boolean checker;
 
@@ -22,7 +22,7 @@ public class Special9 implements Special{
             virtualClient.setSpecial9();
             virtualClient.send(new GenericAnswer("ok"));
             System.out.println("Il server ha mandato ok per ricevere messaggio ad hoc dello special");
-            synchronized (this) { this.wait(); }
+            this.wait();
 
             checker = server.useSpecialSimple(9, playerRef, special9Msg.getColor());
 
@@ -34,5 +34,5 @@ public class Special9 implements Special{
     @Override
     public void setSpecialMessage(Message msg) { special9Msg = (Special9Message) msg; }
     @Override
-    public void wakeUp() { }
+    public synchronized void wakeUp() { this.notify(); }
 }

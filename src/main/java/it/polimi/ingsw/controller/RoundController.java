@@ -37,7 +37,7 @@ public class RoundController extends Thread{
     }
 
     private synchronized void planningPhase(){
-        setEnd(gameManager.refreshStudentsCloud());
+        gameManager.refreshStudentsCloud();
         gameManager.queueForPlanificationPhase();
         for(controller.setCurrentUser(0); controller.getCurrentUser() < numberOfPlayers; controller.incrCurrentUser()){
             server.unlockPlanningPhase(gameManager.readQueue(controller.getCurrentUser()));
