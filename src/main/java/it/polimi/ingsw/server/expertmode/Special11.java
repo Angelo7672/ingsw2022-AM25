@@ -21,6 +21,7 @@ public class Special11 implements Special{
         try {
             virtualClient.setSpecial11();
             virtualClient.send(new GenericAnswer("ok"));
+            System.out.println("Il server ha mandato ok per ricevere messaggio ad hoc dello special");
             synchronized (this) { this.wait(); }
 
             checker = server.useSpecialSimple(11, playerRef, special11Msg.getColor());

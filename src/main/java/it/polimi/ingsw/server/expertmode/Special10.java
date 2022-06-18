@@ -21,6 +21,7 @@ public class Special10 implements Special{
         try {
             virtualClient.setSpecial10();
             virtualClient.send(new GenericAnswer("ok"));
+            System.out.println("Il server ha mandato ok per ricevere messaggio ad hoc dello special");
             synchronized (this) { this.wait(); }
 
             checker = server.useSpecialHard(10, playerRef, special10Msg.getEntranceStudent(), special10Msg.getTableStudent());

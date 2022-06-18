@@ -205,8 +205,9 @@ public class Proxy_c implements Exit {
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
         send(new UseSpecial(special));
         tempObj = receive();
-        System.out.println(tempObj);
-        if(tempObj instanceof GenericMessage) return ((GenericMessage) tempObj).getMessage().equals("ok");
+        System.out.println("special risposta "+tempObj);
+        if(tempObj instanceof GenericAnswer) System.out.println("Messaggio "+((GenericAnswer) tempObj).getMessage());
+        if(tempObj instanceof GenericAnswer) return ((GenericAnswer) tempObj).getMessage().equals("ok");
         return false;
     }
 
@@ -229,6 +230,7 @@ public class Proxy_c implements Exit {
     public boolean useSpecial(int special, int playerRef, int ref) throws IOException {
         send(new Special1Message(playerRef, ref));
         tempObj = receive();
+        System.out.println(tempObj);
         return ((GenericAnswer)tempObj).getMessage().equals("ok");
     }
 
@@ -318,6 +320,7 @@ public class Proxy_c implements Exit {
                         }
                     }
                     else if(tmp instanceof CoinsMessage) {
+                        System.out.println(tmp);
                         synchronized (lock2) {
                             if (!view.isInitializedView()) lock2.wait();
                             view.setCoins((CoinsMessage) tmp);

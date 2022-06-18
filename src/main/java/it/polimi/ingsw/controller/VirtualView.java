@@ -169,6 +169,7 @@ public class VirtualView
                 ArrayList<String> cards = handsTmp.get(i).getCards();
                 int coins = handsTmp.get(i).getCoins();
                 controller.handAndCoinsRestore(i,cards,coins);
+                hands.get(i).setLastCard(handsTmp.get(i).getLastPlayedCard());
             }
             for(int i = 0; i < numberOfPlayers; i++)
                 server.lastCardPlayedFromAPlayer(i, getLastPlayedCard(i));
@@ -287,7 +288,9 @@ public class VirtualView
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
         if (place == 0) {
             schoolBoards.get(componentRef).setTowersNumber(towersNumber);
-            server.towersChangeInSchool(componentRef, towersNumber);
+            if(numberOfPlayers !=4) server.towersChangeInSchool(componentRef, towersNumber);
+            else if(numberOfPlayers == 4)
+                if(componentRef != 1 && componentRef != 3) server.towersChangeInSchool(componentRef, towersNumber);
         } else if (place == 1) {
             islands.get(componentRef).setTowersNumber(towersNumber);
             server.towersChangeOnIsland(componentRef, towersNumber);

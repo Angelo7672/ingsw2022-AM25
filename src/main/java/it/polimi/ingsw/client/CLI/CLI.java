@@ -254,7 +254,12 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 System.out.println(ANSI_RED+SPACE+"Move not allowed"+ANSI_RESET);
                 turn();
             }
-            if(special==2 || special==4 || special==6 || special==8 ) return;
+            else System.out.println();
+            System.out.println("special accettato");
+            if(special==2 || special==4 || special==6 || special==8 ) {
+                constants.setSpecialUsed(true);
+                return;
+            }
             if(special(special)) {
                 constants.setSpecialUsed(true);
                 System.out.print(SPACE+"Special used");
@@ -294,6 +299,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                         }
                     } while (island == -1);
                     island = island - 1;
+                    System.out.println();
                     if(proxy.useSpecial(special, island, color)) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
                 } else if (special == 3 || special == 5) {
@@ -309,6 +315,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                         }
                     } while (island == -1);
                     island = island - 1;
+                    System.out.println();
                     if(proxy.useSpecial(special, island)) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
                 } else if (special == 7) {
@@ -343,6 +350,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                             if (answer.equalsIgnoreCase("n")) break;
                         }
                     }
+                    System.out.println();
                     if (proxy.useSpecial(special, entranceStudents, cardStudents)) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
                 } else if (special == 9) {
@@ -357,6 +365,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                         }
                         else break;
                     }
+                    System.out.println();
                     if (proxy.useSpecial(special, translateColor(color))) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
                 } else if (special == 10) {
@@ -393,6 +402,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                             if (answer.equalsIgnoreCase("n")) break;
                         }
                     }
+                    System.out.println();
                     if (proxy.useSpecial(special, entranceStudents, tableStudents)) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
                 } else if (special == 11) {
@@ -407,6 +417,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                         }
                         else break;
                     }
+                    System.out.println();
                     if (proxy.useSpecial(special, translateColor(color))) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
                 } else if (special == 12) {
@@ -421,6 +432,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                         }
                         else break;
                     }
+                    System.out.println();
                     if (proxy.useSpecial(special, translateColor(color))) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
                 }
@@ -483,6 +495,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                         where=null;
                     }
                 }
+                System.out.println();
                 if (where.equalsIgnoreCase("island")) {
                     while (islandRef==-1) {
                         System.out.println();
@@ -604,7 +617,10 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     private void turn() throws IOException, ClassNotFoundException {
-        if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) useSpecial();
+        if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) {
+            useSpecial();
+            System.out.println("Done");
+        }
         phaseHandler(constants.lastPhase());
     }
 
@@ -714,7 +730,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     public void notifySpecial(int specialRef, int playerRef) {
         if(constants.isStartGame()) {
             System.out.print("New play: "+"\t"+"\t");
-            System.out.println("Player "+view.getNickname(playerRef)+" used special "+view.getSpecialName(specialRef));
+            System.out.println("Player "+view.getNickname(playerRef)+" used special "+view.getSpecialName(view.getSpecialIndex(specialRef)));
             System.out.println();
         }
     }

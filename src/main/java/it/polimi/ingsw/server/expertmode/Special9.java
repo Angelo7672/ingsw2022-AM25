@@ -21,6 +21,7 @@ public class Special9 implements Special{
         try {
             virtualClient.setSpecial9();
             virtualClient.send(new GenericAnswer("ok"));
+            System.out.println("Il server ha mandato ok per ricevere messaggio ad hoc dello special");
             synchronized (this) { this.wait(); }
 
             checker = server.useSpecialSimple(9, playerRef, special9Msg.getColor());

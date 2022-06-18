@@ -1,11 +1,81 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.listeners.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
-/*class QueueTest {
-    @Test
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+class QueueTest {
+    PlayerManager playerManager2P, playerManager3P, playerManager4P;
+    Bag bag;
+    QueueManager queueManager2P,queueManager3P,queueManager4P;
+
+    @BeforeEach
+    void initialization() {
+        bag = new Bag();
+        bag.bagListener = new BagListener() {
+            @Override
+            public void notifyBagExtraction() {}
+            @Override
+            public void notifyBag(List<Integer> bag) {}
+        };
+        bag.bagInitialize();
+        playerManager2P = new PlayerManager(2, bag);
+        playerManager3P = new PlayerManager(3, bag);
+        playerManager4P = new PlayerManager(4, bag);
+        for (PlayerManager playerManager : Arrays.asList(playerManager2P, playerManager3P, playerManager4P)) {
+            playerManager.towersListener = new TowersListener() {
+                @Override
+                public void notifyTowersChange(int place, int componentRef, int towersNumber) {}
+                @Override
+                public void notifyTowerColor(int islandRef, int newColor) {}
+            };
+            playerManager.professorsListener = new ProfessorsListener() {
+                @Override
+                public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {}
+            };
+            playerManager.coinsListener = new CoinsListener() {
+                @Override
+                public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {}
+            };
+            playerManager.playedCardListener = new PlayedCardListener() {
+                @Override
+                public void notifyPlayedCard(int playerRef, String assistantCard) {}
+                @Override
+                public void notifyHand(int playerRef, ArrayList<String> hand) {}
+            };
+            playerManager.studentsListener = new StudentsListener() {
+                @Override
+                public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
+            };
+        }
+        queueManager2P = new QueueManager(2, playerManager2P);
+        queueManager3P = new QueueManager(3, playerManager3P);
+        queueManager4P = new QueueManager(4, playerManager4P);
+        for (QueueManager queueManager : Arrays.asList(queueManager2P, queueManager3P, queueManager4P)) {
+            queueManager.queueListener = new QueueListener() {
+                @Override
+                public void notifyQueue(int queueRef, int playerRef) {}
+                @Override
+                public void notifyValueCard(int queueRef, int valueCard) {}
+                @Override
+                public void notifyMaxMove(int queueRef, int maxMove) {}
+            };
+            queueManager.playedCardListener = new PlayedCardListener() {
+                @Override
+                public void notifyPlayedCard(int playerRef, String assistantCard) {}
+                @Override
+                public void notifyHand(int playerRef, ArrayList<String> hand) {}
+            };
+        }
+    }
+
+    /*@Test
     @DisplayName("First test: check queue initialization for first Planing Phase")
     void queueInit(){
         int numberOfPlayer = 4;
@@ -420,5 +490,5 @@ import static org.junit.jupiter.api.Assertions.*;
                 ()->assertEquals(2,playerManager.readQueue(2),"The third player played EAGLE"),
                 ()->assertEquals(3,playerManager.readQueue(3),"The fourth player played EAGLE")
         );
-    }
-}*/
+    }*/
+}
