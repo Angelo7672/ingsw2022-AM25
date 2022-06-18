@@ -21,6 +21,7 @@ public class Special7 implements Special{
         try {
             virtualClient.setSpecial7();
             virtualClient.send(new GenericAnswer("ok"));
+            System.out.println("Il server ha mandato ok per ricevere messaggio ad hoc dello special");
             synchronized (this) { this.wait(); }
 
             checker = server.useSpecialHard(7, playerRef, special7Msg.getEntranceStudent(), special7Msg.getCardStudent());

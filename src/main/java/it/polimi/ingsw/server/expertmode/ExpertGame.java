@@ -6,7 +6,7 @@ import it.polimi.ingsw.server.VirtualClient;
 
 import java.util.ArrayList;
 
-public class ExpertGame extends Thread{
+public class ExpertGame {
     private Entrance server;
     private SpecialDeck specialDeck;
     private int firstSpecial, secondSpecial, thirdSpecial;
@@ -18,7 +18,6 @@ public class ExpertGame extends Thread{
         this.firstSpecial = extractedSpecial.get(0);
         this.secondSpecial = extractedSpecial.get(1);
         this.thirdSpecial = extractedSpecial.get(2);
-        System.out.println(firstSpecial+" "+secondSpecial+" "+thirdSpecial);
 
         for(Integer special:extractedSpecial){
             switch (special){

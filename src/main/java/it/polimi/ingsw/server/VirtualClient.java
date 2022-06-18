@@ -675,11 +675,11 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                                 if (!expertGame.effect(
                                         ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
                                 ) {
-                                    System.out.println("...ma non lo puoi usare");
                                     readyActionPhase = true;
                                     send(new MoveNotAllowedAnswer());
-                                    synchronized (actionLocker) { actionLocker.wait(); }
                                 }
+                                readyActionPhase = true;
+                                synchronized (actionLocker) { actionLocker.wait(); }
                             }
                         } else{
                             readyActionPhase = true;
@@ -702,8 +702,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                                 ) {
                                     readyActionPhase = true;
                                     send(new MoveNotAllowedAnswer());
-                                    synchronized (actionLocker) { actionLocker.wait(); }
                                 }
+                                readyActionPhase = true;
+                                synchronized (actionLocker) { actionLocker.wait(); }
                             }
                         } else {
                             readyActionPhase = true;
@@ -727,8 +728,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                                 ) {
                                     readyActionPhase = true;
                                     send(new MoveNotAllowedAnswer());
-                                    synchronized (actionLocker) { actionLocker.wait(); }
                                 }
+                                readyActionPhase = true;
+                                synchronized (actionLocker) { actionLocker.wait(); }
                             }
                         } else {
                             readyActionPhase = true;
