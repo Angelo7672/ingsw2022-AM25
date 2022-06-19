@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.CardsSceneController">
    <children>
       <Button fx:id="lionButton" layoutX="38.0" layoutY="45.0" mnemonicParsing="false" onAction="#setPlayedCard" prefHeight="135.0" prefWidth="78.0">
@@ -100,10 +99,15 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="confirmButton" layoutX="274.0" layoutY="351.0" mnemonicParsing="false" onAction="#confirmPressed" text="Confirm" />
-      <Label layoutX="179.0" layoutY="7.0" prefHeight="31.0" prefWidth="249.0" text="Choose an assistant card">
+      <Button fx:id="confirmButton" layoutX="274.0" layoutY="343.0" mnemonicParsing="false" onAction="#confirmPressed" text="Confirm" />
+      <Label layoutX="114.0" layoutY="7.0" prefHeight="31.0" prefWidth="371.0" text="It's your turn! Choose an assistant card">
          <font>
             <Font size="21.0" />
+         </font>
+      </Label>
+      <Label fx:id="errorMessage" layoutX="260.0" layoutY="369.0" text="Error, try again!" textFill="#b70707" visible="false">
+         <font>
+            <Font size="13.0" />
          </font>
       </Label>
    </children>

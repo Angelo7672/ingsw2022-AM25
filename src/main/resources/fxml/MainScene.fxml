@@ -906,7 +906,7 @@
       </AnchorPane>
       <HBox fx:id="player2Box" layoutX="346.0" layoutY="-20.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="183.0" prefWidth="534.0" AnchorPane.topAnchor="5.0">
          <children>
-            <AnchorPane fx:id="userInfo2" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="160.0" prefWidth="127.0">
+            <AnchorPane fx:id="userInfo2" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="182.0" prefWidth="127.0">
                <children>
                   <ImageView fx:id="character2" fitHeight="151.0" fitWidth="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <image>
@@ -917,6 +917,11 @@
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font></Label>
+                  <Label id="nickname2" fx:id="card2" layoutX="10.0" layoutY="160.0" text="card" visible="false">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="school2" prefHeight="200.0" prefWidth="200.0">
@@ -981,7 +986,34 @@
                      </children>
                   </AnchorPane>
                   <AnchorPane id="table2" fx:id="tablePane2" layoutX="115.0" layoutY="22.0" prefHeight="127.0" prefWidth="198.0" />
-                  <AnchorPane id="professorPane2" fx:id="professorsPane2" layoutX="82.0" layoutY="18.0" prefHeight="150.0" prefWidth="40.0" />
+                  <AnchorPane id="professorPane2" fx:id="professorsPane2" layoutX="82.0" layoutY="18.0" prefHeight="150.0" prefWidth="40.0">
+                     <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="2.0" layoutY="112.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/greenProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="2.0" layoutY="85.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/redProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="2.0" layoutY="58.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/yellowProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="2.0" layoutY="31.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/pinkProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="2.0" layoutY="4.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/blueProf3D.png" />
+                           </image>
+                        </ImageView>
+                     </children></AnchorPane>
                   <AnchorPane fx:id="towerPane2" layoutX="1.0" layoutY="10.0" prefHeight="160.0" prefWidth="90.0">
                      <children>
                         <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="-5.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
@@ -1094,7 +1126,34 @@
                      </children>
                   </AnchorPane>
                   <AnchorPane id="table3" fx:id="tablePane3" layoutX="6.0" layoutY="58.0" prefHeight="198.0" prefWidth="160.0" />
-                  <AnchorPane id="professorsPane3" fx:id="professorsPane3" layoutX="8.0" layoutY="256.0" prefHeight="26.0" prefWidth="160.0" />
+                  <AnchorPane id="professorsPane3" fx:id="professorsPane3" layoutX="8.0" layoutY="256.0" prefHeight="26.0" prefWidth="160.0">
+                     <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="123.0" layoutY="2.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/greenProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="96.0" layoutY="2.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/redProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="69.0" layoutY="2.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/yellowProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="42.0" layoutY="2.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/pinkProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="15.0" layoutY="2.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/blueProf3D.png" />
+                           </image>
+                        </ImageView>
+                     </children></AnchorPane>
                   <AnchorPane fx:id="towerPane3" layoutX="11.0" layoutY="282.0" prefHeight="88.0" prefWidth="160.0">
                      <children>
                         <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true">
@@ -1142,14 +1201,19 @@
 
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="userInfo3" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="180.0" prefWidth="118.0">
+            <AnchorPane fx:id="userInfo3" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="171.0" prefWidth="118.0">
                <children>
                   <ImageView fx:id="character3" fitHeight="117.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <image>
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
-                  <Label id="nickname3" contentDisplay="CENTER" layoutX="10.0" layoutY="124.0" prefHeight="18.0" prefWidth="89.0" text="nickname" textAlignment="CENTER" wrapText="true">
+                  <Label id="nickname3" contentDisplay="CENTER" layoutX="10.0" layoutY="125.0" prefHeight="18.0" prefWidth="89.0" text="nickname" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label id="nickname3" fx:id="card3" contentDisplay="CENTER" layoutX="10.0" layoutY="140.0" prefHeight="18.0" prefWidth="89.0" text="card" textAlignment="CENTER" visible="false" wrapText="true">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
@@ -1222,7 +1286,34 @@
                      </children>
                   </AnchorPane>
                   <AnchorPane id="table1" fx:id="tablePane1" layoutX="58.0" layoutY="17.0" prefHeight="127.0" prefWidth="198.0" />
-                  <AnchorPane id="professorsPane1" fx:id="professorsPane1" layoutX="250.0" layoutY="10.0" prefHeight="150.0" prefWidth="40.0" />
+                  <AnchorPane id="professorsPane1" fx:id="professorsPane1" layoutX="250.0" layoutY="10.0" prefHeight="150.0" prefWidth="40.0">
+                     <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="2.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/greenProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="29.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/redProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="56.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/yellowProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="83.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/pinkProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="8.0" layoutY="110.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/blueProf3D.png" />
+                           </image>
+                        </ImageView>
+                     </children></AnchorPane>
                   <AnchorPane fx:id="towerPane1" layoutX="285.0" layoutY="5.0" prefHeight="160.0" prefWidth="90.0">
                      <children>
                         <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="-5.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
@@ -1281,6 +1372,11 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
+                  <Label id="nickname1" fx:id="card1" layoutX="18.0" layoutY="140.0" text="card" visible="false">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>
@@ -1298,6 +1394,11 @@
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font></Label>
+                  <Label id="nickname4" fx:id="card4" layoutX="73.0" layoutY="140.0" text="card" visible="false">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="school4" prefHeight="200.0" prefWidth="200.0">
@@ -1362,7 +1463,34 @@
                      </children>
                   </AnchorPane>
                   <AnchorPane id="table4" fx:id="tablePane4" layoutX="6.0" layoutY="112.0" prefHeight="198.0" prefWidth="160.0" />
-                  <AnchorPane id="professorsPane4" fx:id="professorsPane4" layoutX="4.0" layoutY="86.0" prefHeight="26.0" prefWidth="160.0" />
+                  <AnchorPane id="professorsPane4" fx:id="professorsPane4" layoutX="4.0" layoutY="86.0" prefHeight="26.0" prefWidth="160.0">
+                     <children>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="16.0" layoutY="1.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/greenProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="43.0" layoutY="1.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/redProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="70.0" layoutY="1.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/yellowProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="97.0" layoutY="1.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/pinkProf3D.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="124.0" layoutY="1.0" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../graphics/wooden_pieces/blueProf3D.png" />
+                           </image>
+                        </ImageView>
+                     </children></AnchorPane>
                   <AnchorPane fx:id="towerPane4" layoutX="10.0" prefHeight="88.0" prefWidth="160.0">
                      <children>
                         <ImageView fitHeight="47.0" fitWidth="40.0" layoutX="12.0" pickOnBounds="true" preserveRatio="true">
