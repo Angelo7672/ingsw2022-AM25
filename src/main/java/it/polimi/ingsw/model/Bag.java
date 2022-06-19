@@ -26,7 +26,10 @@ public class Bag {
         Collections.shuffle(bag);
         this.bagListener.notifyBag(bag);
     }
-    public void bagRestore(List<Integer> bag){ this.bag = bag; }
+    public void bagRestore(List<Integer> bag){
+        this.bagListener.notifyBag(bag);
+        this.bag = bag;
+    }
 
     public int extraction(){
         int colorExtracted;
