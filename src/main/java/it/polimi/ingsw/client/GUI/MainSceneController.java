@@ -37,6 +37,7 @@ public class MainSceneController implements SceneController {
     private HashMap<Integer, String> nicknamesMap;
     private HashMap<Integer, String> charactersMap;
     private HashMap<Integer, ImageView> charactersImageMap;
+    private HashMap<Integer, String> playedCards;
 
     private HashMap<Integer, AnchorPane> islandsMap;
     private HashMap<Integer, AnchorPane> schoolMap;
@@ -70,153 +71,198 @@ public class MainSceneController implements SceneController {
     private final String GREYTOWER = "/graphics/wooden_pieces/grey_tower.png";
 
 
+    @FXML
+    private Button useSpecialButton;
+    @FXML
+    private AnchorPane islandsPane;
 
-    @FXML private Button useSpecialButton;
-    @FXML private AnchorPane islandsPane;
+    @FXML
+    private AnchorPane school1;
+    @FXML
+    private AnchorPane school2;
+    @FXML
+    private AnchorPane school3;
+    @FXML
+    private AnchorPane school4;
 
-    @FXML private AnchorPane school1;
-    @FXML private AnchorPane school2;
-    @FXML private AnchorPane school3;
-    @FXML private AnchorPane school4;
+    @FXML
+    private AnchorPane userInfo1;
+    @FXML
+    private AnchorPane userInfo2;
+    @FXML
+    private AnchorPane userInfo3;
+    @FXML
+    private AnchorPane userInfo4;
 
-    @FXML private AnchorPane userInfo1;
-    @FXML private AnchorPane userInfo2;
-    @FXML private AnchorPane userInfo3;
-    @FXML private AnchorPane userInfo4;
+    @FXML
+    private ImageView character1;
+    @FXML
+    private ImageView character2;
+    @FXML
+    private ImageView character3;
+    @FXML
+    private ImageView character4;
 
-    @FXML private ImageView character1;
-    @FXML private ImageView character2;
-    @FXML private ImageView character3;
-    @FXML private ImageView character4;
+    @FXML
+    private HBox player1Box;
+    @FXML
+    private HBox player2Box;
+    @FXML
+    private VBox player3Box;
+    @FXML
+    private VBox player4Box;
 
-    @FXML private HBox player1Box;
-    @FXML private HBox player2Box;
-    @FXML private VBox player3Box;
-    @FXML private VBox player4Box;
-
-    public MainSceneController(){
-        this.nicknamesMap =new HashMap<>();
-        this.charactersMap =new HashMap<>();
-        this.charactersImageMap =new HashMap<>();
-        this.numberOfPlayers=4;
-        this.expertMode=false;
-        this.islandsMap= new HashMap<>();
+    public MainSceneController() {
+        this.nicknamesMap = new HashMap<>();
+        this.charactersMap = new HashMap<>();
+        this.charactersImageMap = new HashMap<>();
+        this.numberOfPlayers = 4;
+        this.expertMode = false;
+        this.islandsMap = new HashMap<>();
         this.towersMap = new HashMap<>();
         this.entrancesMap = new HashMap<>();
         this.tablesMap = new HashMap<>();
-        this.professorsMap=new HashMap<>();
+        this.professorsMap = new HashMap<>();
         this.schoolMap = new HashMap<>();
+        this.playedCards = new HashMap<>();
 
     }
 
     public void initializeScene() {
         //Platform.runLater(()->{
-            System.out.println("startMainScene");
-            if (numberOfPlayers == 2) {
-                player3Box.setVisible(false);
-                player4Box.setVisible(false);
+        System.out.println("initializeMainScene");
+        /*
+        this.numberOfPlayers=view.getNumberOfPlayers();
+        this.expertMode=view.getExpertMode();
+        for (int i = 0; i < view.getNumberOfPlayers(); i++) {
+            setUserInfo(view.getNickname(i), view.getCharacter(i), i);
+            System.out.println("User info: " + view.getNickname(i) + " " + view.getCharacter(i));
+        }*/
+        if (numberOfPlayers == 2) {
+            player3Box.setVisible(false);
+            player4Box.setVisible(false);
 
-            } else if (numberOfPlayers == 3) {
-                player4Box.setVisible(false);
-            }
+        } else if (numberOfPlayers == 3) {
+            player4Box.setVisible(false);
+        }
 
-            useSpecialButton.setVisible(expertMode);
+        useSpecialButton.setVisible(expertMode);
 
-            charactersImageMap.put(0, character1);
-            charactersImageMap.put(1, character2);
-            charactersImageMap.put(2, character3);
-            charactersImageMap.put(3, character4);
+        charactersImageMap.put(0, character1);
+        charactersImageMap.put(1, character2);
+        charactersImageMap.put(2, character3);
+        charactersImageMap.put(3, character4);
 
-            schoolMap.put(0, school1);
-            schoolMap.put(1, school2);
-            schoolMap.put(2, school3);
-            schoolMap.put(3, school4);
+        schoolMap.put(0, school1);
+        schoolMap.put(1, school2);
+        schoolMap.put(2, school3);
+        schoolMap.put(3, school4);
 
 
-            for(int i=0; i<numberOfPlayers; i++){
-                setNickname(nicknamesMap.get(i), i);
-                charactersImageMap.get(i).setImage(characterToImage(charactersMap.get(i)));
+        for (int i = 0; i < numberOfPlayers; i++) {
+            setNickname(nicknamesMap.get(i), i);
+            charactersImageMap.get(i).setImage(characterToImage(charactersMap.get(i)));
 
-                //maps the children of school panes, 0:school imageView, 1: entrance, 2: table 3: professors, 4: towers
-                this.entrancesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(1)); //maps all the entrances
-                this.tablesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(2)); //maps all the tables
-                this.professorsMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(3)); //maps all the professors panes
-                this.towersMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(4));//maps all the towers panes
+            //maps the children of school panes, 0:school imageView, 1: entrance, 2: table 3: professors, 4: towers
+            this.entrancesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(1)); //maps all the entrances
+            this.tablesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(2)); //maps all the tables
+            this.professorsMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(3)); //maps all the professors panes
+            this.towersMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(4));//maps all the towers panes
 
-            }
-            System.out.println(entrancesMap+"\n");
-            System.out.println(tablesMap+"\n");
-            System.out.println(professorsMap+"\n");
-            System.out.println(towersMap+"\n");
+        }
+        AnchorPane island;
+        for (int i = 1; i <= 12; i++) { //starts from 1 because 0 is useSpecialButton
+            island = (AnchorPane) islandsPane.getChildren().get(i);
+            islandsMap.put(i - 1, island);
+        }
 
-            AnchorPane island;
-            for(int i=1; i<=12; i++){ //starts from 1 because 0 is useSpecialButton
-                island = (AnchorPane) islandsPane.getChildren().get(i);
-                islandsMap.put(i-1, island);
-            }
+        schoolsInitialization();
+        islandsInitialization();
 
-            schoolsInitialization();
-            islandsInitialization();
-
-            gui.isMainScene=true;
+        gui.isMainSceneInitialized=true;
 
         //});
     }
-    //viene chiamato ogni volta che la scena principale viene settata a MAIN
-    public void startGame(){
-        //Platform.runLater(()->{
-            if(gui.active){
-                if(!gui.constants.isPlanningPhaseStarted()){
-                    try {
-                        Boolean result = proxy.startPlanningPhase();
-                        if(result) {
-                            gui.constants.resetAll();
-                            gui.constants.setPlanningPhaseStarted(true);
-                            //gui.switchScene(GUI.MAIN);
-                            //viene caricata di nuovo la scena MAIN, che chiama di nuovo questo metodo
-                            showCards();
 
-                        }//else
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    //se la isPlanningPhaseStarted è true, chiama phaseHandler
-                    if (!gui.constants.isCloudChosen()&&gui.active) {
-                        phaseHandler(gui.constants.lastPhase());
-                        //System.out.println("-->qui chiamerò phase Handler");
-                    }
+
+    //viene chiamato ogni volta che la scena principale viene settata a MAIN
+    public void startGame() {
+        /*Platform.runLater(()->{
+        if (gui.active) {
+            if (!gui.constants.isPlanningPhaseStarted()) {
+                try {
+                    Boolean result = proxy.startPlanningPhase();
+                    if (result) {
+                        gui.constants.resetAll();
+                        gui.constants.setPlanningPhaseStarted(true);
+                        //gui.switchScene(GUI.MAIN);
+                        //viene caricata di nuovo la scena MAIN, che chiama di nuovo questo metodo
+                        showCards();
+                        /*
+                        String answer=proxy.playCard(gui.getLastPlayedCard());
+                        if(answer.equalsIgnoreCase("ok")){
+                            System.out.println("tutto ok");
+                        } else if(answer.equalsIgnoreCase("move not allowed")){
+                            showCards();
+                        }
+
+                    }else
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                //se la isPlanningPhaseStarted è true, chiama phaseHandler
+                if (!gui.constants.isCloudChosen() && gui.active) {
+                    phaseHandler(gui.constants.lastPhase());
+                    //System.out.println("-->qui chiamerò phase Handler");
                 }
             }
-        //});
+        }
+        });*/
 
     }
 
-    public void showCards(){
+    public void showCards() {
+        while(gui.getLastPlayedCard()==null){
+            gui.loadScene(GUI.CARDS);
+        }
+        ; // da qui il "controllo" passa a CardsSceneController
+            //});
+        Platform.runLater(()->{
+            if(gui.constants.isCardPlayed()){
+                try {
+                    proxy.playCard(gui.getLastPlayedCard());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else gui.loadScene(GUI.CARDS);
+        });
         //fa comparire la finestra con le carte
         //Platform.runLater(()->{
         //System.out.println("inside show cards method");
-        gui.loadScene(GUI.CARDS); // da qui il "controllo" passa a CardsSceneController
-        //});
+
 
     }
 
 
     //prende in ingresso la fase di gioco e chiama i metodi corrispondenti
     //ho cercato di farlo simile alla cli, ma potrebbe essere sbagliato
-    public void phaseHandler(String phase){
+    public void phaseHandler(String phase) {
         //System.out.println("5. Entered phaseHandler method");
         //System.out.println("6. isStartGame? "+gui.constants.isStartGame());
-        if(!gui.constants.isStartGame()){
+        if (!gui.constants.isStartGame()) {
             gui.constants.setStartGame(true);
-            gui.switchScene(GUI.MAIN);}
+            gui.switchScene(GUI.MAIN);
+        }
         /*if(phase.equals("PlayCard")) {
             System.out.println("PLAY CARD, about to call showCard method");
             showCards(); //carica la nuova scena con le carte
         }*/
-        if(!gui.constants.isActionPhaseStarted()) {
+        if (!gui.constants.isActionPhaseStarted()) {
             try {
                 gui.constants.setActionPhaseStarted(proxy.startActionPhase());
             } catch (IOException e) {
@@ -224,8 +270,7 @@ public class MainSceneController implements SceneController {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             switch (phase) {
                 //case ("MoveStudent") -> moveStudents();
                 //case ("MoveMother") -> moveMotherNature();
@@ -233,43 +278,44 @@ public class MainSceneController implements SceneController {
             }
         }
     }
+
     //inizializza le isole, nascondendo le torri (che non ci sono a inizio partita)
-    public void islandsInitialization(){
+    public void islandsInitialization() {
         AnchorPane island;
 
-        for(int i=0; i<12; i++){
+        for (int i = 0; i < 12; i++) {
             island = islandsMap.get(i);
 
-            for(int j=1; j<=13;j++) {
+            for (int j = 1; j <= 13; j++) {
                 island.getChildren().get(j).setVisible(false);
             }
         }
     }
 
     //inizializza le scuole, mettendo le torri del colore giusto a seconda del numero di giocatori
-    public void schoolsInitialization(){
+    public void schoolsInitialization() {
         ImageView tower;
         for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
             tower = (ImageView) towersMap.get(0).getChildren().get(i);
             tower.setImage(new Image(WHITETOWER));
         }
-        if(numberOfPlayers==2){
-            for(int i=0; i<towersMap.get(1).getChildren().size(); i++){
+        if (numberOfPlayers == 2) {
+            for (int i = 0; i < towersMap.get(1).getChildren().size(); i++) {
                 tower = (ImageView) towersMap.get(1).getChildren().get(i);
                 tower.setImage(new Image(BLACKTOWER));
             }
         }
-        if(numberOfPlayers==3){
-            for(int i=0; i<towersMap.get(1).getChildren().size(); i++){
+        if (numberOfPlayers == 3) {
+            for (int i = 0; i < towersMap.get(1).getChildren().size(); i++) {
                 tower = (ImageView) towersMap.get(1).getChildren().get(i);
                 tower.setImage(new Image(BLACKTOWER));
             }
-            for(int i=0; i<towersMap.get(2).getChildren().size(); i++){
+            for (int i = 0; i < towersMap.get(2).getChildren().size(); i++) {
                 tower = (ImageView) towersMap.get(2).getChildren().get(i);
                 tower.setImage(new Image(GREYTOWER));
             }
         }
-        if(numberOfPlayers==4) {
+        if (numberOfPlayers == 4) {
             for (int i = 0; i < towersMap.get(1).getChildren().size(); i++) {
                 tower = (ImageView) towersMap.get(1).getChildren().get(i);
                 tower.setImage(new Image(WHITETOWER));
@@ -290,68 +336,73 @@ public class MainSceneController implements SceneController {
         Image image = null;
         if (characterName.equalsIgnoreCase("WIZARD")) {
             image = new Image(WIZARD);
-        } else if(characterName.equalsIgnoreCase( "WITCH")) {
+        } else if (characterName.equalsIgnoreCase("WITCH")) {
             image = new Image(WITCH);
-        } else if(characterName.equalsIgnoreCase("SAMURAI")) {
+        } else if (characterName.equalsIgnoreCase("SAMURAI")) {
             image = new Image(SAMURAI);
-        } else if (characterName.equalsIgnoreCase("KING")){
+        } else if (characterName.equalsIgnoreCase("KING")) {
             image = new Image(KING);
         }
         return image;
     }
-    public void setNickname(String nickname, int playerRef){
+
+    public void setNickname(String nickname, int playerRef) {
         Label nicknameLabel;
-        if(playerRef==0){
-            nicknameLabel= (Label) userInfo1.getChildren().get(1);
+        if (playerRef == 0) {
+            nicknameLabel = (Label) userInfo1.getChildren().get(1);
             nicknameLabel.setText(nickname);
-        } else if(playerRef==1){
-            nicknameLabel= (Label) userInfo2.getChildren().get(1);
+        } else if (playerRef == 1) {
+            nicknameLabel = (Label) userInfo2.getChildren().get(1);
             nicknameLabel.setText(nickname);
-        } else if(playerRef==2){
-            nicknameLabel= (Label) userInfo3.getChildren().get(1);
+        } else if (playerRef == 2) {
+            nicknameLabel = (Label) userInfo3.getChildren().get(1);
             nicknameLabel.setText(nickname);
-        } else if(playerRef==3) {
-            nicknameLabel= (Label) userInfo4.getChildren().get(1);
+        } else if (playerRef == 3) {
+            nicknameLabel = (Label) userInfo4.getChildren().get(1);
             nicknameLabel.setText(nickname);
         }
     }
 
 
-    public void moveStudent(){
-
-    }
-    public void moveMotherNature(){
+    public void moveStudent() {
 
     }
 
     @Override
     public void setGUI(GUI gui) {
-        this.gui=gui;
+        this.gui = gui;
     }
 
     @Override
     public void setProxy(Exit proxy) {
-        this.proxy=proxy;
+        this.proxy = proxy;
+    }
+
+    public void setView(View view) {
+        this.view = view;
+        System.out.println("la view è stata settata, view: "+this.view);
     }
 
 
-    public void setNumberOfPlayers(int numberOfPlayers){
-        this.numberOfPlayers=numberOfPlayers;
+
+    public void setNumberOfPlayers(int numberOfPlayers) {
+        this.numberOfPlayers = numberOfPlayers;
     }
 
     public void setExpertMode(boolean expertMode) {
         this.expertMode = expertMode;
     }
 
-    public void setUserInfo(String nickname, String character, int playerRef ) {
-        nicknamesMap.put(playerRef,nickname);
+    public void setUserInfo(String nickname, String character, int playerRef) {
+        nicknamesMap.put(playerRef, nickname);
         charactersMap.put(playerRef, character);
     }
-    public void setMotherPosition(int islandRef){
+
+    public void setMotherPosition(int islandRef) {
         ImageView motherNature;
-        for(int i=0; i<islandsMap.size(); i++){
+        for (int i = 0; i < islandsMap.size(); i++) {
             motherNature = (ImageView) islandsMap.get(i).getChildren().get(1); //children 1 is always MotherNature
-            if(islandRef == i){
+            if (islandRef == i) {
                 motherNature.setVisible(true);
             } else
                 motherNature.setVisible(false);
@@ -362,21 +413,20 @@ public class MainSceneController implements SceneController {
         Label studentLabel;
         ImageView studentImage;
 
-        studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color+5); //Labels are located 5 position after images
+        studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5); //Labels are located 5 position after images
         studentLabel.setText(String.valueOf(newStudentsValue));
         studentImage = (ImageView) entrancesMap.get(playerRef).getChildren().get(color);
         if (newStudentsValue != 0) {
             studentLabel.setVisible(true);
             studentImage.setVisible(true);
         } else {
-                studentLabel.setVisible(false);
-                studentImage.setVisible(false);
-            }
+            studentLabel.setVisible(false);
+            studentImage.setVisible(false);
         }
+    }
 
 
-
-    public void setStudentsTable(int playerRef, int color, int newStudentsValue){
+    public void setStudentsTable(int playerRef, int color, int newStudentsValue) {
         /*Label studentLabel;
         ImageView studentImage;
 
@@ -393,26 +443,53 @@ public class MainSceneController implements SceneController {
     }
 
 
-    public void setStudentsIsland(int islandRef, int color, int newStudentsValue){
+    public void setStudentsIsland(int islandRef, int color, int newStudentsValue) {
         AnchorPane island = islandsMap.get(islandRef);
         Label studentLabel;
         ImageView studentImage;
-        studentImage= (ImageView) island.getChildren().get(color+3);
-        studentLabel= (Label) island.getChildren().get(color+8);
+        studentImage = (ImageView) island.getChildren().get(color + 3);
+        studentLabel = (Label) island.getChildren().get(color + 8);
         studentLabel.setText(String.valueOf(newStudentsValue));
         studentImage.setVisible(true);
         studentLabel.setVisible(true);
 
     }
 
-    public void setStudentsCloud(int componentRef, int color, int newStudentsValue){
+    public void setStudentsCloud(int componentRef, int color, int newStudentsValue) {
 
     }
 
 
+    public void setProfessor(int schoolRef, int color, boolean newProfessorValue) {
+        ImageView professor = new ImageView(new Image(colorToImage(color, 1)));
+        AnchorPane professorsTable = professorsMap.get(schoolRef);
+        if(newProfessorValue)
+            professorsTable.getChildren().add(0, professor);
+            professorsTable.getChildren().get(0).setVisible(true);
+            professorsTable.getChildren().get(0).setVisible(true);
+            professorsTable.getChildren().get(0).setVisible(true);
 
+    }
 
-
-
-
+    public String colorToImage(int color, int pieceType) {
+        String image = null;
+        if (pieceType == 0) {
+            switch (color) {
+                case 0 -> image = GREENSTUDENT;
+                case 1 -> image = REDSTUDENT;
+                case 2 -> image = YELLOWSTUDENT;
+                case 3 -> image = PINKSTUDENT;
+                case 4 -> image = BLUESTUDENT;
+            }
+        } else if (pieceType == 1) {
+            switch (color) {
+                case 0 -> image = GREENPROF;
+                case 1 -> image = REDPROF;
+                case 2 -> image = YELLOWPROF;
+                case 3 -> image = PINKPROF;
+                case 4 -> image = BLUEPROF;
+            }
+        }
+        return image;
+    }
 }

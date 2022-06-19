@@ -20,6 +20,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.sun.javafx.application.PlatformImpl.runAndWait;
+
 public class GUI extends Application implements TowersListener, ProfessorsListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener {
 
@@ -27,9 +29,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private View view;
     private Socket socket;
     protected Stage primaryStage;
+    private Thread javafxThread;
 
     protected boolean active;
     protected boolean isMainSceneInitialized;
+    protected boolean areListenerSet;
+    protected boolean isViewSet;
 
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String LOGIN = "LoginScene.fxml";
@@ -45,6 +50,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     private HashMap<String, Scene> scenesMap; //maps the scene name with the scene itself
     private HashMap<String, SceneController > sceneControllersMap; // maps the scene name with the scene controller
+    private String lastPlayedCard;
 
     public static void main(String[] args) {
         launch();
@@ -65,7 +71,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         for(int i=0; i<4; i++){
             initialStudentsEntrance.add(new int[]{0,0,0,0,0});
         }
-        isMainSceneInitialized=false;
+
 
     }
 
@@ -77,6 +83,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         primaryStage.setResizable(false);
         primaryStage.centerOnScreen();
         primaryStage.show();
+
+        isMainSceneInitialized=false;
+        areListenerSet=false;
 
         scenesSetup();
 
@@ -107,8 +116,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     //called when the GUI is launched, load all the scenes in advance, mapping them and setting the controllers
     public void scenesSetup() {
-
-        String[] scenes = new String[]{SETUP, LOGIN, MAIN, CARDS};
+        String[] scenes = new String[]{SETUP, LOGIN, MAIN, CARDS, WAITING};
         try {
             for(String scene: scenes) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + scene));
@@ -127,87 +135,106 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     //initialize the scene if necessary, passing parameters to the controller
     public void switchScene(String sceneName) {
         primaryStage.setScene(scenesMap.get(sceneName));
-        //System.out.println("switched to scene: "+ sceneName);
         primaryStage.show();
         primaryStage.centerOnScreen();
+    }
 
-        if (sceneName.equals(MAIN)) {
-            MainSceneController controller= (MainSceneController) sceneControllersMap.get(MAIN);
-            controller.startGame();
 
-        } else if (sceneName.equals(WAITING)) {
-            //switched to when login is completed, calls setView
-            FXMLLoader loader = new FXMLLoader();
-            Parent root = null;
-            try {
-                loader.setLocation(getClass().getResource("/fxml/" + sceneName));
-                root = loader.load();
-                primaryStage.setScene(new Scene(root));
-            } catch (IOException e) {
-                e.printStackTrace();
+
+    public void startGame(){
+        Platform.runLater(()-> {
+            switchScene(WAITING);
+            if (!isViewSet) {
+                 setView();
+            } else {
+                if (!isMainSceneInitialized) {
+                    initializeMainScene();
+                } else {
+                    if (!constants.isStartGame()) {
+                        constants.setStartGame(true);
+                        startGame();
+                    } else{
+                        if (!constants.isPlanningPhaseStarted()) {
+                            phaseHandler("PlanningPhase");
+                    } else
+                        phaseHandler(constants.lastPhase());
+                    }
+                }
             }
-            setView();
+        });
+    }
+
+    public void setView() {
+        try {
+            View view = proxy.startView();
+            switchScene(WAITING);
+            System.out.println(view);
+            if (view != null) {
+                this.view = view;
+                //controller.setView(view);
+                isViewSet = true;
+                view.setCoinsListener(this);
+                view.setInhibitedListener(this);
+                view.setIslandListener(this);
+                view.setMotherPositionListener(this);
+                view.setPlayedCardListener(this);
+                view.setProfessorsListener(this);
+                view.setStudentsListener(this);
+                view.setTowersListener(this);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        startGame();
 
         }
-    }
-    //tries to start the view while the gui is in WaitingScene, if succedes switches to main scene
-    public void setView(){
-        Platform.runLater(()->{
-            try {
-                //System.out.println("view not started yet");
 
-                View view = proxy.startView();
-                if(view!=null) {
-                    this.view = view;
-                    //System.out.println("view started");
 
-                    setupView();
-                    initializeMainScene();
-                    switchScene(MAIN);
 
-                } else System.out.println("Errore");
+    public void phaseHandler(String phase){
+        System.out.println("started phase handler!");
+        //String currentPhase = constants.lastPhase();
+        switch (phase){
+            case "PlanningPhase"-> startPlanningPhase();
+            case "PlayCard"-> switchScene(CARDS);
+            case "StartTurn"-> switchScene(MAIN);
+            //case "MoveStudent"-> controller.unlockStudentMovement(currentPlayer);
+            //case "MoveMother"->
+            //case "ChoseCloud"->
+            //case "End Turn"->
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
-        });
-    }
-    //set the GUI as listener for the updates from the View
-    public void setupView(){
-        //System.out.println("setupView");
-        view.setCoinsListener(this);
-        view.setInhibitedListener(this);
-        view.setIslandListener(this);
-        view.setMotherPositionListener(this);
-        view.setPlayedCardListener(this);
-        view.setProfessorsListener(this);
-        view.setStudentsListener(this);
-        view.setTowersListener(this);
-    }
+        }
 
-    //called when main scene is set in switchScene method
+
     public void initializeMainScene() {
-        Platform.runLater(()->{
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            //System.out.println("Number of plaeyrs is "+view.getNumberOfPlayers());
-            //System.out.println("Expert mode is "+view.getExpertMode());
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        controller.setNumberOfPlayers(view.getNumberOfPlayers());
+        controller.setExpertMode(view.getExpertMode());
+        for (int i = 0; i < view.getNumberOfPlayers(); i++) {
+            String nickname=null;
+            String character=null;
+                do {
+                    nickname= view.getNickname(i);
+                    character=view.getCharacter(i);
+                } while (view.getNickname(i)==null || view.getCharacter(i)==null);
 
-            controller.setNumberOfPlayers(view.getNumberOfPlayers());
-            controller.setExpertMode(view.getExpertMode());
-            for (int i = 0; i < view.getNumberOfPlayers(); i++){
-                //System.out.println("UserName is: "+view.getNickname(i)+" Character is: "+view.getCharacter(i));
-                controller.setUserInfo(view.getNickname(i), view.getCharacter(i), i);
+            controller.setUserInfo(view.getNickname(i), view.getCharacter(i), i);
+            //controller.setUserInfo(nickname, character, i);
+            System.out.println("User info: " + view.getNickname(i) + " " + view.getCharacter(i));
+        }
 
-            }
-            controller.initializeScene();
-            sendInitialInformation();
-            isMainSceneInitialized=true;
-            //switchScene(MAIN);
-        });
+        controller.initializeScene();
+        sendInitialInformation();
+
+        startGame();
+
+
+
     }
 
     //used to load a scene in a new stage (window), instead of the primaryStage
@@ -223,7 +250,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
         stage.centerOnScreen();
         stage.show();
-        //System.out.println("Loaded scene "+sceneName);
 
     }
 
@@ -237,9 +263,45 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         this.proxy = proxy;
     }
 
+    public void sendInitialInformation(){
+        //Platform.runLater(()->{
+        if (isMainSceneInitialized) {
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.setMotherPosition(initialMotherPosition);
+            for (int i = 0; i < view.getNumberOfPlayers(); i++) {
+                for (int j = 0; j < 5; j++) {
+                    controller.setStudentsEntrance(i, j, initialStudentsEntrance.get(i)[j]);
+                }
+            }
+            for (int i = 0; i < initialStudentsIsland.size(); i++) {
+                for (int j = 0; j < 5; j++) {
+                    controller.setStudentsIsland(i, j, initialStudentsIsland.get(i)[j]);
+                }
+            }
+        }
+        //});
 
+    }
 
+    public void startPlanningPhase(){
+        //Platform.runLater(()->{
+            try {
+                if(proxy.startPlanningPhase()){
+                    //switchScene(CARDS);
+                    constants.setPlanningPhaseStarted(true);
+                    startGame();
+                    //switchScene(WAITING);
 
+                } else
+                    switchScene(WAITING);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        //});
+    }
 
 
 
@@ -262,7 +324,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void notifyMotherPosition(int newMotherPosition) {
         Platform.runLater(()->{
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            if(isMainScene){
+            if(isMainSceneInitialized){
                 controller.setMotherPosition(newMotherPosition);
             } else
                 this.initialMotherPosition=newMotherPosition;
@@ -270,33 +332,17 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         });
 
     }
-    public void sendInitialInformation(){
-        //Platform.runLater(()->{
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            controller.setMotherPosition(initialMotherPosition);
-            for(int i=0; i< view.getNumberOfPlayers(); i++){
-                for(int j=0; j<5; j++){
-                    controller.setStudentsEntrance(i,j, initialStudentsEntrance.get(i)[j] );
-                }
-            }
-            for(int i=0; i< initialStudentsIsland.size(); i++){
-                for(int j=0; j<5; j++){
-                    controller.setStudentsIsland(i,j, initialStudentsIsland.get(i)[j] );
-                }
-            }
 
-        //});
-
-    }
 
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
         Platform.runLater(()->{
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            CardsSceneController controller = (CardsSceneController) sceneControllersMap.get(CARDS);
+            controller.setPlayedCard(playerRef, assistantCard);
         });
 
     }
-
+    //restore
     @Override
     public void notifyHand(int playerRef, ArrayList<String> hand) {
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
@@ -304,7 +350,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
-
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        Platform.runLater(()->{
+            controller.setProfessor(playerRef,color,newProfessorValue);
+        });
     }
 
     @Override
@@ -312,7 +361,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         Platform.runLater(() -> {
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
 
-            if(isMainScene){
+            if(isMainSceneInitialized){
                 switch (place) {
                         case 0 -> controller.setStudentsEntrance(componentRef, color, newStudentsValue);
                         case 1 -> controller.setStudentsTable(componentRef, color, newStudentsValue);
@@ -351,11 +400,34 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void notifyTowerColor(int islandRef, int newColor) {
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
         Platform.runLater(()->{
-            if(isMainScene){
+            if(isMainSceneInitialized){
                 //controller.setTowerColor()
             }
 
         });
+    }
+
+    public void setLastPlayedCard(String playedCard) {
+        this.lastPlayedCard=playedCard;
+        constants.setCardPlayed(true);
+        /*Platform.runLater(()->{
+            try {
+                String result = proxy.playCard(playedCard);
+                if(result.equalsIgnoreCase("ok")){
+                    constants.setCardPlayed(true);
+                } else {
+                    loadScene(CARDS);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });*/
+
+    }
+    public String getLastPlayedCard() {
+        return this.lastPlayedCard;
     }
 }
 

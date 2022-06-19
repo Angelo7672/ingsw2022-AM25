@@ -9,11 +9,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CardsSceneController implements SceneController{
     private String playedCard;
     private GUI gui;
     private Exit proxy;
+    private HashMap<Integer, String> currentPlayedCards;
     private ArrayList<String> alreadyPlayedCards;
 
     @FXML private Button lionButton;
@@ -30,7 +32,9 @@ public class CardsSceneController implements SceneController{
     @FXML private Button confirmButton;
 
     public CardsSceneController(){
-        alreadyPlayedCards= new ArrayList<>();
+
+        currentPlayedCards= new HashMap<>();
+        alreadyPlayedCards = new ArrayList<>();
     }
 
     @FXML
@@ -58,43 +62,33 @@ public class CardsSceneController implements SceneController{
         }
     }
 
-    //quello che succede quando viene premuto il bottone confirm
     @FXML
     void confirmPressed(ActionEvent event) {
-        //Platform.runLater(()->{
-            try {
-                String result = proxy.playCard(playedCard); //qui chiama il metodo del proxy
-                Stage stage = (Stage) confirmButton.getScene().getWindow();
-                stage.close();
-                alreadyPlayedCards.add(playedCard);
+        String result = null; //qui chiama il metodo del proxy
+        try {
+            result = proxy.playCard(playedCard);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        alreadyPlayedCards.add(playedCard);
 
-                //se la risposta è ok, chiude la scena
-                if (result.equalsIgnoreCase("ok")) {
-                    //Platform.runLater(()->{
-                        gui.constants.setCardPlayed(true);
-                        //Stage stage = (Stage) confirmButton.getScene().getWindow();
-                        //stage.close();
-                        gui.switchScene(GUI.MAIN);
-                        //questo fa chiamare di nuovo il metodo startGame in MainSceneController
+    if (result.equalsIgnoreCase("ok")) {
 
-                    //});
+        gui.constants.setCardPlayed(true);
+        gui.phaseHandler("StartTurn");
 
-                } else if(result.equalsIgnoreCase("move not allowed")){
-                    System.out.println("move not allowed");
-                } else {
-                    System.out.println("Error");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        //});
 
+    } else if (result.equalsIgnoreCase("move not allowed")) {
+        System.out.println("move not allowed");
+    } else {
+        System.out.println("Error");
+    }
     }
 
     public void sceneInitialize(){
-        //Platform.runLater(()->{
+
             for(String card : alreadyPlayedCards){
                 if(card.equalsIgnoreCase("lion")){
                     lionButton.setVisible(false);
@@ -118,7 +112,6 @@ public class CardsSceneController implements SceneController{
                     turtleButton.setVisible(false);
                 }
             }
-        //});
 
     }
 
@@ -131,4 +124,9 @@ public class CardsSceneController implements SceneController{
     public void setProxy(Exit proxy) {
         this.proxy=proxy;
     }
+    public void setPlayedCard(int playerRef, String card){
+        this.currentPlayedCards.put(playerRef, card);
+    }
+
+
 }
