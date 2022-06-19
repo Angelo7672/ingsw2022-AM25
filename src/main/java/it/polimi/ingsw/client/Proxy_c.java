@@ -49,7 +49,6 @@ public class Proxy_c implements Exit {
 
     public boolean readyForLogin() throws IOException {
         send(new GenericMessage("Ready for login!"));
-        System.out.println("MESSAGE SENT: Ready for Login!-2");
         tempObj = receive();
         if(tempObj instanceof LoginRestoreAnswer) return true;
         return false;
@@ -57,7 +56,6 @@ public class Proxy_c implements Exit {
     }
 
     public String first() throws IOException, ClassNotFoundException {
-        System.out.println("MESSAGE SENT: Ready for Login!");
         send(new GenericMessage("Ready for login!"));
         tempObj = receive();
         if(tempObj instanceof SoldOutAnswer) return ((SoldOutAnswer) tempObj).getMessage();
@@ -95,7 +93,6 @@ public class Proxy_c implements Exit {
 
     public boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
         send(new SetupConnection(nickname, character));
-        System.out.println("MESSAGE SENT: setupConnection with: "+nickname+character);
         tempObj = receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
         else return false;
@@ -111,11 +108,9 @@ public class Proxy_c implements Exit {
         else return false;
 
         send(new SetupGame(numberOfPlayers, isExpert));
-        System.out.println("MESSAGE SENT: setupGame with: "+numberOfPlayers+expertMode);
         tempObj = receive();;
         if(!((GenericAnswer)tempObj).getMessage().equals("ok")) return false;
         send(new GenericMessage("Ready for login!"));
-        System.out.println("MESSAGE SENT: Ready for Login");
         tempObj = receive();
         return true;
     }
@@ -130,18 +125,15 @@ public class Proxy_c implements Exit {
     }
 
     public View startView() throws IOException, InterruptedException {
-        System.out.println("MESSAGE SENT: Ready to start");
         send(new GenericMessage("Ready to start"));
         synchronized (lock2){
             if(!view.isInitializedView()) lock2.wait();
         }
-        System.out.println("ANSWER RECEIVED: returning view");
         return view;
     }
 
     public boolean startPlanningPhase() throws ClassNotFoundException, IOException {
         send(new GenericMessage("Ready for Planning Phase"));
-        System.out.println("MESSAGE SENT: Ready for Planning Phase");
         while(true) {
             tempObj = receive();
             if(((PlayCard)tempObj).getMessage().equals("Play card!")){
@@ -152,7 +144,6 @@ public class Proxy_c implements Exit {
 
     public String playCard(String card) throws IOException, ClassNotFoundException {
         send(new CardMessage(card));
-        System.out.println("MESSAGE SENT CardMessage with: "+card);
         tempObj = receive();
         if(tempObj instanceof GenericAnswer) {
             view.setCards(card);
@@ -165,7 +156,6 @@ public class Proxy_c implements Exit {
     }
 
     public boolean startActionPhase() throws IOException, ClassNotFoundException {
-        System.out.println("MESSAGE SENT: Ready for action phase");
         send(new GenericMessage("Ready for Action Phase"));
         while(true) {
             tempObj = receive();
@@ -208,8 +198,6 @@ public class Proxy_c implements Exit {
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
         send(new UseSpecial(special));
         tempObj = receive();
-        System.out.println("special risposta "+tempObj);
-        if(tempObj instanceof GenericAnswer) System.out.println("Messaggio "+((GenericAnswer) tempObj).getMessage());
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer) tempObj).getMessage().equals("ok");
         return false;
     }
@@ -236,7 +224,6 @@ public class Proxy_c implements Exit {
     public boolean useSpecial(int special, int playerRef, int ref) throws IOException {
         send(new Special1Message(playerRef, ref));
         tempObj = receive();
-        System.out.println(tempObj);
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
         return false;
     }
@@ -244,8 +231,6 @@ public class Proxy_c implements Exit {
     //send message to server
     public void send(Message message) throws IOException {
         try {
-            //System.out.println("SENT "+message);
-            //if(message instanceof GenericAnswer) System.out.println("MESSAGE "+((GenericAnswer) message).getMessage());
             outputStream.reset();
             outputStream.writeObject(message);
             outputStream.flush();
@@ -265,7 +250,6 @@ public class Proxy_c implements Exit {
             tmp = answersList.get(0);
             answersList.remove(0);
         }
-        //System.out.println("ANSWER RECEIVED: "+tmp);
         return tmp;
     }
 
@@ -273,12 +257,23 @@ public class Proxy_c implements Exit {
         receive = new Thread(() -> {
             ArrayList<Answer> answersTmpList = new ArrayList<>();
             Answer tmp;
+            try {
+                this.socket.setSoTimeout(15000);
+            }
+            catch (SocketException e){
+                try {
+                    serverOfflineListener.notifyServerOffline();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
             while (!disconnected){
                 try {
                     tmp = (Answer) inputStream.readObject();
-                    //System.out.println("RECEIVE "+tmp);
+                    System.out.println(tmp);
                     if(tmp instanceof PongAnswer){
-                        pingCounter=0;
+                        //pingCounter=0;
+                        //this.socket.setSoTimeout(15000);
                     }
                     else if(tmp instanceof GameInfoAnswer) {
                         synchronized (lock2){
@@ -329,7 +324,6 @@ public class Proxy_c implements Exit {
                         }
                     }
                     else if(tmp instanceof CoinsMessage) {
-                        System.out.println(tmp);
                         synchronized (lock2) {
                             if (!view.isInitializedView()) lock2.wait();
                             view.setCoins((CoinsMessage) tmp);
@@ -354,6 +348,7 @@ public class Proxy_c implements Exit {
                         }
                     }
                     else if(tmp instanceof MaxMovementMotherNatureAnswer){
+                        System.out.println("max");
                         synchronized (lock2) {
                             if (!view.isInitializedView()) lock2.wait();
                             view.setMaxStepsMotherNature(((MaxMovementMotherNatureAnswer) tmp).getMaxMovement());
@@ -457,8 +452,8 @@ public class Proxy_c implements Exit {
             try {
                 Thread.sleep(5000);
                 send(new PingMessage());
-                pingCounter++;
-                if(pingCounter==3) serverOfflineListener.notifyServerOffline();
+                //pingCounter++;
+                //if(pingCounter==3) serverOfflineListener.notifyServerOffline();
             } catch (IOException e) {
                 System.err.println("io");
             } catch (InterruptedException e){

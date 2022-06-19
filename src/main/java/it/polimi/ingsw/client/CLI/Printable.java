@@ -96,7 +96,7 @@ public class Printable {
             }
             case (1) -> printTowersValue(componentRef);
         }
-        System.out.println();
+        //System.out.println();
     }
 
     protected void printStudentsChange(int place, int componentRef){

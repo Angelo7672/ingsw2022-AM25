@@ -129,8 +129,10 @@ public class View {
     }
     public void setSchoolTowers(SchoolTowersMessage msg){
         if(msg.getTowers()<0) schoolBoards.get(msg.getPlayerRef()).setTowersNumber(0);
-        else schoolBoards.get(msg.getPlayerRef()).setTowersNumber(msg.getTowers());
-        this.towersListener.notifyTowersChange(0, msg.getPlayerRef(),msg.getTowers());
+        else if(numberOfPlayers!=4 || msg.getPlayerRef()!=1 || msg.getPlayerRef()!=3) {
+            schoolBoards.get(msg.getPlayerRef()).setTowersNumber(msg.getTowers());
+            this.towersListener.notifyTowersChange(0, msg.getPlayerRef(),msg.getTowers());
+        }
     }
     public void setProfessors(ProfessorMessage msg){
         schoolBoards.get(msg.getPlayerRef()).setProfessors(msg.getColor(), msg.isProfessor());

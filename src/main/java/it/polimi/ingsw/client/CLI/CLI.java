@@ -476,6 +476,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     private void moveStudents() {
         printable.cli();
         boolean finished = false;
+        System.out.println();
         do {
             String accepted;
             String color=null;
@@ -484,7 +485,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             int islandRef = -1;
             try {
                 while(color==null) {
-                    System.out.println();
                     System.out.print(SPACE+"Which student do you want to move? Insert color ");
                     color = readNext();
                     colorInt = translateColor(color);
@@ -492,6 +492,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                         System.out.println();
                         System.out.println(ANSI_RED+SPACE+"Error, enter an existing color"+ANSI_RESET);
                         color = null;
+                        System.out.println();
                     }
                 }
                 while(where==null) {
@@ -507,11 +508,11 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 System.out.println();
                 if (where.equalsIgnoreCase("island")) {
                     while (islandRef==-1) {
-                        System.out.println();
                         System.out.print(SPACE+"Which island? insert the number ");
                         String intString = readNext();
                         islandRef = Integer.parseInt(intString);
                         islandRef = islandRef - 1;
+                        System.out.println();
                         if(islandRef<0 || islandRef>=view.getIslandSize()){
                             System.out.println();
                             System.out.println(ANSI_RED+SPACE+"Error, insert an existing island"+ANSI_RESET);
@@ -522,8 +523,8 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 accepted = proxy.moveStudent(colorInt, where, islandRef);
                 if (accepted.equals("transfer complete")) finished = true;
                 else if(accepted.equals("move not allowed")) {
-                    System.out.println();
                     System.out.println(ANSI_RED+SPACE+"Move not allowed"+ANSI_RESET);
+                    System.out.println();
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println();
@@ -540,7 +541,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         int steps = -1;
         try {
             do {
-                System.out.println();
                 printable.printMotherNature();
                 System.out.print(SPACE+"How many steps do you want to move Mother Nature? Maximum number of steps "+view.getMaxStepsMotherNature()+" ");
                 String intString = readNext();
@@ -567,7 +567,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         try{
             do {
                 printable.printCloud();
-                System.out.println();
                 System.out.print(SPACE+"Which cloud do you want? ");
                 String intString = readNext();
                 cloud = Integer.parseInt(intString);
@@ -712,7 +711,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         if(constants.isStartGame()) {
             //System.out.println();
             System.out.println("New play: "+"\t"+"\t"+" island "+(islandToDelete+1)+" had been united.");
-            System.out.println();
         }
     }
 
