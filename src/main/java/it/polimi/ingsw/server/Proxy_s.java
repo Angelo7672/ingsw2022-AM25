@@ -48,11 +48,11 @@ public class Proxy_s implements Exit {
         try {
             System.out.println("Waiting for players ...");
 
-            VirtualClient firstClient = new VirtualClient(serverSocket.accept(), server, this, limiter);
+            VirtualClient firstClient = new VirtualClient(serverSocket.accept(), server, this);
             System.out.println("Connected players: " + limiter);
             user.add(firstClient);
             executor.submit(firstClient);
-            VirtualClient secondClient = new VirtualClient(serverSocket.accept(), server, this, limiter);   //There must be two players to play
+            VirtualClient secondClient = new VirtualClient(serverSocket.accept(), server, this);   //There must be two players to play
             System.out.println("Connected players: " + limiter);
             user.add(secondClient);
 
@@ -60,7 +60,7 @@ public class Proxy_s implements Exit {
             executor.submit(secondClient);
 
             while (limiter < connectionsAllowed) {
-                VirtualClient virtualClient = new VirtualClient(serverSocket.accept(), server, this, limiter);
+                VirtualClient virtualClient = new VirtualClient(serverSocket.accept(), server, this);
                 user.add(virtualClient);
                 System.out.println("Connected players: " + limiter);
                 executor.submit(virtualClient);
@@ -69,13 +69,12 @@ public class Proxy_s implements Exit {
             soldOut.start();
             synchronized (this){ this.wait(); }
 
-            if(restoreGame){
-                server.restoreGame();
-                virtualClientInOrderAfterRestore();
-            } else {
+            if(restoreGame) server.restoreGame();
+            else {
                 server.createGame();
                 server.initializeGame();
             }
+            virtualClientInOrder();
             server.startGame();
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -223,7 +222,7 @@ public class Proxy_s implements Exit {
     }
     public boolean isRestoreGame() { return restoreGame; }
     public void setRestoreGame(boolean restoreGame) { this.restoreGame = restoreGame; }
-    private void virtualClientInOrderAfterRestore(){ Collections.sort(user, VirtualClient::compareTo); }
+    private void virtualClientInOrder(){ Collections.sort(user, VirtualClient::compareTo); }
 
     private class SoldOut extends Thread{
         @Override

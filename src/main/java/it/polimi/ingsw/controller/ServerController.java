@@ -18,7 +18,7 @@ public interface ServerController {
     boolean userLoginNickname(String nickname);
     ArrayList<String> alreadyChosenCharacters();
     boolean userLoginCharacter(String character);
-    void addNewPlayer(String nickname, String character);
+    int addNewPlayer(String nickname, String character);
 
     void playCard(int playerRef,String chosenAssistants) throws NotAllowedException;
     void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException;

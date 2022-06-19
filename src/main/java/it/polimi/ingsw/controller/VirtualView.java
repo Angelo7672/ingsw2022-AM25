@@ -211,7 +211,7 @@ public class VirtualView
     public String getCharacter(int playerRef){ return this.schoolBoards.get(playerRef).character; }
     public String getLastPlayedCard(int playerRef){ return hands.get(playerRef).getLastPlayedCard(); }
     public String getNickname(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
-    public void addNewPlayer(String nickname, String character){
+    public int  addNewPlayer(String nickname, String character){
         int player;
         schoolBoards.add(new SchoolBoard(nickname,character));
         hands.add(new Hand());
@@ -232,6 +232,7 @@ public class VirtualView
             schoolBoards.get(player).setTowersNumber(8);
             schoolBoards.get(player).setTeam(player);
         }
+        return player;
     }
 
     public void setCurrentUser(int currentUser){ turnInfo.setCurrentUser(currentUser); }

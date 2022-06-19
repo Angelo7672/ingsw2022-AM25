@@ -14,7 +14,6 @@ public class Game implements GameManager{
     private PlayerManager playerManager;
     private QueueManager queueManager;
     private Bag bag;
-    private int numberOfPlayer;
     private int indexSpecial;
     private int refSpecial;
     protected SpecialListener specialListener;
@@ -25,7 +24,6 @@ public class Game implements GameManager{
         this.expertMode = expertMode;
         this.extractedSpecials = new ArrayList<>();
         this.roundStrategies = new ArrayList<>();
-        this.numberOfPlayer = numberOfPlayer;
         this.bag = new Bag();
         this.cloudsManager = new CloudsManager(numberOfPlayer,this.bag);
         this.playerManager = new PlayerManager(numberOfPlayer,this.bag);
@@ -93,6 +91,8 @@ public class Game implements GameManager{
                 roundStrategies.get(i).initializeSpecial();
         }
     }
+
+    //Restore Game
     @Override
     public void schoolRestore(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, String team){
         playerManager.restoreSingleSchool(playerRef,studentsEntrance,studentsTable,towers,professors,stringToTeam(team));
@@ -125,6 +125,7 @@ public class Game implements GameManager{
         queueManager.queueRestore(playerRef,valueCard,maxMoveMotherNature);
     }
 
+    //Planning Phase
     @Override
     public void refreshStudentsCloud(){ cloudsManager.refreshStudentsCloud(); }
     @Override
@@ -139,6 +140,7 @@ public class Game implements GameManager{
         return queueManager.playCard(playerRef, queueRef, stringToAssistant(card), alreadyPlayedAssistant);
     }
 
+    //Action Phase
     @Override
     public void inOrderForActionPhase(){ queueManager.inOrderForActionPhase(); }
     @Override
@@ -146,7 +148,6 @@ public class Game implements GameManager{
         roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
         setSpecial(0,-1);
     }
-
     @Override
     public boolean moveMotherNature(int queueRef, int desiredMovement) throws NotAllowedException {
         boolean victory;
@@ -173,13 +174,6 @@ public class Game implements GameManager{
             playerManager.setStudentEntrance(playerRef,i,students[i]);
         setSpecial(0,0);
     }
-
-    @Override
-    public int readQueue(int pos){ return queueManager.readQueue(pos); }
-
-    @Override
-    public String oneLastRide(){ return String.valueOf(playerManager.checkVictory()); }
-
     @Override
     public boolean useSpecialLite(int indexSpecial, int playerRef){
         if(affordSpecial(indexSpecial, playerRef)) {
@@ -264,20 +258,10 @@ public class Game implements GameManager{
                 return playerManager.getCoins(playerRef) >= roundStrategies.get(i+1).getCost();
         return false;
     }
-    public void setSpecial(int indexSpecial, int refSpecial){
+    private void setSpecial(int indexSpecial, int refSpecial){
         this.indexSpecial = indexSpecial;
         this.refSpecial = refSpecial;
     }
-
-    /*public int findName(int index){
-        if(roundStrategies.get(index).getName().equals("special1")) return 2;
-        if(roundStrategies.get(index).getName().equals("special5")) return 1;
-        if(roundStrategies.get(index).getName().equals("special7")) return 3;
-        if(roundStrategies.get(index).getName().equals("special10")) return 3;
-        if(roundStrategies.get(index).getName().equals("special11")) return 2;
-        if(roundStrategies.get(index).getName().equals("special12")) return 1;
-        return -1;
-    }*/
     @Override
     public ArrayList<Integer> getExtractedSpecials() { return extractedSpecials; }
     @Override
@@ -292,6 +276,25 @@ public class Game implements GameManager{
         return cost;
     }
 
+    @Override
+    public int readQueue(int pos){ return queueManager.readQueue(pos); }
+
+    @Override
+    public String oneLastRide(){ return String.valueOf(playerManager.checkVictory()); }
+
+
+
+    /*public int findName(int index){
+        if(roundStrategies.get(index).getName().equals("special1")) return 2;
+        if(roundStrategies.get(index).getName().equals("special5")) return 1;
+        if(roundStrategies.get(index).getName().equals("special7")) return 3;
+        if(roundStrategies.get(index).getName().equals("special10")) return 3;
+        if(roundStrategies.get(index).getName().equals("special11")) return 2;
+        if(roundStrategies.get(index).getName().equals("special12")) return 1;
+        return -1;
+    }*/
+
+    //Listener
     @Override
     public void setStudentsListener(StudentsListener listener){
         playerManager.studentsListener = listener;

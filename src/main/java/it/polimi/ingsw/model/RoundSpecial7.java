@@ -31,7 +31,7 @@ public class RoundSpecial7 extends RoundStrategy{
 
     @Override
     public boolean effect(int playerRef, ArrayList<Integer> entranceStudent, ArrayList<Integer> cardStudent){
-        if(playerManager.checkStudentsEntrance(entranceStudent, playerRef) && special.checkStudents(cardStudent)) {
+        if(playerManager.checkStudentsEntranceForSpecial(entranceStudent, playerRef) && special.checkStudents(cardStudent)) {
             for (int i = 0; i < entranceStudent.size(); i++) {
                 special.effect(cardStudent.get(i), entranceStudent.get(i)); //cardStudent.get(i) is the student I remove, entranceStudent.get(i) is the which one I add
                 specialStudentsListener.specialStudentsNotify(7, cardStudent.get(i), getStudents(cardStudent.get(i)));

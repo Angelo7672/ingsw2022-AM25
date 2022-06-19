@@ -50,12 +50,11 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     private Object errorLocker;
     private boolean error;
 
-    public VirtualClient(Socket socket, Entrance server, Proxy_s proxy, int playerRef){
+    public VirtualClient(Socket socket, Entrance server, Proxy_s proxy){
         this.socket = socket;
         this.server = server;
         this.proxy = proxy;
         this.connectionExpired = false;
-        this.playerRef = playerRef;
         this.victory = false;
         this.clientInitialization = true;
         this.gameSetupInitialization = false;
@@ -470,11 +469,12 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         }
         private void setupConnection() {
             SetupConnection msg = (SetupConnection) setupMsg;
-            boolean checker;
+            int checker;
 
             checker = server.userLogin(msg.getNickname(), msg.getCharacter());
             try {
-                if (checker) {
+                if (checker != -1) {
+                    setPlayerRef(checker);
                     send(new GenericAnswer("ok"));
                     synchronized (setupLocker){
                         clientInitialization = true;

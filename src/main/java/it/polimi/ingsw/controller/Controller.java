@@ -41,7 +41,7 @@ public class Controller implements ServerController{
     @Override
     public boolean userLoginCharacter(String character){ return virtualView.checkNewCharacter(character); }
     @Override
-    public void addNewPlayer(String nickname, String character){ virtualView.addNewPlayer(nickname,character); }
+    public int addNewPlayer(String nickname, String character){ return virtualView.addNewPlayer(nickname,character); }
 
     @Override
     public void createGame(){

@@ -1,6 +1,6 @@
 /**
  * This is the bag class, its job is to hold the 130 student tokens and provide random draws. It also announces when the student tokens are gone
- * @enum Colour has the following legend: GREEN-->0, RED-->1, YELLOW-->2, PINK-->3, BLUE-->4
+ * Colour has the following legend: GREEN-->0, RED-->1, YELLOW-->2, PINK-->3, BLUE-->4
  */
 package it.polimi.ingsw.model;
 
