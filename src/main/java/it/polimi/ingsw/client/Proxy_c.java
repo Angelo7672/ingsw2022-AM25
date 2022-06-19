@@ -244,8 +244,8 @@ public class Proxy_c implements Exit {
     //send message to server
     public void send(Message message) throws IOException {
         try {
-            System.out.println("SENT "+message);
-            if(message instanceof GenericAnswer) System.out.println("MESSAGE "+((GenericAnswer) message).getMessage());
+            //System.out.println("SENT "+message);
+            //if(message instanceof GenericAnswer) System.out.println("MESSAGE "+((GenericAnswer) message).getMessage());
             outputStream.reset();
             outputStream.writeObject(message);
             outputStream.flush();
