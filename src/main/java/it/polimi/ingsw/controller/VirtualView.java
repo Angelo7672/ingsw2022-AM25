@@ -320,9 +320,10 @@ public class VirtualView
     @Override
     public void notifyMaxMove(int queueRef, int maxMove) {
         queue.get(queueRef).setMaxMoveMotherNature(maxMove);
-        server.sendMaxMovementMotherNature(
-                queue.get(queueRef).getPlayerRef(), maxMove
-        );
+        if(maxMove != -1)
+            server.sendMaxMovementMotherNature(
+                    queue.get(queueRef).getPlayerRef(), maxMove
+            );
     }
     @Override
     public void notifySpecial(int specialRef, int playerRef) {  //notify use of a special by a player
