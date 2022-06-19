@@ -244,14 +244,16 @@ public class Game implements GameManager{
             setSpecial(indexSpecial, playerRef);
             this.specialListener.notifySpecial(indexSpecial, playerRef);
             checker = roundStrategies.get(indexSpecial).effect(playerRef, color1, color2);
-            if(checker)
-                for(int i = 0; i < 3; i++)
-                    if(extractedSpecials.get(i) == indexSpecial){
+            if(checker) {
+                for (int i = 0; i < 3; i++)
+                    if (extractedSpecials.get(i) == indexSpecial) {
                         playerManager.removeCoin(playerRef, roundStrategies.get(i).getCost());
                         roundStrategies.get(i).increaseCost();
                         this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i).getCost());
                     }
-            setSpecial(0, -1);
+                setSpecial(0, -1);
+            }
+            //else throw NotAllowedException();
         }
 
         return checker;

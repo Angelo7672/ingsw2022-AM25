@@ -70,10 +70,8 @@ public class RoundSpecial7 extends RoundStrategy{
 
         @Override
         public void effect(int chosen, int extracted) {
-            if(getStudent(chosen)>0) {
-                students[chosen]--;
-                students[extracted]++;
-            }
+            students[chosen]--;
+            students[extracted]++;
         }
 
         public boolean checkStudents(ArrayList<Integer> students){

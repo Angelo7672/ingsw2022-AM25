@@ -30,7 +30,6 @@ public class View {
     private SpecialStudentsListener specialStudentsListener;
     private StudentsListener studentsListener;
     private WinnerListener winnerListener;
-    private DisconnectedListener disconnectedListener;
     private int maxStepsMotherNature;
     private int motherNaturePos;
     private String winner;
@@ -187,7 +186,6 @@ public class View {
                 break;
             }
         }
-        setMaxStepsMotherNature(cards.get(index).getMovement());
         cards.remove(index);
     }
     public void restoreCards(ArrayList<String> hand){

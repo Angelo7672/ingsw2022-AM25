@@ -10,7 +10,7 @@ public abstract class Special {
     }
 
     public void increaseCost(){
-        cost++;
+        cost+=1;
     }
     public String getName(){
         return name;
