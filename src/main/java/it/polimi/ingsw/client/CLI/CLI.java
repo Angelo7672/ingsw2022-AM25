@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class CLI implements Runnable, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, WinnerListener, DisconnectedListener,
-        SpecialStudentsListener, NoEntryListener{
+        SpecialStudentsListener, NoEntryListener, ServerOfflineListener {
 
     private final Exit proxy;
     private final Scanner scanner;
@@ -36,6 +36,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         constants = new PlayerConstants();
         proxy = new Proxy_c(socket);
         proxy.setDisconnectedListener(this);
+        proxy.setServerOfflineListener(this);
     }
 
     private void setup() throws IOException, ClassNotFoundException, InterruptedException {
@@ -264,6 +265,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 constants.setSpecialUsed(true);
                 System.out.print(SPACE+"Special used");
             }
+            else turn();
         }
         System.out.println();
         System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
@@ -302,6 +304,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                     System.out.println();
                     if(proxy.useSpecial(special, island, color)) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                    return false;
                 } else if (special == 3 || special == 5) {
                     int island;
                     do {
@@ -318,6 +321,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                     System.out.println();
                     if(proxy.useSpecial(special, island)) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                    return false;
                 } else if (special == 7) {
                     ArrayList<Integer> entranceStudents = new ArrayList<>();
                     ArrayList<Integer> cardStudents = new ArrayList<>();
@@ -353,6 +357,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                     System.out.println();
                     if (proxy.useSpecial(special, entranceStudents, cardStudents)) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                    return false;
                 } else if (special == 9) {
                     String color;
                     while (true) {
@@ -368,6 +373,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                     System.out.println();
                     if (proxy.useSpecial(special, translateColor(color))) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                    return false;
                 } else if (special == 10) {
                     ArrayList<Integer> entranceStudents = new ArrayList<>();
                     ArrayList<Integer> tableStudents = new ArrayList<>();
@@ -405,6 +411,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                     System.out.println();
                     if (proxy.useSpecial(special, entranceStudents, tableStudents)) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                    return false;
                 } else if (special == 11) {
                     String color;
                     while (true) {
@@ -420,6 +427,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                     System.out.println();
                     if (proxy.useSpecial(special, translateColor(color))) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                    return false;
                 } else if (special == 12) {
                     String color;
                     while (true) {
@@ -435,6 +443,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                     System.out.println();
                     if (proxy.useSpecial(special, translateColor(color))) return true;
                     else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                    return false;
                 }
             } catch (NumberFormatException e) {
                 System.out.println();
@@ -467,6 +476,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     private void moveStudents() {
         printable.cli();
         boolean finished = false;
+        System.out.println();
         do {
             String accepted;
             String color=null;
@@ -475,7 +485,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             int islandRef = -1;
             try {
                 while(color==null) {
-                    System.out.println();
                     System.out.print(SPACE+"Which student do you want to move? Insert color ");
                     color = readNext();
                     colorInt = translateColor(color);
@@ -483,6 +492,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                         System.out.println();
                         System.out.println(ANSI_RED+SPACE+"Error, enter an existing color"+ANSI_RESET);
                         color = null;
+                        System.out.println();
                     }
                 }
                 while(where==null) {
@@ -498,11 +508,11 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 System.out.println();
                 if (where.equalsIgnoreCase("island")) {
                     while (islandRef==-1) {
-                        System.out.println();
                         System.out.print(SPACE+"Which island? insert the number ");
                         String intString = readNext();
                         islandRef = Integer.parseInt(intString);
                         islandRef = islandRef - 1;
+                        System.out.println();
                         if(islandRef<0 || islandRef>=view.getIslandSize()){
                             System.out.println();
                             System.out.println(ANSI_RED+SPACE+"Error, insert an existing island"+ANSI_RESET);
@@ -513,8 +523,8 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 accepted = proxy.moveStudent(colorInt, where, islandRef);
                 if (accepted.equals("transfer complete")) finished = true;
                 else if(accepted.equals("move not allowed")) {
-                    System.out.println();
                     System.out.println(ANSI_RED+SPACE+"Move not allowed"+ANSI_RESET);
+                    System.out.println();
                 }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println();
@@ -531,7 +541,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         int steps = -1;
         try {
             do {
-                System.out.println();
                 printable.printMotherNature();
                 System.out.print(SPACE+"How many steps do you want to move Mother Nature? Maximum number of steps "+view.getMaxStepsMotherNature()+" ");
                 String intString = readNext();
@@ -558,7 +567,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         try{
             do {
                 printable.printCloud();
-                System.out.println();
                 System.out.print(SPACE+"Which cloud do you want? ");
                 String intString = readNext();
                 cloud = Integer.parseInt(intString);
@@ -658,6 +666,14 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         return string;
     }
 
+    private void serverOffline() throws IOException {
+        System.out.println();
+        System.out.println(ANSI_RED+SPACE+"Server is offline, Game over."+ANSI_RESET);
+        socket.close();
+        setActive(false);
+        System.exit(-1);
+    }
+
     private void disconnectClient() throws IOException {
         System.out.println();
         System.out.println(ANSI_RED+SPACE+"One of the player is offline, Game over."+ANSI_RESET);
@@ -695,7 +711,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         if(constants.isStartGame()) {
             //System.out.println();
             System.out.println("New play: "+"\t"+"\t"+" island "+(islandToDelete+1)+" had been united.");
-            System.out.println();
         }
     }
 
@@ -779,6 +794,11 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     @Override
+    public void notifyServerOffline() throws IOException {
+        serverOffline();
+    }
+
+    @Override
     public void notifyNoEntry(int newValue) {
         if(constants.isStartGame()) {
             System.out.print("New play: "+"\t"+"\t");
@@ -793,4 +813,5 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             printable.printSpecialStudents(special);
         }
     }
+
 }

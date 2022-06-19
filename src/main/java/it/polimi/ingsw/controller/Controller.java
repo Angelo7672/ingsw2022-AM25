@@ -41,7 +41,7 @@ public class Controller implements ServerController{
     @Override
     public boolean userLoginCharacter(String character){ return virtualView.checkNewCharacter(character); }
     @Override
-    public void addNewPlayer(String nickname, String character){ virtualView.addNewPlayer(nickname,character); }
+    public int addNewPlayer(String nickname, String character){ return virtualView.addNewPlayer(nickname,character); }
 
     @Override
     public void createGame(){
@@ -103,7 +103,7 @@ public class Controller implements ServerController{
         for(int i = 0; i < currentUser; i++)
             alreadyPlayedCard.add(getLastPlayedCard(gameManager.readQueue(i)));
 
-        try { roundController.setEnd(gameManager.playCard(playerRef, currentUser, chosenAssistants, alreadyPlayedCard));
+        try { setEnd(gameManager.playCard(playerRef, currentUser, chosenAssistants, alreadyPlayedCard));
         }catch (NotAllowedException exception){ throw new NotAllowedException(); }
     }
 
@@ -158,6 +158,7 @@ public class Controller implements ServerController{
         }
     }
 
+    public void setEnd(boolean end){ roundController.setEnd(end); }
     @Override
     public String getWinner() { return winner; }
     public void oneLastRide(){

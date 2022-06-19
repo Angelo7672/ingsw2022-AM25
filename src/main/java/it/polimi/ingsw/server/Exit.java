@@ -10,6 +10,7 @@ public interface Exit {
     void unlockPlanningPhase(int ref);
     void startActionPhase(int ref);
     void unlockActionPhase(int ref);
+    void sendMaxMovementMotherNature(int ref, int maxMovement);
 
     void gameOver();
 

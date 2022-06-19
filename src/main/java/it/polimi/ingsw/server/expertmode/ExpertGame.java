@@ -64,17 +64,14 @@ public class ExpertGame {
     public boolean effect(int specialRef, int playerRef, VirtualClient user){
         if (specialRef == firstSpecial) {
             specialDeck.effect(0, playerRef, user);
-            System.out.println("Cane");
             return true;
         }
         else if(specialRef == secondSpecial) {
             specialDeck.effect(1, playerRef, user);
-            System.out.println("Gatto");
             return true;
         }
         else if (specialRef == thirdSpecial) {
             specialDeck.effect(2, playerRef, user);
-            System.out.println("topo");
             return true;
         }
         System.out.println("MISS!");

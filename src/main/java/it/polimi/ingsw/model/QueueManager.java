@@ -28,7 +28,7 @@ public class QueueManager {
     public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
         queue.remove(0);
         for(int i = 0; i < numberOfPlayer; i++)
-            queue.add(new Queue(playerRef.get(i),valueCard.get(i),maxMoveMotherNature.get(i)));
+            queue.add(new Queue(playerRef.get(i), valueCard.get(i), maxMoveMotherNature.get(i)));
         listenMyQueue();
     }
     public void queueForPlanificationPhase(){
@@ -74,6 +74,7 @@ public class QueueManager {
             this.queueListener.notifyQueue(i, queue.get(i).getPlayerRef());
             this.queueListener.notifyValueCard(i, queue.get(i).getValueCard());
             this.queueListener.notifyMaxMove(i, queue.get(i).getMaxMoveMotherNature());
+            queue.get(i).getMaxMoveMotherNature();
         }
     }
 

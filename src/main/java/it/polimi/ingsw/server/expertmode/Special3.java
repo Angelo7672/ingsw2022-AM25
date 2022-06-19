@@ -14,7 +14,7 @@ public class Special3 implements Special{
     public Special3(Entrance server) { this.server = server; }
 
     @Override
-    public void effect(int playerRef, VirtualClient user){
+    public synchronized void effect(int playerRef, VirtualClient user){
         VirtualClient virtualClient = user;
         boolean checker;
 
@@ -22,7 +22,7 @@ public class Special3 implements Special{
             virtualClient.setSpecial3();
             virtualClient.send(new GenericAnswer("ok"));
             System.out.println("Il server ha mandato ok per ricevere messaggio ad hoc dello special");
-            synchronized (this) { this.wait(); }
+            this.wait();
 
             checker = server.useSpecialSimple(3, playerRef, special3Msg.getIslandRef());
 
@@ -34,5 +34,5 @@ public class Special3 implements Special{
     @Override
     public void setSpecialMessage(Message msg) { special3Msg = (Special3Message) msg; }
     @Override
-    public void wakeUp() { this.notify(); }
+    public synchronized void wakeUp() { this.notify(); }
 }

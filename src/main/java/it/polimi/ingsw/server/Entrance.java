@@ -20,7 +20,7 @@ public interface Entrance {
     void startGame();
     ExpertGame getExpertGame();
     ArrayList<String> alreadyChosenCharacters();
-    boolean userLogin(String nickname, String character);
+    int userLogin(String nickname, String character);
 
     boolean userPlayCard(int playerRef, String assistant);
 

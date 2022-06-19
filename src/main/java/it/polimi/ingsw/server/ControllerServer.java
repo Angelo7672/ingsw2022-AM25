@@ -9,6 +9,7 @@ public interface ControllerServer {
     void unlockPlanningPhase(int playerRef);
     void startActionPhase(int playerRef);
     void unlockActionPhase(int playerRef);
+    void sendMaxMovementMotherNature(int playerRef, int maxMovement);
 
     void gameOver();
 

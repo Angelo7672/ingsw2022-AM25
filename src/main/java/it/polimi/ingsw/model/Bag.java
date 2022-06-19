@@ -1,6 +1,6 @@
 /**
  * This is the bag class, its job is to hold the 130 student tokens and provide random draws. It also announces when the student tokens are gone
- * @enum Colour has the following legend: GREEN-->0, RED-->1, YELLOW-->2, PINK-->3, BLUE-->4
+ * Colour has the following legend: GREEN-->0, RED-->1, YELLOW-->2, PINK-->3, BLUE-->4
  */
 package it.polimi.ingsw.model;
 
@@ -26,7 +26,10 @@ public class Bag {
         Collections.shuffle(bag);
         this.bagListener.notifyBag(bag);
     }
-    public void bagRestore(List<Integer> bag){ this.bag = bag; }
+    public void bagRestore(List<Integer> bag){
+        this.bagListener.notifyBag(bag);
+        this.bag = bag;
+    }
 
     public int extraction(){
         int colorExtracted;
@@ -38,9 +41,7 @@ public class Bag {
         return colorExtracted;
     }
 
-    public boolean checkVictory(){      //must be called every time an extraction is made
-        return bag.isEmpty();
-    }
+    public boolean checkVictory(){ return bag.isEmpty(); }     //must be called every time an extraction is made
 
     public void fillBag(int color, int num){
         for(int i = 0; i < num; i++)

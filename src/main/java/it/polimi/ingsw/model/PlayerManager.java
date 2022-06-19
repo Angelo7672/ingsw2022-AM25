@@ -5,18 +5,30 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.*;
 
+/**
+ * PlayerManger keeps track of all information regarding players and their schools.
+ */
 public class PlayerManager  {
-    private Bag bag;
-    private List<Player> players;
-    private int numberOfPlayer;
-    private int[] professorPropriety;
-
+    private final Bag bag;
+    private final List<Player> players; //contains information about each player, including their school
+    private final int numberOfPlayer;
+    private int[] professorPropriety;   //in each cell it indicates the playerRef of who owns that professor
+    //Colour has the following legend: GREEN-->0, RED-->1, YELLOW-->2, PINK-->3, BLUE-->4
     protected TowersListener towersListener;
     protected ProfessorsListener professorsListener;
     protected CoinsListener coinsListener;
     protected PlayedCardListener playedCardListener;
     protected StudentsListener studentsListener;
 
+    /**
+     * Constructor PlayerManager creates a new PlayerManager instance.
+     * The TEAM is imposed by the game:
+     *  -)In the 2-player game the first player is on the white team, the second player is on the black team;
+     *  -)In the 3-player game the first player is on the white team, the second player is on the black team and the third player is on the gray team;
+     *  -)In the 4-player game the first and second player are on the white team, the third and fourth are on the black team;
+     * @param numberOfPlayer is the number of user in this game;
+     * @param bag contains the student tokens to be extracted;
+     */
     public PlayerManager(int numberOfPlayer, Bag bag) {
         this.bag = bag;
         this.players = new ArrayList<>();
@@ -47,6 +59,11 @@ public class PlayerManager  {
         }
     }
 
+    /**
+     * Initialize the school by following the rules of the game:
+     *  -)2 or 4 players, 7 students at the entrance and 8 towers in the school;
+     *  -)3 players, 9 students at the entrance and 6 towers in the school;
+     */
     public void initializeSchool(){
         if(numberOfPlayer == 2 || numberOfPlayer == 4){
             for(int j = 0; j < numberOfPlayer; j++)
@@ -66,6 +83,16 @@ public class PlayerManager  {
         for(Player p:players)
             p.initializeHand();
     }
+
+    /**
+     * Restore the school of a player.
+     * @param playerRef the player reference;
+     * @param studentsEntrance students situated in the entrance in the previous game;
+     * @param studentsTable students situated in the table in the previous game;
+     * @param towers in the previous game;
+     * @param professors in the previous game;
+     * @param team in the previous game;
+     */
     public void restoreSingleSchool(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, Team team){
         //Entrance
         for (int i = 0; i < 5; i++)
@@ -84,6 +111,13 @@ public class PlayerManager  {
         for (int i = 0; i < 5; i++)
             if(professors[i]) setProfessor(playerRef,i);
     }
+
+    /**
+     * Restore cards and coins of a player.
+     * @param playerRef the player reference;
+     * @param cards int the hand of the player in the previous game;
+     * @param coins of the player in the previous game;
+     */
     public void restoreHandAndCoins(int playerRef, ArrayList<Assistant> cards, int coins){
         players.get(playerRef).restoreHandAndCoins(cards,coins);
         this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef));
@@ -254,15 +288,13 @@ public class PlayerManager  {
     }
     public int getCoins(int playerRef){ return players.get(playerRef).getCoins(); }
 
-    public boolean checkStudentsEntrance(ArrayList<Integer> student, int playerRef){
-        for(int i=0; i<student.size(); i++){
-            if(getStudentEntrance(playerRef,student.get(i))==0) return false;
-        }
+    public boolean checkStudentsEntranceForSpecial(ArrayList<Integer> student, int playerRef){
+        for (Integer integer : student)
+            if (getStudentEntrance(playerRef, integer) == 0) return false;
         return true;
     }
-    public boolean checkStudentsTable(ArrayList<Integer> student, int playerRef){
-        if(getStudentTable(playerRef,student.get(0))>=student.size()) return true;
-        return false;
+    public boolean checkStudentsTableForSpecial(ArrayList<Integer> student, int playerRef){
+        return getStudentTable(playerRef, student.get(0)) >= student.size();
     }
 
     private class Player {
@@ -298,9 +330,9 @@ public class PlayerManager  {
 
         private class School {
             private int towers;
-            private boolean professors[];
-            private int studentEntrance[];
-            private int studentsTable[];
+            private boolean[] professors;
+            private int[] studentEntrance;
+            private int[] studentsTable;
 
             private School() {
                 this.professors = new boolean[]{false, false, false, false, false};

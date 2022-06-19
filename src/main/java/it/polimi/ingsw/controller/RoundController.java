@@ -37,7 +37,7 @@ public class RoundController extends Thread{
     }
 
     private synchronized void planningPhase(){
-        setEnd(gameManager.refreshStudentsCloud());
+        gameManager.refreshStudentsCloud();
         gameManager.queueForPlanificationPhase();
         for(controller.setCurrentUser(0); controller.getCurrentUser() < numberOfPlayers; controller.incrCurrentUser()){
             server.unlockPlanningPhase(gameManager.readQueue(controller.getCurrentUser()));
@@ -45,12 +45,12 @@ public class RoundController extends Thread{
             try { this.wait();
             } catch (InterruptedException e) { e.printStackTrace(); }
         }
-        controller.saveGame();
     }
 
     private synchronized void actionPhase(){
         if(!restoreGame) {
             gameManager.inOrderForActionPhase();
+            controller.saveGame();
             for (controller.setCurrentUser(0); controller.getCurrentUser() < numberOfPlayers; controller.incrCurrentUser()) {
                 server.unlockActionPhase(gameManager.readQueue(controller.getCurrentUser()));
                 server.startActionPhase(gameManager.readQueue(controller.getCurrentUser()));

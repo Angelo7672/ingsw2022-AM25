@@ -80,17 +80,14 @@ public class VirtualView
         } catch (IOException e) { e.printStackTrace(); }
     }
     public void restoreVirtualView(){
-        Object tmp;
-        Object tmp1;
-        Object tmp2;
         ArrayList<SchoolBoard> schoolBoardsTmp;
 
         try{
             ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
 
-            tmp = inputFile.readObject();   //I have to read all object in file
-            tmp1 = inputFile.readObject();   //I have to read all object in file
-            tmp2 = inputFile.readObject();   //I have to read all object in file
+            inputFile.readObject();   //I have to read all object in file
+            inputFile.readObject();   //I have to read all object in file
+            inputFile.readObject();   //I have to read all object in file
             schoolBoardsTmp = (ArrayList<SchoolBoard>) inputFile.readObject();
 
             inputFile.close();
@@ -110,12 +107,11 @@ public class VirtualView
         ArrayList<Cloud> cloudsTmp;
         ArrayList<Hand> handsTmp;
         ArrayList<Integer> bagTmp;
-        Object tmp;
 
         try{
             ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
 
-            tmp = inputFile.readObject();   //I have to read all object in file, this first object is GameInfo but now is useless
+            inputFile.readObject();   //I have to read all object in file, this first object is GameInfo but now is useless
             turnInfosTmp = (TurnInfo) inputFile.readObject();
             queueTmp = (ArrayList<Queue>) inputFile.readObject();
             schoolBoardsTmp = (ArrayList<SchoolBoard>) inputFile.readObject();
@@ -147,7 +143,7 @@ public class VirtualView
                 boolean[] professors = schoolBoardsTmp.get(i).getProfessors();
                 String team = schoolBoardsTmp.get(i).getTeam();
                 controller.schoolRestore(i,studentsEntrance,studentsTable,towers,professors,team);
-                controller.addNewPlayer(schoolBoardsTmp.get(i).getNickname(), schoolBoardsTmp.get(i).getNickname());
+                //controller.addNewPlayer(schoolBoardsTmp.get(i).getNickname(), schoolBoardsTmp.get(i).getNickname());
             }
             //Islands Restore
             if(islandsTmp.size() != 12) controller.setIslandsSizeAfterRestore(islandsTmp.size());
@@ -187,6 +183,7 @@ public class VirtualView
             if(nickname.equals(
                     schoolBoards.get(i).getNickname()
             )) checker = i;
+
         return checker;
     }
 
@@ -211,7 +208,7 @@ public class VirtualView
     public String getCharacter(int playerRef){ return this.schoolBoards.get(playerRef).character; }
     public String getLastPlayedCard(int playerRef){ return hands.get(playerRef).getLastPlayedCard(); }
     public String getNickname(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
-    public void addNewPlayer(String nickname, String character){
+    public int  addNewPlayer(String nickname, String character){
         int player;
         schoolBoards.add(new SchoolBoard(nickname,character));
         hands.add(new Hand());
@@ -232,6 +229,7 @@ public class VirtualView
             schoolBoards.get(player).setTowersNumber(8);
             schoolBoards.get(player).setTeam(player);
         }
+        return player;
     }
 
     public void setCurrentUser(int currentUser){ turnInfo.setCurrentUser(currentUser); }
@@ -307,7 +305,10 @@ public class VirtualView
         server.islandInhibited(islandRef, isInhibited);
     }
     @Override
-    public void notifyBagExtraction() { bag.remove(0); }
+    public void notifyBagExtraction() {
+        bag.remove(0);
+        if(bag.isEmpty()) controller.setEnd(true);
+    }
     @Override
     public void notifyBag(List<Integer> bag) { this.bag = bag; }
     @Override
@@ -315,7 +316,13 @@ public class VirtualView
     @Override
     public void notifyValueCard(int queueRef, int valueCard) { queue.get(queueRef).setValueCard(valueCard); }
     @Override
-    public void notifyMaxMove(int queueRef, int maxMove) { queue.get(queueRef).setMaxMoveMotherNature(maxMove); }
+    public void notifyMaxMove(int queueRef, int maxMove) {
+        queue.get(queueRef).setMaxMoveMotherNature(maxMove);
+        if(maxMove != -1)
+            server.sendMaxMovementMotherNature(
+                    queue.get(queueRef).getPlayerRef(), maxMove
+            );
+    }
     @Override
     public void notifySpecial(int specialRef, int playerRef) {  //notify use of a special by a player
         server.sendUsedSpecial(playerRef, specialRef);
@@ -334,13 +341,9 @@ public class VirtualView
     @Override
     public void notifyIncreasedCost(int specialRef, int newCost) { server.setSpecial(specialRef, newCost); }
     @Override
-    public void notifyNoEntry(int cards) {
-        server.sendInfoSpecial5(cards);
-    }
+    public void notifyNoEntry(int cards) { server.sendInfoSpecial5(cards); }
     @Override
-    public void specialStudentsNotify(int specialIndex, int color, int value) {
-        server.sendInfoSpecial1or7or11(specialIndex, color, value);
-    }
+    public void specialStudentsNotify(int specialIndex, int color, int value) { server.sendInfoSpecial1or7or11(specialIndex, color, value); }
 
     private class TurnInfo implements Serializable{
         private int currentUser;

@@ -50,12 +50,11 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     private Object errorLocker;
     private boolean error;
 
-    public VirtualClient(Socket socket, Entrance server, Proxy_s proxy, int playerRef){
+    public VirtualClient(Socket socket, Entrance server, Proxy_s proxy){
         this.socket = socket;
         this.server = server;
         this.proxy = proxy;
         this.connectionExpired = false;
-        this.playerRef = playerRef;
         this.victory = false;
         this.clientInitialization = true;
         this.gameSetupInitialization = false;
@@ -134,48 +133,56 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }else if(special1) {
                     special1 = false;
                     if (tmp instanceof Special1Message) {
+                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(1, tmp);
                         expertGame.wakeUp(1);
                     } else send(new GenericAnswer("error"));
                 }else if(special3) {
                     special3 = false;
                     if (tmp instanceof Special3Message) {
+                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(3, tmp);
                         expertGame.wakeUp(3);
                     } else send(new GenericAnswer("error"));
                 }else if(special5) {
                     special5 = false;
                     if (tmp instanceof Special5Message) {
+                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(5, tmp);
                         expertGame.wakeUp(5);
                     } else send(new GenericAnswer("error"));
                 }else if(special7){
                     special7 = false;
                     if(tmp instanceof Special7Message){
+                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(7, tmp);
                         expertGame.wakeUp(7);
                     } else send(new GenericAnswer("error"));
                 }else if(special9){
                     special9 = false;
                     if(tmp instanceof Special9Message){
+                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(9, tmp);
                         expertGame.wakeUp(9);
                     } else send(new GenericAnswer("error"));
                 }else if(special10){
                     special10 = false;
                     if(tmp instanceof Special10Message){
+                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(10, tmp);
                         expertGame.wakeUp(10);
                     } else send(new GenericAnswer("error"));
                 }else if(special11) {
                     special11 = false;
                     if (tmp instanceof Special11Message) {
+                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(11, tmp);
                         expertGame.wakeUp(11);
                     } else send(new GenericAnswer("error"));
                 }else if(special12){
                     special12 = false;
                     if(tmp instanceof Special12Message){
+                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(12, tmp);
                         expertGame.wakeUp(12);
                     } else send(new GenericAnswer("error"));
@@ -231,6 +238,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     //Message to client
     public void sendPlayCard(){ send(new PlayCard()); }
     public void sendStartTurn(){ send(new StartTurn()); }
+    public void sendMaxMovementMotherNature(int maxMovement){ send(new MaxMovementMotherNatureAnswer(maxMovement)); }
     public void sendWinner(String winner){ send(new GameOverAnswer(winner)); }
 
     public synchronized void send(Answer serverAnswer){
@@ -461,11 +469,12 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         }
         private void setupConnection() {
             SetupConnection msg = (SetupConnection) setupMsg;
-            boolean checker;
+            int checker;
 
             checker = server.userLogin(msg.getNickname(), msg.getCharacter());
             try {
-                if (checker) {
+                if (checker != -1) {
+                    setPlayerRef(checker);
                     send(new GenericAnswer("ok"));
                     synchronized (setupLocker){
                         clientInitialization = true;

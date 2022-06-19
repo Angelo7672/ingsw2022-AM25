@@ -1,10 +1,16 @@
 package it.polimi.ingsw.model;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class GameTest {
-    String[] playersInfo = {"Giorgio", "SAMURAI", "Marco", "KING", "Dino", "WIZARD"};
-    //Game game = new Game(true, 3, playersInfo);
+    Game game;
+
+    @BeforeEach
+    void initialization() {
+        game = new Game(false, 3);
+    }
+
 
 }
