@@ -77,9 +77,9 @@ public class View {
     }
 
     //Mother
-    public void setMotherPosition(MotherPositionMessage msg) {
-        motherNaturePos = msg.getMotherPosition();
-        this.motherPositionListener.notifyMotherPosition(msg.getMotherPosition());
+    public void setMotherPosition(int motherPosition) {
+        motherNaturePos = motherPosition;
+        this.motherPositionListener.notifyMotherPosition(motherPosition);
     }
     public void setMaxStepsMotherNature(int steps){
         maxStepsMotherNature = steps;
@@ -89,25 +89,25 @@ public class View {
     public int getMaxStepsMotherNature(){return maxStepsMotherNature;}
 
     //Islands
-    public void setIslandTowers(IslandTowersNumberMessage msg) {
-        islands.get(msg.getIslandRef()).setTowersNumber(msg.getTowersNumber());
-        this.towersListener.notifyTowersChange(1, msg.getIslandRef(), msg.getTowersNumber());
+    public void setIslandTowers(int islandRef, int towers) {
+        islands.get(islandRef).setTowersNumber(towers);
+        this.towersListener.notifyTowersChange(1, islandRef, towers);
     }
-    public void setStudentsIsland(IslandStudentMessage msg) {
-        islands.get(msg.getIslandRef()).setStudentsIsland(msg.getColor(), msg.getNewValue());
-        this.studentsListener.notifyStudentsChange(2, msg.getIslandRef(), msg.getColor(),msg.getNewValue());
+    public void setStudentsIsland(int islandRef, int color, int newValue) {
+        islands.get(islandRef).setStudentsIsland(color, newValue);
+        this.studentsListener.notifyStudentsChange(2, islandRef,color, newValue);
     }
-    public void setTowersColor(IslandTowersColorMessage msg){
-        islands.get(msg.getIslandRef()).setTowersColor(msg.getColor());
-        this.towersListener.notifyTowerColor(msg.getIslandRef(), msg.getColor());
+    public void setTowersColor(int islandRef, int color){
+        islands.get(islandRef).setTowersColor(color);
+        this.towersListener.notifyTowerColor(islandRef, color);
     }
-    public void removeUnifiedIsland(UnifiedIsland msg){
-        islands.remove(msg.getUnifiedIsland());
-        this.islandListener.notifyIslandChange(msg.getUnifiedIsland());
+    public void removeUnifiedIsland(int islandRef){
+        islands.remove(islandRef);
+        this.islandListener.notifyIslandChange(islandRef);
     }
-    public void setInhibited(InhibitedIslandMessage msg) {
-        islands.get(msg.getIslandRef()).setInhibited(msg.getInhibited());
-        this.inhibitedListener.notifyInhibited(msg.getIslandRef(),msg.getInhibited() );
+    public void setInhibited(int islandRef, int newValue) {
+        islands.get(islandRef).setInhibited(newValue);
+        this.inhibitedListener.notifyInhibited(islandRef,newValue);
     }
 
     public int getIslandSize(){return islands.size();}
@@ -117,35 +117,34 @@ public class View {
     public int getInhibited(int islandRef){ return islands.get(islandRef).isInhibited; }
 
     //School
-    public void setSchoolStudents(SchoolStudentMessage msg){
-        if(msg.getMessage().equalsIgnoreCase("Entrance")) {
-            schoolBoards.get(msg.getComponentRef()).setStudentsEntrance(msg.getColor(), msg.getNewValue());
-            this.studentsListener.notifyStudentsChange(0, msg.getComponentRef(), msg.getColor(), msg.getNewValue());
+    public void setSchoolStudents(String place, int ref, int color, int newValue){
+        if(place.equalsIgnoreCase("Entrance")) {
+            schoolBoards.get(ref).setStudentsEntrance(color, newValue);
+            this.studentsListener.notifyStudentsChange(0, ref, color, newValue);
         }
-        else if (msg.getMessage().equalsIgnoreCase("Table")) {
-            schoolBoards.get(msg.getComponentRef()).setStudentsTable(msg.getColor(), msg.getNewValue());
-            this.studentsListener.notifyStudentsChange(1, msg.getComponentRef(), msg.getColor(), msg.getNewValue());
-        }
-    }
-    public void setSchoolTowers(SchoolTowersMessage msg){
-        if(msg.getTowers()<0) schoolBoards.get(msg.getPlayerRef()).setTowersNumber(0);
-        else if(numberOfPlayers!=4 || msg.getPlayerRef()!=1 || msg.getPlayerRef()!=3) {
-            schoolBoards.get(msg.getPlayerRef()).setTowersNumber(msg.getTowers());
-            this.towersListener.notifyTowersChange(0, msg.getPlayerRef(),msg.getTowers());
+        else if (place.equalsIgnoreCase("Table")) {
+            schoolBoards.get(ref).setStudentsTable(color, newValue);
+            this.studentsListener.notifyStudentsChange(1, ref, color, newValue);
         }
     }
-    public void setProfessors(ProfessorMessage msg){
-        schoolBoards.get(msg.getPlayerRef()).setProfessors(msg.getColor(), msg.isProfessor());
-        this.professorsListener.notifyProfessors(msg.getPlayerRef(),msg.getColor(),msg.isProfessor());
+    public void setSchoolTowers(int playerRef, int towers){
+        if(towers<0) schoolBoards.get(playerRef).setTowersNumber(0);
+        else if(numberOfPlayers!=4 || (playerRef!=1 && playerRef!=3)) {
+            schoolBoards.get(playerRef).setTowersNumber(towers);
+            this.towersListener.notifyTowersChange(0, playerRef,towers);
+        }
     }
-    public void setUserInfo(UserInfoAnswer msg) {
-        schoolBoards.get(msg.getPlayerRef()).setNickname(msg.getNickname());
-        schoolBoards.get(msg.getPlayerRef()).setCharacter(msg.getCharacter());
-        //this.userInfoListener(playerRef, nickname, character);
+    public void setProfessors(int playerRef, int color, boolean isProfessor){
+        schoolBoards.get(playerRef).setProfessors(color, isProfessor);
+        this.professorsListener.notifyProfessors(playerRef,color,isProfessor);
     }
-    public void setCoins(CoinsMessage msg){
-        hands.get(msg.getPlayerRef()).setCoins(msg.getPlayerRef());
-        this.coinsListener.notifyNewCoinsValue(msg.getPlayerRef(), hands.get(msg.getPlayerRef()).coins);}
+    public void setUserInfo(int playerRef, String character, String nickname) {
+        schoolBoards.get(playerRef).setNickname(nickname);
+        schoolBoards.get(playerRef).setCharacter(character);
+    }
+    public void setCoins(int playerRef, int coins){
+        hands.get(playerRef).setCoins(coins);
+        this.coinsListener.notifyNewCoinsValue(playerRef, hands.get(playerRef).getCoins());}
 
     public String getNickname(int playerRef){ return schoolBoards.get(playerRef).getNickname();}
     public String getCharacter(int playerRef){return schoolBoards.get(playerRef).getCharacter();}
@@ -157,15 +156,15 @@ public class View {
     public int getCoins(int playerRef){ return hands.get(playerRef).getCoins();}
 
     //Clouds
-    public void setClouds(CloudStudentMessage msg){
-        clouds.get(msg.getCloudRef()).setCloudStudents(msg.getColor(), msg.getNewValue());
-        this.studentsListener.notifyStudentsChange(3, msg.getCloudRef(), msg.getColor(), msg.getNewValue());
+    public void setClouds(int cloudRef, int color, int newValue){
+        clouds.get(cloudRef).setCloudStudents(color, newValue);
+        this.studentsListener.notifyStudentsChange(3, cloudRef, color, newValue);
     }
 
     public int[] getStudentsCloud(int cloudRef){ return clouds.get(cloudRef).getStudents();}
 
     //Cards
-    public void setLastCard(LastCardMessage msg){
+    public void setLastCard(int playerRef, String card){
         if(turnCounter == numberOfPlayers){
             turnCounter=0;
             for (int i = 0; i < numberOfPlayers; i++) {
@@ -173,12 +172,11 @@ public class View {
             }
         }
         turnCounter++;
-        System.out.println(msg.getCard());
-        hands.get(msg.getPlayerRef()).setLastCard(msg.getCard());
-        this.playedCardListener.notifyPlayedCard(msg.getPlayerRef(),msg.getCard());
+        hands.get(playerRef).setLastCard(card);
+        this.playedCardListener.notifyPlayedCard(playerRef,card);
     }
-    public void setNumberOfCards(NumberOfCardsMessage msg){
-        hands.get(msg.getPlayerRef()).setNumberOfCards(msg.getNumberOfCards());
+    public void setNumberOfCards(int playerRef, int numberOfCards){
+        hands.get(playerRef).setNumberOfCards(numberOfCards);
     }
     public void setCards(String card){
         int index=-1;
@@ -294,13 +292,13 @@ public class View {
 
 
     private class SchoolBoard {
-        String nickname;
-        String character;
-        final String team;
-        int[] studentsEntrance;
-        int[] studentsTable;
-        int towersNumber;
-        boolean[] professors;
+        private String nickname;
+        private String character;
+        private final String team;
+        private int[] studentsEntrance;
+        private int[] studentsTable;
+        private int towersNumber;
+        private boolean[] professors;
 
         SchoolBoard(int towersNumber, String team){
             studentsEntrance = new int[]{0, 0, 0, 0, 0};
@@ -353,10 +351,10 @@ public class View {
     }
 
     private class Island{
-        int[] studentsIsland;
-        int towersNumber;
-        int towersColor;
-        int isInhibited;
+        private int[] studentsIsland;
+        private int towersNumber;
+        private int towersColor;
+        private int isInhibited;
 
         public Island(){
             studentsIsland=new int[]{0,0,0,0,0};
@@ -382,7 +380,7 @@ public class View {
     }
 
     private class Cloud {
-        int[] students;
+        private int[] students;
 
         public Cloud(){
             students = new int[]{0, 0, 0, 0, 0};
@@ -396,9 +394,9 @@ public class View {
         }
     }
     private class Hand{
-        int numberOfCards;
-        int coins;
-        String lastPlayedCard;
+        private int numberOfCards;
+        private int coins;
+        private String lastPlayedCard;
 
         public Hand(){
             numberOfCards=10;

@@ -100,16 +100,15 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         }
     }
 
-    private void setPhase() throws IOException, ClassNotFoundException {
+    private void setPhase() throws IOException {
+        constants.setStartGame(true);
         String phase = proxy.getPhase();
         if(phase.equals("Start your Action Phase!")){
-            constants.setStartGame(true);
             constants.setPlanningPhaseStarted(true);
             constants.setCardPlayed(true);
             constants.setActionPhaseStarted(true);
         }
         else if(phase.equals("Play card!")){
-            constants.setStartGame(true);
             constants.setPlanningPhaseStarted(true);
         }
     }
@@ -231,7 +230,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             if(proxy.setupConnection(nickname, null)) return;
             else {
                 System.out.println();
-                System.out.print(ANSI_RED+SPACE+"Error, insert your previous nickname"+ANSI_RESET);
+                System.out.println(ANSI_RED+SPACE+"Error, insert your previous nickname"+ANSI_RESET);
             }
         }
     }
@@ -625,6 +624,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     private void turn() throws IOException, ClassNotFoundException {
+        if(!constants.isStartGame()) constants.setStartGame(true);
         if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) {
             useSpecial();
             System.out.println("Done");
@@ -633,7 +633,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     private void phaseHandler(String phase) throws IOException, ClassNotFoundException {
-        if(!constants.isStartGame()) constants.setStartGame(true);
         if(phase.equals("PlayCard")) {
             playCard();
         }

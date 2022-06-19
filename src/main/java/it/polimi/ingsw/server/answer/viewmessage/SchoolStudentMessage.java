@@ -15,7 +15,7 @@ public class SchoolStudentMessage implements Answer {
         this.newValue = newValue;
     }
 
-    public String getMessage() {
+    public String getPlace() {
         return place;
     }
     public int getColor() {

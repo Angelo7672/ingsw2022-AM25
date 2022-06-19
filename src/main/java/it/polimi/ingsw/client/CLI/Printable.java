@@ -36,10 +36,12 @@ public class Printable {
         else if(view.getTowersColor(i)==-1) System.out.println("\t"+"    Towers Team: NO ONE");
         System.out.println();
     }
+
     protected void printMotherNature(){
         System.out.println("New play: "+"\t"+"\t"+UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));
         System.out.println();
     }
+
     protected void printNickname(int i){
         System.out.print("\t"+"School of " + view.getNickname(i)+": ");
     }
@@ -60,6 +62,7 @@ public class Printable {
     }
     protected void printSchoolTowers(int i){
         System.out.println("\t" + "Towers number: " + view.getSchoolTowers(i) + ".");
+        System.out.println();
     }
     protected void printCoins(int i){
         System.out.print("New play: ");
@@ -67,6 +70,7 @@ public class Printable {
         System.out.println("\t"+" Coins: " + view.getCoins(i));
         System.out.println();
     }
+
     protected void printCloud(){
         System.out.println(UNDERLINE+"CLOUDS:"+ANSI_RESET);
         for (int i = 0; i < view.getNumberOfPlayers(); i++) {
@@ -79,11 +83,11 @@ public class Printable {
     }
 
     protected void printLastCard(){
-        System.out.println();
         System.out.print("New play: "+"\t"+UNDERLINE+"LAST PLAYED CARDS:"+ANSI_RESET+"\t" );
         for (int i = 0; i < view.getNumberOfPlayers(); i++) {
             System.out.print(" "+view.getNickname(i) + ": " + view.getLastCard(i) + ". ");
         }
+        System.out.println();
         System.out.println();
     }
 
@@ -132,7 +136,6 @@ public class Printable {
         }
         System.out.println();
     }
-
     protected void printSpecialStudents(int special){
         System.out.println();
         System.out.print("New play: "+"\t"+"\t");
