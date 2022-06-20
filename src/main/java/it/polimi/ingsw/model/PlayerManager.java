@@ -378,7 +378,9 @@ public class PlayerManager  {
      * @return if the operation was successful;
      */
     public boolean checkStudentsTableForSpecial(ArrayList<Integer> student, int playerRef){
-        return getStudentTable(playerRef, student.get(0)) >= student.size();
+        for (Integer integer : student)
+            if(getStudentTable(playerRef, integer)==0) return false;
+        return true;
     }
 
     /**
