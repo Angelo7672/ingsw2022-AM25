@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,12 +30,15 @@ public class CardsSceneController implements SceneController{
     @FXML private Button elephantButton;
     @FXML private Button turtleButton;
 
+    @FXML private Label errorMessage;
+
     @FXML private Button confirmButton;
 
     public CardsSceneController(){
 
         currentPlayedCards= new HashMap<>();
         alreadyPlayedCards = new ArrayList<>();
+        playedCard="";
     }
 
     @FXML
@@ -64,29 +68,30 @@ public class CardsSceneController implements SceneController{
 
     @FXML
     void confirmPressed(ActionEvent event) {
-        String result = null; //qui chiama il metodo del proxy
-        try {
-            result = proxy.playCard(playedCard);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        if (playedCard != "") {
+            String result = null;
+            try {
+                result = proxy.playCard(playedCard);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            alreadyPlayedCards.add(playedCard);
+
+            if (result.equalsIgnoreCase("ok")) {
+                gui.constants.setCardPlayed(true);
+                gui.phaseHandler("StartTurn");
+
+            } else
+                showErrorMessage();
         }
-        alreadyPlayedCards.add(playedCard);
 
-    if (result.equalsIgnoreCase("ok")) {
-
-        gui.constants.setCardPlayed(true);
-        gui.phaseHandler("StartTurn");
-
-
-    } else if (result.equalsIgnoreCase("move not allowed")) {
-        System.out.println("move not allowed");
-    } else {
-        System.out.println("Error");
-    }
     }
 
+    public void showErrorMessage(){
+        errorMessage.setVisible(true);
+    }
     public void sceneInitialize(){
 
             for(String card : alreadyPlayedCards){
