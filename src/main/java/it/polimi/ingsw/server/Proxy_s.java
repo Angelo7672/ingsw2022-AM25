@@ -22,6 +22,7 @@ public class Proxy_s implements Exit {
     private final ExecutorService executor;
     private int limiter;
     private int clientReady;
+    private int start;
     private boolean first;
     private boolean restoreGame;
 
@@ -38,6 +39,7 @@ public class Proxy_s implements Exit {
         this.executor = Executors.newCachedThreadPool(); //Create threads when needed, but re-use existing ones as much as possible
         this.limiter = 0;
         this.clientReady = 0;
+        this.start = 0;
         this.first = true;
     }
 
@@ -75,6 +77,7 @@ public class Proxy_s implements Exit {
                 server.initializeGame();
             }
             virtualClientInOrder();
+            if(start != connectionsAllowed) synchronized (this){ this.wait(); }
             server.startGame();
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -211,9 +214,13 @@ public class Proxy_s implements Exit {
         first = false;
         return tmp;
     }
-    public void thisClientIsReady(){
+    public synchronized void thisClientIsReady(){
         clientReady++;
-        if(clientReady == connectionsAllowed) synchronized (this){ this.notify(); }
+        if(clientReady == connectionsAllowed) this.notify();
+    }
+    public synchronized void startGame(){
+        start++;
+        if(start == connectionsAllowed) this.notify();
     }
     public int getConnectionsAllowed() { return connectionsAllowed; }
     public void setConnectionsAllowed(int connectionsAllowed) {

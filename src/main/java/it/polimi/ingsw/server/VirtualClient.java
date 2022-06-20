@@ -528,6 +528,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         readyToPlay();
                     }
                 }
+                proxy.startGame();
             } catch (InterruptedException ex) { ex.printStackTrace(); }
         }
         private void readyPlanningPhase(){
@@ -544,6 +545,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     }
                 }
                 System.out.println("ho ricevuto ready planning phase "+playerRef);
+                proxy.startGame();
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 

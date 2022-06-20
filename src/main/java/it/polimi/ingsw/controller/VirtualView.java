@@ -143,7 +143,6 @@ public class VirtualView
                 boolean[] professors = schoolBoardsTmp.get(i).getProfessors();
                 String team = schoolBoardsTmp.get(i).getTeam();
                 controller.schoolRestore(i,studentsEntrance,studentsTable,towers,professors,team);
-                //controller.addNewPlayer(schoolBoardsTmp.get(i).getNickname(), schoolBoardsTmp.get(i).getNickname());
             }
             //Islands Restore
             if(islandsTmp.size() != 12) controller.setIslandsSizeAfterRestore(islandsTmp.size());
