@@ -5,13 +5,23 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.*;
 
+/**
+ * QueueManger keeps track of all information regarding turns of player.
+ * It also keeps for each player the mac move of mother nature given by its card and the value of his card that is used for sort the queue for action phase.
+ * Notify method send changes from QueueManager to VirtualView.
+ */
 public class QueueManager {
-    private List<Queue> queue;
-    private PlayerManager playerManager;
-    private int numberOfPlayer;
+    private final List<Queue> queue;
+    private final PlayerManager playerManager;
+    private final int numberOfPlayer;
     protected PlayedCardListener playedCardListener;
     protected QueueListener queueListener;
 
+    /**
+     * The first player to play is chosen randomly.
+     * @param numberOfPlayer in the game;
+     * @param playerManager of the game;
+     */
     public QueueManager(int numberOfPlayer,PlayerManager playerManager) {
         this.playerManager = playerManager;
         this.numberOfPlayer = numberOfPlayer;
@@ -25,12 +35,23 @@ public class QueueManager {
         queue.add(first);
     }
 
+    /**
+     * Restore queue.
+     * @param playerRef the player reference;
+     * @param valueCard list of value of the card play in the last turn of the last game;
+     * @param maxMoveMotherNature list of max movement of mother nature of the card play in the last turn of the last game;
+     */
     public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
         queue.remove(0);
         for(int i = 0; i < numberOfPlayer; i++)
             queue.add(new Queue(playerRef.get(i), valueCard.get(i), maxMoveMotherNature.get(i)));
         listenMyQueue();
     }
+
+    /**
+     * Order queue for next planning phase.
+     * Take the first player of queue then proceeds clockwise: the distribution of players at the table is arranged clockwise in this order 1 2 3 4.
+     */
     public void queueForPlanificationPhase(){
         int firstInQueue;
 
@@ -53,36 +74,53 @@ public class QueueManager {
         listenMyQueue();
     }
 
+    /**
+     * Play card from PlayerManager.
+     * @param playerRef the player reference;
+     * @param queueRef the position of the player in queue;
+     * @param card the card played from the player;
+     * @param alreadyPlayedAssistant list of already played card in this turn;
+     * @return if the player has run out of cards;
+     * @throws NotAllowedException throw in case player broke rules of playCard in playerManager;
+     */
     public boolean playCard(int playerRef, int queueRef, Assistant card, ArrayList<Assistant> alreadyPlayedAssistant) throws NotAllowedException {
         playerManager.playCard(playerRef,card,alreadyPlayedAssistant);
         queue.get(queueRef).setValueCard(card.getValue());
         queue.get(queueRef).setMaxMoveMotherNature(card.getMovement());
         this.playedCardListener.notifyPlayedCard(playerRef, String.valueOf(card));
 
-        if(playerManager.checkIfCardsFinished(playerRef)) return true;  //game will finish at the end of the turn
-
-        return false;
+        return playerManager.checkIfCardsFinished(playerRef);  //if it's true, game will finish at the end of the turn
     }
 
+    /**
+     * Order queue for next action phase.
+     * It is sorted in ascending order based on the value of the card played.
+     */
     public void inOrderForActionPhase(){
-        Collections.sort(queue, Queue::compareTo);
+        queue.sort(Queue::compareTo);
         listenMyQueue();
     }
 
+    /**
+     * This method is used to notify at virtualView changes in queue.
+     */
     private void listenMyQueue(){
         for(int i = 0; i < numberOfPlayer; i++){
             this.queueListener.notifyQueue(i, queue.get(i).getPlayerRef());
             this.queueListener.notifyValueCard(i, queue.get(i).getValueCard());
             this.queueListener.notifyMaxMove(i, queue.get(i).getMaxMoveMotherNature());
-            queue.get(i).getMaxMoveMotherNature();
         }
     }
 
     public int readQueue(int queueRef){ return queue.get(queueRef).getPlayerRef(); }
     public int readMaxMotherNatureMovement(int queueRef){ return queue.get(queueRef).getMaxMoveMotherNature(); }
 
-    private class Queue implements Comparable<Queue> {   //it is used both in the planning phase and in the action phase
-        private int playerRef;
+    /**
+     * This class contain info of an element in queue with his player reference, value of card and max movement of mother nature.
+     * It is used both in the planning phase and in the action phase.
+     */
+    private static class Queue implements Comparable<Queue> {
+        private final int playerRef;
         private Integer valueCard;
         private int maxMoveMotherNature;
 
@@ -98,9 +136,12 @@ public class QueueManager {
         private void setValueCard(Integer valueCard) { this.valueCard = valueCard; }
         private void setMaxMoveMotherNature(int maxMoveMotherNature) { this.maxMoveMotherNature = maxMoveMotherNature; }
 
+        /**
+         * Compare two element of queue by the valueCard.
+         * @param o the other element with compare to.
+         * @return the sort between them;
+         */
         @Override
-        public int compareTo(Queue o) {
-            return valueCard.compareTo(o.getValueCard());
-        }
+        public int compareTo(Queue o) { return valueCard.compareTo(o.getValueCard()); }
     }
 }

@@ -15,16 +15,14 @@ public class RoundSpecial12 extends RoundStrategy{
     @Override
     public boolean effect(int color){
         for (int i = 0; i < numberOfPlayer; i++) {
-            try {
-                if (playerManager.getStudentTable(i, color) >= 3) {
-                    for (int j = 0; j < 3; j++)
-                        playerManager.removeStudentTable(i, color);
-                    bag.fillBag(color, 3);
-                } else {
-                    bag.fillBag(color, playerManager.getStudentTable(i, color));
-                    while (playerManager.getStudentTable(i, color) != 0) playerManager.removeStudentTable(i, color);
-                }
-            }catch (NotAllowedException notAllowedException) { return false; }
+            if (playerManager.getStudentTable(i, color) >= 3) {
+                for (int j = 0; j < 3; j++)
+                    playerManager.removeStudentTable(i, color);
+                bag.fillBag(color, 3);
+            } else {
+                bag.fillBag(color, playerManager.getStudentTable(i, color));
+                while (playerManager.getStudentTable(i, color) != 0) playerManager.removeStudentTable(i, color);
+            }
         }
         return true;
     }
