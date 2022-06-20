@@ -365,7 +365,6 @@ public class Proxy_c implements Exit {
                             view.setNoEntry(((InfoSpecial5Answer) tmp).getCards());
                         }
                     } else if (tmp instanceof DisconnectedAnswer) {
-                        System.out.println(disconnected);
                         disconnected = true;
                         answersTmpList.clear();
                         disconnectedListener.notifyDisconnected();
