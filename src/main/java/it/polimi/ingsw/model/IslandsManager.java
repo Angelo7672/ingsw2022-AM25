@@ -1,14 +1,15 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.listeners.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+/**
+ * IslandManager contains all the information about islands and mother nature.
+ */
 public class IslandsManager {
     private ArrayList<Island> islands;
-    private Island i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12;
     private int motherPos;
     protected StudentsListener studentListener;
     protected TowersListener towersListener;
@@ -16,18 +17,18 @@ public class IslandsManager {
     protected IslandListener islandListener;
     protected InhibitedListener inhibitedListener;
 
+    /**
+     * Constructor add 12 island in the Arraylist.
+     */
     public IslandsManager() {
-        i1 = new Island(); i2 = new Island(); i3 = new Island();
-        i4 = new Island(); i5 = new Island(); i6 = new Island();
-        i7 = new Island(); i8 = new Island(); i9 = new Island();
-        i10 = new Island(); i11 = new Island(); i12 = new Island();
         islands = new ArrayList<>();
-        islands.add(i1); islands.add(i2); islands.add(i3);
-        islands.add(i4); islands.add(i5); islands.add(i6);
-        islands.add(i7); islands.add(i8); islands.add(i9);
-        islands.add(i10); islands.add(i11); islands.add(i12);
+        for (int i=0; i<12; i++) islands.add(new Island());
     }
 
+    /**
+     * Initialize islands using miniBag, an arrayList filled with two students per color.
+     * Mother position is extracted randomly.
+     */
     public void islandsInitialize(){
         Random rand = new Random();
         motherPos = rand.nextInt(12);
@@ -46,6 +47,11 @@ public class IslandsManager {
             }
         }
     }
+
+    /**
+     * Restore the right number of islands.
+     * @param size is the size of the saved ArrayList.
+     */
     public void setIslandsSizeAfterRestore(int size){
         int toDelete = 12 - size;
 
@@ -54,6 +60,15 @@ public class IslandsManager {
             this.islandListener.notifyIslandChange(i);
         }
     }
+
+    /**
+     * Restore all the components on island.
+     * @param islandRef the islands reference;
+     * @param students array of students which were on the island;
+     * @param towerValue number of towers which were on the island;
+     * @param towerTeam Team who owned the island;
+     * @param inhibited number of no entry tiles which were on island.
+     */
     public void restoreIslands(int islandRef, int[] students, int towerValue, Team towerTeam, int inhibited){
         //Students
         for(int i = 0; i < 5; i++)
@@ -67,6 +82,11 @@ public class IslandsManager {
         for(int i = 0; i < inhibited; i++)
             increaseInhibited(islandRef);
     }
+
+    /**
+     * Restore the position of mother nature.
+     * @param islandRef the islands reference.
+     */
     public void restoreMotherPose(int islandRef){
         motherPos = islandRef;
         this.motherPositionListener.notifyMotherPosition(motherPos);
@@ -74,23 +94,39 @@ public class IslandsManager {
 
     public int getIslandsSize(){ return islands.size(); }
 
+    /**
+     * Increase the number of students on the island.
+     * @param island the islands reference;
+     * @param color the color reference;
+     * @param studentOfThisColor number of students.
+     */
     public void incStudent(int island, int color, int studentOfThisColor){
         for(int i = 0; i < studentOfThisColor; i ++) {
             islands.get(island).incStudents(color);
         }
         this.studentListener.notifyStudentsChange(2, island, color, getStudent(island, color));
     }
+    public int getStudent(int island, int color){ return islands.get(island).getNumStudents(color); }
 
+    /**
+     * Move mother nature.
+     * @param steps number of steps.
+     */
     public void moveMotherNature(int steps) {
         motherPos = circularArray(motherPos, steps);
         this.motherPositionListener.notifyMotherPosition(motherPos);
     }
     public int getMotherPos(){ return motherPos; }
 
-    public int getStudent(int island, int color){ return islands.get(island).getNumStudents(color); }
-
     public Team getTowerTeam(int islandRef){ return islands.get(islandRef).getTowerTeam(); }
     public int getTowerValue(int islandRef){ return islands.get(islandRef).getTowerValue(); }
+
+    /**
+     * Change the tower team on the island.
+     * @param islandRef the islands reference;
+     * @param team new team owner
+     * @return array with in the first cell the number of towers built, in the second the previous owner of the towers
+     */
     public int[] towerChange(int islandRef, Team team) {
         int[] returnItem = new int[2];  //in the first cell there is the number of towers built, in the second there is the previous owner of the towers
 
@@ -118,18 +154,30 @@ public class IslandsManager {
         return returnItem;
     }
 
+    /**
+     * Check if the island on the left or/and on the right could be unified.
+     * @param pos the islands reference;
+     */
     private void checkAdjacentIslands(int pos) {
         int posTemp;
 
-        posTemp = circularArray(pos,-1);    //sx tower
+        posTemp = circularArray(pos,-1);    //left tower
         if(checkAdjacent(pos, posTemp)) pos = circularArray(pos,-1);;
 
-        posTemp = circularArray(pos,1);     //dx tower
+        posTemp = circularArray(pos,1);     //right tower
         checkAdjacent(pos, posTemp);
     }
+
+    /**
+     * Check if the two islands have the same owner. In this case all the students are copied from posTemp island to pos island.
+     * Then the tower of the island is increased and, if mother nature islands is greater of the unified islands, then it has to be moved one island back.
+     * @param pos first islands reference;
+     * @param posTemp second islands reference;
+     * @return true if islands have been unified.
+     */
     private boolean checkAdjacent(int pos, int posTemp){
         if (islands.get(pos).getTowerTeam() == islands.get(posTemp).getTowerTeam()) {
-            for (int i = 0; i < 5; i++) {   //move student from postemp to pos
+            for (int i = 0; i < 5; i++) {   //move student from posTemp to pos
                 if(islands.get(posTemp).getNumStudents(i)!=0) {
                     islands.get(pos).copyStudents(i, islands.get(pos).getNumStudents(i) + islands.get(posTemp).getNumStudents(i));
                     this.studentListener.notifyStudentsChange(2, pos, i, islands.get(pos).getNumStudents(i));
@@ -139,8 +187,8 @@ public class IslandsManager {
             this.towersListener.notifyTowersChange(1,pos, islands.get(pos).getTowerValue());
             islands.remove(posTemp); //island delete
             this.islandListener.notifyIslandChange(posTemp);
-            if(motherPos == posTemp || motherPos == pos){ //Move mother, if was there from the eliminated island
-                if(posTemp>pos) {
+            if(getMotherPos() >= pos){ //Move mother
+                if(motherPos==posTemp && posTemp>pos) {
                     motherPos = pos;
                     this.motherPositionListener.notifyMotherPosition(motherPos);
                 }
@@ -148,16 +196,25 @@ public class IslandsManager {
                     motherPos = pos-1;
                     this.motherPositionListener.notifyMotherPosition(motherPos);
                 }
-
             }
             return true;
         }
         return false;
     }
+
+    /**
+     * Game is over if there are just 3 island or less.
+     * @return true if islands are 3 or less.
+     */
     public boolean checkVictory() { return islands.size() <= 3; }
 
-    //public momentaneo
-    public int circularArray(int pos, int number){  //add numbers to not leave the array
+    /**
+     * Sum to the number of island a number to not get out of the array.
+     * @param pos the islands reference;
+     * @param number the number to sum;
+     * @return the result of the sum.
+     */
+    public int circularArray(int pos, int number){
         pos += number;
         if(pos >= islands.size()) pos -= islands.size();
         else if(pos < 0) pos += islands.size();
@@ -165,10 +222,20 @@ public class IslandsManager {
     }
 
     public int getInhibited(int islandRef){ return islands.get(islandRef).getInhibited(); }
+
+    /**
+     * Increase the number of no entry tiles on the island.
+     * @param islandRef the islands reference;
+     */
     public void increaseInhibited(int islandRef){
         islands.get(islandRef).increaseInhibited();
         this.inhibitedListener.notifyInhibited(islandRef, getInhibited(islandRef));
     }
+
+    /**
+     * Decrease the number of no entry tiles on the island.
+     * @param islandRef the islands reference;
+     */
     public void decreaseInhibited(int islandRef){
         islands.get(islandRef).decreaseInhibited();
         this.inhibitedListener.notifyInhibited(islandRef, getInhibited(islandRef));
