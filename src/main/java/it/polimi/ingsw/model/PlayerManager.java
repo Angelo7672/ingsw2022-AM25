@@ -106,7 +106,9 @@ public class PlayerManager  {
             }
         }
         //Towers
-        placeTower(team,towers);
+        if(numberOfPlayer == 4) {
+            if (playerRef == 0 || playerRef == 2) placeTower(team, towers);
+        }else placeTower(team,towers);
         //Professors
         for (int i = 0; i < 5; i++)
             if(professors[i]) setProfessor(playerRef,i);
