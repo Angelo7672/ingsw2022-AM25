@@ -177,9 +177,7 @@ public class PlayerManager  {
         int i;
         boolean stop = false;
 
-        if(!inSchool) {
-            removeStudentEntrance(playerRef,colour);  //if inSchool is false, it's placed in an island
-        }
+        if(!inSchool) removeStudentEntrance(playerRef,colour);  //if inSchool is false, it's placed in an island
         else if(inSchool && !special){   //if inSchool is true, it's placed on the table
             removeStudentEntrance(playerRef,colour);
             setStudentTable(playerRef,colour,1);

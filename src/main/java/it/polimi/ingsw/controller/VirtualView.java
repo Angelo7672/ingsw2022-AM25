@@ -241,7 +241,7 @@ public class VirtualView
             schoolBoards.get(componentRef).setStudentsEntrance(color, newStudentsValue);
             server.studentsChangeInSchool(color, "Entrance", componentRef, newStudentsValue);
         } else if(place==1){
-            schoolBoards.get(componentRef).setStudentsTable(componentRef, newStudentsValue);
+            schoolBoards.get(componentRef).setStudentsTable(color, newStudentsValue);
             server.studentsChangeInSchool(color, "Table", componentRef, newStudentsValue);
         } else if(place==2){
             islands.get(componentRef).setStudentsIsland(color, newStudentsValue);
