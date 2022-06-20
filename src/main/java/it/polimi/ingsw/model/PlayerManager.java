@@ -372,7 +372,7 @@ public class PlayerManager  {
     }
 
     /**
-     *
+     * Check if a player has the student chosen in his table. Used by special10.
      * @param student a list of student's colour
      * @param playerRef the player reference;
      * @return if the operation was successful;
