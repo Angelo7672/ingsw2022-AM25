@@ -15,7 +15,9 @@ public class RoundSpecial4 extends RoundStrategy{
         int maxMovement;
         boolean victory = false;
 
-        maxMovement = queueManager.readMaxMotherNatureMovement(queueRef) + 2; //da incrementare anche per scelta del giocatore
+        queueManager.increaseMaxMoveMotherNature(queueRef);
+        maxMovement = queueManager.readMaxMotherNatureMovement(queueRef);
+
 
         if(desiredMovement > 0 && desiredMovement <= maxMovement){
             islandsManager.moveMotherNature(desiredMovement);

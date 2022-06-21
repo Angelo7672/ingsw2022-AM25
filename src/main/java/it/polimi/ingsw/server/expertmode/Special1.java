@@ -14,7 +14,7 @@ public class Special1 implements Special{
     public Special1(Entrance server) { this.server = server; }
 
     @Override
-    public void effect(int playerRef, VirtualClient user){
+    public synchronized void effect(int playerRef, VirtualClient user){
         VirtualClient virtualClient = user;
         boolean checker;
 

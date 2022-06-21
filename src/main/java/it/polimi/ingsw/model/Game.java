@@ -154,17 +154,14 @@ public class Game implements GameManager{
 
         victory = roundStrategies.get(indexSpecial).moveMotherNature(queueRef, desiredMovement, refSpecial);    //can throw NotAllowedException
         setSpecial(0,-1);
-        if(expertMode) checkNoEntry(); //possiamo mettere un boolean in game per farlo attivare solo se si usa questo special nella partita
+
+        if(expertMode)
+            for(int i=0; i<3; i++)
+                if(extractedSpecials.get(i) == 5) checkNoEntry(i + 1);
 
         return victory;
     }
-    private void checkNoEntry(){
-        int index=-1;
-        for(int i=0; i<3; i++){
-            if(roundStrategies.get(i).getName().equals("special5")) index=i;
-        }
-        if(index!=-1) roundStrategies.get(index).effect();
-    }
+    private void checkNoEntry(int ref){ roundStrategies.get(ref).effect(); }
     @Override
     public void chooseCloud(int playerRef,int cloudRef) throws NotAllowedException {
         int[] students;
@@ -181,9 +178,9 @@ public class Game implements GameManager{
             this.specialListener.notifySpecial(indexSpecial, playerRef);
             for(int i = 0; i < 3; i++)
                 if(extractedSpecials.get(i) == indexSpecial){
-                    playerManager.removeCoin(playerRef, roundStrategies.get(i).getCost());
-                    roundStrategies.get(i).increaseCost();
-                    this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i).getCost());
+                    playerManager.removeCoin(playerRef, roundStrategies.get(i+1).getCost());
+                    roundStrategies.get(i+1).increaseCost();
+                    this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i+1).getCost());
                 }
         } else return false;
 
@@ -197,13 +194,14 @@ public class Game implements GameManager{
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, ref);
             this.specialListener.notifySpecial(indexSpecial, playerRef);
-            checker = roundStrategies.get(indexSpecial).effect(ref);
+            for(int i = 0; i < 3; i++)
+                if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(ref);
             if(checker)
                 for(int i = 0; i < 3; i++)
                     if(extractedSpecials.get(i) == indexSpecial){
-                        playerManager.removeCoin(playerRef, roundStrategies.get(i).getCost());
-                        roundStrategies.get(i).increaseCost();
-                        this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i).getCost());
+                        playerManager.removeCoin(playerRef, roundStrategies.get(i+1).getCost());
+                        roundStrategies.get(i+1).increaseCost();
+                        this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i+1).getCost());
                     }
             setSpecial(0, -1);
         }
@@ -217,13 +215,14 @@ public class Game implements GameManager{
         if (affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, ref);
             this.specialListener.notifySpecial(indexSpecial, playerRef);
-            checker = roundStrategies.get(indexSpecial).effect(ref, color);
+            for(int i = 0; i < 3; i++)
+                if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(ref, color);
             if(checker)
                 for(int i = 0; i < 3; i++)
                     if(extractedSpecials.get(i) == indexSpecial){
-                        playerManager.removeCoin(playerRef, roundStrategies.get(i).getCost());
-                        roundStrategies.get(i).increaseCost();
-                        this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i).getCost());
+                        playerManager.removeCoin(playerRef, roundStrategies.get(i+1).getCost());
+                        roundStrategies.get(i+1).increaseCost();
+                        this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i+1).getCost());
                     }
             setSpecial(0, -1);
         }
@@ -237,13 +236,14 @@ public class Game implements GameManager{
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, playerRef);
             this.specialListener.notifySpecial(indexSpecial, playerRef);
-            checker = roundStrategies.get(indexSpecial).effect(playerRef, color1, color2);
+            for(int i = 0; i < 3; i++)
+                if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(playerRef, color1, color2);
             if(checker) {
                 for (int i = 0; i < 3; i++)
                     if (extractedSpecials.get(i) == indexSpecial) {
-                        playerManager.removeCoin(playerRef, roundStrategies.get(i).getCost());
-                        roundStrategies.get(i).increaseCost();
-                        this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i).getCost());
+                        playerManager.removeCoin(playerRef, roundStrategies.get(i+1).getCost());
+                        roundStrategies.get(i+1).increaseCost();
+                        this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i+1).getCost());
                     }
                 setSpecial(0, -1);
             }
@@ -281,18 +281,6 @@ public class Game implements GameManager{
 
     @Override
     public String oneLastRide(){ return String.valueOf(playerManager.checkVictory()); }
-
-
-
-    /*public int findName(int index){
-        if(roundStrategies.get(index).getName().equals("special1")) return 2;
-        if(roundStrategies.get(index).getName().equals("special5")) return 1;
-        if(roundStrategies.get(index).getName().equals("special7")) return 3;
-        if(roundStrategies.get(index).getName().equals("special10")) return 3;
-        if(roundStrategies.get(index).getName().equals("special11")) return 2;
-        if(roundStrategies.get(index).getName().equals("special12")) return 1;
-        return -1;
-    }*/
 
     //Listener
     @Override

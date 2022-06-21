@@ -252,8 +252,7 @@ public class PlayerManager  {
      * @param colour the colour reference;
      */
     private void checkPosForCoin(int playerRef, int colour){
-        players.get(playerRef).checkPosForCoin(colour);
-        this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef));
+        if(players.get(playerRef).checkPosForCoin(colour)) this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef));
     }
 
     /**
@@ -422,8 +421,12 @@ public class PlayerManager  {
          * If there is 3, 6 or 9 students in a specified table, give a coin.
          * @param colour of table to check;
          */
-        private void checkPosForCoin(int colour){
-            if(school.getStudentTable(colour)==3 || school.getStudentTable(colour)==6 || school.getStudentTable(colour)==9) coins++;
+        private boolean checkPosForCoin(int colour){
+            if(school.getStudentTable(colour)==3 || school.getStudentTable(colour)==6 || school.getStudentTable(colour)==9){
+                coins++;
+                return true;
+            }
+            return false;
         }
         private void removeCoin(int cost) { coins-=cost; }
 

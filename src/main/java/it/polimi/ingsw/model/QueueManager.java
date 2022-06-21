@@ -102,6 +102,15 @@ public class QueueManager {
     }
 
     /**
+     * Increase by 2 point the max movement of mother nature. Used by special4
+     * @param queueRef queue reference;
+     */
+    public void increaseMaxMoveMotherNature(int queueRef){
+        queue.get(queueRef).increaseMaxMoveMotherNature();
+        this.queueListener.notifyMaxMove(queueRef, queue.get(queueRef).getMaxMoveMotherNature());
+    }
+
+    /**
      * This method is used to notify at virtualView changes in queue.
      */
     private void listenMyQueue(){
@@ -135,6 +144,7 @@ public class QueueManager {
         private int getMaxMoveMotherNature() { return maxMoveMotherNature; }
         private void setValueCard(Integer valueCard) { this.valueCard = valueCard; }
         private void setMaxMoveMotherNature(int maxMoveMotherNature) { this.maxMoveMotherNature = maxMoveMotherNature; }
+        private void increaseMaxMoveMotherNature(){ this.maxMoveMotherNature += 2; }
 
         /**
          * Compare two element of queue by the valueCard.

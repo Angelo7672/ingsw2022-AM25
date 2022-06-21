@@ -1,14 +1,22 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.exception.NotAllowedException;
 import it.polimi.ingsw.server.ControllerServer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import java.io.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class VirtualViewTest {
     VirtualView virtualView;
+    Controller controller;
+    String fileName = "saveGame.bin";
+    FileOutputStream outputFile;
+    ObjectOutputStream objectOut;
+    ObjectInputStream inputFile;
 
     @BeforeEach
     void initialization(){
@@ -66,9 +74,52 @@ class VirtualViewTest {
             @Override
             public void sendInfoSpecial5(int cards) {}
         };
-        Controller controller = new Controller(2, true, controllerServer);
+        controller = new Controller(2, true, controllerServer);
         virtualView = new VirtualView(2, true, controllerServer, controller, "saveGame.bin");
+        controller.createGame();
+        controller.initializeGame();
+        clearFile();
+        try {
+            outputFile = new FileOutputStream(fileName);
+            objectOut = new ObjectOutputStream(outputFile);
+            inputFile = new ObjectInputStream(new FileInputStream(fileName));
+        } catch (FileNotFoundException e) { System.out.println("Error, retry"); return;
+        } catch (IOException e) { System.out.println("Error, retry"); return; }
+
     }
+
+    public void clearFile() {
+        try {
+            File file = new File(fileName);
+            if (file.exists()) {
+                RandomAccessFile raf = new RandomAccessFile(file, "rw");
+                raf.setLength(0);
+            }
+        } catch (FileNotFoundException e) { e.printStackTrace();
+        } catch (IOException e) { e.printStackTrace(); }
+    }
+
+    /*@Test
+    void testMoveStudentInSchool(){
+        boolean ok = false;
+        int i = 0;
+
+        while(!ok && i < 5){
+            ok = true;
+            try{controller.moveStudent(0, i, true, -1);
+            }catch (NotAllowedException notAllowedException) {
+                ok = false;
+                i++;
+            }
+        }
+        virtualView.saveVirtualView();  // write changes on file
+        inputFile.readObject();
+        inputFile.readObject();
+        inputFile.readObject();
+        ArrayList<VirtualView.SchoolBoard> schoolBoardsTmp
+
+
+    }*/
 
 
 }
