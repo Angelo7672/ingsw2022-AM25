@@ -1,7 +1,3 @@
-/**
- * This is the bag class, its job is to hold the 130 student tokens and provide random draws. It also announces when the student tokens are gone
- * Colour has the following legend: GREEN-->0, RED-->1, YELLOW-->2, PINK-->3, BLUE-->4
- */
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.listeners.BagListener;
@@ -10,6 +6,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This is the bag class, its job is to hold the 120 student tokens and provide random draws. It also announces when the student tokens are gone.
+ * Colour has the following legend: GREEN-->0, RED-->1, YELLOW-->2, PINK-->3, BLUE-->4.
+ * Notify method send changes from Bag to VirtualView.
+ */
 public class Bag {
     private List<Integer> bag;
     protected BagListener bagListener;
@@ -26,11 +27,20 @@ public class Bag {
         Collections.shuffle(bag);
         this.bagListener.notifyBag(bag);
     }
+
+    /**
+     * Restore the bag.
+     * @param bag in the previous game;
+     */
     public void bagRestore(List<Integer> bag){
         this.bagListener.notifyBag(bag);
         this.bag = bag;
     }
 
+    /**
+     * Extract the first element of the bag.
+     * @return the colour extracted;
+     */
     public int extraction(){
         int colorExtracted;
 
@@ -41,8 +51,17 @@ public class Bag {
         return colorExtracted;
     }
 
-    public boolean checkVictory(){ return bag.isEmpty(); }     //must be called every time an extraction is made
+    /**
+     * Must be called every time an extraction is made.
+     * @return if game will end at the end of this round.
+     */
+    public boolean checkVictory(){ return bag.isEmpty(); }
 
+    /**
+     * Puts it back a number of equal color students in the bag. Used by special 12.
+     * @param color of the students;
+     * @param num of students to put in th bag;
+     */
     public void fillBag(int color, int num){
         for(int i = 0; i < num; i++)
             bag.add(color);

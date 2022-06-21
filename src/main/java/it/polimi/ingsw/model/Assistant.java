@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+/**
+ * Cards to play during planning phase, each one has a value and a max movement for mother nature.
+ */
 public enum Assistant {
     LION(1, 1), GOOSE(2, 1), CAT(3, 2), EAGLE(4, 2), FOX(5, 3),
     LIZARD(6, 3), OCTOPUS(7, 4), DOG(8, 4), ELEPHANT(9, 5), TURTLE(10, 5),
