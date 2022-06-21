@@ -17,7 +17,7 @@ public class Client {
     private static String  UNDERLINE = "\u001B[4m";
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException { //non si mette il lancio di eccezioni nel main! Falle catturare dai catch, printa qualcosa a schermo e poi fai System.exit
         System.out.println(SPACE+ANSI_GREEN+UNDERLINE+"ERIANTYS"+ANSI_RESET);
         System.out.println();
         Scanner scanner = new Scanner(System.in);

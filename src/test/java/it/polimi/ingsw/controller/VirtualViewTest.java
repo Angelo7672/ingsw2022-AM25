@@ -70,4 +70,5 @@ class VirtualViewTest {
         virtualView = new VirtualView(2, true, controllerServer, controller, "saveGame.bin");
     }
 
+
 }
