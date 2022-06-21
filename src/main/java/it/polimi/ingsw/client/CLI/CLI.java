@@ -54,7 +54,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             }
             else {
                 System.out.println();
-                System.out.println(SPACE + "Setup Connection done, waiting for players...");
+                System.out.println(SPACE + "Setup Connection " + ", waiting for players...");
                 gameRestored = true;
             }
         }
@@ -524,7 +524,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
                 else if(accepted.equals("move not allowed")) {
                     System.out.println(ANSI_RED+SPACE+"Move not allowed"+ANSI_RESET);
                     System.out.println();
-                }
+                } else if (!constants.isSpecialUsed() && view.getExpertMode()) useSpecial();
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println();
                 System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
@@ -627,7 +627,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         if(!constants.isStartGame()) constants.setStartGame(true);
         if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) {
             useSpecial();
-            System.out.println("Done");
         }
         phaseHandler(constants.lastPhase());
     }

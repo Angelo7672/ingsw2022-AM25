@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.message.*;
 import it.polimi.ingsw.client.message.special.*;
 import it.polimi.ingsw.listeners.DisconnectedListener;
 import it.polimi.ingsw.listeners.ServerOfflineListener;
-import it.polimi.ingsw.listeners.WinnerListener;
 import it.polimi.ingsw.server.answer.*;
 import it.polimi.ingsw.server.answer.viewmessage.*;
 
@@ -13,7 +12,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 public class Proxy_c implements Exit {
@@ -89,15 +87,15 @@ public class Proxy_c implements Exit {
         return null;
     }
 
-    public boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
+    public boolean setupConnection(String nickname, String character) throws IOException {
+        if(nickname.length()>10) nickname = nickname.substring(0,9);
         send(new SetupConnection(nickname, character));
         tempObj = receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
         else return false;
-
     }
 
-    public boolean setupGame(int numberOfPlayers, String expertMode) throws IOException, ClassNotFoundException {
+    public boolean setupGame(int numberOfPlayers, String expertMode) throws IOException {
         boolean isExpert;
 
         if(numberOfPlayers<2 || numberOfPlayers >4) return false;
@@ -106,14 +104,14 @@ public class Proxy_c implements Exit {
         else return false;
 
         send(new SetupGame(numberOfPlayers, isExpert));
-        tempObj = receive();;
+        tempObj = receive();
         if(!((GenericAnswer)tempObj).getMessage().equals("ok")) return false;
         send(new GenericMessage("Ready for login!"));
         tempObj = receive();
         return true;
     }
 
-    public ArrayList<String> getChosenCharacters() throws IOException, ClassNotFoundException {
+    public ArrayList<String> getChosenCharacters() {
         if(tempObj == null) {
             tempObj = receive();
         }
@@ -130,7 +128,7 @@ public class Proxy_c implements Exit {
         return view;
     }
 
-    public boolean startPlanningPhase() throws ClassNotFoundException, IOException {
+    public boolean startPlanningPhase() throws IOException {
         send(new GenericMessage("Ready for Planning Phase"));
         while(true) {
             tempObj = receive();
@@ -145,6 +143,7 @@ public class Proxy_c implements Exit {
         tempObj = receive();
         if(tempObj instanceof GenericAnswer) {
             view.setCards(card);
+            send(new GenericMessage("Ready for Action Phase"));
             return ((GenericAnswer)tempObj).getMessage();
         }
         if(tempObj instanceof MoveNotAllowedAnswer){
@@ -154,7 +153,6 @@ public class Proxy_c implements Exit {
     }
 
     public boolean startActionPhase() throws IOException, ClassNotFoundException {
-        send(new GenericMessage("Ready for Action Phase"));
         while(true) {
             tempObj = receive();
             if(((StartTurn)tempObj).getMessage().equals("Start your Action Phase!")){
@@ -301,6 +299,7 @@ public class Proxy_c implements Exit {
                         }
                     } else if (tmp instanceof CoinsMessage) {
                         synchronized (lock2) {
+                            System.out.println("coins message "+((CoinsMessage) tmp).getCoin());
                             if (!view.isInitializedView()) lock2.wait();
                             view.setCoins(((CoinsMessage) tmp).getPlayerRef(), ((CoinsMessage) tmp).getCoin());
                         }
@@ -373,7 +372,8 @@ public class Proxy_c implements Exit {
                             if (!view.isInitializedView()) lock2.wait();
                             view.setWinner(((GameOverAnswer) tmp).getWinner());
                         }
-                    } else {
+                    }
+                    else {
                         answersTmpList.add(tmp);
                     }
                     synchronized (lock1){
@@ -435,5 +435,6 @@ public class Proxy_c implements Exit {
     public void setServerOfflineListener(ServerOfflineListener serverOfflineListener) throws IOException {
         this.serverOfflineListener = serverOfflineListener;
     }
+
 }
 

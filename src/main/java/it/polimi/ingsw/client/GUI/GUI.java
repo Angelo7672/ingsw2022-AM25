@@ -73,7 +73,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             initialStudentsEntrance.add(new int[]{0,0,0,0,0});
             initialTowersSchool.put(i, 8);
         }
-        ;
+
 
 
     }
@@ -194,8 +194,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         }
 
-
-
     public void phaseHandler(String phase){
         System.out.println("started phase handler!");
         //String currentPhase = constants.lastPhase();
@@ -306,7 +304,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 //controller.setNotYourTurnMessage();
             }
             phaseHandler("PlayCard");
-        }
+    }
+
+
 
 
 
@@ -350,7 +350,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         });
 
     }
-
 
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
