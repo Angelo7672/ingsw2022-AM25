@@ -113,6 +113,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 } else if(oneCardAtaTime) { //Planning Phase msg
                     oneCardAtaTime = false;
                     if (tmp instanceof CardMessage) {
+                        System.out.println("Ho ricevuto la carta di "+playerRef);
                         roundPartOne.setPlanningMsg(tmp);
                         if (!error) synchronized(planLocker){ planLocker.notify(); }
                         else {
