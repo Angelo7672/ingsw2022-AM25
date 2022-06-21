@@ -160,7 +160,7 @@ public class Game implements GameManager{
     }
     private void checkNoEntry(){
         int index=-1;
-        for(int i=0; i<3; i++){
+        for(int i=1; i<4; i++){
             if(roundStrategies.get(i).getName().equals("special5")) index=i;
         }
         if(index!=-1) roundStrategies.get(index).effect();

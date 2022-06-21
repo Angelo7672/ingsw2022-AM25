@@ -87,12 +87,12 @@ public class Proxy_c implements Exit {
         return null;
     }
 
-    public boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException {
+    public boolean setupConnection(String nickname, String character) throws IOException {
+        if(nickname.length()>10) nickname = nickname.substring(0,9);
         send(new SetupConnection(nickname, character));
         tempObj = receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
         else return false;
-
     }
 
     public boolean setupGame(int numberOfPlayers, String expertMode) throws IOException {
@@ -136,10 +136,6 @@ public class Proxy_c implements Exit {
                 return true;
             }
         }
-    }
-
-    public void sendPlanning() throws IOException {
-        send(new GenericMessage("Ready for Planning Phase"));
     }
 
     public String playCard(String card) throws IOException, ClassNotFoundException {
@@ -259,7 +255,6 @@ public class Proxy_c implements Exit {
                 this.socket.setSoTimeout(15000);
                 while (!disconnected) {
                     tmp = (Answer) inputStream.readObject();
-                    System.out.println(tmp);
                     if (tmp instanceof PongAnswer) {
                         this.socket.setSoTimeout(15000);
                     } else if (tmp instanceof GameInfoAnswer) {
@@ -304,6 +299,7 @@ public class Proxy_c implements Exit {
                         }
                     } else if (tmp instanceof CoinsMessage) {
                         synchronized (lock2) {
+                            System.out.println("coins message "+((CoinsMessage) tmp).getCoin());
                             if (!view.isInitializedView()) lock2.wait();
                             view.setCoins(((CoinsMessage) tmp).getPlayerRef(), ((CoinsMessage) tmp).getCoin());
                         }
