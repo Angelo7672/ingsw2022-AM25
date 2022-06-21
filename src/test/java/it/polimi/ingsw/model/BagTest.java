@@ -5,21 +5,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BagTest {
     Bag bag;
+    List<Integer> bagRestore;
 
     @BeforeEach
     void initialization() {
+        bagRestore = new ArrayList<>();
         bag = new Bag();
         bag.bagListener = new BagListener() {
             @Override
             public void notifyBagExtraction() {}
             @Override
-            public void notifyBag(List<Integer> bag) {}
+            public void notifyBag(List<Integer> bag) {
+                bagRestore = bag;
+            }
         };
         bag.bagInitialize();
     }
@@ -36,16 +41,24 @@ class BagTest {
         }
     }
 
-   @Test
-    @DisplayName("Third test: extracts 120 students and check the victory")
+    @Test
+    @DisplayName("Second test: extracts 120 students and check the victory")
     void checkVictory(){
-        int tmp;
-
         for(int i = 0; i < 119; i++) {
-            tmp = bag.extraction();
+            bag.extraction();
             assertFalse(bag.checkVictory(),"The bag should not be empty");
         }
-        tmp = bag.extraction();
+        bag.extraction();
         assertTrue(bag.checkVictory(),"The bag be empty");
+    }
+
+    @Test
+    @DisplayName("Third test: bag restore")
+    void restoreBag(){
+        List<Integer> bagTmp = new ArrayList<>();
+        bagTmp.add(1);bagTmp.add(2);bagTmp.add(3);
+        bag.bagRestore(bagTmp);
+        for(int i = 0; i < bagTmp.size(); i++)
+            assertEquals(bagTmp.get(i),bagRestore.get(i));
     }
 }

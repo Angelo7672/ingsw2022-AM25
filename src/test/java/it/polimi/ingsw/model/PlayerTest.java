@@ -15,9 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerTest {
     PlayerManager playerManager2P, playerManager3P, playerManager4P;
     Bag bag;
+    int coinsRestore;
+    ArrayList<Assistant> cardsRestore;
 
     @BeforeEach
     void initialization() {
+        cardsRestore = new ArrayList<>();
         bag = new Bag();
         bag.bagListener = new BagListener() {
             @Override
@@ -42,19 +45,37 @@ class PlayerTest {
             };
             playerManager.coinsListener = new CoinsListener() {
                 @Override
-                public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {}
+                public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
+                    coinsRestore = newCoinsValue;
+                }
             };
             playerManager.playedCardListener = new PlayedCardListener() {
                 @Override
                 public void notifyPlayedCard(int playerRef, String assistantCard) {}
                 @Override
-                public void notifyHand(int playerRef, ArrayList<String> hand) {}
+                public void notifyHand(int playerRef, ArrayList<String> hand) {
+                    for(String s:hand)
+                        cardsRestore.add(stringToAssistant(s));
+                }
             };
             playerManager.studentsListener = new StudentsListener() {
                 @Override
                 public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
             };
         }
+    }
+    private Assistant stringToAssistant(String string){
+        if(string.equalsIgnoreCase("LION")) return Assistant.LION;
+        else if(string.equalsIgnoreCase("GOOSE")) return Assistant.GOOSE;
+        else if(string.equalsIgnoreCase("CAT")) return Assistant.CAT;
+        else if(string.equalsIgnoreCase("EAGLE")) return Assistant.EAGLE;
+        else if(string.equalsIgnoreCase("FOX")) return Assistant.FOX;
+        else if(string.equalsIgnoreCase("LIZARD")) return Assistant.LIZARD;
+        else if(string.equalsIgnoreCase("OCTOPUS")) return Assistant.OCTOPUS;
+        else if(string.equalsIgnoreCase("DOG")) return Assistant.DOG;
+        else if(string.equalsIgnoreCase("ELEPHANT")) return Assistant.ELEPHANT;
+        else if(string.equalsIgnoreCase("TURTLE")) return Assistant.TURTLE;
+        return Assistant.NONE;
     }
 
     @Test
@@ -102,7 +123,7 @@ class PlayerTest {
         );
     }
 
-   @Test
+    @Test
     @DisplayName("Second test: coins control")
     void coinsControl() throws NotAllowedException {
         int[] studentsGiorgio = new int[]{0, 0, 0, 2, 2, 2, 3, 3, 3, 4};
@@ -141,5 +162,17 @@ class PlayerTest {
         playerManager2P.removeCoin(1,1);
         assertEquals(1,playerManager2P.getCoins(0),"The player has one coin");
         assertEquals(2,playerManager2P.getCoins(1),"The player has two coins");
+    }
+
+    @Test
+    @DisplayName("Third test: restore hand and coins")
+    void restoreHandAndCoins(){
+        ArrayList<Assistant> cards = new ArrayList<>();
+        cards.add(Assistant.GOOSE);cards.add(Assistant.EAGLE);cards.add(Assistant.TURTLE);
+        int coins = 3;
+        playerManager2P.restoreHandAndCoins(0,cards,coins);
+        for (int i = 0 ; i < cards.size(); i++)
+            assertEquals(cards.get(i),cardsRestore.get(i));
+        assertEquals(coins,coinsRestore);
     }
 }

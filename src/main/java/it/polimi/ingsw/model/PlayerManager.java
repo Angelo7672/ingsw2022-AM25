@@ -210,7 +210,7 @@ public class PlayerManager  {
         else if(!special){   //if inSchool is true, it's placed on the table
             removeStudentEntrance(playerRef,colour);
             setStudentTable(playerRef,colour,1);
-            players.get(playerRef).checkPosForCoin(colour);    //check the position, in case we have to give a coin to the player
+            checkPosForCoin(playerRef,colour);    //check the position, in case we have to give a coin to the player
             studentTableThisColour = getStudentTable(playerRef,colour);
             for (i = 0; i < numberOfPlayer && !stop; i++) {
                 if (i != playerRef && studentTableThisColour <= getStudentTable(i,colour)) stop = true;  //if it finds someone with more or equals students at the table it stops
@@ -422,8 +422,9 @@ public class PlayerManager  {
          * @param colour of table to check;
          */
         private boolean checkPosForCoin(int colour){
-            if(school.getStudentTable(colour)==3 || school.getStudentTable(colour)==6 || school.getStudentTable(colour)==9){
+            if(school.getStudentTable(colour) == 3 || school.getStudentTable(colour) == 6 || school.getStudentTable(colour) == 9){
                 coins++;
+                System.out.println("add coin");
                 return true;
             }
             return false;

@@ -15,9 +15,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class SchoolTest {
     PlayerManager playerManager2P, playerManager3P, playerManager4P;
     Bag bag;
+    int towersNum;
+    int[] restoreEntrance;
+    int[] restoreTable;
+    boolean[] restoreProfessors;
 
     @BeforeEach
     void initialization() {
+        restoreEntrance = new int[]{0,0,0,0,0};
+        restoreTable = new int[]{0,0,0,0,0};
+        restoreProfessors = new boolean[]{false,false,false,false,false};
         bag = new Bag();
         bag.bagListener = new BagListener() {
             @Override
@@ -32,13 +39,17 @@ class SchoolTest {
         for (PlayerManager playerManager : Arrays.asList(playerManager2P, playerManager3P, playerManager4P)) {
             playerManager.towersListener = new TowersListener() {
                 @Override
-                public void notifyTowersChange(int place, int componentRef, int towersNumber) {}
+                public void notifyTowersChange(int place, int componentRef, int towersNumber) {
+                    towersNum = towersNumber;
+                }
                 @Override
                 public void notifyTowerColor(int islandRef, int newColor) {}
             };
             playerManager.professorsListener = new ProfessorsListener() {
                 @Override
-                public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {}
+                public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
+                    restoreProfessors[color] = true;
+                }
             };
             playerManager.coinsListener = new CoinsListener() {
                 @Override
@@ -52,7 +63,10 @@ class SchoolTest {
             };
             playerManager.studentsListener = new StudentsListener() {
                 @Override
-                public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
+                public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
+                    if(place == 0) restoreEntrance[color] = newStudentsValue;
+                    else if(place == 1) restoreTable[color] = newStudentsValue;
+                }
             };
         }
     }
@@ -105,5 +119,46 @@ class SchoolTest {
                 ()->assertEquals(1,playerManager2P.getProfessorPropriety(3),"At this point the player must own the professor"),
                 ()->assertEquals(0,playerManager2P.getProfessorPropriety(4),"The professor is from Giorgio")
         );
+    }
+
+    @Test
+    @DisplayName("Second test: place and remove towers")
+    void towers(){
+        playerManager3P.initializeSchool();
+        playerManager3P.removeTower(Team.WHITE,2);
+        assertEquals(4,towersNum,"we have removed 2 towers");
+    }
+
+    @Test
+    @DisplayName("Third test: check victory")
+    void victory(){
+        playerManager2P.removeTower(Team.BLACK,2);
+        Team teamWin1 = playerManager2P.checkVictory();
+        assertEquals(Team.BLACK,teamWin1,"The black team built more towers");
+        try{
+            playerManager3P.setStudentEntrance(2,3,1);
+            playerManager3P.transferStudent(2,3,true,false);
+            playerManager3P.setStudentEntrance(2,1,1);
+            playerManager3P.transferStudent(2,1,true,false);
+            Team teamWin2 = playerManager3P.checkVictory();
+            assertEquals(Team.GREY,teamWin2,"The gray team has more professors");
+        }catch (NotAllowedException notAllowedException){ notAllowedException.printStackTrace(); return; }
+
+    }
+
+    @Test
+    @DisplayName("Fourth test: restore school")
+    void restoreSchool(){
+        int[] entrance = new int[]{0,2,3,0,0};
+        int[] table = new int[]{2,5,3,7,1};
+        int towers = 4;
+        boolean[] professors = new boolean[]{false,true,true,false,false};
+        playerManager2P.restoreSingleSchool(0,entrance,table,towers,professors,Team.WHITE);
+        for(int i = 0; i < 5; i++) {
+            assertEquals(entrance[i], restoreEntrance[i]);
+            assertEquals(table[i], restoreTable[i]);
+            assertEquals(towers, towersNum);
+            assertEquals(professors[i], restoreProfessors[i]);
+        }
     }
 }

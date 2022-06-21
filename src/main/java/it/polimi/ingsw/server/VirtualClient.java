@@ -236,7 +236,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void unlockActionPhase(){ readyActionPhase = true; }
 
     //Message to client
-    public void sendPlayCard(){ send(new PlayCard()); System.out.println("Ho mandato la carta "+playerRef);}
+    public void sendPlayCard(){ send(new PlayCard()); }
     public void sendStartTurn(){ send(new StartTurn()); }
     public void sendMaxMovementMotherNature(int maxMovement){ send(new MaxMovementMotherNatureAnswer(maxMovement)); }
     public void sendWinner(String winner){ send(new GameOverAnswer(winner)); }
@@ -544,7 +544,6 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         readyPlanningPhase();
                     }
                 }
-                System.out.println("ho ricevuto ready planning phase "+playerRef);
                 proxy.startGame();
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
@@ -576,7 +575,6 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 checker = server.userPlayCard(playerRef, cardMessage.getCard());
                 if(checker){
                     send(new GenericAnswer("ok"));
-                    System.out.println("Ho ricevuto la carta "+playerRef);
                     readyPlanningPhase = true;  //dai un nome migliore
                     synchronized (planLocker){ planLocker.wait(); }  //wait ready for action phase msg
                 }

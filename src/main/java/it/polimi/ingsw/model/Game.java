@@ -7,19 +7,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Game contains all manager of the model. It is the connection point between the other classes of this package.
+ * Also, it is the class that is exposed to the controller.
+ */
 public class Game implements GameManager{
-    private ArrayList<RoundStrategy> roundStrategies;
-    private CloudsManager cloudsManager;
-    private IslandsManager islandsManager;
-    private PlayerManager playerManager;
-    private QueueManager queueManager;
-    private Bag bag;
+    private final ArrayList<RoundStrategy> roundStrategies;
+    private final CloudsManager cloudsManager;
+    private final IslandsManager islandsManager;
+    private final PlayerManager playerManager;
+    private final QueueManager queueManager;
+    private final Bag bag;
     private int indexSpecial;
     private int refSpecial;
     protected SpecialListener specialListener;
-    private boolean expertMode;
-    private ArrayList<Integer> extractedSpecials;
+    private final boolean expertMode;
+    private final ArrayList<Integer> extractedSpecials;
 
+    /**
+     * Create the game, but it isn't initialized yet.
+     * @param expertMode is the modality of this match;
+     * @param numberOfPlayer in this match;
+     */
     public Game(Boolean expertMode, int numberOfPlayer){
         this.expertMode = expertMode;
         this.extractedSpecials = new ArrayList<>();
@@ -30,6 +39,7 @@ public class Game implements GameManager{
         this.islandsManager = new IslandsManager();
         this.queueManager = new QueueManager(numberOfPlayer,this.playerManager);
 
+        //This means that there isn't any special effect active
         indexSpecial = 0;
         refSpecial = -1;
 
@@ -80,6 +90,9 @@ public class Game implements GameManager{
         return Team.NONE;
     }
 
+    /**
+     * Create a new game from start.
+     */
     @Override
     public void initializeGame(){
         bag.bagInitialize();
@@ -93,10 +106,17 @@ public class Game implements GameManager{
     }
 
     //Restore Game
+    /**
+     * @see PlayerManager with its restoreSingleSchool();
+     */
     @Override
     public void schoolRestore(int playerRef, int[] studentsEntrance, int[] studentsTable, int towers, boolean[] professors, String team){
         playerManager.restoreSingleSchool(playerRef,studentsEntrance,studentsTable,towers,professors,stringToTeam(team));
     }
+
+    /**
+     * @see PlayerManager with its restoreHandAndCoins();
+     */
     @Override
     public void handAndCoinsRestore(int playerRef, ArrayList<String> cards, int coins){
         ArrayList<Assistant> hand = new ArrayList<>();
@@ -106,30 +126,65 @@ public class Game implements GameManager{
 
         playerManager.restoreHandAndCoins(playerRef, hand, coins);
     }
+
+    /**
+     * @see CloudsManager with its restoreClouds.
+     */
     @Override
-    public void cloudRestore(int cloudRef, int[] students){
-        cloudsManager.restoreClouds(cloudRef,students);
-    }
+    public void cloudRestore(int cloudRef, int[] students){ cloudsManager.restoreClouds(cloudRef,students); }
+
+    /**
+     * Set archipelago size after restore.
+     * @param size of archipelago;
+     */
     @Override
     public void setIslandsSizeAfterRestore(int size){ islandsManager.setIslandsSizeAfterRestore(size); }
+
+    /**
+     * @see IslandsManager with its restoreIslands.
+     */
     @Override
     public void islandRestore(int islandRef, int[] students, int towerValue, String towerTeam, int inhibited){
         islandsManager.restoreIslands(islandRef,students,towerValue,stringToTeam(towerTeam),inhibited);
     }
+
+    /**
+     * @see IslandsManager with its restoreMotherPose.
+     */
     @Override
     public void restoreMotherPose(int islandRef){ islandsManager.restoreMotherPose(islandRef); }
+
+    /**
+     * @see Bag with its bagRestore.
+     */
     @Override
     public void bagRestore(List<Integer> bag){ this.bag.bagRestore(bag); }
+
+    /**
+     * @see QueueManager with its queueRestore.
+     */
     @Override
     public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
         queueManager.queueRestore(playerRef,valueCard,maxMoveMotherNature);
     }
 
     //Planning Phase
+
+    /**
+     * @see CloudsManager with its refreshStudentsCloud.
+     */
     @Override
     public void refreshStudentsCloud(){ cloudsManager.refreshStudentsCloud(); }
+
+    /**
+     * @see QueueManager with its queueForPlanificationPhase.
+     */
     @Override
     public void queueForPlanificationPhase(){ queueManager.queueForPlanificationPhase(); }
+
+    /**
+     * @see QueueManager with its playCard.
+     */
     @Override
     public boolean playCard(int playerRef, int queueRef, String card, ArrayList<String> alreadyPlayedCard) throws NotAllowedException {
         ArrayList<Assistant> alreadyPlayedAssistant = new ArrayList<>();
@@ -141,13 +196,32 @@ public class Game implements GameManager{
     }
 
     //Action Phase
+    /**
+     * @see QueueManager with its inOrderForActionPhase.
+     */
     @Override
     public void inOrderForActionPhase(){ queueManager.inOrderForActionPhase(); }
+
+    /**
+     * It depends on which special is active.
+     * @see RoundStrategy
+     * @see RoundSpecial2
+     * with their moveStudent.
+     */
     @Override
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{
         roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
         setSpecial(0,-1);
     }
+
+    /**
+     * It depends on which special is active.
+     * @see RoundStrategy
+     * @see RoundSpecial3
+     * @see RoundSpecial4
+     * @see RoundSpecial6
+     * with their moveMotherNature.
+     */
     @Override
     public boolean moveMotherNature(int queueRef, int desiredMovement) throws NotAllowedException {
         boolean victory;
@@ -161,6 +235,11 @@ public class Game implements GameManager{
 
         return victory;
     }
+
+    /**
+     * Check if the Island is inhibited.
+     * @param ref position of Special5 in roundStrategies list;
+     */
     private void checkNoEntry(int ref){ roundStrategies.get(ref).effect(); }
     @Override
     public void chooseCloud(int playerRef,int cloudRef) throws NotAllowedException {
@@ -176,12 +255,7 @@ public class Game implements GameManager{
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, -1);
             this.specialListener.notifySpecial(indexSpecial, playerRef);
-            for(int i = 0; i < 3; i++)
-                if(extractedSpecials.get(i) == indexSpecial){
-                    playerManager.removeCoin(playerRef, roundStrategies.get(i+1).getCost());
-                    roundStrategies.get(i+1).increaseCost();
-                    this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i+1).getCost());
-                }
+            findSpecial(indexSpecial, playerRef);
         } else return false;
 
         setSpecial(0, -1);
@@ -196,13 +270,7 @@ public class Game implements GameManager{
             this.specialListener.notifySpecial(indexSpecial, playerRef);
             for(int i = 0; i < 3; i++)
                 if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(ref);
-            if(checker)
-                for(int i = 0; i < 3; i++)
-                    if(extractedSpecials.get(i) == indexSpecial){
-                        playerManager.removeCoin(playerRef, roundStrategies.get(i+1).getCost());
-                        roundStrategies.get(i+1).increaseCost();
-                        this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i+1).getCost());
-                    }
+            if(checker) findSpecial(indexSpecial, playerRef);
             setSpecial(0, -1);
         }
 
@@ -217,13 +285,7 @@ public class Game implements GameManager{
             this.specialListener.notifySpecial(indexSpecial, playerRef);
             for(int i = 0; i < 3; i++)
                 if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(ref, color);
-            if(checker)
-                for(int i = 0; i < 3; i++)
-                    if(extractedSpecials.get(i) == indexSpecial){
-                        playerManager.removeCoin(playerRef, roundStrategies.get(i+1).getCost());
-                        roundStrategies.get(i+1).increaseCost();
-                        this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i+1).getCost());
-                    }
+            if(checker) findSpecial(indexSpecial, playerRef);
             setSpecial(0, -1);
         }
 
@@ -238,16 +300,8 @@ public class Game implements GameManager{
             this.specialListener.notifySpecial(indexSpecial, playerRef);
             for(int i = 0; i < 3; i++)
                 if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(playerRef, color1, color2);
-            if(checker) {
-                for (int i = 0; i < 3; i++)
-                    if (extractedSpecials.get(i) == indexSpecial) {
-                        playerManager.removeCoin(playerRef, roundStrategies.get(i+1).getCost());
-                        roundStrategies.get(i+1).increaseCost();
-                        this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i+1).getCost());
-                    }
-                setSpecial(0, -1);
-            }
-            //else throw NotAllowedException();
+            if(checker) findSpecial(indexSpecial, playerRef);
+            setSpecial(0, -1);
         }
 
         return checker;
@@ -257,6 +311,14 @@ public class Game implements GameManager{
             if(indexSpecial == extractedSpecials.get(i))
                 return playerManager.getCoins(playerRef) >= roundStrategies.get(i+1).getCost();
         return false;
+    }
+    private void findSpecial(int indexSpecial, int playerRef) {
+        for(int i = 0; i < 3; i++)
+            if(extractedSpecials.get(i) == indexSpecial){
+                playerManager.removeCoin(playerRef, roundStrategies.get(i+1).getCost());
+                roundStrategies.get(i+1).increaseCost();
+                this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i+1).getCost());
+            }
     }
     private void setSpecial(int indexSpecial, int refSpecial){
         this.indexSpecial = indexSpecial;
