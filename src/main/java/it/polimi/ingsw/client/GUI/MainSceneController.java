@@ -24,6 +24,13 @@ public class MainSceneController implements SceneController {
     private Exit proxy;
     private int numberOfPlayers;
     private boolean expertMode;
+    private String yourNickname;
+    private int currentPlayer;
+    private int actionAllowed;
+
+    private String firstThingClicked;
+    private String secondThingClicked;
+
     private HashMap<Integer, String> nicknamesMap;
     private HashMap<Integer, String> charactersMap;
     private HashMap<Integer, ImageView> charactersImageMap;
@@ -36,12 +43,8 @@ public class MainSceneController implements SceneController {
     private HashMap<Integer, AnchorPane> tablesMap;
     private HashMap<Integer, AnchorPane> professorsMap;
 
-
-    private String actionAllowed;
     private String lastThingClicked;
     private int currentStudentColor;
-    private int currentPlayer;
-    private boolean isCurrentPlayer;
     private int oldStudentsValue;
 
     private final String WIZARD = "/graphics/character_wizard.png";
@@ -117,6 +120,8 @@ public class MainSceneController implements SceneController {
     private Label card4;
 
 
+
+
     public MainSceneController() {
         this.nicknamesMap = new HashMap<>();
         this.charactersMap = new HashMap<>();
@@ -133,6 +138,55 @@ public class MainSceneController implements SceneController {
         oldStudentsValue=0;
 
     }
+
+    private class StudentsClickHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            AnchorPane school = schoolMap.get(currentPlayer);
+            if(actionAllowed==0) {
+                lastThingClicked = "student";
+                System.out.println("student clicked");
+                if (mouseEvent.getSource() == school.getChildren().get(0))
+                    currentStudentColor = 0;
+                else if ((mouseEvent.getSource() == school.getChildren().get(1)))
+                    currentStudentColor = 1;
+                else if ((mouseEvent.getSource() == school.getChildren().get(2)))
+                    currentStudentColor = 2;
+                else if ((mouseEvent.getSource() == school.getChildren().get(3)))
+                    currentStudentColor = 3;
+                else if ((mouseEvent.getSource() == school.getChildren().get(4)))
+                    currentStudentColor = 4;
+            }
+            else{
+                //showMoveNotAllowedMessage();
+            }
+        }
+    }
+    /*
+    private class TableClickHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            AnchorPane table = tablesMap.get(currentPlayer);
+            if(actionAllowed==0) {
+                lastThingClicked = "table";
+                System.out.println("table clicked");
+                if()
+                if (mouseEvent.getSource() == school.getChildren().get(0))
+                    currentStudentColor = 0;
+                else if ((mouseEvent.getSource() == school.getChildren().get(1)))
+                    currentStudentColor = 1;
+                else if ((mouseEvent.getSource() == school.getChildren().get(2)))
+                    currentStudentColor = 2;
+                else if ((mouseEvent.getSource() == school.getChildren().get(3)))
+                    currentStudentColor = 3;
+                else if ((mouseEvent.getSource() == school.getChildren().get(4)))
+                    currentStudentColor = 4;
+            }
+            else{
+                //showMoveNotAllowedMessage();
+            }
+        }
+    }*/
 
     public void initializeScene() {
         System.out.println("initializeMainScene");
@@ -180,9 +234,7 @@ public class MainSceneController implements SceneController {
         gui.isMainSceneInitialized=true;
 
     }
-    public void setActionAllowed(String actionAllowed){
-        this.actionAllowed=actionAllowed;
-    }
+
 
 
     //inizializza le isole, nascondendo le torri (che non ci sono a inizio partita)
@@ -235,6 +287,18 @@ public class MainSceneController implements SceneController {
                 tower.setImage(new Image(BLACKTOWER));
             }
         }
+        StudentsClickHandler studentsClickHandler = new StudentsClickHandler();
+        for(int i=0; i<numberOfPlayers; i++){
+            for(int j=0; j<5; j++){
+                entrancesMap.get(i).getChildren().get(j).setOnMouseClicked(studentsClickHandler);
+                //tablesMap.get(i).setOnMouseClicked(tableClickHandler);
+            }
+
+        }
+        for(int i=0; i<12; i++){
+            //islandsMap.get(i).setOnMouseClicked(islandClickHandler);
+        }
+
     }
 
 
@@ -271,7 +335,9 @@ public class MainSceneController implements SceneController {
 
 
     public void moveStudent() {
+        if(firstThingClicked.equals("student")&& secondThingClicked.equals("school")){
 
+        }
     }
 
     @Override
@@ -409,6 +475,7 @@ public class MainSceneController implements SceneController {
                     public void handle(MouseEvent mouseEvent) {
                         lastThingClicked="student";
                         currentStudentColor= color;
+                        System.out.println("Last thing clicked: "+lastThingClicked+" "+currentStudentColor);
                     }
                 });
 
@@ -424,7 +491,6 @@ public class MainSceneController implements SceneController {
             island.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    if (isCurrentPlayer) {
                         if (lastThingClicked.equalsIgnoreCase("student")){
                             try {
                                 proxy.moveStudent(currentStudentColor, "island", islandRef);
@@ -437,41 +503,57 @@ public class MainSceneController implements SceneController {
                          }
                 }
 
-                }
-            });
+                });
+            }
 
         }
-    }
+
 
 
 
     public void schoolClicked(){
-        for(int i=0; i<4;i++) {
-            for (int j = 0; j < 5; j++) {
-                AnchorPane schoolTable = (AnchorPane) tablesMap.get(i).getChildren();
-                schoolTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        if(isCurrentPlayer) {
-                            if (lastThingClicked.equalsIgnoreCase("student")) {
-                                try {
-                                    proxy.moveStudent(currentStudentColor, "school", -1);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } catch (ClassNotFoundException e) {
-                                    e.printStackTrace();
-                                }
-                                lastThingClicked = "school";
-                            } else System.out.println("move not allowed");
-                        } else
-                            System.out.println("it's your opponent's turn, wait...");
+        EventHandler<MouseEvent> clickHandler = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (lastThingClicked.equalsIgnoreCase("student")) {
+                    try {
+                        proxy.moveStudent(currentStudentColor, "school", -1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
                     }
-                });
-
+                    lastThingClicked = "school";
+                } else System.out.println("move not allowed");
             }
-        }
+        };
+
+
 
     }
+
+
+
+
+
+            /*
+            if (lastThingClicked.equalsIgnoreCase("student")) {
+                try {
+                    proxy.moveStudent(currentStudentColor, "school", -1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                lastThingClicked = "school";
+            } else System.out.println("move not allowed");*/
+
+    private class islandClickHandler{
+
+    }
+
+
+
 
     public void setLastPlayedCard(int playerRef, String assistantCard) {
         Label card=null;
@@ -489,5 +571,28 @@ public class MainSceneController implements SceneController {
     }
 
     public void setTowersIsland(int componentRef, int towersNumber) {
+    }
+
+    public void setYourNickname(String yourNickname){
+        this.yourNickname=yourNickname;
+    }
+
+    public void unlockStudents(){
+        int currentPlayer = 0;
+        for(int i=0; i<nicknamesMap.size(); i++){
+            if(yourNickname.equals(nicknamesMap.get(i))){
+                currentPlayer=i;
+            }
+        }
+        AnchorPane school = schoolMap.get(currentPlayer);
+
+
+    }
+    public void setCurrentPlayer(){
+        for(int i=0; i<nicknamesMap.size(); i++){
+            if(yourNickname.equals(nicknamesMap.get(i))){
+                currentPlayer=i;
+            }
+        }
     }
 }

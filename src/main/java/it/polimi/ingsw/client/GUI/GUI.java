@@ -34,6 +34,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected boolean isMainSceneInitialized;
     protected boolean areListenerSet;
     protected boolean isViewSet;
+    private String yourNickname;
+    private Boolean isYourTurn;
 
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String LOGIN = "LoginScene.fxml";
@@ -41,7 +43,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected static final String MAIN = "MainScene.fxml";
     protected static final String CARDS = "CardsScene.fxml";
     protected PlayerConstants constants;
-    private String currentScene;
     protected boolean isMainScene;
     private int initialMotherPosition;
     private ArrayList<int[]> initialStudentsIsland;
@@ -50,7 +51,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     private HashMap<String, Scene> scenesMap; //maps the scene name with the scene itself
     private HashMap<String, SceneController > sceneControllersMap; // maps the scene name with the scene controller
-    private String lastPlayedCard;
 
     public static void main(String[] args) {
         launch();
@@ -73,9 +73,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             initialStudentsEntrance.add(new int[]{0,0,0,0,0});
             initialTowersSchool.put(i, 8);
         }
-
-
-
     }
 
     @Override
@@ -143,7 +140,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public void startGame(){
-        Platform.runLater(()-> {
+        //Platform.runLater(()-> {
             switchScene(WAITING);
             if (!isViewSet) {
                  setView();
@@ -162,7 +159,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     }
                 }
             }
-        });
+       // });
     }
 
     public void setView() {
@@ -172,7 +169,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             System.out.println(view);
             if (view != null) {
                 this.view = view;
-                //controller.setView(view);
                 isViewSet = true;
                 view.setCoinsListener(this);
                 view.setInhibitedListener(this);
@@ -196,22 +192,28 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     public void phaseHandler(String phase){
         System.out.println("started phase handler!");
-        //String currentPhase = constants.lastPhase();
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN) ;
         switch (phase){
             case "PlanningPhase"-> startPlanningPhase();
             case "PlayCard"-> switchScene(CARDS);
             case "StartTurn"-> {
                 switchScene(MAIN);
-                //startActionPhase();
+                startActionPhase();
             }
-            case "MoveStudent"-> controller.setActionAllowed(phase);
-            case "MoveMother"-> controller.setActionAllowed(phase);
-            //case "ChoseCloud"->
+            case "MoveStudent"-> controller.unlockStudents();
+            //case "MoveMother"-> controller.setActionAllowed(phase);
+            //case "ChoseCloud"-> controller.setActionAllowed
             //case "End Turn"->
 
             }
         }
+
+    private class PlanningPhaseThread extends Thread{
+        @Override
+        public void run(){
+
+        }
+    }
 
 
     public void initializeMainScene() {
@@ -231,10 +233,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         controller.initializeScene();
         sendInitialInformation();
-
         startGame();
-
-
 
     }
     /*
@@ -253,8 +252,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         stage.show();
 
     }*/
-
-
 
     public void setSocket(Socket socket) {
         this.socket = socket;
@@ -282,13 +279,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 }
             }
         }
-        //});
-
     }
 
     public void startPlanningPhase() {
         switchScene(WAITING);
-        //Platform.runLater(() -> {
             while (!constants.isPlanningPhaseStarted()) {
                 try {
                     if (proxy.startPlanningPhase()) {
@@ -306,14 +300,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             phaseHandler("PlayCard");
     }
 
-
-
-
-
     public void startActionPhase(){
         try {
-            if(proxy.startActionPhase())
+            if(proxy.startActionPhase()) {
+                System.out.println("action phase starting");
+                isYourTurn = true;
                 phaseHandler("MoveStudent");
+            }
             else
                 System.out.println("Error");
         } catch (IOException e) {
@@ -436,6 +429,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         });
     }
+
+    public void setYourNickname(String yourNickname) {
+        this.yourNickname = yourNickname;
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        controller.setYourNickname(yourNickname);
+    }
+
 
 }
 
