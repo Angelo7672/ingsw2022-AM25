@@ -13,7 +13,6 @@
    <children>
       <AnchorPane fx:id="islandsPane" layoutX="196.0" layoutY="186.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="414.0" prefWidth="870.0">
          <children>
-            <Button fx:id="useSpecialButton" layoutX="350.0" layoutY="199.0" mnemonicParsing="false" text="Use a special card" visible="false" />
             <AnchorPane fx:id="island1" layoutX="-30.0" layoutY="103.0" prefHeight="190.0" prefWidth="175.0">
                <children>
                   <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
@@ -902,6 +901,21 @@
                  </Label>
               </children>
              </AnchorPane>
+            <Label fx:id="turnLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="304.0" layoutY="162.0" prefWidth="303.0" text="It's your opponent's turn. Wait...">
+               <font>
+                  <Font name="System Italic" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="actionLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="304.0" layoutY="188.0" text="Move a student in your school or on an island" visible="false">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="302.0" layoutY="214.0" prefWidth="303.0" text="Move not allowed! Try again" textFill="#c90909" visible="false">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
           </children>
       </AnchorPane>
       <HBox fx:id="player2Box" layoutX="346.0" layoutY="-20.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="183.0" prefWidth="534.0" AnchorPane.topAnchor="5.0">
@@ -1541,6 +1555,9 @@
             </AnchorPane>
          </children>
       </VBox>
+      <Button fx:id="useSpecialButton" layoutX="50.0" layoutY="100.0" mnemonicParsing="false" text="Use a special card" visible="false" />
+      <Button fx:id="showCardsButton" layoutX="48.0" layoutY="28.0" mnemonicParsing="false" text="Show Cards" />
+      <Button fx:id="showCloudsButton" layoutX="48.0" layoutY="63.0" mnemonicParsing="false" text="Show Clouds" />
 
    </children>
 </AnchorPane>

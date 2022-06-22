@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -46,6 +47,7 @@ public class MainSceneController implements SceneController {
     private String lastThingClicked;
     private int currentStudentColor;
     private int oldStudentsValue;
+    private ArrayList<int[]> studentsOnTable;
 
     private final String WIZARD = "/graphics/character_wizard.png";
     private final String WITCH = "/graphics/character_witch.png";
@@ -69,55 +71,35 @@ public class MainSceneController implements SceneController {
     private final String GREYTOWER = "/graphics/wooden_pieces/grey_tower.png";
 
 
-    @FXML
-    private Button useSpecialButton;
-    @FXML
-    private AnchorPane islandsPane;
+    @FXML private Button useSpecialButton;
+    @FXML private AnchorPane islandsPane;
+    @FXML private AnchorPane school1;
+    @FXML private AnchorPane school2;
+    @FXML private AnchorPane school3;
+    @FXML private AnchorPane school4;
+    @FXML private AnchorPane userInfo1;
+    @FXML private AnchorPane userInfo2;
+    @FXML private AnchorPane userInfo3;
+    @FXML private AnchorPane userInfo4;
+    @FXML private ImageView character1;
+    @FXML private ImageView character2;
+    @FXML private ImageView character3;
+    @FXML private ImageView character4;
+    @FXML private HBox player1Box;
+    @FXML private HBox player2Box;
+    @FXML private VBox player3Box;
+    @FXML private VBox player4Box;
+    @FXML private Label card1;
+    @FXML private Label card2;
+    @FXML private Label card3;
+    @FXML private Label card4;
 
-    @FXML
-    private AnchorPane school1;
-    @FXML
-    private AnchorPane school2;
-    @FXML
-    private AnchorPane school3;
-    @FXML
-    private AnchorPane school4;
+    @FXML private Label actionLabel;
+    @FXML private Label turnLabel;
+    @FXML private Label errorLabel;
 
-    @FXML
-    private AnchorPane userInfo1;
-    @FXML
-    private AnchorPane userInfo2;
-    @FXML
-    private AnchorPane userInfo3;
-    @FXML
-    private AnchorPane userInfo4;
-
-    @FXML
-    private ImageView character1;
-    @FXML
-    private ImageView character2;
-    @FXML
-    private ImageView character3;
-    @FXML
-    private ImageView character4;
-
-    @FXML
-    private HBox player1Box;
-    @FXML
-    private HBox player2Box;
-    @FXML
-    private VBox player3Box;
-    @FXML
-    private VBox player4Box;
-
-    @FXML
-    private Label card1;
-    @FXML
-    private Label card2;
-    @FXML
-    private Label card3;
-    @FXML
-    private Label card4;
+    @FXML private Button showCardsButton;
+    @FXML private Button showCloudsButton;
 
 
 
@@ -135,6 +117,7 @@ public class MainSceneController implements SceneController {
         this.professorsMap = new HashMap<>();
         this.schoolMap = new HashMap<>();
         this.playedCards = new HashMap<>();
+        this.studentsOnTable= new ArrayList<>();
         oldStudentsValue=0;
 
     }
@@ -156,13 +139,15 @@ public class MainSceneController implements SceneController {
                     currentStudentColor = 3;
                 else if ((mouseEvent.getSource() == school.getChildren().get(4)))
                     currentStudentColor = 4;
+                System.out.println("color: "+currentStudentColor);
             }
+
             else{
                 //showMoveNotAllowedMessage();
             }
         }
     }
-    /*
+
     private class TableClickHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent mouseEvent) {
@@ -170,23 +155,50 @@ public class MainSceneController implements SceneController {
             if(actionAllowed==0) {
                 lastThingClicked = "table";
                 System.out.println("table clicked");
-                if()
-                if (mouseEvent.getSource() == school.getChildren().get(0))
-                    currentStudentColor = 0;
-                else if ((mouseEvent.getSource() == school.getChildren().get(1)))
-                    currentStudentColor = 1;
-                else if ((mouseEvent.getSource() == school.getChildren().get(2)))
-                    currentStudentColor = 2;
-                else if ((mouseEvent.getSource() == school.getChildren().get(3)))
-                    currentStudentColor = 3;
-                else if ((mouseEvent.getSource() == school.getChildren().get(4)))
-                    currentStudentColor = 4;
+                if((mouseEvent.getSource() == tablesMap.get(currentPlayer))){
+                    //addStudentTable(currentPlayer, currentStudentColor);
+                    try {
+                        proxy.moveStudent(currentStudentColor, "school", -1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                }
             }
             else{
                 //showMoveNotAllowedMessage();
             }
         }
-    }*/
+    }
+
+    private class IslandClickHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            AnchorPane island;
+            int islandRef = 0;
+            if(actionAllowed==0) {
+                lastThingClicked = "table";
+                System.out.println("island clicked");
+                for(int i=0; i<12; i++){
+                    if((mouseEvent.getSource() == islandsMap.get(i))){
+                       islandRef=i;
+                }
+                    try {
+                        proxy.moveStudent(currentStudentColor, "island", islandRef);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else{
+                //showMoveNotAllowedMessage();
+            }
+        }
+    }
 
     public void initializeScene() {
         System.out.println("initializeMainScene");
@@ -220,18 +232,20 @@ public class MainSceneController implements SceneController {
             this.tablesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(2)); //maps all the tables
             this.professorsMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(3)); //maps all the professors panes
             this.towersMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(4));//maps all the towers panes
+            this.studentsOnTable.add(new int[]{0,0,0,0,0});
 
         }
         AnchorPane island;
-        for (int i = 1; i <= 12; i++) { //starts from 1 because 0 is useSpecialButton
+        for (int i = 0; i < 12; i++) {
             island = (AnchorPane) islandsPane.getChildren().get(i);
-            islandsMap.put(i - 1, island);
+            islandsMap.put(i, island);
         }
 
         schoolsInitialization();
         islandsInitialization();
 
         gui.isMainSceneInitialized=true;
+        setActionAllowed(-1);
 
     }
 
@@ -240,9 +254,10 @@ public class MainSceneController implements SceneController {
     //inizializza le isole, nascondendo le torri (che non ci sono a inizio partita)
     public void islandsInitialization() {
         AnchorPane island;
-
+        IslandClickHandler islandClickHandler = new IslandClickHandler();
         for (int i = 0; i < 12; i++) {
             island = islandsMap.get(i);
+            island.setOnMouseClicked(islandClickHandler);
 
             for (int j = 1; j <= 13; j++) {
                 island.getChildren().get(j).setVisible(false);
@@ -288,15 +303,12 @@ public class MainSceneController implements SceneController {
             }
         }
         StudentsClickHandler studentsClickHandler = new StudentsClickHandler();
+        TableClickHandler tableClickHandler= new TableClickHandler();
         for(int i=0; i<numberOfPlayers; i++){
             for(int j=0; j<5; j++){
                 entrancesMap.get(i).getChildren().get(j).setOnMouseClicked(studentsClickHandler);
-                //tablesMap.get(i).setOnMouseClicked(tableClickHandler);
+                tablesMap.get(i).setOnMouseClicked(tableClickHandler);
             }
-
-        }
-        for(int i=0; i<12; i++){
-            //islandsMap.get(i).setOnMouseClicked(islandClickHandler);
         }
 
     }
@@ -394,9 +406,12 @@ public class MainSceneController implements SceneController {
     public void setStudentsTable(int playerRef, int color, int newStudentsValue) {
         int x;
         int y;
+        int studentsNumber = studentsOnTable.get(playerRef)[color];
         AnchorPane table =  tablesMap.get(playerRef);
-        if(newStudentsValue>oldStudentsValue){
-            if(playerRef==0){
+        if(newStudentsValue>studentsNumber){
+            addStudentTable(playerRef, color); //add a single student to the table
+            }
+
                 //greenY=
                 //redY=
                 //yellowY=
@@ -405,14 +420,16 @@ public class MainSceneController implements SceneController {
                 /*switch (color){
                     case 0 ->
                 }*/
-            }
         }
 
-
-
-
+    private void addStudentTable(int playerRef, int color) {
+        AnchorPane table = tablesMap.get(playerRef);
+        if(playerRef==0){
 
     }
+
+
+}
 
 
     public void setStudentsIsland(int islandRef, int color, int newStudentsValue) {
@@ -548,9 +565,6 @@ public class MainSceneController implements SceneController {
                 lastThingClicked = "school";
             } else System.out.println("move not allowed");*/
 
-    private class islandClickHandler{
-
-    }
 
 
 
@@ -593,6 +607,22 @@ public class MainSceneController implements SceneController {
             if(yourNickname.equals(nicknamesMap.get(i))){
                 currentPlayer=i;
             }
+        }
+        turnLabel.setText("It's your turn");
+    }
+    public void setActionAllowed(int actionAllowed){
+        this.actionAllowed=actionAllowed;
+        if(actionAllowed==0){
+            actionLabel.setText("Move a student in your school or on an island!");
+            actionLabel.setVisible(true);
+        } else if(actionAllowed==1){
+            actionLabel.setText("Move Mother Nature on a Island! (Max movement is: "+view.getMaxStepsMotherNature()+")");
+            actionLabel.setVisible(true);
+        } else if(actionAllowed==2){
+            gui.switchScene(GUI.CLOUDS);
+        } else if(actionAllowed == -1){
+            turnLabel.setText("It's your opponent's turn. Wait...");
+            actionLabel.setVisible(false);
         }
     }
 }
