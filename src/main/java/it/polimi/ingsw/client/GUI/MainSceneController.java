@@ -6,12 +6,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.sonatype.guice.bean.binders.SpaceModule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +30,6 @@ public class MainSceneController implements SceneController {
     private String yourNickname;
     private int currentPlayer;
     private int actionAllowed;
-    private int studentCounter;
 
     private HashMap<Integer, String> nicknamesMap;
     private HashMap<Integer, String> charactersMap;
@@ -45,18 +46,16 @@ public class MainSceneController implements SceneController {
     private String lastThingClicked;
     private int currentStudentColor;
     private int oldStudentsValue;
-    private ArrayList<int[]> studentsOnTable;
+    private ArrayList<Table> greenTables;
+    private ArrayList<Table> redTables;
+    private ArrayList<Table> yellowTables;
+    private ArrayList<Table> pinkTables;
+    private ArrayList<Table> blueTables;
 
     private final String WIZARD = "/graphics/character_wizard.png";
     private final String WITCH = "/graphics/character_witch.png";
     private final String SAMURAI = "/graphics/character_samurai.png";
     private final String KING = "/graphics/character_king.png";
-
-    private final String GREENPROF = "/graphics/wooden_pieces/greenProf3D.png";
-    private final String REDPROF = "/graphics/wooden_pieces/redProf3D.png";
-    private final String YELLOWPROF = "/graphics/wooden_pieces/yellowProf3D.png";
-    private final String PINKPROF = "/graphics/wooden_pieces/pinkProf3D.png";
-    private final String BLUEPROF = "/graphics/wooden_pieces/blueProf3D.png";
 
     private final String GREENSTUDENT = "/graphics/wooden_pieces/greenStudent3D.png";
     private final String REDSTUDENT = "/graphics/wooden_pieces/redStudent3D.png";
@@ -67,6 +66,9 @@ public class MainSceneController implements SceneController {
     private final String BLACKTOWER = "/graphics/wooden_pieces/black_tower.png";
     private final String WHITETOWER = "/graphics/wooden_pieces/white_tower.png";
     private final String GREYTOWER = "/graphics/wooden_pieces/grey_tower.png";
+
+    private final int SPACE = 18;
+
 
 
     @FXML private Button useSpecialButton;
@@ -115,9 +117,13 @@ public class MainSceneController implements SceneController {
         this.professorsMap = new HashMap<>();
         this.schoolMap = new HashMap<>();
         this.playedCards = new HashMap<>();
-        this.studentsOnTable= new ArrayList<>();
+        this.greenTables= new ArrayList<>();
+        this.redTables= new ArrayList<>();
+        this.yellowTables= new ArrayList<>();
+        this.pinkTables= new ArrayList<>();
+        this.blueTables= new ArrayList<>();
+
         oldStudentsValue=0;
-        studentCounter=0;
         actionAllowed=-1;
         currentStudentColor=-1;
         lastThingClicked="";
@@ -170,7 +176,18 @@ public class MainSceneController implements SceneController {
                 System.out.println("table clicked");
                 if((mouseEvent.getSource() == tablesMap.get(currentPlayer))){
                     try {
-                        proxy.moveStudent(currentStudentColor, "school", -1);
+                        String result = proxy.moveStudent(currentStudentColor, "school", -1);
+                        if(result.equalsIgnoreCase("ok")){
+                            System.out.println("movement successful");
+                            errorLabel.setVisible(false);
+                        } else if(result.equalsIgnoreCase("transfer complete")) {
+                        System.out.println("movement successful, fine");
+                        setActionAllowed(1);
+                    } else {
+                        System.out.println("mossa non consentita");
+                        errorLabel.setText("Error, move not allowed!");
+                        errorLabel.setVisible(true);
+                    }
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
@@ -205,9 +222,8 @@ public class MainSceneController implements SceneController {
                         if (result.equalsIgnoreCase("ok")) {
                             System.out.println("movement successful");
                             errorLabel.setVisible(false);
-                            studentCounter++;
-                            System.out.println("student counter: " + studentCounter);
                         } else if(result.equalsIgnoreCase("transfer complete")) {
+                            System.out.println("movement successful, fine");
                             setActionAllowed(1);
                         } else {
                             System.out.println("mossa non consentita");
@@ -236,7 +252,12 @@ public class MainSceneController implements SceneController {
                         motherMov = islandRef - view.getMotherPosition();
                     }
                     try {
-                        proxy.moveMotherNature(motherMov);
+                        String result = proxy.moveMotherNature(motherMov);
+                        if(result.equalsIgnoreCase("ok")){
+                            setActionAllowed(2);
+                        } else {
+
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
@@ -250,6 +271,75 @@ public class MainSceneController implements SceneController {
         }
     }
 
+    private class Table{
+        int x;
+        int y;
+        int studentsNumber;
+        int color;
+        int nodeId;
+        ImageView studentImage;
+
+        public Table(int initialX, int initialY, int color){
+            this.x=initialX;
+            this.y=initialY;
+            this.studentsNumber=0;
+            this.color=color;
+            if(color==0){
+                this.studentImage =new ImageView(new Image(GREENSTUDENT));
+                this.nodeId=0;
+            } else if(color==1){
+                this.studentImage =new ImageView(new Image(REDSTUDENT));
+                this.nodeId=2;
+            } else if(color==2){
+                this.studentImage =new ImageView(new Image(YELLOWSTUDENT));
+                this.nodeId=3;
+            } else if(color==3){
+                this.studentImage =new ImageView(new Image(PINKSTUDENT));
+                this.nodeId=4;
+            } else if(color==4){
+                this.studentImage =new ImageView(new Image(BLUESTUDENT));
+                this.nodeId=5;
+            }
+            studentImage.setFitHeight(18.0);
+
+        }
+        public int getX() {
+            return x;
+        }
+        public void setNewX(int schoolRef) {
+            if(schoolRef==0)
+                this.x = x+SPACE;
+            else if(schoolRef==1){
+                this.x=x-SPACE;
+            }
+        }
+        public int getY() {
+            return y;
+        }
+        public void setNewY(int schoolRef) {
+           if(schoolRef==3){
+               this.y=y+SPACE;
+           } else if(schoolRef==4){
+               this.y=y-SPACE;
+           }
+        }
+        public int getStudentsNumber() {
+            return studentsNumber;
+        }
+        public void setStudentsNumber() {
+            this.studentsNumber++;
+        }
+        public int getNodeId() {
+            return nodeId;
+        }
+        public void setNodeId() {
+            this.nodeId = nodeId+5;
+        }
+
+        public ImageView getStudentImage() {
+            return studentImage;
+        }
+    }
     public void initializeScene() {
         System.out.println("initializeMainScene");
         if (numberOfPlayers == 2) {
@@ -282,7 +372,7 @@ public class MainSceneController implements SceneController {
             this.tablesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(2)); //maps all the tables
             this.professorsMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(3)); //maps all the professors panes
             this.towersMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(4));//maps all the towers panes
-            this.studentsOnTable.add(new int[]{0,0,0,0,0});
+
 
         }
         AnchorPane island;
@@ -293,6 +383,7 @@ public class MainSceneController implements SceneController {
 
         schoolsInitialization();
         islandsInitialization();
+        tablesInitialization();
 
         gui.isMainSceneInitialized=true;
         actionAllowed=-1; //not your turn
@@ -327,6 +418,7 @@ public class MainSceneController implements SceneController {
                 tower = (ImageView) towersMap.get(1).getChildren().get(i);
                 tower.setImage(new Image(BLACKTOWER));
             }
+
         }
         if (numberOfPlayers == 3) {
             for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
@@ -372,7 +464,32 @@ public class MainSceneController implements SceneController {
                 tablesMap.get(i).setOnMouseClicked(tableClickHandler);
             }
         }
+    }
+    public void tablesInitialization() {
 
+        greenTables.add(new Table(10, 4, 0));
+        redTables.add(new Table(10, 28, 1));
+        yellowTables.add(new Table(10, 52, 2));
+        pinkTables.add( new Table(10, 76, 3));
+        blueTables.add(new Table(10, 100, 4));
+
+        greenTables.add(new Table(170, 100, 0));
+        redTables.add(new Table(170, 76, 1));
+        yellowTables.add(new Table(170, 52, 2));
+        pinkTables.add( new Table(170, 28, 3));
+        blueTables.add(new Table(170,4 , 4));
+
+        greenTables.add(new Table(128, 10, 0));
+        redTables.add(new Table(102, 10, 1));
+        yellowTables.add(new Table(76, 10, 2));
+        pinkTables.add( new Table(50, 10, 3));
+        blueTables.add(new Table(24, 10, 4));
+
+        greenTables.add(new Table(24, 176, 0));
+        redTables.add(new Table(50, 176, 1));
+        yellowTables.add(new Table(76, 176, 2));
+        pinkTables.add( new Table(102, 176, 3));
+        blueTables.add(new Table(128, 176, 4));
     }
 
 
@@ -467,31 +584,31 @@ public class MainSceneController implements SceneController {
 
 
     public void setStudentsTable(int playerRef, int color, int newStudentsValue) {
-        int x;
-        int y;
-        int studentsNumber = studentsOnTable.get(playerRef)[color];
-        AnchorPane table =  tablesMap.get(playerRef);
-        if(newStudentsValue>studentsNumber){
-            addStudentTable(playerRef, color); //add a single student to the table
-            }
+        AnchorPane tablePane= tablesMap.get(playerRef);
+        Table table = null;
+        ImageView student;
 
-                //greenY=
-                //redY=
-                //yellowY=
-                //pinkY=
-                //blueY=
-                /*switch (color){
-                    case 0 ->
-                }*/
+        if(color==0){
+            table= greenTables.get(playerRef);
+        }else if (color==1){
+            table= redTables.get(playerRef);
+        }else if (color==2){
+            table= yellowTables.get(playerRef);
+        }else if (color==3){
+            table= pinkTables.get(playerRef);
+        }else if (color==4){
+            table= blueTables.get(playerRef);
         }
+        tablePane.getChildren().add(0, table.getStudentImage());
+        student= (ImageView) tablePane.getChildren().get(0);
+        student.setX(table.getX());
+        student.setY(table.getY());
+        table.setNewX(playerRef);
+        table.setNewY(playerRef);
+        table.setNodeId();
+        table.setStudentsNumber();
 
-    private void addStudentTable(int playerRef, int color) {
-        AnchorPane table = tablesMap.get(playerRef);
-        if(playerRef==0){
-
-    }
-
-
+        student.setVisible(true);
 }
 
 
@@ -512,9 +629,8 @@ public class MainSceneController implements SceneController {
         professorsTable.getChildren().get(color).setVisible(newProfessorValue);
     }
 
-    public String colorToImage(int color, int pieceType) {
+    public String colorToImage(int color) {
         String image = null;
-        if (pieceType == 0) {
             switch (color) {
                 case 0 -> image = GREENSTUDENT;
                 case 1 -> image = REDSTUDENT;
@@ -522,15 +638,7 @@ public class MainSceneController implements SceneController {
                 case 3 -> image = PINKSTUDENT;
                 case 4 -> image = BLUESTUDENT;
             }
-        } else if (pieceType == 1) {
-            switch (color) {
-                case 0 -> image = GREENPROF;
-                case 1 -> image = REDPROF;
-                case 2 -> image = YELLOWPROF;
-                case 3 -> image = PINKPROF;
-                case 4 -> image = BLUEPROF;
-            }
-        }
+
         return image;
     }
 

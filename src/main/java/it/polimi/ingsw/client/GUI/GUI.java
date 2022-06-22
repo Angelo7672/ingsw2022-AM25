@@ -43,7 +43,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected static final String WAITING = "WaitingScene.fxml";
     protected static final String MAIN = "MainScene.fxml";
     protected static final String CARDS = "CardsScene.fxml";
-    protected static final String CLOUDS = "CardsScene.fxml";
+    protected static final String CLOUDS = "CloudsScene.fxml";
     protected PlayerConstants constants;
     protected boolean isMainScene;
     private int initialMotherPosition;
