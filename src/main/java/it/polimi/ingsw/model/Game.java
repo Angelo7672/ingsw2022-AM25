@@ -129,8 +129,7 @@ public class Game implements GameManager{
     public void handAndCoinsRestore(int playerRef, ArrayList<String> cards, int coins){
         ArrayList<Assistant> hand = new ArrayList<>();
 
-        for(int i = 0; i < cards.size(); i++)
-            hand.add(stringToAssistant(cards.get(i)));
+        for (String card : cards) hand.add(stringToAssistant(card));
 
         playerManager.restoreHandAndCoins(playerRef, hand, coins);
     }
@@ -249,6 +248,13 @@ public class Game implements GameManager{
      * @param ref position of Special5 in roundStrategies list;
      */
     private void checkNoEntry(int ref){ roundStrategies.get(ref).effect(); }
+
+    /**
+     * Transfer student from a cloud to player school entrance.
+     * @param playerRef player reference;
+     * @param cloudRef cloud reference;
+     * @throws NotAllowedException if that cloud is already chosen by another player;
+     */
     @Override
     public void chooseCloud(int playerRef,int cloudRef) throws NotAllowedException {
         int[] students;
@@ -256,8 +262,15 @@ public class Game implements GameManager{
         students = cloudsManager.removeStudents(cloudRef);
         for(int i = 0; i < 5 ; i++)
             playerManager.setStudentEntrance(playerRef,i,students[i]);
-        setSpecial(0,0);
+        setSpecial(0,-1);
     }
+
+    /**
+     * Method for specials that don't require any argument. Used by Special2, Special4, Special6, Special8.
+     * @param indexSpecial special reference;
+     * @param playerRef player reference;
+     * @return if the operation was successful;
+     */
     @Override
     public boolean useSpecialLite(int indexSpecial, int playerRef){
         if(affordSpecial(indexSpecial, playerRef)) {
@@ -269,6 +282,14 @@ public class Game implements GameManager{
         setSpecial(0, -1);
         return true;
     }
+
+    /**
+     * Method for specials that require an argument. Used by Special3, Special5, Special9, Special11, Special12.
+     * @param indexSpecial special reference;
+     * @param playerRef player reference;
+     * @param ref argument of the special;
+     * @return if the operation was successful;
+     */
     @Override
     public boolean useSpecialSimple(int indexSpecial, int playerRef, int ref){
         boolean checker = false;
@@ -284,6 +305,15 @@ public class Game implements GameManager{
 
         return checker;
     }
+
+    /**
+     * Method for specials that require two arguments. Used by Special1.
+     * @param indexSpecial special reference;
+     * @param playerRef player reference;
+     * @param ref argument of the special;
+     * @param color of the student designated;
+     * @return if the operation was successful;
+     */
     @Override
     public boolean useSpecialMedium(int indexSpecial, int playerRef, int ref, int color){
         boolean checker = false;
@@ -299,6 +329,15 @@ public class Game implements GameManager{
 
         return checker;
     }
+
+    /**
+     * Method for specials that require two list of student. Used by Special7, Special10.
+     * @param indexSpecial special reference;
+     * @param playerRef player reference;
+     * @param color1 first list;
+     * @param color2 second list;
+     * @return if the operation was successful;
+     */
     @Override
     public boolean useSpecialHard(int indexSpecial, int playerRef, ArrayList<Integer> color1, ArrayList<Integer> color2){
         boolean checker = false;
@@ -314,12 +353,25 @@ public class Game implements GameManager{
 
         return checker;
     }
+
+    /**
+     * Check if player can afford a special with its coin.
+     * @param indexSpecial special to check cost;
+     * @param playerRef player reference;
+     * @return if the player can afford the special:
+     */
     private boolean affordSpecial(int indexSpecial, int playerRef){
         for(int i = 0; i < 3; i++)
             if(indexSpecial == extractedSpecials.get(i))
                 return playerManager.getCoins(playerRef) >= roundStrategies.get(i+1).getCost();
         return false;
     }
+
+    /**
+     * If special is in the list, remove from the player's coins the cost of the special, then increase the cost.
+     * @param indexSpecial special to check cost;
+     * @param playerRef player reference;
+     */
     private void findSpecial(int indexSpecial, int playerRef) {
         for(int i = 0; i < 3; i++)
             if(extractedSpecials.get(i) == indexSpecial){
@@ -328,6 +380,12 @@ public class Game implements GameManager{
                 this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i+1).getCost());
             }
     }
+
+    /**
+     * Set special and its reference for this round.
+     * @param indexSpecial special reference;
+     * @param refSpecial reference of the special;
+     */
     private void setSpecial(int indexSpecial, int refSpecial){
         this.indexSpecial = indexSpecial;
         this.refSpecial = refSpecial;
@@ -346,9 +404,16 @@ public class Game implements GameManager{
         return cost;
     }
 
+    /**
+     * @see QueueManager with its readQueue;
+     */
     @Override
     public int readQueue(int pos){ return queueManager.readQueue(pos); }
 
+    /**
+     * When we arrive at the end of the match return the Team winner;
+     * @return return the Team winner;
+     */
     @Override
     public String oneLastRide(){ return String.valueOf(playerManager.checkVictory()); }
 
@@ -356,20 +421,20 @@ public class Game implements GameManager{
     @Override
     public void setStudentsListener(StudentsListener listener){
         playerManager.studentsListener = listener;
-        islandsManager.studentListener=listener;
-        cloudsManager.studentsListener=listener;
+        islandsManager.studentListener = listener;
+        cloudsManager.studentsListener = listener;
     }
     @Override
     public void setTowerListener(TowersListener listener) {
-        playerManager.towersListener= listener;
-        islandsManager.towersListener= listener;
+        playerManager.towersListener = listener;
+        islandsManager.towersListener = listener;
     }
     @Override
     public void setProfessorsListener(ProfessorsListener listener){ playerManager.professorsListener = listener; }
     @Override
     public void setPlayedCardListener(PlayedCardListener listener){
         queueManager.playedCardListener = listener;
-        playerManager.playedCardListener=listener;
+        playerManager.playedCardListener = listener;
     }
     @Override
     public void setSpecialListener(SpecialListener listener){ this.specialListener = listener;}

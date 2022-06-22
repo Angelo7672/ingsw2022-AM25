@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 import it.polimi.ingsw.server.ControllerServer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class VirtualViewTest {
     VirtualView virtualView;
     Controller controller;
-    String fileName = "saveGame.bin";
+    String fileName = "saveGameTest.bin";
     FileOutputStream outputFile;
     ObjectOutputStream objectOut;
     ObjectInputStream inputFile;
@@ -76,9 +77,11 @@ class VirtualViewTest {
         };
         controller = new Controller(2, true, controllerServer);
         virtualView = new VirtualView(2, true, controllerServer, controller, "saveGame.bin");
+        controller.addNewPlayer("angelo", "WIZARD");
+        controller.addNewPlayer("gigi","KING");
         controller.createGame();
-        controller.initializeGame();
-        clearFile();
+        //controller.initializeGame();
+
         try {
             outputFile = new FileOutputStream(fileName);
             objectOut = new ObjectOutputStream(outputFile);
@@ -99,27 +102,16 @@ class VirtualViewTest {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-    /*@Test
-    void testMoveStudentInSchool(){
-        boolean ok = false;
-        int i = 0;
+    @Test
+    @DisplayName("Test save and restore game")
+    void saveAndRestore(){
+        //controller.startGame();
+        //controller.resumeTurn(1);
+        //controller.saveGame();
+        controller.restoreVirtualView();
+        controller.restoreGame();
+    }
 
-        while(!ok && i < 5){
-            ok = true;
-            try{controller.moveStudent(0, i, true, -1);
-            }catch (NotAllowedException notAllowedException) {
-                ok = false;
-                i++;
-            }
-        }
-        virtualView.saveVirtualView();  // write changes on file
-        inputFile.readObject();
-        inputFile.readObject();
-        inputFile.readObject();
-        ArrayList<VirtualView.SchoolBoard> schoolBoardsTmp
-
-
-    }*/
 
 
 }
