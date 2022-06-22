@@ -83,6 +83,7 @@ public class Printable {
     }
 
     protected void printLastCard(){
+        System.out.println();
         System.out.print("New play: "+"\t"+UNDERLINE+"LAST PLAYED CARDS:"+ANSI_RESET+"\t" );
         for (int i = 0; i < view.getNumberOfPlayers(); i++) {
             System.out.print(" "+view.getNickname(i) + ": " + view.getLastCard(i) + ". ");
