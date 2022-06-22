@@ -74,9 +74,9 @@ public class IslandsManager {
         for(int i = 0; i < 5; i++)
             incStudent(islandRef,i,students[i]);
         //Tower
-        islands.get(islandRef).incTowerValue(towerValue);
+        islands.get(islandRef).setTowerValue(towerValue);
         islands.get(islandRef).setTowerTeam(towerTeam);
-        this.towersListener.notifyTowersChange(2, islandRef, getTowerValue(islandRef));
+        this.towersListener.notifyTowersChange(1, islandRef, getTowerValue(islandRef));
         this.towersListener.notifyTowerColor(islandRef, islands.get(islandRef).getTowerTeam().getTeam());
         //Special
         for(int i = 0; i < inhibited; i++)
@@ -258,6 +258,7 @@ public class IslandsManager {
         private Team getTowerTeam(){ return towerTeam; }
         private int getTowerValue(){ return towerValue; }
         private void setTowerTeam(Team team){ towerTeam = team; }
+        private void setTowerValue(int towerValue) { this.towerValue = towerValue; }
         private void incTowerValue(int value){ towerValue+=value; }
         private int getNumStudents(int color){ return students[color]; }
         private void copyStudents(int color, int nStudents){ students[color] = nStudents; }

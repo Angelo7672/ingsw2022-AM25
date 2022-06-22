@@ -21,7 +21,6 @@ public class Special3 implements Special{
         try {
             virtualClient.setSpecial3();
             virtualClient.send(new GenericAnswer("ok"));
-            System.out.println("Il server ha mandato ok per ricevere messaggio ad hoc dello special");
             this.wait();
 
             checker = server.useSpecialSimple(3, playerRef, special3Msg.getIslandRef());

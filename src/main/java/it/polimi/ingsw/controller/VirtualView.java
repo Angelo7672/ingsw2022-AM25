@@ -93,8 +93,9 @@ public class VirtualView
             inputFile.close();
 
             //Virtual view restore
-            for(SchoolBoard s:schoolBoardsTmp)
-                addNewPlayer(s.getNickname(),s.getCharacter());
+            for(SchoolBoard s:schoolBoardsTmp) {
+                addNewPlayer(s.getNickname(), s.getCharacter());
+            }
         } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace();
         } catch (ClassNotFoundException e) { e.printStackTrace(); }
@@ -181,7 +182,11 @@ public class VirtualView
         for (int i = 0; i < schoolBoards.size(); i++)
             if(nickname.equals(
                     schoolBoards.get(i).getNickname()
-            )) checker = i;
+            ) && !schoolBoards.get(i).getAlreadyConnected()
+                ){
+                    checker = i;
+                    schoolBoards.get(i).setAlreadyConnected();
+            }
 
         return checker;
     }
@@ -213,7 +218,7 @@ public class VirtualView
         hands.add(new Hand());
         clouds.add(new Cloud());
 
-        player = schoolBoards.size()-1;
+        player = schoolBoards.size() - 1;
         if(numberOfPlayers==3) {
             schoolBoards.get(player).setTowersNumber(6);
             schoolBoards.get(player).setTeam(player);
@@ -285,7 +290,7 @@ public class VirtualView
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
         if (place == 0) {
             schoolBoards.get(componentRef).setTowersNumber(towersNumber);
-            if(numberOfPlayers !=4) server.towersChangeInSchool(componentRef, towersNumber);
+            if(numberOfPlayers != 4) server.towersChangeInSchool(componentRef, towersNumber);
             else if(numberOfPlayers == 4)
                 if(componentRef != 1 && componentRef != 3) server.towersChangeInSchool(componentRef, towersNumber);
         } else if (place == 1) {
@@ -317,10 +322,12 @@ public class VirtualView
     @Override
     public void notifyMaxMove(int queueRef, int maxMove) {
         queue.get(queueRef).setMaxMoveMotherNature(maxMove);
-        if(maxMove != -1)
+        if(maxMove != -1) {
             server.sendMaxMovementMotherNature(
                     queue.get(queueRef).getPlayerRef(), maxMove
             );
+            System.out.println("max move player"+queue.get(queueRef).getPlayerRef()+" "+maxMove);
+        }
     }
     @Override
     public void notifySpecial(int specialRef, int playerRef) {  //notify use of a special by a player
@@ -372,6 +379,7 @@ public class VirtualView
     //private class SchoolBoard keeps the state of each player's school board
     private class SchoolBoard implements Serializable{
         private String nickname;
+        private boolean alreadyConnected;
         private String character;
         private int team; //0: white, 1: black, 2:grey
         private int[] studentsEntrance;
@@ -381,6 +389,7 @@ public class VirtualView
 
         public SchoolBoard(String nickname, String character){
             this.nickname = nickname;
+            this.alreadyConnected = false;
             this.character = character;
             this.studentsEntrance = new int[]{0, 0, 0, 0, 0};
             this.studentsTable  = new int[]{0, 0, 0, 0, 0};
@@ -392,6 +401,8 @@ public class VirtualView
         public void setTowersNumber(int towersNumber) { this.towersNumber = towersNumber; }
         public void setProfessors(int color, boolean newValue) { this.professors[color] = newValue; }
         public void setTeam(int team) { this.team = team; }
+        public void setAlreadyConnected() { this.alreadyConnected = true; }
+        public boolean getAlreadyConnected() { return alreadyConnected; }
         public String getNickname() { return nickname; }
         public String getCharacter() { return character; }
         public String getTeam() {
