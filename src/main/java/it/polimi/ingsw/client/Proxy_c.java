@@ -133,6 +133,7 @@ public class Proxy_c implements Exit {
         while(true) {
             tempObj = receive();
             if(((PlayCard)tempObj).getMessage().equals("Play card!")){
+                System.out.println("received play card");
                 return true;
             }
         }
@@ -144,6 +145,7 @@ public class Proxy_c implements Exit {
         if(tempObj instanceof GenericAnswer) {
             view.setCards(card);
             send(new GenericMessage("Ready for Action Phase"));
+            System.out.println("sent start action");
             return ((GenericAnswer)tempObj).getMessage();
         }
         if(tempObj instanceof MoveNotAllowedAnswer){
@@ -156,6 +158,7 @@ public class Proxy_c implements Exit {
         while(true) {
             tempObj = receive();
             if(((StartTurn)tempObj).getMessage().equals("Start your Action Phase!")){
+                System.out.println("recived action");
                 return true;
             }
         }
