@@ -74,7 +74,7 @@ public class CloudsSceneController implements SceneController  {
         this.proxy=proxy;
     }
 
-    public void setStudentsCloud(int cloudRef, int color){
+    public void setStudentsCloud(int cloudRef, int color, int newStudentValue){
         Label studentLabel;
         ImageView studentImage;
         /*

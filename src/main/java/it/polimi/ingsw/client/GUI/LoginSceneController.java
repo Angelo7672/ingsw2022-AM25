@@ -59,7 +59,7 @@ public class LoginSceneController implements SceneController{
             if (proxy.setupConnection(currentNickname, currentCharacter)){
                 System.out.println("SetupConnection done");
                 gui.setYourNickname(currentNickname);
-                //gui.switchScene(GUI.WAITING);
+                gui.switchScene(GUI.WAITING);
                 gui.startGame();
             }
             else {
