@@ -167,7 +167,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public void setView() {
-        MainSceneController controller= (MainSceneController) sceneControllersMap.get(MAIN);
+        MainSceneController mainSceneController= (MainSceneController) sceneControllersMap.get(MAIN);
         try {
             View view = proxy.startView();
             //switchScene(WAITING);
@@ -176,7 +176,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 this.view = view;
                 isViewSet = true;
 
-                controller.setView(this.view);
+                mainSceneController.setView(this.view);
                 view.setCoinsListener(this);
                 view.setInhibitedListener(this);
                 view.setIslandListener(this);
@@ -218,6 +218,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
             }
         }
+
+
 
     private class PlanningPhaseThread extends Thread{
         @Override
@@ -266,7 +268,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     public void initializeMainScene() {
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        CloudsSceneController cloudsSceneController= (CloudsSceneController) sceneControllersMap.get(CLOUDS);
         controller.setNumberOfPlayers(view.getNumberOfPlayers());
+        cloudsSceneController.initializeCloudScene(view.getNumberOfPlayers());
         controller.setExpertMode(view.getExpertMode());
         for (int i = 0; i < view.getNumberOfPlayers(); i++) {
                 do {
@@ -421,14 +425,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
         Platform.runLater(() -> {
             MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
-            //CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
+            CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
 
             if(isMainSceneInitialized){
                 switch (place) {
                         case 0 -> mainSceneController.setStudentsEntrance(componentRef, color, newStudentsValue);
                         case 1 -> mainSceneController.setStudentsTable(componentRef, color, newStudentsValue);
                         case 2 -> mainSceneController.setStudentsIsland(componentRef, color, newStudentsValue);
-                        //case 3 -> cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);
+                        case 3 -> cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);
                     }
             }
             else{
@@ -443,7 +447,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                         students[color]= newStudentsValue;
                     }
 
-                    //case 3 -> cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);
+                    case 3 -> cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);
 
                 }
             }
@@ -486,6 +490,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void setYourNickname(String yourNickname) {
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
         controller.setYourNickname(yourNickname);
+    }
+
+    public void setNotYourTurn() {
+        MainSceneController controller= (MainSceneController) sceneControllersMap.get(MAIN);
+        controller.setActionAllowed(-1);
     }
 
 
