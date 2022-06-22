@@ -230,7 +230,7 @@ public class Game implements GameManager{
         setSpecial(0,-1);
 
         if(expertMode)
-            for(int i=0; i<3; i++)
+            for(int i = 0; i < 3; i++)
                 if(extractedSpecials.get(i) == 5) checkNoEntry(i + 1);
 
         return victory;
