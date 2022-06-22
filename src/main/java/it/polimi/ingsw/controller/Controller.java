@@ -95,7 +95,7 @@ public class Controller implements ServerController{
     public ArrayList<Integer> getSpecialCost(){ return gameManager.getSpecialCost(); }
 
     //Planning Phase
-    public String getLastPlayedCard(int playerRef){ return virtualView.getLastPlayedCard(playerRef); }
+    private String getLastPlayedCard(int playerRef){ return virtualView.getLastPlayedCard(playerRef); }
     @Override
     public void playCard(int playerRef, String chosenAssistants) throws NotAllowedException {
         ArrayList<String> alreadyPlayedCard = new ArrayList<>();

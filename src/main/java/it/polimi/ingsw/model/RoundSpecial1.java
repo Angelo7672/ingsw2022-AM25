@@ -56,11 +56,10 @@ public class RoundSpecial1 extends RoundStrategy{
         }
 
         public void setup(int[] color){
-            for(int i=0; i<5;i++){
-                students[i]+=color[i];
+            for(int i = 0; i < 5; i++){
+                students[i] = color[i];
                 specialStudentsListener.specialStudentsNotify(1, i, students[i]);
             }
-
         }
 
         private int getStudent(int color){ return students[color]; }
@@ -71,6 +70,8 @@ public class RoundSpecial1 extends RoundStrategy{
                 students[chosen]--;
                 students[extracted]++;
             }
+            for(int i = 0; i < 5; i++)
+                specialStudentsListener.specialStudentsNotify(1, i, students[i]);
         }
     }
 }
