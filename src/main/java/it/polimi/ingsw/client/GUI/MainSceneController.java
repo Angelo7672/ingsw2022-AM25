@@ -118,37 +118,44 @@ public class MainSceneController implements SceneController {
         this.studentsOnTable= new ArrayList<>();
         oldStudentsValue=0;
         studentCounter=0;
+        actionAllowed=-1;
+        currentStudentColor=-1;
+        lastThingClicked="";
 
     }
 
     private class StudentsClickHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent mouseEvent) {
-            AnchorPane entrance = entrancesMap.get(currentPlayer);
             if(actionAllowed==0) {
-                lastThingClicked = "student";
                 System.out.println("student clicked");
-                for(int i=0; i<numberOfPlayers; i++){
-                    if(mouseEvent.getSource()==entrance.getChildren().get(i))
+                /*for(int i=0; i<5; i++){
+                    if(mouseEvent.getSource()==entrancesMap.get(currentPlayer).getChildren().get(i))
                         currentStudentColor=i;
+                    if(mouseEvent.getSource()!=entrancesMap.get(currentPlayer).getChildren().get())
                 }
-                /*
-                if (mouseEvent.getSource() == entrance.getChildren().get(0))
-                    currentStudentColor = 0;
-                else if ((mouseEvent.getSource() == entrance.getChildren().get(1)))
-                    currentStudentColor = 1;
-                else if ((mouseEvent.getSource() == entrance.getChildren().get(2)))
-                    currentStudentColor = 2;
-                else if ((mouseEvent.getSource() == entrance.getChildren().get(3)))
-                    currentStudentColor = 3;
-                else if ((mouseEvent.getSource() == entrance.getChildren().get(4)))
-                    currentStudentColor = 4;*/
-                System.out.println("color: "+currentStudentColor);
+                System.out.println("color: "+currentStudentColor);*/
+
+                if(mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(0)||
+                    mouseEvent.getSource() ==  entrancesMap.get(currentPlayer).getChildren().get(1)||
+                    mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(2)||
+                    mouseEvent.getSource() ==  entrancesMap.get(currentPlayer).getChildren().get(3)||
+                    mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(4)) {
+
+                    lastThingClicked = "student";
+                    for (int i = 0; i < 5; i++) {
+                        if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(i))
+                            currentStudentColor = i;
+                    }
+                } else {
+                    lastThingClicked="";
+                    errorLabel.setText("Error, move not allowed!");
+                    errorLabel.setVisible(true);
+                }
             }
             else{
                 errorLabel.setText("Error, move not allowed!");
                 errorLabel.setVisible(true);
-
             }
         }
     }
@@ -193,26 +200,27 @@ public class MainSceneController implements SceneController {
                             islandRef = i;
                         }
                     }
-                    if (studentCounter < 3) {
-                        try {
-                            String result = proxy.moveStudent(currentStudentColor, "island", islandRef);
-                            if (result.equalsIgnoreCase("ok")) {
-                                errorLabel.setVisible(false);
-                                studentCounter++;
-                            } else {
-                                errorLabel.setText("Error, move not allowed!");
-                                errorLabel.setVisible(true);
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
+                    try {
+                        String result = proxy.moveStudent(currentStudentColor, "island", islandRef);
+                        if (result.equalsIgnoreCase("ok")) {
+                            System.out.println("movement successful");
+                            errorLabel.setVisible(false);
+                            studentCounter++;
+                            System.out.println("student counter: " + studentCounter);
+                        } else if(result.equalsIgnoreCase("transfer complete")) {
+                            setActionAllowed(1);
+                        } else {
+                            System.out.println("mossa non consentita");
+                            errorLabel.setText("Error, move not allowed!");
+                            errorLabel.setVisible(true);
                         }
-                    } else {
-                        setActionAllowed(1);
+
+                    } catch (IOException e) {
+                    e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
                     }
-                }
-                else {
+                } else {
                     errorLabel.setText("Error, move not allowed!");
                     errorLabel.setVisible(true);
                 }
@@ -287,7 +295,7 @@ public class MainSceneController implements SceneController {
         islandsInitialization();
 
         gui.isMainSceneInitialized=true;
-        setActionAllowed(-1);
+        actionAllowed=-1; //not your turn
 
     }
 
@@ -572,6 +580,7 @@ public class MainSceneController implements SceneController {
             }
         }
         turnLabel.setText("It's your turn!");
+        setActionAllowed(0); //student movement allowed
     }
     public void setActionAllowed(int actionAllowed){
         this.actionAllowed=actionAllowed;

@@ -209,7 +209,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 actionPhaseThread.start();
             }
             case "MoveStudent"-> {
-                controller.setActionAllowed(0);
                 controller.setCurrentPlayer();
                 System.out.println("move a student");
             }
