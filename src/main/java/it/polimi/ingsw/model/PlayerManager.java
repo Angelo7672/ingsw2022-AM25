@@ -424,7 +424,6 @@ public class PlayerManager  {
         private boolean checkPosForCoin(int colour){
             if(school.getStudentTable(colour) == 3 || school.getStudentTable(colour) == 6 || school.getStudentTable(colour) == 9){
                 coins++;
-                System.out.println("add coin");
                 return true;
             }
             return false;

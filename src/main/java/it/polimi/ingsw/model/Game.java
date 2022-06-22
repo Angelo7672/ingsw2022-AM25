@@ -58,7 +58,7 @@ public class Game implements GameManager{
             //now I have 3 random int
             Collections.sort(random);
 
-            for (int i = 0; i < 3; i++) {
+            /*for (int i = 0; i < 3; i++) {
                 roundStrategies.add(
                         roundStrategyFactor.getRoundStrategy(
                                 random.get(i)
@@ -67,7 +67,15 @@ public class Game implements GameManager{
                 this.extractedSpecials.add(
                         random.get(i)
                 );
-            }
+            }*/
+
+            //INSERISCI GLI SPECIAL CHE VUOI FARE USCIRE
+            roundStrategies.add( roundStrategyFactor.getRoundStrategy(4));
+            roundStrategies.add( roundStrategyFactor.getRoundStrategy(7));
+            roundStrategies.add( roundStrategyFactor.getRoundStrategy(11));
+            this.extractedSpecials.add(4);
+            this.extractedSpecials.add(7);
+            this.extractedSpecials.add(11);
         }
     }
     private Assistant stringToAssistant(String string){

@@ -74,7 +74,7 @@ public class ExpertGame {
             specialDeck.effect(2, playerRef, user);
             return true;
         }
-        System.out.println("MISS!");
+
         return false;
     }
 

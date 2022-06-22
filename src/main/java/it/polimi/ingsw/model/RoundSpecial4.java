@@ -14,10 +14,9 @@ public class RoundSpecial4 extends RoundStrategy{
     public boolean moveMotherNature(int queueRef, int desiredMovement, int ref) throws NotAllowedException {
         int maxMovement;
         boolean victory = false;
-
+        System.out.println("Ready Increase");
         queueManager.increaseMaxMoveMotherNature(queueRef);
         maxMovement = queueManager.readMaxMotherNatureMovement(queueRef);
-
 
         if(desiredMovement > 0 && desiredMovement <= maxMovement){
             islandsManager.moveMotherNature(desiredMovement);

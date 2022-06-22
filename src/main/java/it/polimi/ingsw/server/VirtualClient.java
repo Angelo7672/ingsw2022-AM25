@@ -133,56 +133,48 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }else if(special1) {
                     special1 = false;
                     if (tmp instanceof Special1Message) {
-                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(1, tmp);
                         expertGame.wakeUp(1);
                     } else send(new GenericAnswer("error"));
                 }else if(special3) {
                     special3 = false;
                     if (tmp instanceof Special3Message) {
-                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(3, tmp);
                         expertGame.wakeUp(3);
                     } else send(new GenericAnswer("error"));
                 }else if(special5) {
                     special5 = false;
                     if (tmp instanceof Special5Message) {
-                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(5, tmp);
                         expertGame.wakeUp(5);
                     } else send(new GenericAnswer("error"));
                 }else if(special7){
                     special7 = false;
                     if(tmp instanceof Special7Message){
-                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(7, tmp);
                         expertGame.wakeUp(7);
                     } else send(new GenericAnswer("error"));
                 }else if(special9){
                     special9 = false;
                     if(tmp instanceof Special9Message){
-                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(9, tmp);
                         expertGame.wakeUp(9);
                     } else send(new GenericAnswer("error"));
                 }else if(special10){
                     special10 = false;
                     if(tmp instanceof Special10Message){
-                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(10, tmp);
                         expertGame.wakeUp(10);
                     } else send(new GenericAnswer("error"));
                 }else if(special11) {
                     special11 = false;
                     if (tmp instanceof Special11Message) {
-                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(11, tmp);
                         expertGame.wakeUp(11);
                     } else send(new GenericAnswer("error"));
                 }else if(special12){
                     special12 = false;
                     if(tmp instanceof Special12Message){
-                        System.out.println("Messaggio special ricevuto");
                         expertGame.setSpecialMsg(12, tmp);
                         expertGame.wakeUp(12);
                     } else send(new GenericAnswer("error"));
@@ -268,9 +260,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void studentChangeOnIsland(int islandRef, int color, int newStudentsValue){ send(new IslandStudentMessage(islandRef,color,newStudentsValue)); }
     public void studentChangeOnCloud(int cloudRef, int color, int newStudentsValue){ send(new CloudStudentMessage(cloudRef,color,newStudentsValue)); }
     public void professorChangePropriety(int playerRef, int color, boolean newProfessorValue){ send(new ProfessorMessage(playerRef,newProfessorValue,color));}
-    public void motherChangePosition(int newMotherPosition){ send(new MotherPositionMessage(newMotherPosition)); System.out.println("Mandato msg mov mother"); }
+    public void motherChangePosition(int newMotherPosition){ send(new MotherPositionMessage(newMotherPosition)); }
     public void lastCardPlayedFromAPlayer(int playerRef, String assistantCard){ send(new LastCardMessage(playerRef,assistantCard)); }
-    public void numberOfCoinsChangeForAPlayer(int playerRef, int newCoinsValue){ send(new CoinsMessage(newCoinsValue,playerRef)); System.out.println("Mandato messaggio coin player "+playerRef+"value "+newCoinsValue);}
+    public void numberOfCoinsChangeForAPlayer(int playerRef, int newCoinsValue){ send(new CoinsMessage(newCoinsValue,playerRef)); }
     public void dimensionOfAnIslandIsChange(int islandToDelete){ send(new UnifiedIsland(islandToDelete)); }
     public void towersChangeInSchool(int playerRef, int towersNumber){ send(new SchoolTowersMessage(playerRef,towersNumber)); }
     public void towersChangeOnIsland(int islandRef, int towersNumber){ send(new IslandTowersNumberMessage(islandRef,towersNumber)); }

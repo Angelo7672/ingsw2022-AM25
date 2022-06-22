@@ -83,6 +83,9 @@ public class Controller implements ServerController{
         System.out.println("fine restore");
     }
     @Override
+    public int checkRestoreNickname(String nickname){ return virtualView.checkRestoreNickname(nickname); }
+
+    @Override
     public void startGame(){
         this.roundController = new RoundController(this,this.gameManager,server,numberOfPlayers,jumpPhaseForRestore);
         roundController.start();
@@ -196,8 +199,6 @@ public class Controller implements ServerController{
     public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
         gameManager.queueRestore(playerRef,valueCard,maxMoveMotherNature);
     }
-    @Override
-    public int checkRestoreNickname(String nickname){ return virtualView.checkRestoreNickname(nickname); }
 
     @Override
     public boolean isExpertMode() { return expertMode; }
