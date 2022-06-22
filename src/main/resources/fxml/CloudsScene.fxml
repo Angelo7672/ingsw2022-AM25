@@ -42,27 +42,27 @@
                   <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                </image>
             </ImageView>
-            <Label layoutX="29.0" layoutY="86.0" text="1">
+            <Label layoutX="29.0" layoutY="86.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="83.0" layoutY="86.0" text="1">
+            <Label layoutX="83.0" layoutY="86.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="135.0" layoutY="86.0" text="1">
+            <Label layoutX="135.0" layoutY="86.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="57.0" layoutY="140.0" text="1">
+            <Label layoutX="57.0" layoutY="140.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="107.0" layoutY="140.0" text="1">
+            <Label layoutX="107.0" layoutY="140.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -102,27 +102,27 @@
                   <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                </image>
             </ImageView>
-            <Label layoutX="29.0" layoutY="86.0" text="1">
+            <Label layoutX="29.0" layoutY="86.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="83.0" layoutY="86.0" text="1">
+            <Label layoutX="83.0" layoutY="86.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="135.0" layoutY="86.0" text="1">
+            <Label layoutX="135.0" layoutY="86.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="57.0" layoutY="140.0" text="1">
+            <Label layoutX="57.0" layoutY="140.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="107.0" layoutY="140.0" text="1">
+            <Label layoutX="107.0" layoutY="140.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -162,27 +162,27 @@
                   <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                </image>
             </ImageView>
-            <Label layoutX="29.0" layoutY="86.0" text="1">
+            <Label layoutX="29.0" layoutY="86.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="83.0" layoutY="86.0" text="1">
+            <Label layoutX="83.0" layoutY="86.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="135.0" layoutY="86.0" text="1">
+            <Label layoutX="135.0" layoutY="86.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="57.0" layoutY="140.0" text="1">
+            <Label layoutX="57.0" layoutY="140.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="107.0" layoutY="140.0" text="1">
+            <Label layoutX="107.0" layoutY="140.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
@@ -222,27 +222,27 @@
                   <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                </image>
             </ImageView>
-            <Label layoutX="29.0" layoutY="86.0" text="1">
+            <Label layoutX="29.0" layoutY="86.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="83.0" layoutY="86.0" text="1">
+            <Label layoutX="83.0" layoutY="86.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="135.0" layoutY="86.0" text="1">
+            <Label layoutX="135.0" layoutY="86.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="57.0" layoutY="140.0" text="1">
+            <Label layoutX="57.0" layoutY="140.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="107.0" layoutY="140.0" text="1">
+            <Label layoutX="107.0" layoutY="140.0" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
