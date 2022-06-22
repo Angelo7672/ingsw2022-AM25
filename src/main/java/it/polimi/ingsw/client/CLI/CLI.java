@@ -78,7 +78,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         if(!savedGame) {
             setupConnection();
         }
-        //view.setDisconnectedListener(this);
         view = proxy.startView();
         view.setCoinsListener(this);
         view.setInhibitedListener(this);
@@ -262,7 +261,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             }
             if(special(special)) {
                 constants.setSpecialUsed(true);
-                System.out.print(SPACE+"Special used");
+                return;
             }
             else turn();
         }
@@ -473,8 +472,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     private void moveStudents() {
-        printable.cli();
-        System.out.println();
         String accepted;
         String color=null;
         String where=null;
@@ -633,6 +630,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         }
         else if(!constants.isActionPhaseStarted()) {
             constants.setActionPhaseStarted(proxy.startActionPhase());
+            printable.cli();
         }
         else {
             switch (phase) {
@@ -695,7 +693,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     @Override
     public void notifyInhibited(int islandRef, int isInhibited) {
         if(constants.isStartGame()) {
-            System.out.println("New play: "+"\t"+"\t"+"island "+islandRef+" No Entry tiles: "+isInhibited);
+            System.out.println("New play: "+"\t"+"\t"+"island "+(islandRef+1)+" No Entry tiles: "+isInhibited);
             System.out.println();
         }
     }
