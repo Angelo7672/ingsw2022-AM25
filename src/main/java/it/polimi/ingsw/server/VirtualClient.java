@@ -609,10 +609,12 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         private boolean motherLocker;
         private boolean cloudLocker;
         private final boolean expertMode;
+        private boolean specialAlreadyReceived;
 
         public RoundPartTwo(Boolean expertMode, VirtualClient virtualClient){
             this.virtualClient = virtualClient;
             this.expertMode = expertMode;
+            this.specialAlreadyReceived = true; //in case of normal game is always locked
             this.studentLocker = false;
             this.studentCounter = 0;
             this.motherLocker = false;
@@ -624,6 +626,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             try {
                 numberOfPlayer = proxy.getConnectionsAllowed();
                 while (!victory) {
+                    if(expertMode) specialAlreadyReceived = false;
                     synchronized (actionLocker) {
                         actionLocker.wait();
                         studentLocker = true;
@@ -672,14 +675,16 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                                     synchronized (actionLocker) { actionLocker.wait(); } //attenzione potrebbe arrivare lo special
                                 }
                             }
-                        }else if(expertMode){
+                        }else if(!specialAlreadyReceived){
                             if(actionMsg instanceof UseSpecial){
-                                System.out.println("Arrivato lo special...");
                                 if (!expertGame.effect(
                                         ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
                                 ) {
                                     readyActionPhase = true;
                                     send(new MoveNotAllowedAnswer());
+                                } else{
+                                    specialAlreadyReceived = true;
+                                    send(new GenericAnswer("ok"));
                                 }
                                 readyActionPhase = true;
                                 synchronized (actionLocker) { actionLocker.wait(); }
@@ -698,13 +703,16 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         if (actionMsg instanceof MoveMotherNature) {
                             moveMotherNature();
                             go = false;
-                        } else if (expertMode) {
+                        } else if (!specialAlreadyReceived) {
                             if (actionMsg instanceof UseSpecial) {
                                 if (!expertGame.effect(
                                         ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
                                 ) {
                                     readyActionPhase = true;
                                     send(new MoveNotAllowedAnswer());
+                                }else {
+                                    specialAlreadyReceived = true;
+                                    send(new GenericAnswer("ok"));
                                 }
                                 readyActionPhase = true;
                                 synchronized (actionLocker) { actionLocker.wait(); }
@@ -724,13 +732,16 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             chooseCloud();
                             go = false;
                         }
-                        else if (expertMode) {
+                        else if (!specialAlreadyReceived) {
                             if (actionMsg instanceof UseSpecial) {
                                 if (!expertGame.effect(
                                         ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
                                 ) {
                                     readyActionPhase = true;
                                     send(new MoveNotAllowedAnswer());
+                                } else {
+                                    specialAlreadyReceived = true;
+                                    send(new GenericAnswer("ok"));
                                 }
                                 readyActionPhase = true;
                                 synchronized (actionLocker) { actionLocker.wait(); }
