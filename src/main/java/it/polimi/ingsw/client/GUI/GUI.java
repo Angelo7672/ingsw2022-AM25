@@ -213,9 +213,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             case "PlanningPhase"-> /*startPlanningPhase(); */
                     {
                         System.out.println("planning");
-                        Platform.runLater(() ->{
                             planningPhaseThread.start();
-                        });
                         System.out.println("planning finished");
                     }
             case "PlayCard"-> {
@@ -246,16 +244,15 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             try {
                 if (proxy.startPlanningPhase()) {
                     constants.setPlanningPhaseStarted(true);
-                    phaseHandler("PlayCard");
                 }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            /*Platform.runLater(()->{
+            Platform.runLater(()->{
                 phaseHandler("PlayCard");
-            });*/
+            });
 
         }
     }
