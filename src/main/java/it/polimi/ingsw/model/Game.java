@@ -217,10 +217,16 @@ public class Game implements GameManager{
      */
     @Override
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{
+        boolean stop = false;
+
         if(!expertMode) roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
         else
-            for(int i = 0; i < 3; i++)
-                if(indexSpecial == extractedSpecials.get(i)) roundStrategies.get(i+1).moveStudent(playerRef, colour, inSchool, islandRef);
+            for(int i = 0; i < 3 && !stop; i++)
+                if(indexSpecial == extractedSpecials.get(i)){
+                    stop = true;
+                    roundStrategies.get(i+1).moveStudent(playerRef, colour, inSchool, islandRef);
+                }
+            if(!stop) roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
         //setSpecial(0,-1);
     }
 
@@ -235,11 +241,16 @@ public class Game implements GameManager{
     @Override
     public boolean moveMotherNature(int queueRef, int desiredMovement) throws NotAllowedException {
         boolean victory = false;
+        boolean stop = false;
 
         if(!expertMode) victory = roundStrategies.get(indexSpecial).moveMotherNature(queueRef, desiredMovement, refSpecial);
         else {
-            for (int i = 0; i < 3; i++)
-                if (indexSpecial == extractedSpecials.get(i)) victory = roundStrategies.get(i + 1).moveMotherNature(queueRef, desiredMovement, refSpecial);    //can throw NotAllowedException
+            for (int i = 0; i < 3 && !stop; i++)
+                if (indexSpecial == extractedSpecials.get(i)){
+                    stop = true;
+                    victory = roundStrategies.get(i + 1).moveMotherNature(queueRef, desiredMovement, refSpecial);    //can throw NotAllowedException
+                }
+            if(!stop) victory = roundStrategies.get(indexSpecial).moveMotherNature(queueRef, desiredMovement, refSpecial);
             //setSpecial(0,-1);
             for (int i = 0; i < 3; i++)
                 if (extractedSpecials.get(i) == 5) checkNoEntry(i + 1);

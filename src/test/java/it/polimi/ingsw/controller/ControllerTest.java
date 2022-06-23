@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 import it.polimi.ingsw.server.ControllerServer;
-import it.polimi.ingsw.server.answer.MoveNotAllowedAnswer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -71,7 +70,7 @@ class ControllerTest {
             @Override
             public void sendInfoSpecial5(int cards) {}
         };
-        controller = new Controller(2, true , controllerServer);
+        controller = new Controller(2, true , controllerServer, "saveGameTest.bin");
         controller.addNewPlayer("Angelo", "WIZARD");
         controller.addNewPlayer("Ginevra","WITCH");
         controller.createGame();
@@ -98,6 +97,7 @@ class ControllerTest {
     @DisplayName("Second test: method of action phase")
     void actionPhase() {
         boolean checker = true;
+        boolean end = false;
         boolean ok = true;
         int i = 0;
 
@@ -118,17 +118,18 @@ class ControllerTest {
             }
         }
 
-        assertEquals(true, checker);
+        assertTrue(checker);
 
-        try { controller.moveMotherNature(1);
+        try { controller.moveMotherNature(10);
         } catch (NotAllowedException notAllowedException) { checker = false;
-        } catch (EndGameException endGameException) { checker = false; }
-        assertEquals(false, checker,"Checker is false because the player didn't play a card");
+        } catch (EndGameException endGameException) { end = true; }
+        assertFalse(checker,"Checker is false because the player didn't play a card");
+        assertFalse(end, "Game is not over");
 
         checker = true; //restore checker
 
         try { controller.chooseCloud(0, 0);
         } catch (NotAllowedException notAllowedException) { checker = false; }
-        assertEquals(true, checker);
+        assertTrue(checker);
     }
 }

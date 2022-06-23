@@ -24,12 +24,12 @@ public class Controller implements ServerController{
     private String winner;
     private String fileName;
 
-    public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server){
+    public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server, String fileName){
         this.expertMode = isExpert;
         this.numberOfPlayers = numberOfPlayers;
         this.jumpPhaseForRestore = false;
         this.server = server;
-        this.fileName = "saveGame.bin";
+        this.fileName = fileName;
         this.virtualView = new VirtualView(numberOfPlayers, isExpert, server, this, fileName);
         this.winner = "NONE";
     }

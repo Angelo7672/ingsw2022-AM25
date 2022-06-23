@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class VirtualViewTest {
     VirtualView virtualView;
     Controller controller;
+    Controller controller1;
     String fileName = "saveGameTest.bin";
     FileOutputStream outputFile;
     ObjectOutputStream objectOut;
@@ -75,12 +76,14 @@ class VirtualViewTest {
             @Override
             public void sendInfoSpecial5(int cards) {}
         };
-        controller = new Controller(2, true, controllerServer);
-        virtualView = new VirtualView(2, true, controllerServer, controller, "saveGame.bin");
-        controller.addNewPlayer("angelo", "WIZARD");
-        controller.addNewPlayer("gigi","KING");
+        controller = new Controller(2, true, controllerServer, fileName);
+        //virtualView = new VirtualView(2, true, controllerServer, controller, fileName);
+        controller.clearFile();
+        controller.addNewPlayer("Angelo","WIZARD");
+        controller.addNewPlayer("Ginevra","WITCH");
         controller.createGame();
-        //controller.initializeGame();
+        controller.initializeGame();
+        controller1 = new Controller(2, true, controllerServer, fileName);
 
         try {
             outputFile = new FileOutputStream(fileName);
@@ -102,15 +105,24 @@ class VirtualViewTest {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-   /* @Test
+    public void saveGame(){
+        clearFile();
+        controller.initializeGame();
+        controller.startGame();
+
+    }
+
+   @Test
     @DisplayName("Test save and restore game")
     void saveAndRestore(){
-        //controller.startGame();
-        //controller.resumeTurn(1);
-        //controller.saveGame();
-        controller.restoreVirtualView();
-        controller.restoreGame();
-    }*/
+        controller.startGame();
+        controller.resumeTurn(0);
+        controller.saveGame();
+        controller1.createGame();
+        controller1.restoreVirtualView();
+        controller1.restoreGame();
+        controller1.saveGame();
+    }
 
 
 

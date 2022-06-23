@@ -16,15 +16,17 @@ public class Server implements Entrance,ControllerServer{
     private ServerController controller;
     private Exit proxy;
     private ExpertGame expertGame;
+    private String filename;
 
     public Server(int port){
+        this.filename = "saveGame.bin";
         this.proxy = new Proxy_s(port,this);
         proxy.start();
     }
 
     @Override
     public boolean checkFile(){
-        File file = new File("saveGame.bin");
+        File file = new File(filename);
         if (file.length() != 0)  return true;
         return false;
     }
@@ -34,7 +36,7 @@ public class Server implements Entrance,ControllerServer{
         GameInfo tmp;
 
         try{
-            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream("saveGame.bin"));
+            ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(filename));
             tmp = (GameInfo) inputFile.readObject();
             lastPlayed.add(tmp.getNumberOfPlayer());
             if(tmp.isExpertMode()) lastPlayed.add(1);
@@ -47,7 +49,7 @@ public class Server implements Entrance,ControllerServer{
     }
 
     @Override
-    public void startController(int numberOfPlayers, boolean expertMode){ controller = new Controller(numberOfPlayers,expertMode,this); }
+    public void startController(int numberOfPlayers, boolean expertMode){ controller = new Controller(numberOfPlayers,expertMode,this, filename); }
     @Override
     public boolean isExpertMode(){ return controller.isExpertMode(); }
     @Override
