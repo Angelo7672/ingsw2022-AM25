@@ -12,14 +12,15 @@ public class Special2 implements Special{
     public Special2(Entrance server) { this.server = server; }
 
     @Override
-    public void effect(int playerRef, VirtualClient user){
+    public boolean effect(int playerRef, VirtualClient user){
         VirtualClient virtualClient = user;
         boolean checker;
 
         checker = server.useSpecialLite(2,playerRef);
 
-        if(checker) virtualClient.send(new GenericAnswer("ok"));
-        else virtualClient.send(new MoveNotAllowedAnswer());
+        /*if(checker) virtualClient.send(new GenericAnswer("ok"));
+        else virtualClient.send(new MoveNotAllowedAnswer());*/
+        return checker;
     }
 
     @Override

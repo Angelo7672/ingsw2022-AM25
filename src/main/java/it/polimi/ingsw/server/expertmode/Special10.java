@@ -14,9 +14,9 @@ public class Special10 implements Special{
     public Special10(Entrance server) { this.server = server; }
 
     @Override
-    public synchronized void effect(int playerRef, VirtualClient user){
+    public synchronized boolean effect(int playerRef, VirtualClient user){
         VirtualClient virtualClient = user;
-        boolean checker;
+        boolean checker = false;
 
         try {
             virtualClient.setSpecial10();
@@ -25,9 +25,10 @@ public class Special10 implements Special{
 
             checker = server.useSpecialHard(10, playerRef, special10Msg.getEntranceStudent(), special10Msg.getTableStudent());
 
-            if(checker) virtualClient.send(new GenericAnswer("ok"));
-            else virtualClient.send(new MoveNotAllowedAnswer());
+            /*if(checker) virtualClient.send(new GenericAnswer("ok"));
+            else virtualClient.send(new MoveNotAllowedAnswer());*/
         }catch (InterruptedException e) { e.printStackTrace(); }
+        return checker;
     }
 
     @Override
