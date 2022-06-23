@@ -61,7 +61,6 @@ public class RoundSpecial11 extends RoundStrategy{
         public void setup(int[] color){
             for(int i=0; i < 5; i++){
                 students[i] = color[i];
-                System.out.println("Colore studente su special 11 "+students[i]);
                 specialStudentsListener.specialStudentsNotify(11, i, students[i]);
             }
         }

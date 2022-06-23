@@ -108,7 +108,7 @@ public class Game implements GameManager{
         islandsManager.islandsInitialize();
         if(expertMode) {
             specialListener.notifySpecialList(extractedSpecials, getSpecialCost());
-            for (int i = 0; i < 3; i++)
+            for (int i = 1; i < 4; i++)
                 roundStrategies.get(i).initializeSpecial();
         }
     }
@@ -275,11 +275,8 @@ public class Game implements GameManager{
     public boolean useSpecialLite(int indexSpecial, int playerRef){
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, -1);
-            this.specialListener.notifySpecial(indexSpecial, playerRef);
             findSpecial(indexSpecial, playerRef);
         } else return false;
-
-        setSpecial(0, -1);
         return true;
     }
 
@@ -296,11 +293,9 @@ public class Game implements GameManager{
 
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, ref);
-            this.specialListener.notifySpecial(indexSpecial, playerRef);
             for(int i = 0; i < 3; i++)
                 if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(ref);
             if(checker) findSpecial(indexSpecial, playerRef);
-            setSpecial(0, -1);
         }
 
         return checker;
@@ -320,11 +315,9 @@ public class Game implements GameManager{
 
         if (affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, ref);
-            this.specialListener.notifySpecial(indexSpecial, playerRef);
             for(int i = 0; i < 3; i++)
                 if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(ref, color);
             if(checker) findSpecial(indexSpecial, playerRef);
-            setSpecial(0, -1);
         }
 
         return checker;
@@ -344,7 +337,6 @@ public class Game implements GameManager{
 
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, playerRef);
-            this.specialListener.notifySpecial(indexSpecial, playerRef);
             for(int i = 0; i < 3; i++)
                 if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(playerRef, color1, color2);
             if(checker) findSpecial(indexSpecial, playerRef);
@@ -379,6 +371,7 @@ public class Game implements GameManager{
                 roundStrategies.get(i+1).increaseCost();
                 this.specialListener.notifyIncreasedCost(indexSpecial, roundStrategies.get(i+1).getCost());
             }
+        this.specialListener.notifySpecial(indexSpecial, playerRef);
     }
 
     /**
@@ -452,7 +445,7 @@ public class Game implements GameManager{
     public void setQueueListener(QueueListener listener) { queueManager.queueListener = listener; }
     @Override
     public void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener){
-        for(int i = 0; i < 3; i++)
+        for(int i = 1; i < 4; i++)
             roundStrategies.get(i).setSpecialStudentsListener(specialStudentsListener);
     }
     @Override

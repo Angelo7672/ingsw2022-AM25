@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class CLI implements Runnable, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, WinnerListener, DisconnectedListener,
-        SpecialStudentsListener, NoEntryListener, ServerOfflineListener {
+        NoEntryListener, ServerOfflineListener, SpecialStudentsListener{
 
     private final Exit proxy;
     private final Scanner scanner;
@@ -89,8 +89,9 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         view.setTowersListener(this);
         view.setSpecialListener(this);
         view.setWinnerListener(this);
-        view.setSpecialStudentsListener(this);
         view.setNoEntryListener(this);
+        view.setSpecialStudentsListener(this);
+        proxy.setView();
         printable = new Printable(view);
         System.out.println();
         System.out.println(SPACE+"Game is started! Wait for your turn...");
@@ -472,6 +473,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     private void moveStudents() {
+        printable.cli();
         String accepted;
         String color=null;
         String where=null;
@@ -479,6 +481,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         int islandRef = -1;
         try {
             while(color==null) {
+                System.out.println();
                 System.out.print(SPACE+"Which student do you want to move? Insert color ");
                 color = readNext();
                 colorInt = translateColor(color);
@@ -630,7 +633,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
         }
         else if(!constants.isActionPhaseStarted()) {
             constants.setActionPhaseStarted(proxy.startActionPhase());
-            printable.cli();
         }
         else {
             switch (phase) {
@@ -801,9 +803,6 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
 
     @Override
     public void specialStudentsNotify(int special, int color, int value) {
-        if(constants.isStartGame()) {
-            printable.printSpecialStudents(special);
-        }
-    }
 
+    }
 }

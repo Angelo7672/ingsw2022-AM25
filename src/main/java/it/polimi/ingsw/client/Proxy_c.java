@@ -28,6 +28,7 @@ public class Proxy_c implements Exit {
     private DisconnectedListener disconnectedListener;
     private ServerOfflineListener serverOfflineListener;
     private boolean disconnected;
+    private boolean initializedView;
 
     public Proxy_c(Socket socket) throws IOException{
         this.socket = socket;
@@ -126,6 +127,10 @@ public class Proxy_c implements Exit {
             if(!view.isInitializedView()) lock2.wait();
         }
         return view;
+    }
+
+    public void setView(){
+        initializedView=true;
     }
 
     public boolean startPlanningPhase() throws IOException {
@@ -267,103 +272,102 @@ public class Proxy_c implements Exit {
                         }
                     } else if (tmp instanceof UserInfoAnswer) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setUserInfo(((UserInfoAnswer) tmp).getPlayerRef(), ((UserInfoAnswer) tmp).getCharacter(),((UserInfoAnswer) tmp).getNickname());
                         }
                     } else if (tmp instanceof LastCardMessage) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setLastCard(((LastCardMessage) tmp).getPlayerRef(), ((LastCardMessage) tmp).getCard());
                         }
                     } else if (tmp instanceof NumberOfCardsMessage) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setNumberOfCards(((NumberOfCardsMessage) tmp).getPlayerRef(), ((NumberOfCardsMessage) tmp).getNumberOfCards());
                         }
                     } else if (tmp instanceof HandAfterRestoreAnswer) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.restoreCards(((HandAfterRestoreAnswer) tmp).getHand());
                         }
                     } else if (tmp instanceof SchoolStudentMessage) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setSchoolStudents(((SchoolStudentMessage) tmp).getPlace(), ((SchoolStudentMessage) tmp).getComponentRef(), ((SchoolStudentMessage) tmp).getColor(), ((SchoolStudentMessage) tmp).getNewValue());
                         }
                     } else if (tmp instanceof ProfessorMessage) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setProfessors(((ProfessorMessage) tmp).getPlayerRef(), ((ProfessorMessage) tmp).getColor(), ((ProfessorMessage) tmp).isProfessor());
                         }
                     } else if (tmp instanceof SchoolTowersMessage) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setSchoolTowers(((SchoolTowersMessage) tmp).getPlayerRef(), ((SchoolTowersMessage) tmp).getTowers());
                         }
                     } else if (tmp instanceof CoinsMessage) {
                         synchronized (lock2) {
-                            System.out.println("coins message "+((CoinsMessage) tmp).getCoin());
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setCoins(((CoinsMessage) tmp).getPlayerRef(), ((CoinsMessage) tmp).getCoin());
                         }
                     } else if (tmp instanceof CloudStudentMessage) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setClouds(((CloudStudentMessage) tmp).getCloudRef(), ((CloudStudentMessage) tmp).getColor(), ((CloudStudentMessage) tmp).getNewValue());
                         }
                     } else if (tmp instanceof IslandStudentMessage) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setStudentsIsland(((IslandStudentMessage) tmp).getIslandRef(), ((IslandStudentMessage) tmp).getColor(), ((IslandStudentMessage) tmp).getNewValue());
                         }
                     } else if (tmp instanceof MotherPositionMessage) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setMotherPosition(((MotherPositionMessage) tmp).getMotherPosition());
                         }
                     } else if (tmp instanceof MaxMovementMotherNatureAnswer) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setMaxStepsMotherNature(((MaxMovementMotherNatureAnswer) tmp).getMaxMovement());
                         }
                     } else if (tmp instanceof IslandTowersNumberMessage) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setIslandTowers(((IslandTowersNumberMessage) tmp).getIslandRef(), ((IslandTowersNumberMessage) tmp).getTowersNumber());
                         }
                     } else if (tmp instanceof IslandTowersColorMessage) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setTowersColor(((IslandTowersColorMessage) tmp).getIslandRef(), ((IslandTowersColorMessage) tmp).getColor());
                         }
                     } else if (tmp instanceof InhibitedIslandMessage) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setInhibited(((InhibitedIslandMessage) tmp).getIslandRef(), ((InhibitedIslandMessage) tmp).getInhibited());
                         }
                     } else if (tmp instanceof UnifiedIsland) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.removeUnifiedIsland(((UnifiedIsland) tmp).getUnifiedIsland());
                         }
                     } else if (tmp instanceof UseSpecialAnswer) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setSpecialUsed(((UseSpecialAnswer) tmp).getSpecialIndex(), ((UseSpecialAnswer) tmp).getPlayerRef());
                         }
                     } else if (tmp instanceof SetSpecialAnswer) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setSpecial(((SetSpecialAnswer) tmp).getSpecialRef(), ((SetSpecialAnswer) tmp).getCost());
                         }
                     } else if (tmp instanceof InfoSpecial1or7or11Answer) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmp).getStudentColor(), ((InfoSpecial1or7or11Answer) tmp).getValue(), ((InfoSpecial1or7or11Answer) tmp).getSpecialIndex());
                         }
                     } else if (tmp instanceof InfoSpecial5Answer) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setNoEntry(((InfoSpecial5Answer) tmp).getCards());
                         }
                     } else if (tmp instanceof DisconnectedAnswer) {
@@ -372,7 +376,7 @@ public class Proxy_c implements Exit {
                         disconnectedListener.notifyDisconnected();
                     } else if (tmp instanceof GameOverAnswer) {
                         synchronized (lock2) {
-                            if (!view.isInitializedView()) lock2.wait();
+                            if (!initializedView) lock2.wait();
                             view.setWinner(((GameOverAnswer) tmp).getWinner());
                         }
                     }

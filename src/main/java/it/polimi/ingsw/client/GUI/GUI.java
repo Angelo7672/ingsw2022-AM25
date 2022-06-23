@@ -116,6 +116,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             primaryStage.setScene(scenesMap.get(LOGIN));
             primaryStage.centerOnScreen();
         }
+        else if(result.equals("SavedGame")){
+
+        }
+        else if(result.equals("LoginRestore")){
+
+        }
     }
 
     //called when the GUI is launched, load all the scenes in advance, mapping them and setting the controllers
@@ -157,6 +163,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                         startGame();
                     } else{
                         if (!constants.isPlanningPhaseStarted()) {
+                            System.out.println("Planning request");
                             phaseHandler("PlanningPhase");
                     } else
                         phaseHandler(constants.lastPhase());
@@ -185,6 +192,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 view.setProfessorsListener(this);
                 view.setStudentsListener(this);
                 view.setTowersListener(this);
+                proxy.setView();
+            System.out.println("set done");
             //}
         } catch (IOException e) {
             e.printStackTrace();
@@ -201,8 +210,18 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         System.out.println("started phase handler!");
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN) ;
         switch (phase){
-            case "PlanningPhase"-> /*startPlanningPhase(); */planningPhaseThread.start();
-            case "PlayCard"-> switchScene(CARDS);
+            case "PlanningPhase"-> /*startPlanningPhase(); */
+                    {
+                        System.out.println("planning");
+                        Platform.runLater(() ->{
+                            planningPhaseThread.start();
+                        });
+                        System.out.println("planning finished");
+                    }
+            case "PlayCard"-> {
+                System.out.println("playcard");
+                        switchScene(CARDS);
+            }
             case "StartTurn"-> {
                 switchScene(MAIN);
                 //startActionPhase();
@@ -217,7 +236,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             //case "End Turn"->
 
             }
-        }
+    }
 
 
 
@@ -227,19 +246,19 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             try {
                 if (proxy.startPlanningPhase()) {
                     constants.setPlanningPhaseStarted(true);
+                    phaseHandler("PlayCard");
                 }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Platform.runLater(()->{
+            /*Platform.runLater(()->{
                 phaseHandler("PlayCard");
-            });
+            });*/
 
         }
     }
-
 
     private class ActionPhaseThread extends Thread {
         @Override
@@ -263,8 +282,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         }
     }
-
-
 
     public void initializeMainScene() {
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);

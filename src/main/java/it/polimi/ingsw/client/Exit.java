@@ -19,6 +19,8 @@ public interface Exit {
 
     View startView() throws IOException, ClassNotFoundException, InterruptedException;
 
+    void setView();
+
     boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException ;
 
     boolean setupGame(int numberOfPlayers, String expertMode) throws IOException, ClassNotFoundException;

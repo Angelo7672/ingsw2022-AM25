@@ -154,11 +154,11 @@ public class Printable {
         for (int i = 0; i < view.getIslandSize(); i++) {
             System.out.println("\t"+"Island " + (i + 1) + ": Students:" + ANSI_GREEN +" Green "+ view.getStudentsIsland(i)[0 ] + ANSI_RED  + ", Red " + view.getStudentsIsland(i)[1] +
                     ANSI_YELLOW +", Yellow " + view.getStudentsIsland(i)[2] + ANSI_PURPLE + ", Pink " + view.getStudentsIsland(i)[3] + ANSI_BLUE + ", Blue " + view.getStudentsIsland(i)[4]+ANSI_RESET);
-            if (view.getInhibited(i) != 0) System.out.print("\t"+"\t"+"\t"+"  No Entry tiles: " + view.getInhibited(i) + ". ");
             if(view.getTowersColor(i)==0) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + "WHITE" + ANSI_RESET);
             else if(view.getTowersColor(i)==1) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + ANSI_BLACK+ "BLACK" + ANSI_RESET);
             else if(view.getTowersColor(i)==2) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + ANSI_WHITE+ "GREY" + ANSI_RESET);
             else if(view.getTowersColor(i)==-1) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + "NO ONE" + ANSI_RESET);
+            if (view.getInhibited(i) != 0) System.out.print(" No Entry tiles: " + view.getInhibited(i) + ". ");
             System.out.println(". Island size: " + view.getIslandTowers(i));
         }
         System.out.println();
