@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.GUI;
 
-import com.sun.tools.javac.Main;
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.PlayerConstants;
 import it.polimi.ingsw.client.Proxy_c;
@@ -9,19 +8,19 @@ import it.polimi.ingsw.listeners.*;
 import it.polimi.ingsw.server.answer.SavedGameAnswer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static com.sun.javafx.application.PlatformImpl.runAndWait;
 
 public class GUI extends Application implements TowersListener, ProfessorsListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener {
@@ -33,6 +32,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     private Thread planningPhaseThread;
     private Thread actionPhaseThread;
+
+    private Service<Boolean> planningPhaseService;
+    private Service<Boolean> actionPhaseService;
 
     protected boolean active;
     protected boolean isMainSceneInitialized;
@@ -77,6 +79,29 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
         planningPhaseThread= new PlanningPhaseThread();
         actionPhaseThread = new ActionPhaseThread();
+        planningPhaseService= new PlanningPhaseService();
+
+        planningPhaseService.setOnSucceeded(workerStateEvent -> {
+            System.out.println("Task succeded!");
+            Boolean result = planningPhaseService.getValue();
+            System.out.println(result);
+            if(result){
+                System.out.println("Calling phase handler PLayCard");
+                phaseHandler("PlayCard");
+            }
+        });
+
+        actionPhaseService= new ActionPhaseService();
+
+        actionPhaseService.setOnSucceeded(workerStateEvent -> {
+            System.out.println("Task succeded!");
+            Boolean result = actionPhaseService.getValue();
+            System.out.println("Result is: "+result);
+            if(result){
+                System.out.println("Calling phase handler startTurn");
+                phaseHandler("StartTurn");
+            }
+        });
     }
 
     @Override
@@ -150,6 +175,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public void startGame(){
+        System.out.println("startGame");
         //Platform.runLater(()-> {
             //switchScene(WAITING);
             if (!isViewSet) {
@@ -193,7 +219,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 view.setStudentsListener(this);
                 view.setTowersListener(this);
                 proxy.setView();
-            System.out.println("set done");
+                System.out.println("set done");
+                startGame();
             //}
         } catch (IOException e) {
             e.printStackTrace();
@@ -202,7 +229,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        startGame();
+
 
         }
 
@@ -213,19 +240,33 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             case "PlanningPhase"-> /*startPlanningPhase(); */
                     {
                         System.out.println("planning");
-                            planningPhaseThread.start();
+                        if(planningPhaseService.getState()== Worker.State.READY)
+                            planningPhaseService.start();
+                        else{
+                            planningPhaseService.restart();
+                        }
+                            //planningPhaseThread.start();
                         System.out.println("planning finished");
                     }
             case "PlayCard"-> {
                 System.out.println("playcard");
                         switchScene(CARDS);
             }
-            case "StartTurn"-> {
+            case "ActionPhase"-> {
+                System.out.println("actionPhase");
+                if(actionPhaseService.getState()==Worker.State.READY)
+                    actionPhaseService.start();
+                else {
+                    actionPhaseService.restart();
+                }
+
+                System.out.println("actionPhase finished");
                 switchScene(MAIN);
                 //startActionPhase();
-                actionPhaseThread.start();
+                //actionPhaseThread.start();
+
             }
-            case "MoveStudent"-> {
+            case "StartTurn"-> {
                 controller.setCurrentPlayer();
                 System.out.println("move a student");
             }
@@ -234,6 +275,39 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             //case "End Turn"->
 
             }
+    }
+
+    public class PlanningPhaseService extends Service<Boolean>{
+
+        @Override
+        protected Task<Boolean> createTask() {
+            System.out.println("planningPhaseService started");
+            return new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    Boolean result= proxy.startPlanningPhase();
+                    System.out.println("called startPlanningPhase: "+result);
+                    return result;
+                }
+            };
+        }
+
+    }
+
+    public class ActionPhaseService extends Service<Boolean>{
+
+        @Override
+        protected Task<Boolean> createTask() {
+            System.out.println("actionPhaseService started");
+            return new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    Boolean result= proxy.startActionPhase();
+                    System.out.println("called startActionPhase: "+result);
+                    return result;
+                }
+            };
+        }
     }
 
 
