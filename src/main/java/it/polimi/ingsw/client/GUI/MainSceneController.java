@@ -248,7 +248,11 @@ public class MainSceneController implements SceneController {
                     if ((mouseEvent.getSource() == islandsMap.get(i))) {
                         islandRef = i;
                     }
-                    motherMov = islandRef - view.getMotherPosition();
+                    if(view.getMotherPosition()<islandRef){
+                        motherMov = islandRef - view.getMotherPosition();
+                    } else {
+                        motherMov= view.getMotherPosition() - islandRef;
+                    }
                 }
                 try {
                     System.out.println("calling moveMotherNature");

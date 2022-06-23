@@ -30,9 +30,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private Socket socket;
     protected Stage primaryStage;
 
-    private Thread planningPhaseThread;
-    private Thread actionPhaseThread;
-
     private Service<Boolean> planningPhaseService;
     private Service<Boolean> actionPhaseService;
 
@@ -51,6 +48,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private int initialMotherPosition;
     private ArrayList<int[]> initialStudentsIsland;
     private ArrayList<int []> initialStudentsEntrance;
+    private ArrayList<int []> initialStudentsCloud;
     private HashMap<Integer, Integer> initialTowersSchool;
 
     private HashMap<String, Scene> scenesMap; //maps the scene name with the scene itself
@@ -72,13 +70,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             initialStudentsIsland.add(new int[]{0,0,0,0,0});
         }
         initialStudentsEntrance = new ArrayList<>();
+        initialStudentsCloud= new ArrayList<>();
         initialTowersSchool = new HashMap<>();
         for(int i=0; i<4; i++){
             initialStudentsEntrance.add(new int[]{0,0,0,0,0});
             initialTowersSchool.put(i, 8);
+            initialStudentsCloud.add(new int[]{0,0,0,0,0});
         }
-        planningPhaseThread= new PlanningPhaseThread();
-        actionPhaseThread = new ActionPhaseThread();
+
         planningPhaseService= new PlanningPhaseService();
 
         planningPhaseService.setOnSucceeded(workerStateEvent -> {
@@ -237,7 +236,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         System.out.println("started phase handler!");
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN) ;
         switch (phase){
-            case "PlanningPhase"-> /*startPlanningPhase(); */
+            case "PlanningPhase"->
                     {
                         System.out.println("planning");
                         if(planningPhaseService.getState()== Worker.State.READY)
@@ -245,7 +244,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                         else{
                             planningPhaseService.restart();
                         }
-                            //planningPhaseThread.start();
+
                         System.out.println("planning finished");
                     }
             case "PlayCard"-> {
@@ -270,9 +269,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 controller.setCurrentPlayer();
                 System.out.println("move a student");
             }
-            //case "MoveMother"-> controller.setActionAllowed(phase);
-            //case "ChoseCloud"-> controller.setActionAllowed
-            //case "End Turn"->
 
             }
     }
@@ -307,50 +303,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     return result;
                 }
             };
-        }
-    }
-
-
-
-    private class PlanningPhaseThread extends Thread{
-        @Override
-        public void run(){
-            try {
-                if (proxy.startPlanningPhase()) {
-                    constants.setPlanningPhaseStarted(true);
-                }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Platform.runLater(()->{
-                phaseHandler("PlayCard");
-            });
-
-        }
-    }
-
-    private class ActionPhaseThread extends Thread {
-        @Override
-        public void run() {
-            try {
-                if(proxy.startActionPhase()) {
-                    System.out.println("action phase starting");
-                    Platform.runLater(()->{
-                        //isYourTurn = true;
-                        phaseHandler("MoveStudent");
-
-                    });
-                }
-                else
-                    System.out.println("Error");
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
         }
     }
 
@@ -402,7 +354,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public void sendInitialInformation(){
-        //Platform.runLater(()->{
         if (isMainSceneInitialized) {
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setMotherPosition(initialMotherPosition);
@@ -417,6 +368,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 for (int j = 0; j < 5; j++) {
                     controller.setStudentsIsland(i, j, initialStudentsIsland.get(i)[j]);
                 }
+            }
+        }
+        CloudsSceneController controller= (CloudsSceneController) sceneControllersMap.get(CLOUDS);
+        for(int i=0; i< view.getNumberOfPlayers(); i++){
+            for (int j = 0; j < 5; j++) {
+                controller.setStudentsCloud(i, j, initialStudentsCloud.get(i)[j]);
             }
         }
     }
@@ -535,7 +492,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                         students[color]= newStudentsValue;
                     }
 
-                    case 3 -> cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);
+                    case 3 -> {
+                        students= initialStudentsCloud.get(componentRef);
+                        students[color]=newStudentsValue;
+                    }
 
                 }
             }
