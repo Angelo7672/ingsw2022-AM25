@@ -102,7 +102,7 @@ class VirtualViewTest {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-    @Test
+   /* @Test
     @DisplayName("Test save and restore game")
     void saveAndRestore(){
         //controller.startGame();
@@ -110,7 +110,7 @@ class VirtualViewTest {
         //controller.saveGame();
         controller.restoreVirtualView();
         controller.restoreGame();
-    }
+    }*/
 
 
 
