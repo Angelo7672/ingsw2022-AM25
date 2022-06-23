@@ -81,7 +81,7 @@ public class CardsSceneController implements SceneController{
 
             if (result.equalsIgnoreCase("ok")) {
                 gui.constants.setCardPlayed(true);
-                gui.phaseHandler("StartTurn");
+                gui.phaseHandler("ActionPhase");
 
             } else
                 showErrorMessage();

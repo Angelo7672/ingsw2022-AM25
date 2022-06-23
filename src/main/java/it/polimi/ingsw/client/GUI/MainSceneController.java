@@ -243,33 +243,40 @@ public class MainSceneController implements SceneController {
 
             } else if (actionAllowed == 1) {
                 int motherMov = 0;
-
-                if (lastThingClicked.equals("motherNature")) {
-                    for (int i = 0; i < 12; i++) {
-                        if ((mouseEvent.getSource() == islandsMap.get(i))) {
-                            islandRef = i;
-                        }
+                System.out.println("you can move mother nature now");
+                for (int i = 0; i < 12; i++) {
+                    if ((mouseEvent.getSource() == islandsMap.get(i))) {
+                        islandRef = i;
+                    }
+                    if(view.getMotherPosition()<islandRef){
                         motherMov = islandRef - view.getMotherPosition();
+                    } else {
+                        motherMov= view.getMotherPosition() - islandRef;
                     }
-                    try {
-                        String result = proxy.moveMotherNature(motherMov);
-                        if(result.equalsIgnoreCase("ok")){
-                            setActionAllowed(2);
-                        } else {
-
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
+                }
+                try {
+                    System.out.println("calling moveMotherNature");
+                    String result = proxy.moveMotherNature(motherMov);
+                    System.out.println("Result is: "+result);
+                    if(result.equalsIgnoreCase("ok")){
+                        errorLabel.setVisible(false);
+                        setActionAllowed(2);
+                    } else {
+                        errorLabel.setText("Error, move not allowed!");
+                        errorLabel.setVisible(true);
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 } else {
                     errorLabel.setVisible(true);
                     errorLabel.setText("Error, move not allowed!");
                 }
             }
         }
-    }
+
 
     private class Table{
         int x;
@@ -700,7 +707,6 @@ public class MainSceneController implements SceneController {
         } else if(actionAllowed==1){
             actionLabel.setText("Move Mother Nature on a Island! (Max movement is: "+view.getMaxStepsMotherNature()+")");
             actionLabel.setVisible(true);
-            lastThingClicked="motherNature";
         } else if(actionAllowed==2){
             gui.switchScene(GUI.CLOUDS);
         } else if(actionAllowed == -1){
