@@ -217,7 +217,7 @@ public class Game implements GameManager{
      */
     @Override
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{
-        if(!expertMode) roundStrategies.get(0).moveStudent(playerRef, colour, inSchool, islandRef);
+        if(!expertMode) roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
         else
             for(int i = 0; i < 3; i++)
                 if(indexSpecial == extractedSpecials.get(i)) roundStrategies.get(i+1).moveStudent(playerRef, colour, inSchool, islandRef);
@@ -236,7 +236,7 @@ public class Game implements GameManager{
     public boolean moveMotherNature(int queueRef, int desiredMovement) throws NotAllowedException {
         boolean victory = false;
 
-        if(!expertMode) victory = roundStrategies.get(0).moveMotherNature(queueRef, desiredMovement, refSpecial);
+        if(!expertMode) victory = roundStrategies.get(indexSpecial).moveMotherNature(queueRef, desiredMovement, refSpecial);
         else {
             for (int i = 0; i < 3; i++)
                 if (indexSpecial == extractedSpecials.get(i)) victory = roundStrategies.get(i + 1).moveMotherNature(queueRef, desiredMovement, refSpecial);    //can throw NotAllowedException
