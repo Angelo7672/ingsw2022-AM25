@@ -16,7 +16,7 @@ public class SpecialDeck {
 
     public void addSpecial(CreateSpecial createSpecial, Entrance server){ specialsOfThisMatch.add(createSpecial.makeSpecial(server)); }
 
-    public void effect(int specialRef, int playerRef, VirtualClient user){ specialsOfThisMatch.get(specialRef).effect(playerRef,user); }
+    public boolean effect(int specialRef, int playerRef, VirtualClient user){ return specialsOfThisMatch.get(specialRef).effect(playerRef,user); }
 
     public void setSpecialMsg(int indexSpecial, Message msg){ specialsOfThisMatch.get(indexSpecial).setSpecialMessage(msg); }
 

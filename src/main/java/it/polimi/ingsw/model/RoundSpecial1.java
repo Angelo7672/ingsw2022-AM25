@@ -42,6 +42,8 @@ public class RoundSpecial1 extends RoundStrategy{
     private int getStudents(int color){ return special.getStudent(color); }
 
     @Override
+    public void setCost(int cost){ special.setCost(cost); }
+    @Override
     public int getCost(){ return special.getCost(); }
     @Override
     public void increaseCost(){ special.increaseCost(); }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.GUI;
 
-import com.sun.tools.javac.Main;
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.PlayerConstants;
 import it.polimi.ingsw.client.Proxy_c;
@@ -9,19 +8,19 @@ import it.polimi.ingsw.listeners.*;
 import it.polimi.ingsw.server.answer.SavedGameAnswer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static com.sun.javafx.application.PlatformImpl.runAndWait;
 
 public class GUI extends Application implements TowersListener, ProfessorsListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener {
@@ -31,8 +30,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private Socket socket;
     protected Stage primaryStage;
 
-    private Thread planningPhaseThread;
-    private Thread actionPhaseThread;
+    private Service<Boolean> planningPhaseService;
+    private Service<Boolean> actionPhaseService;
 
     protected boolean active;
     protected boolean isMainSceneInitialized;
@@ -49,6 +48,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private int initialMotherPosition;
     private ArrayList<int[]> initialStudentsIsland;
     private ArrayList<int []> initialStudentsEntrance;
+    private ArrayList<int []> initialStudentsCloud;
     private HashMap<Integer, Integer> initialTowersSchool;
 
     private HashMap<String, Scene> scenesMap; //maps the scene name with the scene itself
@@ -70,13 +70,37 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             initialStudentsIsland.add(new int[]{0,0,0,0,0});
         }
         initialStudentsEntrance = new ArrayList<>();
+        initialStudentsCloud= new ArrayList<>();
         initialTowersSchool = new HashMap<>();
         for(int i=0; i<4; i++){
             initialStudentsEntrance.add(new int[]{0,0,0,0,0});
             initialTowersSchool.put(i, 8);
+            initialStudentsCloud.add(new int[]{0,0,0,0,0});
         }
-        planningPhaseThread= new PlanningPhaseThread();
-        actionPhaseThread = new ActionPhaseThread();
+
+        planningPhaseService= new PlanningPhaseService();
+
+        planningPhaseService.setOnSucceeded(workerStateEvent -> {
+            System.out.println("Task succeded!");
+            Boolean result = planningPhaseService.getValue();
+            System.out.println(result);
+            if(result){
+                System.out.println("Calling phase handler PLayCard");
+                phaseHandler("PlayCard");
+            }
+        });
+
+        actionPhaseService= new ActionPhaseService();
+
+        actionPhaseService.setOnSucceeded(workerStateEvent -> {
+            System.out.println("Task succeded!");
+            Boolean result = actionPhaseService.getValue();
+            System.out.println("Result is: "+result);
+            if(result){
+                System.out.println("Calling phase handler startTurn");
+                phaseHandler("StartTurn");
+            }
+        });
     }
 
     @Override
@@ -150,6 +174,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public void startGame(){
+        System.out.println("startGame");
         //Platform.runLater(()-> {
             //switchScene(WAITING);
             if (!isViewSet) {
@@ -193,7 +218,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 view.setStudentsListener(this);
                 view.setTowersListener(this);
                 proxy.setView();
-            System.out.println("set done");
+                System.out.println("set done");
+                startGame();
             //}
         } catch (IOException e) {
             e.printStackTrace();
@@ -202,7 +228,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        startGame();
+
 
         }
 
@@ -210,73 +236,73 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         System.out.println("started phase handler!");
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN) ;
         switch (phase){
-            case "PlanningPhase"-> /*startPlanningPhase(); */
+            case "PlanningPhase"->
                     {
                         System.out.println("planning");
-                            planningPhaseThread.start();
+                        if(planningPhaseService.getState()== Worker.State.READY)
+                            planningPhaseService.start();
+                        else{
+                            planningPhaseService.restart();
+                        }
+
                         System.out.println("planning finished");
                     }
             case "PlayCard"-> {
                 System.out.println("playcard");
                         switchScene(CARDS);
             }
-            case "StartTurn"-> {
+            case "ActionPhase"-> {
+                System.out.println("actionPhase");
+                if(actionPhaseService.getState()==Worker.State.READY)
+                    actionPhaseService.start();
+                else {
+                    actionPhaseService.restart();
+                }
+
+                System.out.println("actionPhase finished");
                 switchScene(MAIN);
                 //startActionPhase();
-                actionPhaseThread.start();
+                //actionPhaseThread.start();
+
             }
-            case "MoveStudent"-> {
+            case "StartTurn"-> {
                 controller.setCurrentPlayer();
                 System.out.println("move a student");
             }
-            //case "MoveMother"-> controller.setActionAllowed(phase);
-            //case "ChoseCloud"-> controller.setActionAllowed
-            //case "End Turn"->
 
             }
     }
 
+    public class PlanningPhaseService extends Service<Boolean>{
 
-
-    private class PlanningPhaseThread extends Thread{
         @Override
-        public void run(){
-            try {
-                if (proxy.startPlanningPhase()) {
-                    constants.setPlanningPhaseStarted(true);
+        protected Task<Boolean> createTask() {
+            System.out.println("planningPhaseService started");
+            return new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    Boolean result= proxy.startPlanningPhase();
+                    System.out.println("called startPlanningPhase: "+result);
+                    return result;
                 }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Platform.runLater(()->{
-                phaseHandler("PlayCard");
-            });
-
+            };
         }
+
     }
 
-    private class ActionPhaseThread extends Thread {
+    public class ActionPhaseService extends Service<Boolean>{
+
         @Override
-        public void run() {
-            try {
-                if(proxy.startActionPhase()) {
-                    System.out.println("action phase starting");
-                    Platform.runLater(()->{
-                        //isYourTurn = true;
-                        phaseHandler("MoveStudent");
-
-                    });
+        protected Task<Boolean> createTask() {
+            System.out.println("actionPhaseService started");
+            return new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    Boolean result= proxy.startActionPhase();
+                    System.out.println("called startActionPhase: "+result);
+                    return result;
                 }
-                else
-                    System.out.println("Error");
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
+            };
         }
     }
 
@@ -328,7 +354,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public void sendInitialInformation(){
-        //Platform.runLater(()->{
         if (isMainSceneInitialized) {
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setMotherPosition(initialMotherPosition);
@@ -343,6 +368,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 for (int j = 0; j < 5; j++) {
                     controller.setStudentsIsland(i, j, initialStudentsIsland.get(i)[j]);
                 }
+            }
+        }
+        CloudsSceneController controller= (CloudsSceneController) sceneControllersMap.get(CLOUDS);
+        for(int i=0; i< view.getNumberOfPlayers(); i++){
+            for (int j = 0; j < 5; j++) {
+                controller.setStudentsCloud(i, j, initialStudentsCloud.get(i)[j]);
             }
         }
     }
@@ -461,7 +492,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                         students[color]= newStudentsValue;
                     }
 
-                    case 3 -> cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);
+                    case 3 -> {
+                        students= initialStudentsCloud.get(componentRef);
+                        students[color]=newStudentsValue;
+                    }
 
                 }
             }

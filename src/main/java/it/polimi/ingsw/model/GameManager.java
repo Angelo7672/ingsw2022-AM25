@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This interface is used to interface Game to Controller
+ */
 public interface GameManager {
     void initializeGame();
     ArrayList<Integer> getExtractedSpecials();
@@ -19,8 +22,6 @@ public interface GameManager {
 
     //Action Phase
     void inOrderForActionPhase();
-
-
     boolean useSpecialLite(int indexSpecial, int playerRef);
     boolean useSpecialSimple(int indexSpecial, int playerRef, int ref);
     boolean useSpecialMedium(int indexSpecial, int playerRef, int ref, int color);
@@ -56,4 +57,7 @@ public interface GameManager {
     void restoreMotherPose(int islandRef);
     void bagRestore(List<Integer> bag);
     void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature);
+    void specialRestore(int specialIndex, int cost);
+    void specialStudentRestore(int[] students);
+    void noEntryCardsRestore(int numCards);
 }

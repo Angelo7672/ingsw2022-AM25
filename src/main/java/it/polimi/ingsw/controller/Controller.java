@@ -6,30 +6,25 @@ import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 import it.polimi.ingsw.server.ControllerServer;
 
-import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Controller implements ServerController{
     private int currentUser;
-    private ControllerServer server;
-    private VirtualView virtualView;
+    private final ControllerServer server;
+    private final VirtualView virtualView;
     private GameManager gameManager;
     private RoundController roundController;
     private boolean jumpPhaseForRestore;
-    private int numberOfPlayers;
-    private boolean expertMode;
+    private final int numberOfPlayers;
+    private final boolean expertMode;
     private String winner;
-    private String fileName;
 
-    public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server){
+    public Controller(int numberOfPlayers, boolean isExpert, ControllerServer server, String fileName){
         this.expertMode = isExpert;
         this.numberOfPlayers = numberOfPlayers;
         this.jumpPhaseForRestore = false;
         this.server = server;
-        this.fileName = "saveGame.bin";
         this.virtualView = new VirtualView(numberOfPlayers, isExpert, server, this, fileName);
         this.winner = "NONE";
     }
@@ -149,16 +144,14 @@ public class Controller implements ServerController{
 
     @Override
     public void resumeTurn(int phase){
-        synchronized(roundController) {
-            if(currentUser + 1 >= numberOfPlayers) virtualView.setCurrentUser(0);   //check if the last one player of queue played
-            else virtualView.setCurrentUser(currentUser+1);
+        if(currentUser + 1 >= numberOfPlayers) virtualView.setCurrentUser(0);   //check if the last one player of queue played
+        else virtualView.setCurrentUser(currentUser+1);
 
-            if(phase == 1 && currentUser + 1 == numberOfPlayers) virtualView.setPhase(1); //if it's planning phase write at the end
-            else if(phase == 0 && currentUser + 1 == numberOfPlayers) virtualView.setPhase(0);  //if action phase is over, set planning phase
-            else if(phase == 0 && currentUser +1 != numberOfPlayers) virtualView.setPhase(1);   //if action phase isn't over, set action phase
+        if(phase == 1 && currentUser + 1 == numberOfPlayers) virtualView.setPhase(1); //if it's planning phase write at the end
+        else if(phase == 0 && currentUser + 1 == numberOfPlayers) virtualView.setPhase(0);  //if action phase is over, set planning phase
+        else if(phase == 0 && currentUser +1 != numberOfPlayers) virtualView.setPhase(1);   //if action phase isn't over, set action phase
 
-            roundController.notify();
-        }
+        synchronized (roundController){ roundController.notify(); }
     }
 
     public void setEnd(boolean end){ roundController.setEnd(end); }
@@ -199,6 +192,9 @@ public class Controller implements ServerController{
     public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
         gameManager.queueRestore(playerRef,valueCard,maxMoveMotherNature);
     }
+    public void specialRestore(int specialIndex, int cost){ gameManager.specialRestore(specialIndex, cost); }
+    public void specialStudentRestore(int[] students){ gameManager.specialStudentRestore(students); }
+    public void noEntryCardsRestore(int numCards){ gameManager.noEntryCardsRestore(numCards); }
 
     @Override
     public boolean isExpertMode() { return expertMode; }
