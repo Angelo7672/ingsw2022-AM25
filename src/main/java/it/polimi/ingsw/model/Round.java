@@ -12,6 +12,8 @@ public class Round extends RoundStrategy{
     }
     @Override
     public void increaseCost(){}
+    @Override
+    public void setCost(int cost){}
 
     @Override
     public String getName() {

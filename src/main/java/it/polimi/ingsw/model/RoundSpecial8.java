@@ -49,6 +49,8 @@ public class RoundSpecial8 extends RoundStrategy{
     }
 
     @Override
+    public void setCost(int cost){ special.setCost(cost); }
+    @Override
     public int getCost(){
         return special.getCost();
     }

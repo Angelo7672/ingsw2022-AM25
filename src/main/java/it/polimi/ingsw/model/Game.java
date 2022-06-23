@@ -21,6 +21,7 @@ public class Game implements GameManager{
     private int indexSpecial;
     private int refSpecial;
     protected SpecialListener specialListener;
+    private final int numberOfPlayer;
     private final boolean expertMode;
     private final ArrayList<Integer> extractedSpecials;
 
@@ -30,6 +31,7 @@ public class Game implements GameManager{
      * @param numberOfPlayer in this match;
      */
     public Game(Boolean expertMode, int numberOfPlayer){
+        this.numberOfPlayer = numberOfPlayer;
         this.expertMode = expertMode;
         this.extractedSpecials = new ArrayList<>();
         this.roundStrategies = new ArrayList<>();
@@ -45,6 +47,36 @@ public class Game implements GameManager{
 
         Round round = new Round(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         roundStrategies.add(round); //normal turn without expert
+
+    }
+    private Assistant stringToAssistant(String string){
+        if(string.equalsIgnoreCase("LION")) return Assistant.LION;
+        else if(string.equalsIgnoreCase("GOOSE")) return Assistant.GOOSE;
+        else if(string.equalsIgnoreCase("CAT")) return Assistant.CAT;
+        else if(string.equalsIgnoreCase("EAGLE")) return Assistant.EAGLE;
+        else if(string.equalsIgnoreCase("FOX")) return Assistant.FOX;
+        else if(string.equalsIgnoreCase("LIZARD")) return Assistant.LIZARD;
+        else if(string.equalsIgnoreCase("OCTOPUS")) return Assistant.OCTOPUS;
+        else if(string.equalsIgnoreCase("DOG")) return Assistant.DOG;
+        else if(string.equalsIgnoreCase("ELEPHANT")) return Assistant.ELEPHANT;
+        else if(string.equalsIgnoreCase("TURTLE")) return Assistant.TURTLE;
+        return Assistant.NONE;
+    }
+    private Team stringToTeam(String string){
+        if(string.equalsIgnoreCase("WHITE")) return Team.WHITE;
+        else if(string.equalsIgnoreCase("BLACK")) return Team.BLACK;
+        else if(string.equalsIgnoreCase("GREY")) return Team.GREY;
+        return Team.NONE;
+    }
+
+    /**
+     * Create a new game from start.
+     */
+    @Override
+    public void initializeGame(){
+        bag.bagInitialize();
+        playerManager.initializeSchool();
+        islandsManager.islandsInitialize();
 
         if(expertMode) {
             RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
@@ -76,37 +108,7 @@ public class Game implements GameManager{
             this.extractedSpecials.add(4);
             this.extractedSpecials.add(7);
             this.extractedSpecials.add(11);
-        }
-    }
-    private Assistant stringToAssistant(String string){
-        if(string.equalsIgnoreCase("LION")) return Assistant.LION;
-        else if(string.equalsIgnoreCase("GOOSE")) return Assistant.GOOSE;
-        else if(string.equalsIgnoreCase("CAT")) return Assistant.CAT;
-        else if(string.equalsIgnoreCase("EAGLE")) return Assistant.EAGLE;
-        else if(string.equalsIgnoreCase("FOX")) return Assistant.FOX;
-        else if(string.equalsIgnoreCase("LIZARD")) return Assistant.LIZARD;
-        else if(string.equalsIgnoreCase("OCTOPUS")) return Assistant.OCTOPUS;
-        else if(string.equalsIgnoreCase("DOG")) return Assistant.DOG;
-        else if(string.equalsIgnoreCase("ELEPHANT")) return Assistant.ELEPHANT;
-        else if(string.equalsIgnoreCase("TURTLE")) return Assistant.TURTLE;
-        return Assistant.NONE;
-    }
-    private Team stringToTeam(String string){
-        if(string.equalsIgnoreCase("WHITE")) return Team.WHITE;
-        else if(string.equalsIgnoreCase("BLACK")) return Team.BLACK;
-        else if(string.equalsIgnoreCase("GREY")) return Team.GREY;
-        return Team.NONE;
-    }
 
-    /**
-     * Create a new game from start.
-     */
-    @Override
-    public void initializeGame(){
-        bag.bagInitialize();
-        playerManager.initializeSchool();
-        islandsManager.islandsInitialize();
-        if(expertMode) {
             specialListener.notifySpecialList(extractedSpecials, getSpecialCost());
             for (int i = 1; i < 4; i++)
                 roundStrategies.get(i).initializeSpecial();
@@ -174,6 +176,27 @@ public class Game implements GameManager{
     public void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature){
         queueManager.queueRestore(playerRef,valueCard,maxMoveMotherNature);
     }
+
+    @Override
+    public void specialRestore(int specialIndex, int cost){
+        RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
+
+        roundStrategies.add(roundStrategyFactor.getRoundStrategy(specialIndex));
+        extractedSpecials.add(specialIndex);
+        for(Integer i:extractedSpecials)
+            if(i == specialIndex) roundStrategies.get(i+1).setCost(cost);
+
+        specialListener.notifySpecialList(extractedSpecials, getSpecialCost());
+    }
+    @Override
+    public void specialStudentRestore(int[] students){
+
+    }
+    @Override
+    public void noEntryCardsRestore(int numCards){
+
+    }
+
 
     //Planning Phase
 

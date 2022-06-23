@@ -61,8 +61,8 @@ public class VirtualView
             objectOut.writeObject(islands);
             objectOut.writeObject(clouds);
             objectOut.writeObject(hands);
-            //objectOut.writeObject(specials);
             objectOut.writeObject(bag);
+            objectOut.writeObject(specialList);
 
             objectOut.close();
             outputFile.close();
@@ -108,6 +108,7 @@ public class VirtualView
         ArrayList<Cloud> cloudsTmp;
         ArrayList<Hand> handsTmp;
         ArrayList<Integer> bagTmp;
+        ArrayList<Special> specialsListTmp;
 
         try{
             ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
@@ -120,6 +121,7 @@ public class VirtualView
             cloudsTmp = (ArrayList<Cloud>) inputFile.readObject();
             handsTmp = (ArrayList<Hand>) inputFile.readObject();
             bagTmp = (ArrayList<Integer>) inputFile.readObject();
+            specialsListTmp = (ArrayList<Special>) inputFile.readObject();
 
             inputFile.close();
 
@@ -155,7 +157,7 @@ public class VirtualView
                 int inhibited = islandsTmp.get(i).getIsInhibited();
                 controller.islandRestore(i,students,towerValue,towerTeam,inhibited);
             }
-            //CloudsRestore
+            //Clouds Restore
             for(int i = 0; i < numberOfPlayers; i++){
                 int[] students = cloudsTmp.get(i).getStudents();
                 controller.cloudRestore(i,students);
@@ -171,6 +173,8 @@ public class VirtualView
                 server.lastCardPlayedFromAPlayer(i, getLastPlayedCard(i));
             //Bag Restore
             controller.bagRestore(bagTmp);
+            //Special Restore
+
 
         } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace();
@@ -238,6 +242,12 @@ public class VirtualView
 
     public void setCurrentUser(int currentUser){ turnInfo.setCurrentUser(currentUser); }
     public void setPhase(int phase){ turnInfo.setPhase(phase); }
+
+    private int findSpecial(int indexSpecial){
+        for (int i = 0; i < 3; i++)
+            if(specialList.get(i).getIndexSpecial() == indexSpecial) return i;
+        return -1;
+    }
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
@@ -326,30 +336,39 @@ public class VirtualView
             server.sendMaxMovementMotherNature(
                     queue.get(queueRef).getPlayerRef(), maxMove
             );
-            System.out.println("max move player"+queue.get(queueRef).getPlayerRef()+" "+maxMove);
         }
     }
     @Override
     public void notifySpecial(int specialRef, int playerRef) {  //notify use of a special by a player
         server.sendUsedSpecial(playerRef, specialRef);
-        for(Special special:specialList)
-            if(special.getIndexSpecial() == specialRef)
-                special.incSpecialCost();
     }
     @Override
     public void notifySpecialList(ArrayList<Integer> specialList, ArrayList<Integer> cost) {
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 3; i++) {
             server.setSpecial(
                     specialList.get(i),
                     cost.get(i)
             );
+            this.specialList.add(new Special(specialList.get(i),
+                cost.get(i)
+            ));
+        }
     }
     @Override
-    public void notifyIncreasedCost(int specialRef, int newCost) { server.setSpecial(specialRef, newCost); }
+    public void notifyIncreasedCost(int specialRef, int newCost) {
+        server.setSpecial(specialRef, newCost);
+        specialList.get(findSpecial(specialRef)).incSpecialCost();
+    }
     @Override
-    public void notifyNoEntry(int cards) { server.sendInfoSpecial5(cards); }
+    public void notifyNoEntry(int cards) {
+        server.sendInfoSpecial5(cards);
+        specialList.get(findSpecial(5)).setNoEntryCards(cards);
+    }
     @Override
-    public void specialStudentsNotify(int specialIndex, int color, int value) { server.sendInfoSpecial1or7or11(specialIndex, color, value); }
+    public void specialStudentsNotify(int specialIndex, int color, int value) {
+        server.sendInfoSpecial1or7or11(specialIndex, color, value);
+        specialList.get(findSpecial(specialIndex)).setColorForSpecial1or7or11(color,value);
+    }
 
     private class TurnInfo implements Serializable{
         private int currentUser;
@@ -366,15 +385,23 @@ public class VirtualView
     private class Special implements Serializable{
         private final int indexSpecial;
         private int cost;
+        private int[] colorForSpecial1or7or11;
+        private int noEntryCards;
 
         public Special(int indexSpecial, int cost) {
             this.indexSpecial = indexSpecial;
             this.cost = cost;
+            this.colorForSpecial1or7or11 = new int[]{0,0,0,0,0};
+            this.noEntryCards = 4;
         }
 
         public void incSpecialCost(){ cost++; }
         public int getIndexSpecial() { return indexSpecial; }
         public int getCost() { return cost; }
+        public void setColorForSpecial1or7or11(int color, int value){ colorForSpecial1or7or11[color] = value; }
+        public int[] getColorForSpecial1or7or11() { return colorForSpecial1or7or11; }
+        public void setNoEntryCards(int numCards){ noEntryCards = numCards; }
+        public int getNoEntryCards() { return noEntryCards; }
     }
     //private class SchoolBoard keeps the state of each player's school board
     private class SchoolBoard implements Serializable{

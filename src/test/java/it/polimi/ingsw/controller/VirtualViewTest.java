@@ -76,14 +76,14 @@ class VirtualViewTest {
             @Override
             public void sendInfoSpecial5(int cards) {}
         };
-        controller = new Controller(2, true, controllerServer, fileName);
+        controller = new Controller(2, false, controllerServer, fileName);
         //virtualView = new VirtualView(2, true, controllerServer, controller, fileName);
         controller.clearFile();
         controller.addNewPlayer("Angelo","WIZARD");
         controller.addNewPlayer("Ginevra","WITCH");
         controller.createGame();
         controller.initializeGame();
-        controller1 = new Controller(2, true, controllerServer, fileName);
+        controller1 = new Controller(2, false, controllerServer, fileName);
 
         try {
             outputFile = new FileOutputStream(fileName);

@@ -70,7 +70,7 @@ class ControllerTest {
             @Override
             public void sendInfoSpecial5(int cards) {}
         };
-        controller = new Controller(2, true , controllerServer, "saveGameTest.bin");
+        controller = new Controller(2, false , controllerServer, "saveGameTest.bin");
         controller.addNewPlayer("Angelo", "WIZARD");
         controller.addNewPlayer("Ginevra","WITCH");
         controller.createGame();

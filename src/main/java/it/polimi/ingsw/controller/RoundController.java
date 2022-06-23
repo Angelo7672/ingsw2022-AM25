@@ -4,13 +4,13 @@ import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.server.ControllerServer;
 
 public class RoundController extends Thread{
-    private ControllerServer server;
-    private GameManager gameManager;
-    private int numberOfPlayers;
+    private final ControllerServer server;
+    private final GameManager gameManager;
+    private final int numberOfPlayers;
     private boolean end;
     private boolean jumpToActionPhase;
     private boolean restoreGame;
-    private Controller controller;
+    private final Controller controller;
 
     public RoundController(Controller controller,GameManager gameManager,ControllerServer server,int numberOfPlayers, boolean jumpToActionPhase){
         this.server = server;
@@ -26,7 +26,7 @@ public class RoundController extends Thread{
     public void run(){
         while (controller.getWinner().equals("NONE")) {
             if(!jumpToActionPhase) planningPhase(); //jumpToActionPhase is use when restore a game which is in action phase
-            else if(jumpToActionPhase) jumpToActionPhase = false;
+            else jumpToActionPhase = false;
             actionPhase();
             if (end) {
                 System.out.println("RoundController - EndGame");
@@ -58,14 +58,15 @@ public class RoundController extends Thread{
                 } catch (InterruptedException e) { e.printStackTrace(); }
                 controller.saveGame();
             }
-        }else if(restoreGame){
+        }else {
             restoreGame = false;
-            for (controller.getCurrentUser(); controller.getCurrentUser() < numberOfPlayers; controller.incrCurrentUser()){
+            while(controller.getCurrentUser() < numberOfPlayers){
                 server.unlockActionPhase(gameManager.readQueue(controller.getCurrentUser()));
                 server.startActionPhase(gameManager.readQueue(controller.getCurrentUser()));
                 try { this.wait();
                 } catch (InterruptedException e) { e.printStackTrace(); }
                 controller.saveGame();
+                controller.incrCurrentUser();
             }
         }
     }
