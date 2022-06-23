@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class RoundSpecial7 extends RoundStrategy{
     private Special7 special;
-    private SpecialStudentsListener specialStudentsListener;
+    protected SpecialStudentsListener specialStudentsListener;
 
     public RoundSpecial7(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);

@@ -3,8 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.listeners.SpecialStudentsListener;
 
 public class RoundSpecial1 extends RoundStrategy{
-    Special1 special;
-    private SpecialStudentsListener specialStudentsListener;
+    private Special1 special;
+    protected SpecialStudentsListener specialStudentsListener;
     
     public RoundSpecial1(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);

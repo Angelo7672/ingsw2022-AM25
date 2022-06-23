@@ -473,7 +473,10 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
     }
 
     private void moveStudents() {
-        printable.cli();
+        if(!constants.isMovingStudent()) {
+            constants.setMovingStudent(true);
+            printable.cli();
+        }
         String accepted;
         String color=null;
         String where=null;

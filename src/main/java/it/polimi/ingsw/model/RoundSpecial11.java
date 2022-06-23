@@ -6,8 +6,8 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 import java.util.ArrayList;
 
 public class RoundSpecial11 extends RoundStrategy{
-    Special11 special;
-    private SpecialStudentsListener specialStudentsListener;
+    private Special11 special;
+    protected SpecialStudentsListener specialStudentsListener;
 
     public RoundSpecial11(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);

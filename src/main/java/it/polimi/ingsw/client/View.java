@@ -48,6 +48,7 @@ public class View {
     public void initializedView(int numberOfPlayers, boolean expertMode){
         this.numberOfPlayers = numberOfPlayers;
         this.expertMode = expertMode;
+
         initializedView = true;
         for(int i=0; i<numberOfPlayers; i++) {
             hands.add(new Hand());
@@ -144,7 +145,8 @@ public class View {
     }
     public void setCoins(int playerRef, int coins){
         hands.get(playerRef).setCoins(coins);
-        this.coinsListener.notifyNewCoinsValue(playerRef, hands.get(playerRef).getCoins());}
+        this.coinsListener.notifyNewCoinsValue(playerRef, hands.get(playerRef).getCoins());
+    }
 
     public String getNickname(int playerRef){ return schoolBoards.get(playerRef).getNickname();}
     public String getCharacter(int playerRef){return schoolBoards.get(playerRef).getCharacter();}

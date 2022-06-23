@@ -16,22 +16,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RoundStrategyTest {
 
-    Game game = new Game(true, 3);
     private int numberOfPlayer = 3;
-    String[] playersInfo = {"Giorgio", "SAMURAI", "Marco", "KING", "Dino", "WIZARD"};
+    private String[] playersInfo = {"Giorgio", "SAMURAI", "Marco", "KING", "Dino", "WIZARD"};
     private IslandsManager islandsManager = new IslandsManager();
     private Bag bag = new Bag();
     private List<Integer>  bagRestore;
     private CloudsManager cloudsManager;
     private PlayerManager playerManager;
     private QueueManager queueManager;
-    RoundStrategy round;
+    private RoundStrategy round;
     private ArrayList<Integer> color1 = new ArrayList<>();
     private ArrayList<Integer> color2 = new ArrayList<>();
     private ArrayList<Assistant> alreadyPlayedAssistant = new ArrayList<>();
+    private ArrayList<Integer> schoolTowers;
 
     @BeforeEach
     void initialization(){
+        schoolTowers=new ArrayList<>();
+        for (int i = 0; i < numberOfPlayer; i++) schoolTowers.add(6);
         islandsManager.islandListener = new IslandListener() {
             @Override
             public void notifyIslandChange(int islandToDelete) {}
@@ -79,7 +81,9 @@ public class RoundStrategyTest {
         playerManager = new PlayerManager(numberOfPlayer, bag);
         playerManager.towersListener = new TowersListener() {
             @Override
-            public void notifyTowersChange(int place, int componentRef, int towersNumber) {}
+            public void notifyTowersChange(int place, int componentRef, int towersNumber) {
+                if(place==0) schoolTowers.set(componentRef, towersNumber);
+            }
             @Override
             public void notifyTowerColor(int islandRef, int newColor) {}
         };
@@ -176,22 +180,21 @@ public class RoundStrategyTest {
         assertEquals(1, playerManager.getStudentTable(1, 0));
     }
 
-    /*@Test
+    @Test
     @DisplayName("Test if conquestIsland change correctly the island's owner")
     void conquestIslandTest() throws NotAllowedException {
-
         fastSetConqueror(1,0,0);
         //TeamWeaker = NOONE TeamStronger = BLACK
         round.conquestIsland(0,-1,1);
         assertEquals(Team.BLACK, islandsManager.getTowerTeam(0));
-        assertEquals(5,playerManager.getTowers(1));
+        assertEquals(5,schoolTowers.get(1));
         //teamWeaker= BLACK teamStronger = WHITE
         fastSetConqueror(0,0,1);
         fastSetConqueror(0,0,1);
         round.conquestIsland(0,-1,0);
         assertEquals(WHITE, islandsManager.getTowerTeam(0));
-        assertEquals(6,playerManager.getTowers(1));
-        assertEquals(5,playerManager.getTowers(0));
+        assertEquals(6,schoolTowers.get(1));
+        assertEquals(5,schoolTowers.get(0));
         assertEquals(1, islandsManager.getTowerValue(0));
 
         //adjacent islands getting unify
@@ -202,8 +205,7 @@ public class RoundStrategyTest {
         assertEquals(Team.NONE,islandsManager.getTowerTeam(1));
         assertEquals(WHITE,islandsManager.getTowerTeam(0));
         assertEquals(2,islandsManager.getTowerValue(0));
-
-    }*/
+    }
 
     @Test
     @DisplayName("test if highInfluenceTeam return the right team")
@@ -242,20 +244,7 @@ public class RoundStrategyTest {
         assertEquals(false, victory);
     }
 
-    /*@Test
-    @DisplayName("Test if RoundSpecial1's effect is correct")
-    void effectRoundSpecial1Test() {
-        RoundStrategy round = new RoundSpecial1(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-        round.initializeSpecial();
-        int studentsNumber = islandsManager.getStudent(0, 0);
-        boolean roundEffect = round.effect(0, 0);
-        if (roundEffect) {
-            assertEquals(studentsNumber+1, islandsManager.getStudent(0, 0));
-        } else {
-            assertEquals(studentsNumber, islandsManager.getStudent(0, 0));
-        }
 
-    }*/
 
     @Test
     @DisplayName("Test if RoundSpecial2's moveStudent is correct")
@@ -306,19 +295,7 @@ public class RoundStrategyTest {
         assertEquals(motherPos, islandsManager.getMotherPos());
     }
 
-    /*@Test
-    @DisplayName("Test if roundSpecial5's effect is correct")
-    void effectRoundSpecial5Test() throws NotAllowedException {
-        RoundStrategy round = new RoundSpecial5(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
 
-        queueManager.queueForPlanificationPhase();
-        queueManager.playCard(0, 0, LION, alreadyPlayedAssistant);
-        queueManager.playCard(1, 1, GOOSE, alreadyPlayedAssistant);
-        queueManager.playCard(2, 2, CAT, alreadyPlayedAssistant);
-        round.moveMotherNature(0, 1, -1);
-        round.effect(0);
-        assertEquals(1, islandsManager.getInhibited(0));
-    }*/
 
     @Test
     @DisplayName("Test if RoundSpecial6's highInfluenceTeam is correct")
@@ -341,35 +318,6 @@ public class RoundStrategyTest {
             assertEquals(BLACK, islandsManager.getTowerTeam(0));
         }
     }
-
-    /*@Test
-    @DisplayName("Test if RoundSpecial7's effect is correct")
-    void effectRoundSpecial7Test() {
-        RoundStrategy round = new RoundSpecial7(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-        color1.add(0);
-        color2.add(1);
-        boolean done = round.effect(0, color1,color2);
-        assertEquals(false, done);
-        playerManager.setStudentEntrance(0,0, 1);
-        int entranceStudent0 = playerManager.getStudentEntrance(0,0);
-        int entranceStudent1 = playerManager.getStudentEntrance(0,1);
-        int cardStudent0 = round.getStudents(0);
-        int cardStudent1 = round.getStudents(1);
-        done = round.effect(0, color1,color2);
-        if(done){
-            assertEquals(cardStudent0+1,round.getStudents(0));
-            assertEquals(cardStudent1-1, round.getStudents(1));
-            assertEquals(entranceStudent0-1,playerManager.getStudentEntrance(0,0));
-            assertEquals(entranceStudent1+1,playerManager.getStudentEntrance(0,1));
-        }
-        else{
-            assertEquals(cardStudent0,round.getStudents(0));
-            assertEquals(cardStudent1, round.getStudents(1));
-            assertEquals(entranceStudent0, playerManager.getStudentEntrance(0,0));
-            assertEquals(entranceStudent1,playerManager.getStudentEntrance(0,1));
-        }
-
-    }*/
 
     @Test
     @DisplayName("Test if RoundSpecial8's highInfluenceTeam is correct")
@@ -398,49 +346,6 @@ public class RoundStrategyTest {
         assertEquals(WHITE, islandsManager.getTowerTeam(0));
 
     }
-
-    /*@Test
-    @DisplayName("Test if RoundSpecial10's effect is correct")
-    void effectRoundSpecial10Test() throws NotAllowedException {
-        RoundStrategy round = new RoundSpecial10(numberOfPlayer, cloudsManager, islandsManager, playerManager,queueManager, bag);
-        color1.add(0);
-        color2.add(1);
-        boolean done = round.effect(0, color1,color2);
-        assertEquals(false, done);
-        playerManager.setStudentEntrance(0,0, 1);
-        playerManager.setStudentTable(0,1, 1);
-        int entranceStudent0 = playerManager.getStudentEntrance(0,0);
-        int entranceStudent1 = playerManager.getStudentEntrance(0,1);
-        int tableStudent0 = playerManager.getStudentTable(0,0);
-        int tableStudent1 = playerManager.getStudentTable(0,1);
-        done = round.effect(0, color1, color2);
-        assertEquals(tableStudent0+1,playerManager.getStudentTable(0,0));
-        assertEquals(tableStudent1-1, playerManager.getStudentTable(0,1));
-        assertEquals(entranceStudent0-1,playerManager.getStudentEntrance(0,0));
-        assertEquals(entranceStudent1+1,playerManager.getStudentEntrance(0,1));
-        assertEquals(true,done);
-    }
-
-    @Test
-    @DisplayName("Test if RoundSpecial11's effect is correct")
-    void effectRoundSpecial11Test() {
-            RoundStrategy round = new RoundSpecial11(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-            color1.add(0);
-            boolean done = false;
-            if (round.getStudents(0) > 0) {
-                int cardStudent1=0;
-                int cardStudent2=0;
-                for(int i=0; i<5; i++) cardStudent1+=round.getStudents(i);
-                done = round.effect(0, color1, color2);
-                assertEquals(true, done);
-                assertEquals(1, playerManager.getStudentTable(0, 0));
-                for(int i=0; i<5; i++) cardStudent2+=round.getStudents(i);
-                assertEquals(cardStudent1, cardStudent2);
-            } else {
-                done = round.effect(0, color1, color2);
-                assertEquals(false, done);
-            }
-    }*/
 
     @Test
     @DisplayName("Test if RoundSpecial12's effect is correct")

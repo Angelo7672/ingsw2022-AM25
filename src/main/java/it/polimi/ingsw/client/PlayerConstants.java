@@ -4,6 +4,7 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
     private boolean planningPhaseStarted;
     private boolean cardPlayed;
     private boolean actionPhaseStarted;
+    private boolean movingStudent;
     private boolean studentMoved;
     private boolean specialUsed;
     private boolean motherMoved;
@@ -16,6 +17,7 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
         this.cardPlayed = false;
         this.actionPhaseStarted = false;
         this.studentMoved = false;
+        this.movingStudent = false;
         this.specialUsed = false;
         this.motherMoved = false;
         this.cloudChosen = false;
@@ -91,6 +93,7 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
     public void resetAll(){
         this.cardPlayed = false;
         this.actionPhaseStarted = false;
+        this.movingStudent = false;
         this.studentMoved = false;
         this.specialUsed = false;
         this.motherMoved = false;
@@ -112,5 +115,13 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
 
     public void setPlanningPhaseStarted(boolean planningPhaseStarted) {
         this.planningPhaseStarted = planningPhaseStarted;
+    }
+
+    public boolean isMovingStudent() {
+        return movingStudent;
+    }
+
+    public void setMovingStudent(boolean movingStudent) {
+        this.movingStudent = movingStudent;
     }
 }

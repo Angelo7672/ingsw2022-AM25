@@ -4,8 +4,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.listeners.NoEntryListener;
 
 public class RoundSpecial5 extends RoundStrategy{
-    Special5 special;
-    NoEntryListener noEntryListener;
+    private Special5 special;
+    protected NoEntryListener noEntryListener;
 
     public RoundSpecial5(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
