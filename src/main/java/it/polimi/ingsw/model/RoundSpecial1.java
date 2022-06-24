@@ -22,6 +22,8 @@ public class RoundSpecial1 extends RoundStrategy{
         }
         special.setup(extraction);
     }
+    @Override
+    public void restoreStudentSpecial(int[] students){ special.specialStudentRestore(students); }
 
     @Override
     public boolean effect(int islandRef, int color){
@@ -47,8 +49,6 @@ public class RoundSpecial1 extends RoundStrategy{
     public int getCost(){ return special.getCost(); }
     @Override
     public void increaseCost(){ special.increaseCost(); }
-    @Override
-    public String getName(){ return special.getName(); }
 
     private class Special1 extends Special {
         private int[] students= {0,0,0,0,0};
@@ -61,6 +61,13 @@ public class RoundSpecial1 extends RoundStrategy{
             for(int i = 0; i < 5; i++){
                 students[i] = color[i];
                 specialStudentsListener.specialStudentsNotify(1, i, students[i]);
+            }
+        }
+
+        public void specialStudentRestore(int[] students){
+            for(int i = 0; i < 5; i++){
+                this.students[i] = students[i];
+                specialStudentsListener.specialStudentsNotify(1, i, this.students[i]);
             }
         }
 

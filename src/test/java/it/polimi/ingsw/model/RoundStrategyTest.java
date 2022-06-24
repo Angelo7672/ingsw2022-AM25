@@ -133,29 +133,29 @@ public class RoundStrategyTest {
     void roundStrategyFactory() {
         RoundStrategyFactory factory = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         RoundStrategy round = factory.getRoundStrategy(1);
-        assertEquals("special1", round.getName());
+        assertTrue(round instanceof RoundSpecial1);
         round = factory.getRoundStrategy(2);
-        assertEquals("special2", round.getName());
+        assertTrue(round instanceof RoundSpecial2);
         round = factory.getRoundStrategy(3);
-        assertEquals("special3", round.getName());
+        assertTrue(round instanceof RoundSpecial3);
         round = factory.getRoundStrategy(4);
-        assertEquals("special4", round.getName());
+        assertTrue(round instanceof RoundSpecial4);
         round = factory.getRoundStrategy(5);
-        assertEquals("special5", round.getName());
+        assertTrue(round instanceof RoundSpecial5);
         round = factory.getRoundStrategy(6);
-        assertEquals("special6", round.getName());
+        assertTrue(round instanceof RoundSpecial6);
         round = factory.getRoundStrategy(7);
-        assertEquals("special7", round.getName());
+        assertTrue(round instanceof RoundSpecial7);
         round = factory.getRoundStrategy(8);
-        assertEquals("special8", round.getName());
+        assertTrue(round instanceof RoundSpecial8);
         round = factory.getRoundStrategy(9);
-        assertEquals("special9", round.getName());
+        assertTrue(round instanceof RoundSpecial9);
         round = factory.getRoundStrategy(10);
-        assertEquals("special10", round.getName());
+        assertTrue(round instanceof RoundSpecial10);
         round = factory.getRoundStrategy(11);
-        assertEquals("special11", round.getName());
+        assertTrue(round instanceof RoundSpecial11);
         round = factory.getRoundStrategy(12);
-        assertEquals("special12", round.getName());
+        assertTrue(round instanceof RoundSpecial12);
 
     }
 
@@ -189,6 +189,8 @@ public class RoundStrategyTest {
         assertEquals(Team.BLACK, islandsManager.getTowerTeam(0));
         assertEquals(5,schoolTowers.get(1));
         //teamWeaker= BLACK teamStronger = WHITE
+        fastSetConqueror(0,0,1);
+        fastSetConqueror(0,0,1);
         fastSetConqueror(0,0,1);
         fastSetConqueror(0,0,1);
         round.conquestIsland(0,-1,0);

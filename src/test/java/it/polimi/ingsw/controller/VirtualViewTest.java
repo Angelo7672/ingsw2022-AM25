@@ -83,7 +83,7 @@ class VirtualViewTest {
         controller.addNewPlayer("Ginevra","WITCH");
         controller.createGame();
         controller.initializeGame();
-        controller1 = new Controller(2, false, controllerServer, fileName);
+        controller1 = new Controller(2, true, controllerServer, fileName);
 
         try {
             outputFile = new FileOutputStream(fileName);

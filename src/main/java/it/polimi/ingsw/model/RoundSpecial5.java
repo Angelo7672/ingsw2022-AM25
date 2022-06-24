@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-
 import it.polimi.ingsw.listeners.NoEntryListener;
 
 public class RoundSpecial5 extends RoundStrategy{
@@ -27,7 +26,16 @@ public class RoundSpecial5 extends RoundStrategy{
     public void setNoEntryListener(NoEntryListener noEntryListener){
         this.noEntryListener = noEntryListener;
     }
-
+    @Override
+    public void noEntryCardsRestore(int numCards){
+        special.restoreNoEntry(numCards);
+        noEntryListener.notifyNoEntry(special.getNoEntry());
+    }
+    @Override
+    public void initializeSpecial(){
+        special.initializeSpecial();
+        noEntryListener.notifyNoEntry(special.getNoEntry());
+    }
     @Override
     public void setCost(int cost){ special.setCost(cost); }
     @Override
@@ -36,12 +44,6 @@ public class RoundSpecial5 extends RoundStrategy{
     }
     @Override
     public void increaseCost(){ special.increaseCost(); }
-    @Override
-    public String getName(){
-        return special.getName();
-    }
-    @Override
-    public int getNoEntry(){ return special.getNoEntry(); } //it's needed for restore
 
     @Override
     public void effect(){
@@ -60,9 +62,9 @@ public class RoundSpecial5 extends RoundStrategy{
 
         public Special5(){
             super(2, "special5");
-            noEntry = 4;
         }
 
+        private void initializeSpecial(){ noEntry = 4; }
         public int getNoEntry(){
             return noEntry;
         }
@@ -72,5 +74,6 @@ public class RoundSpecial5 extends RoundStrategy{
         public void decreaseNoEntry(){
             noEntry-=1;
         }
+        private void restoreNoEntry(int numCards){ noEntry = numCards; }
     }
 }

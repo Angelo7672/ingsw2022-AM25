@@ -26,6 +26,8 @@ public abstract class RoundStrategy {
     public void initializeSpecial(){}
     public void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener){}
     public void setNoEntryListener(NoEntryListener noEntryListener){}
+    public void restoreStudentSpecial(int[] students){}
+    public void noEntryCardsRestore(int numCards){}
 
     protected boolean conquestIsland(int islandRef, int noColor, int playerRef){
         Team teamStronger = highInfluenceTeam(islandRef, noColor, playerRef);
@@ -115,10 +117,7 @@ public abstract class RoundStrategy {
     public boolean effect(int ref, int color){ return false; }
     public boolean effect(int ref, ArrayList<Integer> color1, ArrayList<Integer> color2){ return false; }
 
-    public int getNoEntry(){ return -1; }
-
     abstract public int getCost();
     abstract public void setCost(int cost);
     abstract public void increaseCost();
-    abstract public String getName();
 }

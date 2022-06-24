@@ -58,11 +58,6 @@ public class RoundSpecial8 extends RoundStrategy{
     public void increaseCost(){
         special.increaseCost();
     }
-    @Override
-    public String getName(){
-        return special.getName();
-    }
-
     private class Special8 extends Special {
         public Special8(){
             super(2, "special8");

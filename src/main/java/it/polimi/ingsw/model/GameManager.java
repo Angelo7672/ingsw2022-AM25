@@ -11,6 +11,7 @@ import java.util.List;
  */
 public interface GameManager {
     void initializeGame();
+    void createSpecial();
     ArrayList<Integer> getExtractedSpecials();
     ArrayList<Integer> getSpecialCost();
 
@@ -58,6 +59,6 @@ public interface GameManager {
     void bagRestore(List<Integer> bag);
     void queueRestore(ArrayList<Integer> playerRef, ArrayList<Integer> valueCard, ArrayList<Integer> maxMoveMotherNature);
     void specialRestore(int specialIndex, int cost);
-    void specialStudentRestore(int[] students);
+    void specialStudentRestore(int indexSpecial, int[] students);
     void noEntryCardsRestore(int numCards);
 }
