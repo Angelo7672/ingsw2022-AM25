@@ -33,7 +33,7 @@ public class RoundSpecial11 extends RoundStrategy{
     public boolean effect(int playerRef, int color){
         if(getStudents(color) > 0) {
             try { playerManager.setStudentTable(playerRef, color, 1);
-            }catch (NotAllowedException notAllowedException){ return false; }
+            }catch (NotAllowedException notAllowedException){return false; }
             int extracted = bag.extraction();
             special.effect(color, extracted);   //color is the student I remove, extracted is the which one I add
             specialStudentsListener.specialStudentsNotify(11, color, getStudents(color));

@@ -254,6 +254,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                     System.out.println();
                     System.out.println(ANSI_RED+SPACE+"Error, insert a number"+ANSI_RESET);
                     turn();
+                    return;
                 }
             } while (special == -1);
             if(!proxy.checkSpecial(special)) {
