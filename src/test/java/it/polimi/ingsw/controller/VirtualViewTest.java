@@ -76,7 +76,7 @@ class VirtualViewTest {
             @Override
             public void sendInfoSpecial5(int cards) {}
         };
-        controller = new Controller(2, false, controllerServer, fileName);
+        controller = new Controller(2, true, controllerServer, fileName);
         //virtualView = new VirtualView(2, true, controllerServer, controller, fileName);
         controller.clearFile();
         controller.addNewPlayer("Angelo","WIZARD");
