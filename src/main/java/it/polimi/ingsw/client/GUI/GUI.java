@@ -107,14 +107,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             System.out.println("Service state: RUNNING");
         });
         planningPhaseService.setOnScheduled(workerStateEvent -> {
-            planningPhaseService.setOnSucceeded(workeStateEvent->{
-                System.out.println("on succeded planning phase service");
-                Boolean result = planningPhaseService.getValue();
-                System.out.println(result);
-                if(result){
-                    phaseHandler("PlayCard");
-                    }
-            });
+            System.out.println("Service state: SCHEDULED");
         });
 
         actionPhaseService= new ActionPhaseService();
@@ -158,6 +151,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         initializeMainService= new InitializeMainService();
         initializeMainService.setOnSucceeded(workerStateEvent -> {
+            System.out.println("initializemain service on succeded");
             Boolean ok= initializeMainService.getValue();
             if(ok){
                 proxy.setView();
@@ -335,11 +329,18 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                         //else{
                         planningPhaseService.start();
                         //}
-                        System.out.println("planning finished");
+                        //startPlanningPhase();
+                        //System.out.println("planning finished");
+
+                        //System.out.println("service progress: "+planningPhaseService.getWorkDone());
+
+
                     }
             case "PlayCard"-> {
                 System.out.println("playcard");
                 switchScene(CARDS);
+
+
             }
             case "ActionPhase"-> {
                 System.out.println("actionPhase");
@@ -375,6 +376,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     System.out.println("calling startPlanningPhase");
                     result= proxy.startPlanningPhase();
                     System.out.println("called startPlanningPhase: "+result);
+
 
                     return result;
                 }
