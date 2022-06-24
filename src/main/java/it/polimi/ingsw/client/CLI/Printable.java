@@ -65,7 +65,7 @@ public class Printable {
         System.out.println();
     }
     protected void printCoins(int i){
-        System.out.print("New play: ");
+        System.out.print("New play: "+"\t");
         printNickname(i);
         System.out.println("\t"+" Coins: " + view.getCoins(i));
         System.out.println();
@@ -84,7 +84,7 @@ public class Printable {
 
     protected void printLastCard(){
         System.out.println();
-        System.out.print("New play: "+"\t"+UNDERLINE+"LAST PLAYED CARDS:"+ANSI_RESET+"\t" );
+        System.out.print("New play: "+"\t"+"\t"+UNDERLINE+"LAST PLAYED CARDS:"+ANSI_RESET+"\t" );
         for (int i = 0; i < view.getNumberOfPlayers(); i++) {
             System.out.print(" "+view.getNickname(i) + ": " + view.getLastCard(i) + ". ");
         }
