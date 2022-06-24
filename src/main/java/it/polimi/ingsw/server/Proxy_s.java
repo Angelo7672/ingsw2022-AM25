@@ -65,7 +65,7 @@ public class Proxy_s implements Exit {
                 executor.submit(virtualClient);
             }
 
-            //soldOut.start();
+            soldOut.start();
             synchronized (this){ this.wait(); }
 
             if(restoreGame) server.restoreGame();
