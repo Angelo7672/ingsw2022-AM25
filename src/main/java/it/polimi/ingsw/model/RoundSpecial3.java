@@ -41,8 +41,6 @@ public class RoundSpecial3 extends RoundStrategy{
     public int getCost(){ return special.getCost(); }
     @Override
     public void increaseCost(){ special.increaseCost(); }
-    @Override
-    public String getName(){ return special.getName(); }
 
     private class Special3 extends Special {
         //non fa niente qua, fa solo calcolare l'influenza di un isola a scelta
