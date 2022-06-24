@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class CLI implements Runnable, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
+public class CLI implements Runnable, UserInfoListener, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, WinnerListener, DisconnectedListener,
         NoEntryListener, ServerOfflineListener, SpecialStudentsListener{
 
@@ -79,6 +79,7 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
             setupConnection();
         }
         view = proxy.startView();
+        view.setUserInfoListener(this);
         view.setCoinsListener(this);
         view.setInhibitedListener(this);
         view.setIslandListener(this);
@@ -806,6 +807,11 @@ public class CLI implements Runnable, TowersListener, ProfessorsListener, Specia
 
     @Override
     public void specialStudentsNotify(int special, int color, int value) {
+
+    }
+
+    @Override
+    public void userInfoNotify(String nickname, String Character, int playerRef) {
 
     }
 }
