@@ -681,7 +681,7 @@ public class MainSceneController implements SceneController {
         int oldTowersNumber = towersMap.get(schoolRef).getChildren().size();
         ImageView tower;
         Boolean ok=false;
-        if(towersNumber<oldTowersNumber){
+        /*if(towersNumber<oldTowersNumber){
             while(!ok){
                 for(int i=oldTowersNumber; i>=0; i--){
                     tower= (ImageView) towersMap.get(schoolRef).getChildren().get(i);
@@ -704,7 +704,7 @@ public class MainSceneController implements SceneController {
                 }
 
             }
-        }
+        }*/
     }
 
     public void setTowersIsland(int islandRef, int towersNumber) {

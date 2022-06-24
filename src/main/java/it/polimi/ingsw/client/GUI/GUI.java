@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.iq80.snappy.Main;
 
+import javax.swing.*;
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.IOException;
 import java.net.Socket;
@@ -85,15 +86,15 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             initialStudentsCloud.add(new int[]{0,0,0,0,0});
         }
 
-        planningPhaseService= new PlanningPhaseService();
-        planningPhaseService.setOnSucceeded(workerStateEvent -> {
+        planningPhaseService= new PlanningPhaseService(this);
+        /*planningPhaseService.setOnSucceeded(workerStateEvent -> {
             System.out.println("on succeded planning phase service");
             Boolean result = planningPhaseService.getValue();
             System.out.println(result);
             if(result){
                 phaseHandler("PlayCard");
             }
-        });
+        });*/
         planningPhaseService.setOnFailed(workerStateEvent -> {
             System.out.println("Service state: FAILED");
         });
@@ -316,12 +317,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
             case "InitializeMain"-> {
                     setViewService.cancel();
-                   //initializeMainScene();
+                    //initializeMainScene();
                     //proxy.setView();
                     initializeMainService.start();
             }
             case "PlanningPhase"->
                     {
+                        PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
                         initializeMainService.cancel();
                         System.out.println("planning");
                         //if (planningPhaseService.getState()== Worker.State.READY)
@@ -337,6 +339,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
                     }
             case "PlayCard"-> {
+                //planningPhaseService.cancel();
                 System.out.println("playcard");
                 switchScene(CARDS);
 
@@ -344,11 +347,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
             case "ActionPhase"-> {
                 System.out.println("actionPhase");
-                if(actionPhaseService.getState()==Worker.State.READY)
-                    actionPhaseService.start();
-                else {
-                    actionPhaseService.restart();
-                }
+                //if(actionPhaseService.getState()==Worker.State.READY)
+                    //actionPhaseService.start();
+                //else {
+                 ActionPhaseService actionPhaseService= new ActionPhaseService();
+                 actionPhaseService.start();
+               // }
 
                 System.out.println("actionPhase finished");
                 switchScene(MAIN);
@@ -364,9 +368,21 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
     }
 
+    public void updatePlanningPhase(Boolean isPlanning){
+        if(isPlanning){
+            phaseHandler("PlayCard");
+        }
+    }
+
 
     public class PlanningPhaseService extends Service<Boolean>{
-        Boolean result=false;
+        Boolean result;
+        GUI gui;
+
+        public PlanningPhaseService(GUI gui){
+            this.gui=gui;
+            result=false;
+        }
         @Override
         protected Task<Boolean> createTask() {
             System.out.println("planningPhaseService started");
@@ -376,11 +392,20 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     System.out.println("calling startPlanningPhase");
                     result= proxy.startPlanningPhase();
                     System.out.println("called startPlanningPhase: "+result);
-
-
+                    //gui.updatePlanningPhase(true);
+                    //this.set(true);
                     return result;
                 }
             };
+        }
+        @Override
+        protected void succeeded() {
+            System.out.println("on succeded planning phase service");
+            //Boolean result = planningPhaseService.getValue();
+            //System.out.println(result);
+            //if(result){
+            phaseHandler("PlayCard");
+            //}
         }
     }
 
@@ -404,12 +429,20 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             System.out.println("actionPhaseService started");
             return new Task<Boolean>() {
                 @Override
-                protected Boolean call() throws Exception {
+                protected Boolean call() throws Exception{
                     Boolean result= proxy.startActionPhase();
                     System.out.println("called startActionPhase: "+result);
                     return result;
                 }
             };
+        }
+        @Override
+        protected void succeeded(){
+            //taskSucceded=true;
+            //Boolean result = actionPhaseService.getValue();
+            //if(result){
+                phaseHandler("StartTurn");
+            //}
         }
     }
 
@@ -516,7 +549,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         controller.initializeScene();
         //sendInitialInformation();
         //System.out.println("calling phase handler");
-        //phaseHandler("PlanningPhase");
+        phaseHandler("PlanningPhase");
         //startGame();
 
     }
