@@ -272,7 +272,7 @@ public class Proxy_c implements Exit {
                         }
                     } else if (tmp instanceof UserInfoAnswer) {
                         synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
+                            if (!view.isInitializedView()) lock2.wait();
                             view.setUserInfo(((UserInfoAnswer) tmp).getPlayerRef(), ((UserInfoAnswer) tmp).getCharacter(),((UserInfoAnswer) tmp).getNickname());
                         }
                     } else if (tmp instanceof LastCardMessage) {
