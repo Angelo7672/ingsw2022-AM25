@@ -185,8 +185,8 @@ public class Game implements GameManager{
 
         roundStrategies.add(roundStrategyFactor.getRoundStrategy(specialIndex));
         extractedSpecials.add(specialIndex);
-        for(Integer i:extractedSpecials)
-            if(i == specialIndex) roundStrategies.get(i+1).setCost(cost);
+        for(int i = 0; i < extractedSpecials.size(); i++)
+            if(specialIndex == extractedSpecials.get(i)) roundStrategies.get(i+1).setCost(cost);
 
         specialListener.notifySpecialList(extractedSpecials, getSpecialCost());
     }
@@ -198,12 +198,12 @@ public class Game implements GameManager{
     }
     @Override
     public void noEntryCardsRestore(int numCards){
-
+        for(int i = 0; i < 3; i++)
+            if (extractedSpecials.get(i) == indexSpecial)
+                roundStrategies.get(i+1).noEntryCardsRestore(numCards);
     }
 
-
     //Planning Phase
-
     /**
      * @see CloudsManager with its refreshStudentsCloud.
      */
