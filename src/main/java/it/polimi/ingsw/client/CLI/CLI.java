@@ -245,10 +245,16 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             int special=-1;
             printable.printSpecialList();
             do {
-                System.out.println();
-                System.out.print(SPACE+"Which special do you want to use? Insert the number ");
-                String intString = readNext();
-                special = Integer.parseInt(intString);
+                try {
+                    System.out.println();
+                    System.out.print(SPACE+"Which special do you want to use? Insert the number ");
+                    String intString = readNext();
+                    special = Integer.parseInt(intString);
+                }catch (NumberFormatException e){
+                    System.out.println();
+                    System.out.println(ANSI_RED+SPACE+"Error, insert a number"+ANSI_RESET);
+                    turn();
+                }
             } while (special == -1);
             if(!proxy.checkSpecial(special)) {
                 System.out.println();
@@ -266,6 +272,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                 return;
             }
             else turn();
+            return;
         }
         System.out.println();
         System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
