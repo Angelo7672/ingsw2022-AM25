@@ -91,7 +91,9 @@ public class Proxy_c implements Exit {
     public boolean setupConnection(String nickname, String character) throws IOException {
         if(nickname.length()>10) nickname = nickname.substring(0,9);
         send(new SetupConnection(nickname, character));
+        System.out.println("MESSAGE SENT: setupConnection "+nickname+" "+character);
         tempObj = receive();
+        System.out.println("ANSWER: "+tempObj);
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
         else return false;
     }
@@ -105,10 +107,15 @@ public class Proxy_c implements Exit {
         else return false;
 
         send(new SetupGame(numberOfPlayers, isExpert));
+        System.out.println("MESSAGE SENT: setupGame"+numberOfPlayers+" "+expertMode);
+
         tempObj = receive();
+        System.out.println("ANSWER: "+tempObj);
         if(!((GenericAnswer)tempObj).getMessage().equals("ok")) return false;
         send(new GenericMessage("Ready for login!"));
+        System.out.println("MESSAGE SENT: Ready for login!");
         tempObj = receive();
+        System.out.println("ANSWER: "+tempObj);
         return true;
     }
 
@@ -123,9 +130,11 @@ public class Proxy_c implements Exit {
 
     public View startView() throws IOException, InterruptedException {
         send(new GenericMessage("Ready to start"));
+        System.out.println("MESSAGE SENT: Ready to start");
         synchronized (lock2){
             if(!view.isInitializedView()) lock2.wait();
         }
+        System.out.println("ANSWER: view");
         return view;
     }
 
@@ -134,11 +143,13 @@ public class Proxy_c implements Exit {
     }
 
     public boolean startPlanningPhase() throws IOException {
+        System.out.println("MESSAGE SENT: ready for planning phase");
         send(new GenericMessage("Ready for Planning Phase"));
         while(true) {
             tempObj = receive();
+            System.out.println("ANSWER: "+tempObj);
             if(((PlayCard)tempObj).getMessage().equals("Play card!")){
-                System.out.println("received play card");
+                System.out.println("ANSWER: Play Card!");
                 return true;
             }
         }
