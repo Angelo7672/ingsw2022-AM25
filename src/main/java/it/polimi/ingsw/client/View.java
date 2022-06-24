@@ -30,6 +30,7 @@ public class View {
     private SpecialStudentsListener specialStudentsListener;
     private StudentsListener studentsListener;
     private WinnerListener winnerListener;
+    private UserInfoListener userInfoListener;
     private int maxStepsMotherNature;
     private int motherNaturePos;
     private String winner;
@@ -142,6 +143,7 @@ public class View {
     public void setUserInfo(int playerRef, String character, String nickname) {
         schoolBoards.get(playerRef).setNickname(nickname);
         schoolBoards.get(playerRef).setCharacter(character);
+        userInfoListener.userInfoNotify(nickname, character, playerRef);
     }
     public void setCoins(int playerRef, int coins){
         hands.get(playerRef).setCoins(coins);
@@ -269,6 +271,7 @@ public class View {
     }
 
     //Listeners
+    public void setUserInfoListener(UserInfoListener userInfoListener){this.userInfoListener = userInfoListener;}
     public void setTowersListener(TowersListener towersListener) {
         this.towersListener = towersListener;
     }
@@ -308,6 +311,8 @@ public class View {
             professors = new boolean[]{false, false, false, false, false};
             this.towersNumber = towersNumber;
             this.team = team;
+            nickname ="";
+            character="";
         }
 
         public void setStudentsEntrance(int color, int newValue){
