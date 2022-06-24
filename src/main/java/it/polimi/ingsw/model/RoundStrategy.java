@@ -120,5 +120,4 @@ public abstract class RoundStrategy {
     abstract public int getCost();
     abstract public void setCost(int cost);
     abstract public void increaseCost();
-    abstract public String getName();
 }

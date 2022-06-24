@@ -112,8 +112,9 @@ public class IslandManagerTest {
     void getSetMethod(){
 
         //student methods
+        int tempIslandStudent0 = islandsManager.getStudent(0,0);
         islandsManager.incStudent(0, 0,1);
-        assertEquals(1, islandsManager.getStudent(0,0));
+        assertEquals(tempIslandStudent0+1, islandsManager.getStudent(0,0));
 
         //mother methods
         int motherPos = islandsManager.getMotherPos();

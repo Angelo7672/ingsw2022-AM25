@@ -44,11 +44,6 @@ public class RoundSpecial5 extends RoundStrategy{
     }
     @Override
     public void increaseCost(){ special.increaseCost(); }
-    @Override
-    public String getName(){
-        return special.getName();
-    }
-
 
     @Override
     public void effect(){
