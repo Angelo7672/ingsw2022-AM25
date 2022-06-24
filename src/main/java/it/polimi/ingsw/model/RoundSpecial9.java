@@ -18,16 +18,16 @@ public class RoundSpecial9 extends RoundStrategy{
         int influenceTeamGREY = 0;
 
         for (int i = 0; i < 5; i++) {
-            if(i==noColor) i++; //skip banned color
-
-            studentOnIsland[i] = islandsManager.getStudent(islandRef, i);
-            if (studentOnIsland[i] > 0) {
-                professorOwner = playerManager.getProfessorPropriety(i);
-                if (professorOwner != -1) {
-                    teamOwnerProfessor = playerManager.getTeam(professorOwner);
-                    if (teamOwnerProfessor.equals(Team.WHITE)) influenceTeamWHITE += studentOnIsland[i];
-                    else if (teamOwnerProfessor.equals(Team.BLACK)) influenceTeamBLACK += studentOnIsland[i];
-                    else if (teamOwnerProfessor.equals(Team.GREY)) influenceTeamGREY += studentOnIsland[i];
+            if(i!=noColor) {
+                studentOnIsland[i] = islandsManager.getStudent(islandRef, i);
+                if (studentOnIsland[i] > 0) {
+                    professorOwner = playerManager.getProfessorPropriety(i);
+                    if (professorOwner != -1) {
+                        teamOwnerProfessor = playerManager.getTeam(professorOwner);
+                        if (teamOwnerProfessor.equals(Team.WHITE)) influenceTeamWHITE += studentOnIsland[i];
+                        else if (teamOwnerProfessor.equals(Team.BLACK)) influenceTeamBLACK += studentOnIsland[i];
+                        else if (teamOwnerProfessor.equals(Team.GREY)) influenceTeamGREY += studentOnIsland[i];
+                    }
                 }
             }
         }
