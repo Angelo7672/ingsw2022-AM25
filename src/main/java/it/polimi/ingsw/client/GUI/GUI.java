@@ -35,7 +35,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private Service<Boolean> planningPhaseService;
     private Service<Boolean> actionPhaseService;
     private Service<View> setViewService;
-    private Service<Void> initializeMainService;
+    private Service<Boolean> initializeMainService;
+
+    private Boolean taskSucceded;
 
     protected boolean active;
     protected boolean isMainSceneInitialized;
@@ -63,6 +65,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public GUI() {
+        taskSucceded=false;
         active=true;
         scenesMap = new HashMap<>();
         sceneControllersMap = new HashMap<>();
@@ -91,10 +94,33 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 phaseHandler("PlayCard");
             }
         });
+        planningPhaseService.setOnFailed(workerStateEvent -> {
+            System.out.println("Service state: FAILED");
+        });
+        planningPhaseService.setOnCancelled(workerStateEvent -> {
+            System.out.println("Service state: CANCELLED");
+        });
+        planningPhaseService.setOnReady(workerStateEvent -> {
+            System.out.println("Service state: READY");
+        });
+        planningPhaseService.setOnRunning(workerStateEvent -> {
+            System.out.println("Service state: RUNNING");
+        });
+        planningPhaseService.setOnScheduled(workerStateEvent -> {
+            planningPhaseService.setOnSucceeded(workeStateEvent->{
+                System.out.println("on succeded planning phase service");
+                Boolean result = planningPhaseService.getValue();
+                System.out.println(result);
+                if(result){
+                    phaseHandler("PlayCard");
+                    }
+            });
+        });
 
         actionPhaseService= new ActionPhaseService();
 
         actionPhaseService.setOnSucceeded(workerStateEvent -> {
+            taskSucceded=true;
             Boolean result = actionPhaseService.getValue();
             if(result){
                 phaseHandler("StartTurn");
@@ -108,8 +134,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             this.view = view;
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setView(view);
-            initializeMainScene();
-            proxy.setView();
+            //initializeMainScene();
+            //proxy.setView();
             /*
             this.view.setCoinsListener(this);
             this.view.setInhibitedListener(this);
@@ -121,18 +147,24 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             this.view.setTowersListener(this);
             this.view.setUserInfoListener(this);
             proxy.setView();*/
-            System.out.println("view is: "+view);
+            //System.out.println("view is: "+view);
 
-            isViewSet = true;
+            //isViewSet = true;
             //System.out.println("set done");
-            phaseHandler("PlanningPhase");
+            //phaseHandler("PlanningPhase");
+            phaseHandler("InitializeMain");
             //startGame();
             });
 
         initializeMainService= new InitializeMainService();
         initializeMainService.setOnSucceeded(workerStateEvent -> {
-            //proxy.setView();
-            phaseHandler("PlanningPhase");
+            Boolean ok= initializeMainService.getValue();
+            if(ok){
+                proxy.setView();
+                phaseHandler("PlanningPhase");
+                //startPlanningPhase();
+            }
+
         });
 }
 
@@ -289,19 +321,20 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 //setView();
             }
             case "InitializeMain"-> {
-                   initializeMainScene();
+                    setViewService.cancel();
+                   //initializeMainScene();
                     //proxy.setView();
-                    //initializeMainService.start();
+                    initializeMainService.start();
             }
             case "PlanningPhase"->
                     {
+                        initializeMainService.cancel();
                         System.out.println("planning");
-                        if(planningPhaseService.getState()== Worker.State.READY)
-                            planningPhaseService.start();
-                        else{
-                            planningPhaseService.restart();
-                        }
-
+                        //if (planningPhaseService.getState()== Worker.State.READY)
+                          //  planningPhaseService.restart();
+                        //else{
+                        planningPhaseService.start();
+                        //}
                         System.out.println("planning finished");
                     }
             case "PlayCard"-> {
@@ -332,7 +365,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
 
     public class PlanningPhaseService extends Service<Boolean>{
-
+        Boolean result=false;
         @Override
         protected Task<Boolean> createTask() {
             System.out.println("planningPhaseService started");
@@ -340,13 +373,26 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 @Override
                 protected Boolean call() throws Exception {
                     System.out.println("calling startPlanningPhase");
-                    Boolean result= proxy.startPlanningPhase();
+                    result= proxy.startPlanningPhase();
                     System.out.println("called startPlanningPhase: "+result);
+
                     return result;
                 }
             };
         }
+    }
 
+
+    public void startPlanningPhase(){
+        try {
+            if(proxy.startPlanningPhase()){
+                phaseHandler("PlayCard");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public class ActionPhaseService extends Service<Boolean>{
@@ -398,22 +444,30 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
     }
 
-    public class InitializeMainService extends Service<Void>{
+    public class InitializeMainService extends Service<Boolean>{
 
         @Override
-        protected Task<Void> createTask() {
-            return new Task<Void>() {
+        protected Task<Boolean> createTask() {
+            return new Task<Boolean>() {
                 @Override
-                protected Void call() throws Exception {
+                protected Boolean call() throws Exception {
+                    System.out.println(Thread.currentThread());
+                    Boolean ok=false;
                     System.out.println("initialize main scene");
                     System.out.println("View is: "+view);
-                    MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-                    CloudsSceneController cloudsSceneController= (CloudsSceneController) sceneControllersMap.get(CLOUDS);
-                    controller.setNumberOfPlayers(view.getNumberOfPlayers());
-                    cloudsSceneController.initializeCloudScene(view.getNumberOfPlayers());
-                    controller.setExpertMode(view.getExpertMode());
-                    System.out.println("aaaaa");
-                    System.out.println("Number of players: "+view.getNumberOfPlayers());
+                    //Platform.runLater(()->{
+                        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+                        CloudsSceneController cloudsSceneController= (CloudsSceneController) sceneControllersMap.get(CLOUDS);
+                        controller.setNumberOfPlayers(view.getNumberOfPlayers());
+                        cloudsSceneController.initializeCloudScene(view.getNumberOfPlayers());
+                        controller.setExpertMode(view.getExpertMode());
+                        System.out.println("aaaaa");
+                        System.out.println("Number of players: "+view.getNumberOfPlayers());
+                        controller.initializeScene();
+                        System.out.println("initializedScene completed");
+
+                    //});
+                    ok=true;
                     //do {
                         //for (int i = 0; i < view.getNumberOfPlayers(); i++) {
                            // System.out.println("bbbbbb");
@@ -423,10 +477,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                         //}
                    // } while (!view.isInitializedView());
 
-                    controller.initializeScene();
-                    sendInitialInformation();
-                    phaseHandler("PlanningPhase");
-                    return null;
+
+
+
+                    //sendInitialInformation();
+                    //phaseHandler("PlanningPhase");
+                    System.out.println("returning ok: "+ok);
+                    return ok;
                 }
             };
         }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.View;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -344,54 +345,62 @@ public class MainSceneController implements SceneController {
         }
     }
     public void initializeScene() {
-        System.out.println("initialize scene method");
-        if (numberOfPlayers == 2) {
-            player3Box.setVisible(false);
-            player4Box.setVisible(false);
+        System.out.println(Thread.currentThread());
+        Platform.runLater(()->{
+            System.out.println("initialize scene method");
+            System.out.println(Thread.currentThread());
+            if (numberOfPlayers == 2) {
+                player3Box.setVisible(false);
+                player4Box.setVisible(false);
 
-        } else if (numberOfPlayers == 3) {
-            player4Box.setVisible(false);
-        }
+            } else if (numberOfPlayers == 3) {
+                player4Box.setVisible(false);
+            }
+            System.out.println("players ok");
+            useSpecialButton.setVisible(expertMode);
 
-        useSpecialButton.setVisible(expertMode);
+            charactersImageMap.put(0, character1);
+            charactersImageMap.put(1, character2);
+            charactersImageMap.put(2, character3);
+            charactersImageMap.put(3, character4);
 
-        charactersImageMap.put(0, character1);
-        charactersImageMap.put(1, character2);
-        charactersImageMap.put(2, character3);
-        charactersImageMap.put(3, character4);
-
-        schoolMap.put(0, school1);
-        schoolMap.put(1, school2);
-        schoolMap.put(2, school3);
-        schoolMap.put(3, school4);
+            schoolMap.put(0, school1);
+            schoolMap.put(1, school2);
+            schoolMap.put(2, school3);
+            schoolMap.put(3, school4);
 
 
-        for (int i = 0; i < numberOfPlayers; i++) {
+
+            for (int i = 0; i < numberOfPlayers; i++) {
             /*setNickname(nicknamesMap.get(i), i);
             charactersImageMap.get(i).setImage(characterToImage(charactersMap.get(i)));*/
 
-            //maps the children of school panes, 0:school imageView, 1: entrance, 2: table 3: professors, 4: towers
-            this.entrancesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(1)); //maps all the entrances
-            this.tablesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(2)); //maps all the tables
-            this.professorsMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(3)); //maps all the professors panes
-            this.towersMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(4));//maps all the towers panes
+                //maps the children of school panes, 0:school imageView, 1: entrance, 2: table 3: professors, 4: towers
+                this.entrancesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(1)); //maps all the entrances
+                this.tablesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(2)); //maps all the tables
+                this.professorsMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(3)); //maps all the professors panes
+                this.towersMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(4));//maps all the towers panes
 
 
-        }
-        AnchorPane island;
-        for (int i = 0; i < 12; i++) {
-            island = (AnchorPane) islandsPane.getChildren().get(i);
-            islandsMap.put(i, island);
-        }
+            }
+            System.out.println("Maps set");
+            AnchorPane island;
+            for (int i = 0; i < 12; i++) {
+                island = (AnchorPane) islandsPane.getChildren().get(i);
+                islandsMap.put(i, island);
+            }
 
-        schoolsInitialization();
-        islandsInitialization();
-        tablesInitialization();
+            schoolsInitialization();
 
-        gui.isMainSceneInitialized=true;
-        actionAllowed=-1; //not your turn
-        System.out.println("4. All initialized");
-        //gui.phaseHandler("PlanningPhase");
+            islandsInitialization();
+            tablesInitialization();
+
+            gui.isMainSceneInitialized=true;
+            actionAllowed=-1; //not your turn
+            System.out.println("ALL initialized");
+            //gui.phaseHandler("PlanningPhase");
+        });
+
 
     }
 
@@ -399,6 +408,7 @@ public class MainSceneController implements SceneController {
 
     //inizializza le isole, nascondendo le torri (che non ci sono a inizio partita)
     public void islandsInitialization() {
+        System.out.println("island initialization");
         AnchorPane island;
         IslandClickHandler islandClickHandler = new IslandClickHandler();
         for (int i = 0; i < 12; i++) {
@@ -409,10 +419,12 @@ public class MainSceneController implements SceneController {
                 island.getChildren().get(j).setVisible(false);
             }
         }
+        System.out.println("islands are initialized");
     }
 
     //inizializza le scuole, mettendo le torri del colore giusto a seconda del numero di giocatori
     public void schoolsInitialization() {
+        System.out.println("schoolInitialization");
         ImageView tower;
         if (numberOfPlayers == 2) {
             for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
@@ -469,9 +481,10 @@ public class MainSceneController implements SceneController {
                 tablesMap.get(i).setOnMouseClicked(tableClickHandler);
             }
         }
+        System.out.println("schools are initialized");
     }
     public void tablesInitialization() {
-
+        System.out.println("initialize tables");
         greenTables.add(new Table(10, 4, 0));
         redTables.add(new Table(10, 28, 1));
         yellowTables.add(new Table(10, 52, 2));
@@ -495,6 +508,7 @@ public class MainSceneController implements SceneController {
         yellowTables.add(new Table(76, 176, 2));
         pinkTables.add( new Table(102, 176, 3));
         blueTables.add(new Table(128, 176, 4));
+        System.out.println("tables are initialized");
     }
 
 
