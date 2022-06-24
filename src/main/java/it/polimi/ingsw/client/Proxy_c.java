@@ -130,32 +130,26 @@ public class Proxy_c implements Exit {
 
     public View startView() throws IOException, InterruptedException {
         send(new GenericMessage("Ready to start"));
-        System.out.println("MESSAGE SENT: Ready to start");
         synchronized (lock2){
             if(!view.isInitializedView()) lock2.wait();
         }
-        System.out.println("ANSWER: view");
         return view;
     }
 
     public void setView(){
-        System.out.println("notify set view");
         synchronized (lock2){
             initializedView=true;
-            System.out.println("init true");
             lock2.notify();
         }
 
     }
 
     public boolean startPlanningPhase() throws IOException {
-        System.out.println("MESSAGE SENT: ready for planning phase");
         send(new GenericMessage("Ready for Planning Phase"));
         while(true) {
             tempObj = receive();
             System.out.println("ANSWER: "+tempObj);
             if(((PlayCard)tempObj).getMessage().equals("Play card!")){
-                System.out.println("ANSWER: Play Card!");
                 return true;
             }
         }
@@ -167,7 +161,6 @@ public class Proxy_c implements Exit {
         if(tempObj instanceof GenericAnswer) {
             view.setCards(card);
             send(new GenericMessage("Ready for Action Phase"));
-            System.out.println("sent start action");
             return ((GenericAnswer)tempObj).getMessage();
         }
         if(tempObj instanceof MoveNotAllowedAnswer){

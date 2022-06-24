@@ -26,7 +26,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     private Printable printable;
     private final String ANSI_RESET = "\u001B[0m";
     private final String ANSI_RED = "\u001B[31m";
-    private final String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
+    private final String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
 
 
     public CLI(Socket socket) throws IOException{
