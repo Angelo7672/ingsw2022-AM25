@@ -139,7 +139,13 @@ public class Proxy_c implements Exit {
     }
 
     public void setView(){
-        initializedView=true;
+        System.out.println("notify set view");
+        synchronized (lock2){
+            initializedView=true;
+            System.out.println("init true");
+            lock2.notify();
+        }
+
     }
 
     public boolean startPlanningPhase() throws IOException {
@@ -283,7 +289,9 @@ public class Proxy_c implements Exit {
                         }
                     } else if (tmp instanceof UserInfoAnswer) {
                         synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
+                            if (!initializedView) {
+                                lock2.wait();
+                            }
                             view.setUserInfo(((UserInfoAnswer) tmp).getPlayerRef(), ((UserInfoAnswer) tmp).getCharacter(),((UserInfoAnswer) tmp).getNickname());
                         }
                     } else if (tmp instanceof LastCardMessage) {
