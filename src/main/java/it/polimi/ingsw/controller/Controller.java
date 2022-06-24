@@ -77,7 +77,7 @@ public class Controller implements ServerController{
         for(int i = 0; i < numberOfPlayers; i++)
             server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));
         virtualView.restoreGame();
-        System.out.println("fine restore");
+        if(expertMode) server.setExpertGame();
     }
     @Override
     public int checkRestoreNickname(String nickname){ return virtualView.checkRestoreNickname(nickname); }
