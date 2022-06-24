@@ -319,6 +319,7 @@ public class Game implements GameManager{
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, -1);
             findSpecial(indexSpecial, playerRef);
+
         } else return false;
         return true;
     }
@@ -337,7 +338,10 @@ public class Game implements GameManager{
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, ref);
             for(int i = 0; i < 3; i++)
-                if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(ref);
+                if(indexSpecial == extractedSpecials.get(i)) {
+                    checker = roundStrategies.get(i+1).effect(ref);
+                    System.out.println(checker);
+                }
             if(checker) findSpecial(indexSpecial, playerRef);
         }
 

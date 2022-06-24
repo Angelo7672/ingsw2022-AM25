@@ -23,7 +23,7 @@ public class Special11 implements Special{
             virtualClient.send(new GenericAnswer("ok"));
             this.wait();
 
-            checker = server.useSpecialSimple(11, playerRef, special11Msg.getColor());
+            checker = server.useSpecialMedium(11, playerRef, playerRef, special11Msg.getColor());
 
            /* if (checker) virtualClient.send(new GenericAnswer("ok"));
             else virtualClient.send(new MoveNotAllowedAnswer());*/
