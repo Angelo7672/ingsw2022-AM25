@@ -68,27 +68,18 @@ public class Game implements GameManager{
         else if(string.equalsIgnoreCase("GREY")) return Team.GREY;
         return Team.NONE;
     }
-
-    /**
-     * Create a new game from start.
-     */
     @Override
-    public void initializeGame(){
-        bag.bagInitialize();
-        playerManager.initializeSchool();
-        islandsManager.islandsInitialize();
+    public void createSpecial(){
+        RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
 
-        if(expertMode) {
-            RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-
-            ArrayList<Integer> random = new ArrayList<>();
-            for (int i = 1; i <= 12; i++)
-                random.add(i);  //I have 12 int ordered now
-            Collections.shuffle(random);
-            while (random.size() != 3)
-                random.remove(0);
-            //now I have 3 random int
-            Collections.sort(random);
+        ArrayList<Integer> random = new ArrayList<>();
+        for (int i = 1; i <= 12; i++)
+            random.add(i);  //I have 12 int ordered now
+        Collections.shuffle(random);
+        while (random.size() != 3)
+            random.remove(0);
+        //now I have 3 random int
+        Collections.sort(random);
 
             /*for (int i = 0; i < 3; i++) {
                 roundStrategies.add(
@@ -101,14 +92,25 @@ public class Game implements GameManager{
                 );
             }*/
 
-            //INSERISCI GLI SPECIAL CHE VUOI FARE USCIRE
-            roundStrategies.add( roundStrategyFactor.getRoundStrategy(4));
-            roundStrategies.add( roundStrategyFactor.getRoundStrategy(7));
-            roundStrategies.add( roundStrategyFactor.getRoundStrategy(11));
-            this.extractedSpecials.add(4);
-            this.extractedSpecials.add(7);
-            this.extractedSpecials.add(11);
+        //INSERISCI GLI SPECIAL CHE VUOI FARE USCIRE
+        roundStrategies.add( roundStrategyFactor.getRoundStrategy(4));
+        roundStrategies.add( roundStrategyFactor.getRoundStrategy(7));
+        roundStrategies.add( roundStrategyFactor.getRoundStrategy(11));
+        this.extractedSpecials.add(4);
+        this.extractedSpecials.add(7);
+        this.extractedSpecials.add(11);
+    }
 
+    /**
+     * Create a new game from start.
+     */
+    @Override
+    public void initializeGame(){
+        bag.bagInitialize();
+        playerManager.initializeSchool();
+        islandsManager.islandsInitialize();
+
+        if(expertMode) {
             specialListener.notifySpecialList(extractedSpecials, getSpecialCost());
             for (int i = 1; i < 4; i++)
                 roundStrategies.get(i).initializeSpecial();
@@ -189,8 +191,10 @@ public class Game implements GameManager{
         specialListener.notifySpecialList(extractedSpecials, getSpecialCost());
     }
     @Override
-    public void specialStudentRestore(int[] students){
-
+    public void specialStudentRestore(int indexSpecial, int[] students){
+        for(int i = 0; i < 3; i++)
+            if (extractedSpecials.get(i) == indexSpecial)
+                roundStrategies.get(i+1).restoreStudentSpecial(students);
     }
     @Override
     public void noEntryCardsRestore(int numCards){

@@ -40,7 +40,12 @@ public class Controller implements ServerController{
 
     @Override
     public void createGame(){
-        this.gameManager = new Game(expertMode, numberOfPlayers);
+        gameManager = new Game(expertMode, numberOfPlayers);
+        if(expertMode){
+            gameManager.createSpecial();
+            gameManager.setSpecialStudentsListener(virtualView);
+            gameManager.setNoEntryListener(virtualView);
+        }
 
         gameManager.setStudentsListener(virtualView);
         gameManager.setTowerListener(virtualView);
@@ -53,11 +58,8 @@ public class Controller implements ServerController{
         gameManager.setInhibitedListener(virtualView);
         gameManager.setBagListener(virtualView);
         gameManager.setQueueListener(virtualView);
-        if(expertMode){
-            gameManager.setSpecialStudentsListener(virtualView);
-            gameManager.setNoEntryListener(virtualView);
-        }
     }
+
     @Override
     public void initializeGame(){   //new game
         server.sendGameInfo(numberOfPlayers, expertMode);   //at every client
@@ -193,7 +195,7 @@ public class Controller implements ServerController{
         gameManager.queueRestore(playerRef,valueCard,maxMoveMotherNature);
     }
     public void specialRestore(int specialIndex, int cost){ gameManager.specialRestore(specialIndex, cost); }
-    public void specialStudentRestore(int[] students){ gameManager.specialStudentRestore(students); }
+    public void specialStudentRestore(int specialIndex, int[] students){ gameManager.specialStudentRestore(specialIndex, students); }
     public void noEntryCardsRestore(int numCards){ gameManager.noEntryCardsRestore(numCards); }
 
     @Override

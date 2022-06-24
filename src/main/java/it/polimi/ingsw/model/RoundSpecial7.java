@@ -30,6 +30,9 @@ public class RoundSpecial7 extends RoundStrategy{
     }
 
     @Override
+    public void restoreStudentSpecial(int[] students){ special.specialStudentRestore(students); }
+
+    @Override
     public boolean effect(int playerRef, ArrayList<Integer> entranceStudent, ArrayList<Integer> cardStudent){
         if(playerManager.checkStudentsEntranceForSpecial(entranceStudent, playerRef) && special.checkStudents(cardStudent)) {
             for (int i = 0; i < entranceStudent.size(); i++) {
@@ -65,7 +68,13 @@ public class RoundSpecial7 extends RoundStrategy{
                 students[i] = color[i];
                 specialStudentsListener.specialStudentsNotify(7, i, students[i]);
             }
+        }
 
+        public void specialStudentRestore(int[] students){
+            for(int i = 0; i < 5; i++){
+                this.students[i] = students[i];
+                specialStudentsListener.specialStudentsNotify(7, i, this.students[i]);
+            }
         }
 
         public int getStudent(int color){ return students[color]; }
