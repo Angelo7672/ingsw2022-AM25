@@ -2,6 +2,9 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
 import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,6 +23,7 @@ public class LoginSceneController implements SceneController{
     private String currentNickname;
     private String currentCharacter;
     private Exit proxy;
+    private Service<Boolean> loginService;
 
     @FXML private TextField nicknameBox;
     @FXML private AnchorPane loginScene;
@@ -38,6 +42,42 @@ public class LoginSceneController implements SceneController{
     public LoginSceneController(){
         this.currentNickname="";
         this.currentCharacter="";
+        this.loginService= new LoginService();
+        loginService.setOnSucceeded(workerStateEvent -> {
+            Boolean result = loginService.getValue();
+            if(result){
+                gui.setYourNickname(currentNickname);
+                //gui.startGame();
+                gui.phaseHandler("SetView");
+            }
+            else{
+                showErrorMessage();
+                try {
+                    disableCharacters(proxy.getChosenCharacters());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+                gui.switchScene(GUI.LOGIN);
+            }
+        });
+
+    }
+
+    private class LoginService extends Service<Boolean> {
+
+        @Override
+        protected Task<Boolean> createTask() {
+            System.out.println("loginService started");
+            return new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    Boolean result = proxy.setupConnection(currentNickname, currentCharacter);
+                    return result;
+                }
+            };
+        }
     }
 
     public void setCharacter(ActionEvent e){
@@ -52,7 +92,17 @@ public class LoginSceneController implements SceneController{
     }
 
     public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
+        currentNickname= this.nicknameBox.getText();
+        if(currentNickname!="" && currentCharacter!="") {
+            if(loginService.getState()== Worker.State.READY)
+                loginService.start();
+            else
+                loginService.restart();
+            gui.switchScene(GUI.WAITING);
+        }
+        else showErrorMessage();
 
+        /*
         currentNickname= this.nicknameBox.getText();
         //System.out.println(currentNickname +", "+ currentCharacter);
         if(currentNickname!="" && currentCharacter!="") {
@@ -65,7 +115,6 @@ public class LoginSceneController implements SceneController{
             else {
 
                 showErrorMessage();
-                //Platform.runLater(()->{
                     try {
                         disableCharacters(proxy.getChosenCharacters());
                     } catch (IOException ex) {
@@ -73,11 +122,10 @@ public class LoginSceneController implements SceneController{
                     } catch (ClassNotFoundException ex) {
                         ex.printStackTrace();
                     }
-                //});
 
             }
         }else
-            showErrorMessage();
+            showErrorMessage();*/
 
     }
 

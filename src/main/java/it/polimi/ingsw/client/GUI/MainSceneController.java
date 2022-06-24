@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.View;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -135,12 +136,6 @@ public class MainSceneController implements SceneController {
         public void handle(MouseEvent mouseEvent) {
             if(actionAllowed==0) {
                 System.out.println("student clicked");
-                /*for(int i=0; i<5; i++){
-                    if(mouseEvent.getSource()==entrancesMap.get(currentPlayer).getChildren().get(i))
-                        currentStudentColor=i;
-                    if(mouseEvent.getSource()!=entrancesMap.get(currentPlayer).getChildren().get())
-                }
-                System.out.println("color: "+currentStudentColor);*/
 
                 if(mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(0)||
                     mouseEvent.getSource() ==  entrancesMap.get(currentPlayer).getChildren().get(1)||
@@ -307,7 +302,8 @@ public class MainSceneController implements SceneController {
                 this.studentImage =new ImageView(new Image(BLUESTUDENT));
                 this.nodeId=5;
             }
-            studentImage.setFitHeight(18.0);
+            studentImage.setFitWidth(16.0);
+            studentImage.setFitHeight(16.0);
 
         }
         public int getX() {
@@ -348,7 +344,7 @@ public class MainSceneController implements SceneController {
         }
     }
     public void initializeScene() {
-        System.out.println("initializeMainScene");
+        System.out.println("initialize scene method");
         if (numberOfPlayers == 2) {
             player3Box.setVisible(false);
             player4Box.setVisible(false);
@@ -371,8 +367,8 @@ public class MainSceneController implements SceneController {
 
 
         for (int i = 0; i < numberOfPlayers; i++) {
-            setNickname(nicknamesMap.get(i), i);
-            charactersImageMap.get(i).setImage(characterToImage(charactersMap.get(i)));
+            /*setNickname(nicknamesMap.get(i), i);
+            charactersImageMap.get(i).setImage(characterToImage(charactersMap.get(i)));*/
 
             //maps the children of school panes, 0:school imageView, 1: entrance, 2: table 3: professors, 4: towers
             this.entrancesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(1)); //maps all the entrances
@@ -394,6 +390,8 @@ public class MainSceneController implements SceneController {
 
         gui.isMainSceneInitialized=true;
         actionAllowed=-1; //not your turn
+        System.out.println("4. All initialized");
+        //gui.phaseHandler("PlanningPhase");
 
     }
 
@@ -529,8 +527,12 @@ public class MainSceneController implements SceneController {
             nicknameLabel = (Label) userInfo4.getChildren().get(1);
             nicknameLabel.setText(nickname);
         }
+        nicknamesMap.put(playerRef, nickname);
     }
 
+    public void setCharacter(String character, int playerRef){
+        charactersImageMap.put(playerRef, new ImageView(characterToImage(character)));
+    }
 
     public void moveStudent() {
 
@@ -606,7 +608,7 @@ public class MainSceneController implements SceneController {
         }else if (color==4){
             table= blueTables.get(playerRef);
         }
-        tablePane.getChildren().add(0, table.getStudentImage());
+        tablePane.getChildren().add(table.getStudentImage());
         student= (ImageView) tablePane.getChildren().get(0);
         student.setX(table.getX());
         student.setY(table.getY());
@@ -661,13 +663,50 @@ public class MainSceneController implements SceneController {
         card.setVisible(true);
     }
 
-    public void setTowersSchool(int componentRef, int towersNumber) {
+    public void setTowersSchool(int schoolRef, int towersNumber) {
+        int oldTowersNumber = towersMap.get(schoolRef).getChildren().size();
+        ImageView tower;
+        Boolean ok=false;
+        if(towersNumber<oldTowersNumber){
+            while(!ok){
+                for(int i=oldTowersNumber; i>=0; i--){
+                    tower= (ImageView) towersMap.get(schoolRef).getChildren().get(i);
+                    if(tower.isVisible()){
+                        tower.setVisible(false);
+                        ok=true;
+                    }
+                }
 
+            }
+
+        } else {
+            while(!ok){
+                for(int i=0; i<oldTowersNumber; i++){
+                    tower= (ImageView) towersMap.get(schoolRef).getChildren().get(i);
+                    if(!tower.isVisible()){
+                        tower.setVisible(true);
+                        ok=true;
+                    }
+                }
+
+            }
+        }
     }
 
-    public void setTowersIsland(int componentRef, int towersNumber) {
+    public void setTowersIsland(int islandRef, int towersNumber) {
+        ImageView towerImage = (ImageView) islandsMap.get(islandRef).getChildren().get(2);
+        Label towerLabel = (Label) islandsMap.get(islandRef).getChildren().get(13);
 
+        towerLabel.setText(String.valueOf(towersNumber));
+        if(towersNumber!=0){
+            towerLabel.setVisible(true);
+            towerImage.setVisible(true);
+        } else {
+            towerLabel.setVisible(false);
+            towerImage.setVisible(false);
+        }
     }
+
     public void unifyIsland(int islandToDelete){
         AnchorPane island= islandsMap.get(islandToDelete);
         island.setVisible(false);
@@ -677,17 +716,6 @@ public class MainSceneController implements SceneController {
         this.yourNickname=yourNickname;
     }
 
-    public void unlockStudents(){
-        int currentPlayer = 0;
-        for(int i=0; i<nicknamesMap.size(); i++){
-            if(yourNickname.equals(nicknamesMap.get(i))){
-                currentPlayer=i;
-            }
-        }
-        AnchorPane school = schoolMap.get(currentPlayer);
-
-
-    }
     public void setCurrentPlayer(){
         for(int i=0; i<nicknamesMap.size(); i++){
             if(yourNickname.equals(nicknamesMap.get(i))){
