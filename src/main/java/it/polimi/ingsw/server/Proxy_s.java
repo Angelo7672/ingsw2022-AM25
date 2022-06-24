@@ -1,12 +1,9 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.server.answer.SoldOutAnswer;
 import it.polimi.ingsw.server.expertmode.ExpertGame;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -45,7 +42,7 @@ public class Proxy_s implements Exit {
 
     @Override
     public void start() {
-        SoldOut soldOut = new SoldOut();
+        SoldOut soldOut = new SoldOut(serverSocket);
 
         try {
             System.out.println("Waiting for players ...");
@@ -68,7 +65,7 @@ public class Proxy_s implements Exit {
                 executor.submit(virtualClient);
             }
 
-            soldOut.start();
+            //soldOut.start();
             synchronized (this){ this.wait(); }
 
             if(restoreGame) server.restoreGame();
@@ -80,9 +77,12 @@ public class Proxy_s implements Exit {
             if(start != connectionsAllowed) synchronized (this){ this.wait(); }
             server.startGame();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Connection lost with a client!");
             server.exitError();
-        }catch (InterruptedException ex){ ex.printStackTrace(); }
+        }catch (InterruptedException ex){
+            System.err.println("Connection lost with a client!");
+            server.exitError();
+        }
     }
 
     @Override
@@ -230,21 +230,4 @@ public class Proxy_s implements Exit {
     public boolean isRestoreGame() { return restoreGame; }
     public void setRestoreGame(boolean restoreGame) { this.restoreGame = restoreGame; }
     private void virtualClientInOrder(){ Collections.sort(user, VirtualClient::compareTo); }
-
-    private class SoldOut extends Thread{
-        @Override
-        public void run(){
-            while(true){
-                try {
-                    Socket socket = serverSocket.accept();
-                    ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-                    output.reset();
-                    output.writeObject(new SoldOutAnswer());
-                    output.flush();
-                    socket.close();
-                    System.out.println("A client tried to connect, but there were no connections available!");
-                }catch (IOException e) { e.printStackTrace(); }
-            }
-        }
-    }
 }

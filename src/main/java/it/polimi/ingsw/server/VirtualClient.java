@@ -91,7 +91,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         boolean first = true;
 
         try {
+            System.out.println("ciao");
             this.socket.setSoTimeout(15000);
+            System.out.println("ciao1");
             while (!victory || !connectionExpired){
                 tmp = (Message) input.readObject();
 
@@ -216,10 +218,8 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             }
         }catch (SocketException socketException){ clientConnectionExpired(socketException);
         }catch (IOException | ClassNotFoundException e){
-            System.err.println(e.getMessage());
-            System.out.println("Client " + playerRef + " disconnected!");
+            System.err.println("Client disconnected!");
             connectionExpired = true;
-            proxy.clientDisconnected(playerRef);
             server.exitError();
         }
     }
@@ -241,8 +241,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         }catch (IOException e){ clientConnectionExpired(e); }
     }
     private void clientConnectionExpired(IOException e){
-        System.err.println(e.getMessage());
-        System.out.println("Client " + playerRef + " disconnected!");
+        System.err.println("Client " + playerRef + " disconnected!");
         connectionExpired = true;
         proxy.clientDisconnected(playerRef);
         server.exitError();
