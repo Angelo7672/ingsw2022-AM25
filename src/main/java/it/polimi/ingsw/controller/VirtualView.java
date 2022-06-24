@@ -174,8 +174,16 @@ public class VirtualView
             //Bag Restore
             controller.bagRestore(bagTmp);
             //Special Restore
-
-
+            for (int i = 0; i < 3; i++) {
+                int indexSpecial = specialsListTmp.get(i).getIndexSpecial();
+                controller.specialRestore(indexSpecial,
+                        specialsListTmp.get(i).getCost());
+                if(indexSpecial == 1 || indexSpecial == 7 || indexSpecial == 11)
+                    controller.specialStudentRestore(indexSpecial,
+                            specialsListTmp.get(i).getColorForSpecial1or7or11());
+                else if(indexSpecial == 5)
+                    controller.noEntryCardsRestore(specialsListTmp.get(i).getNoEntryCards());
+            }
         } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace();
         } catch (ClassNotFoundException e) { e.printStackTrace(); }
