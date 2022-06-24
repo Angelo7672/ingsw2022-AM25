@@ -1,24 +1,18 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.exception.NotAllowedException;
 import it.polimi.ingsw.server.ControllerServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class VirtualViewTest {
-    VirtualView virtualView;
     Controller controller;
     Controller controller1;
     String fileName = "saveGameTest.bin";
-    FileOutputStream outputFile;
-    ObjectOutputStream objectOut;
-    ObjectInputStream inputFile;
 
     @BeforeEach
     void initialization(){
@@ -77,42 +71,14 @@ class VirtualViewTest {
             public void sendInfoSpecial5(int cards) {}
         };
         controller = new Controller(2, true, controllerServer, fileName);
-        //virtualView = new VirtualView(2, true, controllerServer, controller, fileName);
-        controller.clearFile();
         controller.addNewPlayer("Angelo","WIZARD");
         controller.addNewPlayer("Ginevra","WITCH");
         controller.createGame();
         controller.initializeGame();
         controller1 = new Controller(2, true, controllerServer, fileName);
-
-        try {
-            outputFile = new FileOutputStream(fileName);
-            objectOut = new ObjectOutputStream(outputFile);
-            inputFile = new ObjectInputStream(new FileInputStream(fileName));
-        } catch (FileNotFoundException e) { System.out.println("Error, retry"); return;
-        } catch (IOException e) { System.out.println("Error, retry"); return; }
-
     }
 
-    public void clearFile() {
-        try {
-            File file = new File(fileName);
-            if (file.exists()) {
-                RandomAccessFile raf = new RandomAccessFile(file, "rw");
-                raf.setLength(0);
-            }
-        } catch (FileNotFoundException e) { e.printStackTrace();
-        } catch (IOException e) { e.printStackTrace(); }
-    }
-
-    public void saveGame(){
-        clearFile();
-        controller.initializeGame();
-        controller.startGame();
-
-    }
-
-   @Test
+    @Test
     @DisplayName("Test save and restore game")
     void saveAndRestore(){
         controller.startGame();
@@ -121,9 +87,8 @@ class VirtualViewTest {
         controller1.createGame();
         controller1.restoreVirtualView();
         controller1.restoreGame();
-        controller1.saveGame();
+        assertEquals(0,controller1.checkRestoreNickname("Angelo"));
+        assertEquals(1,controller1.checkRestoreNickname("Ginevra"));
+        assertEquals(-1,controller1.checkRestoreNickname("Gigi"));
     }
-
-
-
 }

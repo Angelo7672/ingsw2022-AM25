@@ -7,26 +7,37 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//virtual View class listen to changes in model classes through specific listener interfaces
+/**
+ * Virtual View class listen to changes in model classes through specific listener interfaces.
+ * It writes and reads file saveGame.
+ */
 public class VirtualView
         implements TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, BagListener, NoEntryListener, SpecialStudentsListener,
         QueueListener, Serializable {
-    private GameInfo gameInfo;
-    private TurnInfo turnInfo;
-    private ArrayList<SchoolBoard> schoolBoards;
-    private ArrayList<Island> islands;
-    private ArrayList<Cloud> clouds;
-    private ArrayList<Hand> hands;
-    private ArrayList<Special> specialList; //specials keeps the 3 special character for the game
+    private final GameInfo gameInfo;
+    private final TurnInfo turnInfo;
+    private final ArrayList<SchoolBoard> schoolBoards;
+    private final ArrayList<Island> islands;
+    private final ArrayList<Cloud> clouds;
+    private final ArrayList<Hand> hands;
+    private final ArrayList<Special> specialList; //special keeps the 3 special character of the game
     private List<Integer> bag;
-    private ArrayList<Queue> queue;
-    private transient ControllerServer server;
-    private transient Controller controller;
-    private transient int numberOfPlayers;
-    private transient String fileName;
+    private final ArrayList<Queue> queue;
+    private final transient ControllerServer server;
+    private final transient Restore controller;
+    private final transient int numberOfPlayers;
+    private final transient String fileName;
 
-    public VirtualView(int numberOfPlayers, boolean expertMode, ControllerServer server, Controller controller, String fileName) {
+    /**
+     * Create VirtualView with its inner class which represent a photograph of the game board in an instant of play.
+     * @param numberOfPlayers in this game;
+     * @param expertMode game mode;
+     * @param server server reference;
+     * @param controller controller reference;
+     * @param fileName saveGame file path;
+     */
+    public VirtualView(int numberOfPlayers, boolean expertMode, ControllerServer server, Restore controller, String fileName) {
         this.schoolBoards = new ArrayList<>();
         this.hands = new ArrayList<>();
         this.clouds = new ArrayList<>();
@@ -41,13 +52,15 @@ public class VirtualView
         this.gameInfo = new GameInfo(numberOfPlayers,expertMode);
         this.turnInfo = new TurnInfo();
 
-        for(int i=0; i<12; i++)
+        for(int i = 0; i < 12; i++)
             this.islands.add(new Island());
-        for(int i=0; i<numberOfPlayers; i++){
+        for(int i = 0; i < numberOfPlayers; i++)
             this.queue.add(new Queue());
-        }
     }
 
+    /**
+     * Save all virtualView's inner class which represent a certain game configuration.
+     */
     public void saveVirtualView(){
         try{
             clearFile();
@@ -66,9 +79,12 @@ public class VirtualView
 
             objectOut.close();
             outputFile.close();
-        } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace(); }
     }
+
+    /**
+     * Clear saveGame file.
+     */
     public void clearFile() {
         try {
             File file = new File(fileName);
@@ -76,9 +92,12 @@ public class VirtualView
                 RandomAccessFile raf = new RandomAccessFile(file, "rw");
                 raf.setLength(0);
             }
-        } catch (FileNotFoundException e) { e.printStackTrace();
         } catch (IOException e) { e.printStackTrace(); }
     }
+
+    /**
+     * Restore empty SchoolBoard on virtualView adding player of last saved game with their nickname and character.
+     */
     public void restoreVirtualView(){
         ArrayList<SchoolBoard> schoolBoardsTmp;
 
@@ -93,100 +112,91 @@ public class VirtualView
             inputFile.close();
 
             //Virtual view restore
-            for(SchoolBoard s:schoolBoardsTmp) {
+            for(SchoolBoard s:schoolBoardsTmp)
                 addNewPlayer(s.getNickname(), s.getCharacter());
-            }
-        } catch (FileNotFoundException e) { e.printStackTrace();
-        } catch (IOException e) { e.printStackTrace();
-        } catch (ClassNotFoundException e) { e.printStackTrace(); }
+        } catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
     }
     public void restoreGame(){
-        TurnInfo turnInfosTmp;
-        ArrayList<Queue> queueTmp;
-        ArrayList<SchoolBoard> schoolBoardsTmp;
-        ArrayList<Island> islandsTmp;
-        ArrayList<Cloud> cloudsTmp;
-        ArrayList<Hand> handsTmp;
-        ArrayList<Integer> bagTmp;
-        ArrayList<Special> specialsListTmp;
-
         try{
             ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
 
             inputFile.readObject();   //I have to read all object in file, this first object is GameInfo but now is useless
-            turnInfosTmp = (TurnInfo) inputFile.readObject();
-            queueTmp = (ArrayList<Queue>) inputFile.readObject();
-            schoolBoardsTmp = (ArrayList<SchoolBoard>) inputFile.readObject();
-            islandsTmp = (ArrayList<Island>) inputFile.readObject();
-            cloudsTmp = (ArrayList<Cloud>) inputFile.readObject();
-            handsTmp = (ArrayList<Hand>) inputFile.readObject();
-            bagTmp = (ArrayList<Integer>) inputFile.readObject();
-            specialsListTmp = (ArrayList<Special>) inputFile.readObject();
+
+            turnStatusRestore((TurnInfo) inputFile.readObject());
+            queueRestore((ArrayList<Queue>) inputFile.readObject());
+            schoolsRestore((ArrayList<SchoolBoard>) inputFile.readObject());
+            islandsRestore((ArrayList<Island>) inputFile.readObject());
+            cloudsRestore((ArrayList<Cloud>) inputFile.readObject());
+            handAndCoinsRestore((ArrayList<Hand>) inputFile.readObject());
+            bagRestore((ArrayList<Integer>) inputFile.readObject());
+            specialRestore((ArrayList<Special>) inputFile.readObject());
 
             inputFile.close();
+        } catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
+    }
+    private void turnStatusRestore(TurnInfo turnInfosTmp){
+        controller.setCurrentUser(turnInfosTmp.getCurrentUser());
+        controller.setJumpPhaseForRestore(turnInfosTmp.getPhase());
+    }
+    private void queueRestore(ArrayList<Queue> queueTmp){
+        ArrayList<Integer> playerRef = new ArrayList<>();
+        ArrayList<Integer> valueCard = new ArrayList<>();
+        ArrayList<Integer> maxMoveMotherNature = new ArrayList<>();
 
-            //Turn status restore
-            controller.setCurrentUser(turnInfosTmp.getCurrentUser());
-            controller.setPhase(turnInfosTmp.getPhase());
-            //Queue Restore
-            ArrayList<Integer> playerRef = new ArrayList<>();
-            ArrayList<Integer> valueCard = new ArrayList<>();
-            ArrayList<Integer> maxMoveMotherNature = new ArrayList<>();
-            for(Queue q:queueTmp){
-                playerRef.add(q.getPlayerRef());
-                valueCard.add(q.getValueCard());
-                maxMoveMotherNature.add(q.getMaxMoveMotherNature());
-            }
-            controller.queueRestore(playerRef,valueCard,maxMoveMotherNature);
-            //Schools Restore
-            for(int i = 0; i < numberOfPlayers; i++){
-                int[] studentsEntrance = schoolBoardsTmp.get(i).getStudentsEntrance();
-                int[] studentsTable = schoolBoardsTmp.get(i).getStudentsTable();
-                int towers = schoolBoardsTmp.get(i).getTowersNumber();
-                boolean[] professors = schoolBoardsTmp.get(i).getProfessors();
-                String team = schoolBoardsTmp.get(i).getTeam();
-                controller.schoolRestore(i,studentsEntrance,studentsTable,towers,professors,team);
-            }
-            //Islands Restore
-            if(islandsTmp.size() != 12) controller.setIslandsSizeAfterRestore(islandsTmp.size());
-            for(int i = 0; i < islandsTmp.size(); i++){
-                if(islandsTmp.get(i).isMotherPosition()) controller.restoreMotherPose(i);
-                int[] students = islandsTmp.get(i).getStudentsIsland();
-                int towerValue = islandsTmp.get(i).getTowersNumber();
-                String towerTeam = islandsTmp.get(i).getTowersColor();
-                int inhibited = islandsTmp.get(i).getIsInhibited();
-                controller.islandRestore(i,students,towerValue,towerTeam,inhibited);
-            }
-            //Clouds Restore
-            for(int i = 0; i < numberOfPlayers; i++){
-                int[] students = cloudsTmp.get(i).getStudents();
-                controller.cloudRestore(i,students);
-            }
-            //Hands and Coins restore
-            for(int i = 0; i < numberOfPlayers; i++){
-                ArrayList<String> cards = handsTmp.get(i).getCards();
-                int coins = handsTmp.get(i).getCoins();
-                controller.handAndCoinsRestore(i,cards,coins);
-                hands.get(i).setLastCard(handsTmp.get(i).getLastPlayedCard());
-            }
-            for(int i = 0; i < numberOfPlayers; i++)
-                server.lastCardPlayedFromAPlayer(i, getLastPlayedCard(i));
-            //Bag Restore
-            controller.bagRestore(bagTmp);
-            //Special Restore
-            for (int i = 0; i < 3; i++) {
-                int indexSpecial = specialsListTmp.get(i).getIndexSpecial();
-                controller.specialRestore(indexSpecial,
-                        specialsListTmp.get(i).getCost());
-                if(indexSpecial == 1 || indexSpecial == 7 || indexSpecial == 11)
-                    controller.specialStudentRestore(indexSpecial,
-                            specialsListTmp.get(i).getColorForSpecial1or7or11());
-                else if(indexSpecial == 5)
-                    controller.noEntryCardsRestore(specialsListTmp.get(i).getNoEntryCards());
-            }
-        } catch (FileNotFoundException e) { e.printStackTrace();
-        } catch (IOException e) { e.printStackTrace();
-        } catch (ClassNotFoundException e) { e.printStackTrace(); }
+        for(Queue q:queueTmp){
+            playerRef.add(q.getPlayerRef());
+            valueCard.add(q.getValueCard());
+            maxMoveMotherNature.add(q.getMaxMoveMotherNature());
+        }
+        controller.queueRestore(playerRef,valueCard,maxMoveMotherNature);
+    }
+    private void schoolsRestore(ArrayList<SchoolBoard> schoolBoardsTmp){
+        for(int i = 0; i < numberOfPlayers; i++){
+            int[] studentsEntrance = schoolBoardsTmp.get(i).getStudentsEntrance();
+            int[] studentsTable = schoolBoardsTmp.get(i).getStudentsTable();
+            int towers = schoolBoardsTmp.get(i).getTowersNumber();
+            boolean[] professors = schoolBoardsTmp.get(i).getProfessors();
+            String team = schoolBoardsTmp.get(i).getTeam();
+            controller.schoolRestore(i,studentsEntrance,studentsTable,towers,professors,team);
+        }
+    }
+    private void islandsRestore(ArrayList<Island> islandsTmp){
+        if(islandsTmp.size() != 12) controller.setIslandsSizeAfterRestore(islandsTmp.size());
+        for(int i = 0; i < islandsTmp.size(); i++){
+            if(islandsTmp.get(i).isMotherPosition()) controller.restoreMotherPose(i);
+            int[] students = islandsTmp.get(i).getStudentsIsland();
+            int towerValue = islandsTmp.get(i).getTowersNumber();
+            String towerTeam = islandsTmp.get(i).getTowersColor();
+            int inhibited = islandsTmp.get(i).getIsInhibited();
+            controller.islandRestore(i,students,towerValue,towerTeam,inhibited);
+        }
+    }
+    private void cloudsRestore(ArrayList<Cloud> cloudsTmp){
+        for(int i = 0; i < numberOfPlayers; i++){
+            int[] students = cloudsTmp.get(i).getStudents();
+            controller.cloudRestore(i,students);
+        }
+    }
+    private void handAndCoinsRestore(ArrayList<Hand> handsTmp){
+        for(int i = 0; i < numberOfPlayers; i++){
+            ArrayList<String> cards = handsTmp.get(i).getCards();
+            int coins = handsTmp.get(i).getCoins();
+            controller.handAndCoinsRestore(i,cards,coins);
+            hands.get(i).setLastCard(handsTmp.get(i).getLastPlayedCard());
+        }
+        for(int i = 0; i < numberOfPlayers; i++)
+            server.lastCardPlayedFromAPlayer(i, getLastPlayedCard(i));
+    }
+    private void bagRestore(ArrayList<Integer> bagTmp){  controller.bagRestore(bagTmp); }
+    private void specialRestore(ArrayList<Special> specialsListTmp){
+        for (int i = 0; i < 3; i++) {
+            int indexSpecial = specialsListTmp.get(i).getIndexSpecial();
+            controller.specialRestore(indexSpecial, specialsListTmp.get(i).getCost());
+            if(indexSpecial == 1 || indexSpecial == 7 || indexSpecial == 11)
+                controller.specialStudentRestore(indexSpecial, specialsListTmp.get(i).getColorForSpecial1or7or11());
+            else if(indexSpecial == 5)
+                controller.noEntryCardsRestore(specialsListTmp.get(i).getNoEntryCards());
+        }
     }
     public int checkRestoreNickname(String nickname){
         int checker = -1;
@@ -309,8 +319,7 @@ public class VirtualView
         if (place == 0) {
             schoolBoards.get(componentRef).setTowersNumber(towersNumber);
             if(numberOfPlayers != 4) server.towersChangeInSchool(componentRef, towersNumber);
-            else if(numberOfPlayers == 4)
-                if(componentRef != 1 && componentRef != 3) server.towersChangeInSchool(componentRef, towersNumber);
+            else if(componentRef != 1 && componentRef != 3) server.towersChangeInSchool(componentRef, towersNumber);
         } else if (place == 1) {
             islands.get(componentRef).setTowersNumber(towersNumber);
             server.towersChangeOnIsland(componentRef, towersNumber);
@@ -378,7 +387,7 @@ public class VirtualView
         specialList.get(findSpecial(specialIndex)).setColorForSpecial1or7or11(color,value);
     }
 
-    private class TurnInfo implements Serializable{
+    private static class TurnInfo implements Serializable{
         private int currentUser;
         private String phase;
 
@@ -390,10 +399,10 @@ public class VirtualView
         public int getCurrentUser() { return currentUser; }
         public String getPhase() { return phase; }
     }
-    private class Special implements Serializable{
+    private static class Special implements Serializable{
         private final int indexSpecial;
         private int cost;
-        private int[] colorForSpecial1or7or11;
+        private final int[] colorForSpecial1or7or11;
         private int noEntryCards;
 
         public Special(int indexSpecial, int cost) {
@@ -412,15 +421,15 @@ public class VirtualView
         public int getNoEntryCards() { return noEntryCards; }
     }
     //private class SchoolBoard keeps the state of each player's school board
-    private class SchoolBoard implements Serializable{
-        private String nickname;
+    private static class SchoolBoard implements Serializable{
+        private final String nickname;
         private boolean alreadyConnected;
-        private String character;
+        private final String character;
         private int team; //0: white, 1: black, 2:grey
-        private int[] studentsEntrance;
-        private int[] studentsTable;
+        private final int[] studentsEntrance;
+        private final int[] studentsTable;
         private int towersNumber;
-        private boolean[] professors;
+        private final boolean[] professors;
 
         public SchoolBoard(String nickname, String character){
             this.nickname = nickname;
@@ -451,8 +460,8 @@ public class VirtualView
         public int getTowersNumber() { return towersNumber; }
         public boolean[] getProfessors() { return professors; }
     }
-    private class Island implements Serializable{
-        private int[] studentsIsland;
+    private static class Island implements Serializable{
+        private final int[] studentsIsland;
         private int towersNumber;
         private int towersColor;
         private int isInhibited;
@@ -482,15 +491,15 @@ public class VirtualView
         }
         public int getIsInhibited() { return isInhibited; }
     }
-    private class Cloud implements Serializable{
-        private int[] students;
+    private static class Cloud implements Serializable{
+        private final int[] students;
 
         public Cloud(){ this.students = new int[]{0, 0, 0, 0, 0}; }
 
         public void setCloudStudents(int color, int newStudentsValue) { students[color] = newStudentsValue; }
         public int[] getStudents() { return students; }
     }
-    private class Hand implements Serializable{
+    private static class Hand implements Serializable{
         int coins;
         String lastPlayedCard;
         ArrayList<String> cards;
@@ -509,7 +518,7 @@ public class VirtualView
         public ArrayList<String> getCards() { return cards; }
         public void setCards(ArrayList<String> cards) { this.cards = cards;}
     }
-    private class Queue implements Serializable{
+    private static class Queue implements Serializable{
         private int playerRef;
         private int valueCard;
         private int maxMoveMotherNature;

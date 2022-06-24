@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Game contains all manager of the model. It is the connection point between the other classes of this package.
  * Also, it is the class that is exposed to the controller.
+ * In this class are setting listeners of all other class.
  */
 public class Game implements GameManager{
     private final ArrayList<RoundStrategy> roundStrategies;
@@ -68,6 +69,10 @@ public class Game implements GameManager{
         else if(string.equalsIgnoreCase("GREY")) return Team.GREY;
         return Team.NONE;
     }
+
+    /**
+     * Extract random 3 specials, then its use factory to create them.
+     */
     @Override
     public void createSpecial(){
         RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
@@ -179,6 +184,11 @@ public class Game implements GameManager{
         queueManager.queueRestore(playerRef,valueCard,maxMoveMotherNature);
     }
 
+    /**
+     * Recreate special of the last saved game.
+     * @param specialIndex reference of the special;
+     * @param cost of the special in the last game;
+     */
     @Override
     public void specialRestore(int specialIndex, int cost){
         RoundStrategyFactory roundStrategyFactor = new RoundStrategyFactory(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
@@ -190,16 +200,27 @@ public class Game implements GameManager{
 
         specialListener.notifySpecialList(extractedSpecials, getSpecialCost());
     }
+
+    /**
+     * Restore the student on the special. Used by special1, special7 and special11.
+     * @param indexSpecial reference of the special;
+     * @param students to restore on the special;
+     */
     @Override
     public void specialStudentRestore(int indexSpecial, int[] students){
         for(int i = 0; i < 3; i++)
             if (extractedSpecials.get(i) == indexSpecial)
                 roundStrategies.get(i+1).restoreStudentSpecial(students);
     }
+
+    /**
+     * Restore noEntry cards on special5.
+     * @param numCards to restore;
+     */
     @Override
     public void noEntryCardsRestore(int numCards){
         for(int i = 0; i < 3; i++)
-            if (extractedSpecials.get(i) == indexSpecial)
+            if (extractedSpecials.get(i) == 5)
                 roundStrategies.get(i+1).noEntryCardsRestore(numCards);
     }
 

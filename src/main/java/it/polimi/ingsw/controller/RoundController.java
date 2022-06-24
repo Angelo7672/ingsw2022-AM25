@@ -3,6 +3,9 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.GameManager;
 import it.polimi.ingsw.server.ControllerServer;
 
+/**
+ * RoundController manage the round subdivided in planningPhase and actionPhase.
+ */
 public class RoundController extends Thread{
     private final ControllerServer server;
     private final GameManager gameManager;
@@ -10,9 +13,17 @@ public class RoundController extends Thread{
     private boolean end;
     private boolean jumpToActionPhase;
     private boolean restoreGame;
-    private final Controller controller;
+    private final Match controller;
 
-    public RoundController(Controller controller,GameManager gameManager,ControllerServer server,int numberOfPlayers, boolean jumpToActionPhase){
+    /**
+     * Create a new RoundController ready to start.
+     * @param controller controller reference;
+     * @param gameManager gameManager reference;
+     * @param server server reference;
+     * @param numberOfPlayers in this match;
+     * @param jumpToActionPhase indicates if, when restored, we have to jump to action phase;
+     */
+    public RoundController(Match controller, GameManager gameManager, ControllerServer server, int numberOfPlayers, boolean jumpToActionPhase){
         this.server = server;
         this.gameManager = gameManager;
         this.numberOfPlayers = numberOfPlayers;
@@ -22,6 +33,10 @@ public class RoundController extends Thread{
         this.controller = controller;
     }
 
+    /**
+     * While there isn't a winner team, loop planning and action phase.
+     * When game have to finish at the end of turn, check which team win this match and send it to server.
+     */
     @Override
     public void run(){
         while (controller.getWinner().equals("NONE")) {
@@ -36,6 +51,9 @@ public class RoundController extends Thread{
         }
     }
 
+    /**
+     * Manage planning phase. Comunicate with server and wait user decision.
+     */
     private synchronized void planningPhase(){
         gameManager.refreshStudentsCloud();
         gameManager.queueForPlanificationPhase();
@@ -47,28 +65,32 @@ public class RoundController extends Thread{
         }
     }
 
+    /**
+     * Manage action phase. Comunicate with server and wait user decision.
+     * Save the game at the beginning and at the end of action phase of a player.
+     */
     private synchronized void actionPhase(){
-        if(!restoreGame) {
-            gameManager.inOrderForActionPhase();
-            controller.saveGame();
-            for (controller.setCurrentUser(0); controller.getCurrentUser() < numberOfPlayers; controller.incrCurrentUser()) {
-                server.unlockActionPhase(gameManager.readQueue(controller.getCurrentUser()));
-                server.startActionPhase(gameManager.readQueue(controller.getCurrentUser()));
-                try { this.wait();
-                } catch (InterruptedException e) { e.printStackTrace(); }
+        try{
+            if(!restoreGame) {
+                gameManager.inOrderForActionPhase();
                 controller.saveGame();
+                for (controller.setCurrentUser(0); controller.getCurrentUser() < numberOfPlayers; controller.incrCurrentUser()) {
+                    server.unlockActionPhase(gameManager.readQueue(controller.getCurrentUser()));
+                    server.startActionPhase(gameManager.readQueue(controller.getCurrentUser()));
+                    this.wait();
+                    controller.saveGame();
+                }
+            }else {
+                restoreGame = false;
+                while(controller.getCurrentUser() < numberOfPlayers){
+                    server.unlockActionPhase(gameManager.readQueue(controller.getCurrentUser()));
+                    server.startActionPhase(gameManager.readQueue(controller.getCurrentUser()));
+                    this.wait();
+                    controller.saveGame();
+                    controller.incrCurrentUser();
+                }
             }
-        }else {
-            restoreGame = false;
-            while(controller.getCurrentUser() < numberOfPlayers){
-                server.unlockActionPhase(gameManager.readQueue(controller.getCurrentUser()));
-                server.startActionPhase(gameManager.readQueue(controller.getCurrentUser()));
-                try { this.wait();
-                } catch (InterruptedException e) { e.printStackTrace(); }
-                controller.saveGame();
-                controller.incrCurrentUser();
-            }
-        }
+        } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
     public void setEnd(boolean end) { this.end = end; }
