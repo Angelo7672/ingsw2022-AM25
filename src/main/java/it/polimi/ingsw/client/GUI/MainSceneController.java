@@ -346,7 +346,7 @@ public class MainSceneController implements SceneController {
     }
     public void initializeScene() {
         System.out.println(Thread.currentThread());
-        Platform.runLater(()->{
+        //Platform.runLater(()->{
             System.out.println("initialize scene method");
             System.out.println(Thread.currentThread());
             if (numberOfPlayers == 2) {
@@ -399,7 +399,7 @@ public class MainSceneController implements SceneController {
             actionAllowed=-1; //not your turn
             System.out.println("ALL initialized");
             //gui.phaseHandler("PlanningPhase");
-        });
+       // });
 
 
     }
