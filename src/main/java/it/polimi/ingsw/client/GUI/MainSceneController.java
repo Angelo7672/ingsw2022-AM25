@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,8 +62,6 @@ public class MainSceneController implements SceneController {
     private final String GREYTOWER = "/graphics/wooden_pieces/grey_tower.png";
 
     private final int SPACE = 18;
-
-
 
     @FXML private Button useSpecialButton;
     @FXML private AnchorPane islandsPane;
@@ -688,38 +687,36 @@ public class MainSceneController implements SceneController {
     }
 
     public void setTowersSchool(int schoolRef, int towersNumber) {
-        int oldTowersNumber = towersMap.get(schoolRef).getChildren().size();
+        AnchorPane towerPane = towersMap.get(schoolRef);
+        int oldTowersNumber = towerPane.getChildren().size();
         ImageView tower;
-        Boolean ok=false;
-        /*if(towersNumber<oldTowersNumber){
-            while(!ok){
-                for(int i=oldTowersNumber; i>=0; i--){
-                    tower= (ImageView) towersMap.get(schoolRef).getChildren().get(i);
-                    if(tower.isVisible()){
-                        tower.setVisible(false);
-                        ok=true;
-                    }
+        Boolean ok = false;
+        if(towersNumber<oldTowersNumber){
+            for(int i=oldTowersNumber-1; i>=0 && !ok; i--) {
+                tower = (ImageView) towerPane.getChildren().get(i);
+                if (tower.isVisible()) {
+                    tower.setVisible(false);
+                    ok = true;
                 }
-
             }
-
         } else {
-            while(!ok){
-                for(int i=0; i<oldTowersNumber; i++){
+                for(int i=0; i<oldTowersNumber && !ok; i++){
                     tower= (ImageView) towersMap.get(schoolRef).getChildren().get(i);
-                    if(!tower.isVisible()){
+                    if(!tower.isVisible()) {
                         tower.setVisible(true);
-                        ok=true;
-                    }
+                        ok = true;
                 }
 
             }
-        }*/
+        }
     }
 
     public void setTowersIsland(int islandRef, int towersNumber) {
         ImageView towerImage = (ImageView) islandsMap.get(islandRef).getChildren().get(2);
         Label towerLabel = (Label) islandsMap.get(islandRef).getChildren().get(13);
+        ImageView islandImage = (ImageView) islandsMap.get(islandRef).getChildren().get(0);
+        double currentH = islandImage.getFitHeight();
+        double currentW = islandImage.getFitWidth();
 
         towerLabel.setText(String.valueOf(towersNumber));
         if(towersNumber!=0){
@@ -729,6 +726,8 @@ public class MainSceneController implements SceneController {
             towerLabel.setVisible(false);
             towerImage.setVisible(false);
         }
+        islandImage.setFitWidth(currentW+2);
+        islandImage.setFitHeight(currentH+2);
     }
 
     public void unifyIsland(int islandToDelete){
@@ -766,4 +765,22 @@ public class MainSceneController implements SceneController {
             actionLabel.setVisible(false);
         }
     }
+
+    public void setTowerColor(int islandRef, int newColor) {
+        ImageView tower = (ImageView) islandsMap.get(islandRef).getChildren().get(2);
+        Label towerLabel= (Label) islandsMap.get(islandRef).getChildren().get(13);
+
+        if(newColor == 0){
+            tower.setImage(new Image(WHITETOWER));
+            towerLabel.setTextFill(Color.BLACK);
+        } else if(newColor == 1){
+            tower.setImage(new Image(BLACKTOWER));
+            towerLabel.setTextFill(Color.WHITE);
+        } else if(newColor == 2){
+            tower.setImage(new Image(GREYTOWER));
+            towerLabel.setTextFill(Color.BLACK);
+        }
+    }
+
+
 }

@@ -210,10 +210,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public void phaseHandler(String phase) {
-        //PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
-        //ActionPhaseService actionPhaseService = new ActionPhaseService();
-        //SetViewService setViewService = new SetViewService(this);
-
         System.out.println("started phase handler!");
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
         switch (phase) {
@@ -224,31 +220,17 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 initializeMainService.start();
             }
             case "PlanningPhase" -> {
-                planningPhaseService = new PlanningPhaseService(this);
                 initializeMainService.cancel();
-
-                //if (planningPhaseService.getState()== Worker.State.READY)
-                //  planningPhaseService.restart();
-                //else{
+                planningPhaseService = new PlanningPhaseService(this);
                 planningPhaseService.start();
                 switchScene(MAIN);
-                //}
-                //startPlanningPhase();
-                //System.out.println("planning finished");
             }
-            case "PlayCard" -> /*switchScene(CARDS);*/ loadScene(CARDS);
+            case "PlayCard" -> loadScene(CARDS);
 
             case "ActionPhase" -> {
                 System.out.println("actionPhase");
-                //planningPhaseService.cancel();
-                //if(actionPhaseService.getState()==Worker.State.READY)
-                //actionPhaseService.start();
-                //else {
                 actionPhaseService= new ActionPhaseService();
                 actionPhaseService.start();
-                // }
-                //switchScene(MAIN);
-
             }
             case "StartTurn" -> controller.setCurrentPlayer();
         }
@@ -280,8 +262,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         @Override
         protected void succeeded() {
             System.out.println("Planning phase service on succeded");
-            CardsSceneController controller= (CardsSceneController) sceneControllersMap.get(CARDS);
-            controller.sceneInitialize();
+            //CardsSceneController controller= (CardsSceneController) sceneControllersMap.get(CARDS);
+            //controller.sceneInitialize();
             phaseHandler("PlayCard");
         }
 
@@ -355,294 +337,197 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 @Override
                 protected Boolean call() throws Exception {
                     System.out.println(Thread.currentThread());
-                    Boolean ok = false;
-                    System.out.println("initialize main scene");
-                    System.out.println("View is: " + view);
-                    //Platform.runLater(()->{
+                    Boolean ok;
                     MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
                     CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
                     controller.setNumberOfPlayers(view.getNumberOfPlayers());
                     cloudsSceneController.initializeCloudScene(view.getNumberOfPlayers());
                     controller.setExpertMode(view.getExpertMode());
-                    System.out.println("aaaaa");
-                    System.out.println("Number of players: " + view.getNumberOfPlayers());
                     controller.initializeScene();
-                    System.out.println("initializedScene completed");
-
-                    //});
                     ok = true;
-                    //do {
-                    //for (int i = 0; i < view.getNumberOfPlayers(); i++) {
-                    // System.out.println("bbbbbb");
-                    //controller.setUserInfo(view.getNickname(i), view.getCharacter(i), i);
-                    //controller.setUserInfo(nickname, character, i);
-                    //System.out.println("User info: " + view.getNickname(i) + " " + view.getCharacter(i));
-                    //}
-                    // } while (!view.isInitializedView());
 
-
-                    //sendInitialInformation();
-                    //phaseHandler("PlanningPhase");
-                    System.out.println("returning ok: " + ok);
                     return ok;
                 }
             };
         }
     }
 
-        public void initializedSavedScene(int numberOfPlayer, boolean expertMode) {
-            SavedSceneController controller = (SavedSceneController) sceneControllersMap.get(SAVED);
-            String expertModeString;
-            if (expertMode) expertModeString = "YES";
-            else expertModeString = "NO";
-            controller.initializedScene(numberOfPlayer, expertModeString);
-        }
-
-    /*public void initializeMainScene() {
-        System.out.println("initialize main scene");
-        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-        CloudsSceneController cloudsSceneController= (CloudsSceneController) sceneControllersMap.get(CLOUDS);
-        controller.setNumberOfPlayers(view.getNumberOfPlayers());
-        cloudsSceneController.initializeCloudScene(view.getNumberOfPlayers());
-        controller.setExpertMode(view.getExpertMode());
-        System.out.println("1.number of players and expert mode are set: "+view.getNumberOfPlayers()+" "+view.getExpertMode());
-
-        /*for (int i = 0; i < view.getNumberOfPlayers(); i++) {
-               /* do {
-                    view.getNickname(i);
-                    view.getCharacter(i);
-                } while (view.getNickname(i)==null || view.getCharacter(i)==null);
-
-
-            controller.setUserInfo(view.getNickname(i), view.getCharacter(i), i);
-            System.out.println("2.set Nickname and character : "+view.getNickname(i)+view.getCharacter(i));
-            //controller.setUserInfo(nickname, character, i);
-        }
-        System.out.println("3. Nick and character set");
-
-        controller.initializeScene();
-        //sendInitialInformation();
-        //System.out.println("calling phase handler");
-        phaseHandler("PlanningPhase");
-        //startGame();
-
-    }*/
+    public void initializedSavedScene(int numberOfPlayer, boolean expertMode) {
+        SavedSceneController controller = (SavedSceneController) sceneControllersMap.get(SAVED);
+        String expertModeString;
+        if (expertMode) expertModeString = "YES";
+        else expertModeString = "NO";
+        controller.initializedScene(numberOfPlayer, expertModeString);
+    }
 
     //used to load a scene in a new stage (window), instead of the primaryStage
     public void loadScene(String sceneName) {
         Stage stage = new Stage();
         if(sceneName.equals(CARDS)){
-            //Platform.runLater(()->{
-                CardsSceneController controller = (CardsSceneController) sceneControllersMap.get(sceneName);
-                controller.sceneInitialize();
-                stage.setScene(scenesMap.get(sceneName));
-            //});
+            CardsSceneController controller = (CardsSceneController) sceneControllersMap.get(sceneName);
+            stage.setScene(scenesMap.get(sceneName));
         }
         stage.centerOnScreen();
         stage.show();
 
     }
 
-        public void setSocket(Socket socket) {
-            this.socket = socket;
-        }
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
 
-        public void setProxy(Proxy_c proxy) {
-            this.proxy = proxy;
-        }
+    public void setProxy(Proxy_c proxy) {
+        this.proxy = proxy;
+    }
 
-    /*public void sendInitialInformation(){
-        if (isMainSceneInitialized) {
-            System.out.println("send initial information");
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);;
-            controller.setMotherPosition(initialMotherPosition);
-            System.out.println("set mother pos: "+initialMotherPosition);
-            for (int i = 0; i < view.getNumberOfPlayers(); i++) {
-                for (int j = 0; j < 5; j++) {
-                    System.out.println("Initial students entrance :"+initialStudentsEntrance.get(i)[j]);
-                    controller.setStudentsEntrance(i, j, initialStudentsEntrance.get(i)[j]);
-                }
-                controller.setTowersSchool(i, initialTowersSchool.get(i));
-                System.out.println("initial towers school: "+initialTowersSchool.get(i));
-                }
+    public void setYourNickname(String yourNickname) {
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        controller.setYourNickname(yourNickname);
+    }
 
-            for (int i = 0; i < initialStudentsIsland.size(); i++) {
-                for (int j = 0; j < 5; j++) {
-                    controller.setStudentsIsland(i, j, initialStudentsIsland.get(i)[j]);
-                    System.out.println("initial students island: "+initialStudentsIsland.get(i)[j]);
-                }
-            }
-        }
-        System.out.println("ccccc");
-        CloudsSceneController controller= (CloudsSceneController) sceneControllersMap.get(CLOUDS);
-        for(int i=0; i< view.getNumberOfPlayers(); i++){
-            for (int j = 0; j < 5; j++) {
-                controller.setStudentsCloud(i, j, initialStudentsCloud.get(i)[j]);
-                System.out.println("Initial students cloud: "+initialStudentsCloud.get(i)[j]);
-            }
-        }
-        System.out.println("initial information sent");
-    }*/
+    public void setNotYourTurn() {
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        controller.setActionAllowed(-1);
+    }
 
 
-        @Override
-        public void userInfoNotify(String nickname, String character, int playerRef) {
-            Platform.runLater(()->{
-                System.out.println("NOTIFY: userInfo: "+nickname+" "+character+" "+playerRef);
-                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-                controller.setNickname(nickname, playerRef);
-                controller.setCharacter(character, playerRef);
-            });
-
-        }
-
-
-        @Override
-        public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
-            //controller.setNewCoinsValue(playerRef, newCoinsValue);
-        }
-
-        @Override
-        public void notifyInhibited(int islandRef, int isInhibited) {
-            //controller.setInhibitedIsland(islandRef, isInhibited);
-        }
-
-        @Override
-        public void notifyIslandChange(int islandToDelete) {
-            Platform.runLater(() -> {
-                System.out.println("NOTIFY: islandChange- to delete: "+islandToDelete);
-                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-                controller.unifyIsland(islandToDelete);
-            });
-        }
-
-        @Override
-        public void notifyMotherPosition(int newMotherPosition) {
-            Platform.runLater(() -> {
-                System.out.println("NOTIFY: Mother Position : "+newMotherPosition);
-                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-                //if(isMainSceneInitialized){
-                controller.setMotherPosition(newMotherPosition);
-                //} else
-                //this.initialMotherPosition=newMotherPosition;
-
-            });
-
-        }
-
-        @Override
-        public void notifyPlayedCard(int playerRef, String assistantCard) {
-            Platform.runLater(() -> {
-                System.out.println("NOTIFY: Played Card: "+assistantCard+" "+playerRef);
-                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-                controller.setLastPlayedCard(playerRef, assistantCard);
-            });
-
-        }
-
-        //restore
-        @Override
-        public void notifyHand(int playerRef, ArrayList<String> hand) {
+    @Override
+    public void userInfoNotify(String nickname, String character, int playerRef) {
+        Platform.runLater(()->{
+            System.out.println("NOTIFY: userInfo: "+nickname+" "+character+" "+playerRef);
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-        }
+            controller.setNickname(nickname, playerRef);
+            controller.setCharacter(character, playerRef);
+        });
 
-        @Override
-        public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
-            Platform.runLater(() -> {
-                System.out.println("NOTIFY: professors: "+playerRef+ ","+color+","+newProfessorValue);
-                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-                controller.setProfessor(playerRef, color, newProfessorValue);
-            });
-        }
+    }
 
-        @Override
-        public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
-            Platform.runLater(() -> {
 
-                System.out.println("NOTIFY: student change: "+place+","+componentRef+","+color+","+newStudentsValue);;
-                MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
-                CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
+    @Override
+    public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
+        //controller.setNewCoinsValue(playerRef, newCoinsValue);
+    }
 
-                //if(isMainSceneInitialized){
-                switch (place) {
-                    case 0 -> mainSceneController.setStudentsEntrance(componentRef, color, newStudentsValue);
-                    case 1 -> mainSceneController.setStudentsTable(componentRef, color, newStudentsValue);
-                    case 2 -> mainSceneController.setStudentsIsland(componentRef, color, newStudentsValue);
-                    case 3 -> cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);
+    @Override
+    public void notifyInhibited(int islandRef, int isInhibited) {
+        //controller.setInhibitedIsland(islandRef, isInhibited);
+    }
+
+    @Override
+    public void notifyIslandChange(int islandToDelete) {
+        Platform.runLater(() -> {
+            System.out.println("NOTIFY: islandChange- to delete: "+islandToDelete);
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.unifyIsland(islandToDelete);
+        });
+    }
+
+    @Override
+    public void notifyMotherPosition(int newMotherPosition) {
+        Platform.runLater(() -> {
+            System.out.println("NOTIFY: Mother Position : "+newMotherPosition);
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            //if(isMainSceneInitialized){
+            controller.setMotherPosition(newMotherPosition);
+            //} else
+            //this.initialMotherPosition=newMotherPosition;
+
+        });
+
+    }
+
+    @Override
+    public void notifyPlayedCard(int playerRef, String assistantCard) {
+        Platform.runLater(() -> {
+            System.out.println("NOTIFY: Played Card: "+assistantCard+" "+playerRef);
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.setLastPlayedCard(playerRef, assistantCard);
+        });
+
+    }
+
+    //restore
+    @Override
+    public void notifyHand(int playerRef, ArrayList<String> hand) {
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+    }
+
+    @Override
+    public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
+        Platform.runLater(() -> {
+            System.out.println("NOTIFY: professors: "+playerRef+ ","+color+","+newProfessorValue);
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.setProfessor(playerRef, color, newProfessorValue);
+        });
+    }
+
+    @Override
+    public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
+        Platform.runLater(() -> {
+
+            System.out.println("NOTIFY: student change: "+place+","+componentRef+","+color+","+newStudentsValue);;
+            MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
+            CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
+
+            //if(isMainSceneInitialized){
+            switch (place) {
+                case 0 -> mainSceneController.setStudentsEntrance(componentRef, color, newStudentsValue);
+                case 1 -> mainSceneController.setStudentsTable(componentRef, color, newStudentsValue);
+                case 2 -> mainSceneController.setStudentsIsland(componentRef, color, newStudentsValue);
+                case 3 -> cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);
+            }
+            //}
+        /*else{
+            int[] students;
+            switch (place) {
+                case 0 -> {
+                    students= initialStudentsEntrance.get(componentRef);
+                    students[color]= newStudentsValue;
                 }
-                //}
-            /*else{
-                int[] students;
-                switch (place) {
-                    case 0 -> {
-                        students= initialStudentsEntrance.get(componentRef);
-                        students[color]= newStudentsValue;
-                    }
-                    case 2 -> {
-                        students= initialStudentsIsland.get(componentRef);
-                        students[color]= newStudentsValue;
-                    }
-
-                    case 3 -> {
-                        students= initialStudentsCloud.get(componentRef);
-                        students[color]=newStudentsValue;
-                    }
-
+                case 2 -> {
+                    students= initialStudentsIsland.get(componentRef);
+                    students[color]= newStudentsValue;
                 }
-            }*/
-            });
-        }
 
-
-        @Override
-        public void notifyTowersChange(int place, int componentRef, int towersNumber) {
-            Platform.runLater(() -> {
-                System.out.println("NOTIFY: towers change: "+place +","+componentRef+","+towersNumber);
-                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-                //if(isMainSceneInitialized){
-                if (place == 0) {
-                    controller.setTowersSchool(componentRef, towersNumber);
-                } else if (place == 1) {
-                    controller.setTowersIsland(componentRef, towersNumber);
+                case 3 -> {
+                    students= initialStudentsCloud.get(componentRef);
+                    students[color]=newStudentsValue;
                 }
-                //}
-            /*else{
-                if(place==0){
-                   initialTowersSchool.remove(componentRef);
-                   initialTowersSchool.put(componentRef, towersNumber);
-                }
-            }*/
 
-            });
-        }
+            }
+        }*/
+        });
+    }
 
-        @Override
-        public void notifyTowerColor(int islandRef, int newColor) {
-            Platform.runLater(() -> {
-                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-                System.out.println("NOTIFY tower color: "+islandRef+","+newColor);
-                // if(isMainSceneInitialized){
-                //controller.setTowerColor()
-                //}
 
-            });
-        }
+    @Override
+    public void notifyTowersChange(int place, int componentRef, int towersNumber) {
+        Platform.runLater(() -> {
+            System.out.println("NOTIFY: towers change: "+place +","+componentRef+","+towersNumber);
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            //if(isMainSceneInitialized){
+            if (place == 0) {
+                controller.setTowersSchool(componentRef, towersNumber);
+            } else if (place == 1) {
+                controller.setTowersIsland(componentRef, towersNumber);
+            }
+        });
+    }
+
+    @Override
+    public void notifyTowerColor(int islandRef, int newColor) {
+        Platform.runLater(() -> {
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            System.out.println("NOTIFY tower color: "+islandRef+","+newColor);
+            controller.setTowerColor(islandRef, newColor);
+        });
+    }
 
 
     @Override
     public void specialStudentsNotify(int special, int color, int value) {
 
     }
-
-        public void setYourNickname(String yourNickname) {
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            controller.setYourNickname(yourNickname);
-        }
-
-        public void setNotYourTurn() {
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            controller.setActionAllowed(-1);
-        }
 
 }
 

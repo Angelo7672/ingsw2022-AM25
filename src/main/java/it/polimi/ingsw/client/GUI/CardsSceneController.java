@@ -17,7 +17,7 @@ public class CardsSceneController implements SceneController{
     private GUI gui;
     private Exit proxy;
     private HashMap<Integer, String> currentPlayedCards;
-    private ArrayList<String> alreadyPlayedCards;
+    //private ArrayList<String> alreadyPlayedCards;
 
     @FXML private Button lionButton;
     @FXML private Button gooseButton;
@@ -37,7 +37,7 @@ public class CardsSceneController implements SceneController{
     public CardsSceneController(){
 
         currentPlayedCards= new HashMap<>();
-        alreadyPlayedCards = new ArrayList<>();
+        //alreadyPlayedCards = new ArrayList<>();
         playedCard="";
     }
 
@@ -79,8 +79,7 @@ public class CardsSceneController implements SceneController{
             }
 
             if (result.equalsIgnoreCase("ok")) {
-                //gui.constants.setCardPlayed(true);
-                alreadyPlayedCards.add(playedCard);
+                //alreadyPlayedCards.add(playedCard);
                 disableCard(playedCard);
                 Stage stage = (Stage) confirmButton.getScene().getWindow();
                 stage.close();
@@ -95,7 +94,7 @@ public class CardsSceneController implements SceneController{
     public void showErrorMessage(){
         errorMessage.setVisible(true);
     }
-    public void sceneInitialize(){
+    /*public void sceneInitialize(){
 
             for(String card : alreadyPlayedCards){
                 if(card.equalsIgnoreCase("lion")){
@@ -121,7 +120,7 @@ public class CardsSceneController implements SceneController{
                 }
             }
 
-    }
+    }*/
 
     public void disableCard(String card){
         if(card.equalsIgnoreCase("lion")){
@@ -157,6 +156,7 @@ public class CardsSceneController implements SceneController{
     public void setProxy(Exit proxy) {
         this.proxy=proxy;
     }
+
     public void setPlayedCard(int playerRef, String card){
         this.currentPlayedCards.put(playerRef, card);
     }
