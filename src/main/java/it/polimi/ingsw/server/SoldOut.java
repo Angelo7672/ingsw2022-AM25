@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 
 public class SoldOut extends Thread{
     private final ExecutorService executor;
-    private ServerSocket serverSocket;
+    private final ServerSocket serverSocket;
 
     public SoldOut(ServerSocket serverSocket){
         this.executor = Executors.newCachedThreadPool();
@@ -30,8 +30,8 @@ public class SoldOut extends Thread{
         }
     }
 
-    private class Expired implements Runnable{
-        private Socket socket;
+    private static class Expired implements Runnable{
+        private final Socket socket;
 
         public Expired(Socket socket){ this.socket = socket; }
 

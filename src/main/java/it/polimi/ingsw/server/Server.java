@@ -12,23 +12,39 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Server creates the server, comunicate with controller and send to it data received from clients. It also comunicate with the proxy and send to it data elaborated by controller.
+ */
 public class Server implements Entrance,ControllerServer{
     private ServerController controller;
     private final Exit proxy;
     private ExpertGame expertGame;
     private final String filename;
 
+    /**
+     * Create proxy and start it.
+     * @param port choose for our server;
+     */
     public Server(int port){
-        this.filename = "saveGame.bin";
+        this.filename = "saveGame.bin"; //file where we save our game for restore it in a second moment
         this.proxy = new Proxy_s(port,this);
         proxy.start();
     }
 
+    /**
+     * @return true if saveGame file is not empty.
+     */
     @Override
     public boolean checkFile(){
         File file = new File(filename);
         return file.length() != 0;
     }
+
+    /**
+     * Restore GameInfo from last saved game.
+     * @return a List of integer where the first item is the number of players in last saved game and the second item if it's 0 last saved game is in not exert mode, if it's 1
+     * last saved game is in expert mode.
+     */
     @Override
     public List<Integer> lastSavedGame(){
         List<Integer> lastPlayed = new ArrayList<>();
@@ -45,20 +61,53 @@ public class Server implements Entrance,ControllerServer{
         return lastPlayed;
     }
 
+    /**
+     * Create a new controller.
+     * @param numberOfPlayers number of players connected;
+     * @param expertMode indicates the game mode we want;
+     */
     @Override
     public void startController(int numberOfPlayers, boolean expertMode){ controller = new Controller(numberOfPlayers,expertMode,this, filename); }
+
+    /**
+     * @return the game mode of this match;
+     */
     @Override
     public boolean isExpertMode(){ return controller.isExpertMode(); }
+
+    /**
+     * Create a new empty game.
+     */
     @Override
     public void createGame(){ controller.createGame(); }
+
+    /**
+     * Initialize a new game.
+     */
     @Override
     public void initializeGame(){ controller.initializeGame(); }
+
+    /**
+     * Restore VirtualView adding players of last saved game ready for check it when client reconnected.
+     */
     @Override
     public void restoreVirtualView(){ controller.restoreVirtualView(); }
+
+    /**
+     * Restore last saved game.
+     */
     @Override
     public void restoreGame(){ controller.restoreGame(); }
+
+    /**
+     * Start the game.
+     */
     @Override
     public void startGame(){ controller.startGame(); }
+
+    /**
+     * Set Server ready for a game in expert mode.
+     */
     @Override
     public void setExpertGame(){
         expertGame = new ExpertGame(this, controller.getExtractedSpecials());
@@ -200,6 +249,7 @@ public class Server implements Entrance,ControllerServer{
 
     public static void main(String[] args) {
         System.out.println("Eriantys Server | Welcome!");
+        //todo: chiedere all'utente di inserire la porta
         new Server(2525);
     }
 }

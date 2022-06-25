@@ -1,14 +1,14 @@
 package it.polimi.ingsw.server.answer;
 
-public class StartTurn implements Answer{
+public class PlayCardAnswer implements Answer{
     private final String message;
 
-    public StartTurn() {
-        this.message = "Start your Action Phase!";
+    public PlayCardAnswer() {
+        this.message = "Play card!";
     }
 
     public String getMessage() {
         return message;
     }
-
 }
+

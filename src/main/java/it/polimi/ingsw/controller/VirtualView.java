@@ -383,32 +383,67 @@ public class VirtualView
         schoolBoards.get(playerRef).setProfessors(color, newProfessorValue);
         server.professorChangePropriety(playerRef, color, newProfessorValue);
     }
+
+    /**
+     * Notify new pose of mother nature. It also sends new pose to the server.
+     * @param newMotherPosition mother nature reference on island;
+     */
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
         islands.get(newMotherPosition).setMotherPosition(true);
         server.motherChangePosition(newMotherPosition);
     }
+
+    /**
+     * Notify the card played by a player. It also sends this last played card to the server.
+     * @param playerRef player reference;
+     * @param assistantCard card reference;
+     */
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
         hands.get(playerRef).setLastCard(assistantCard);
         hands.get(playerRef).cards.remove(assistantCard);
         server.lastCardPlayedFromAPlayer(playerRef, assistantCard);
     }
+
+    /**
+     * Notify to a user his hand after restore and keeps it saved.
+     * @param playerRef player reference;
+     * @param hand ArrayList of cards from last saved game;
+     */
     @Override
     public void notifyHand(int playerRef, ArrayList<String> hand) {
         hands.get(playerRef).setCards(hand);
         server.sendHandAfterRestore(playerRef,hand);
     }
+
+    /**
+     * Notify new value of coins of a user. It also sends new value to the server.
+     * @param playerRef player reference;
+     * @param newCoinsValue new coins value;
+     */
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
         hands.get(playerRef).setCoins(newCoinsValue);
         server.numberOfCoinsChangeForAPlayer(playerRef, newCoinsValue);
     }
+
+    /**
+     * Notify that two islands joined. It also sends new configuration to the server.
+     * @param islandToDelete island to delete because joined to an adjacent island;
+     */
     @Override
     public void notifyIslandChange(int islandToDelete) {
         islands.remove(islandToDelete);
         server.dimensionOfAnIslandIsChange(islandToDelete);
     }
+
+    /**
+     * Notify that number of tower has changed somewhere. It also sends new value to the server.
+     * @param place place == 0 -> school, place == 1 -> island;
+     * @param componentRef reference of the component in the respective list;
+     * @param towersNumber new towers number;
+     */
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
         if (place == 0) {
@@ -420,27 +455,66 @@ public class VirtualView
             server.towersChangeOnIsland(componentRef, towersNumber);
         }
     }
+
+    /**
+     * Notify a tower's change color on an island. It also sends new tower's color to the server.
+     * @param islandRef island reference;
+     * @param newColor new tower's color;
+     */
     @Override
     public void notifyTowerColor(int islandRef, int newColor) {
         islands.get(islandRef).setTowersColor(newColor);
         server.towerChangeColorOnIsland(islandRef, newColor);
     }
+
+    /**
+     * Notify that special5 put a noEntryCard on an island. It also sends island reference to the server.
+     * @param islandRef island reference;
+     * @param isInhibited is the number of noEntryCards on this island;
+     */
     @Override
     public void notifyInhibited(int islandRef, int isInhibited) {
         islands.get(islandRef).setInhibited(isInhibited);
         server.islandInhibited(islandRef, isInhibited);
     }
+
+    /**
+     * Notify a bag extraction and in case of bag is empty set that game will end at the end of the turn.
+     */
     @Override
     public void notifyBagExtraction() {
         bag.remove(0);
         if(bag.isEmpty()) controller.setEnd(true);
     }
+
+    /**
+     * Notify the entire bag to VirtualView when it is initialized or when special1 or special11 shuffle it, so that it is ready to been written on file.
+     * @param bag the entire bag of the model;
+     */
     @Override
     public void notifyBag(List<Integer> bag) { this.bag = bag; }
+
+    /**
+     * Notify the position on the queue of a player, so that it is ready to been written on file.
+     * @param queueRef queue reference;
+     * @param playerRef player reference;
+     */
     @Override
     public void notifyQueue(int queueRef, int playerRef) { queue.get(queueRef).setPlayerRef(playerRef); }
+
+    /**
+     * Notify the value of a card played by a player and set it in queue ready to been written on file.
+     * @param queueRef queue reference;
+     * @param valueCard value of the card played;
+     */
     @Override
     public void notifyValueCard(int queueRef, int valueCard) { queue.get(queueRef).setValueCard(valueCard); }
+
+    /**
+     * Notify the max movement of mother that a player can do. It also sends it to the server.
+     * @param queueRef queue reference;
+     * @param maxMove  max movement give by the card played;
+     */
     @Override
     public void notifyMaxMove(int queueRef, int maxMove) {
         queue.get(queueRef).setMaxMoveMotherNature(maxMove);
@@ -450,10 +524,20 @@ public class VirtualView
             );
         }
     }
+
+    /**
+     * Notify use of a special by a player.
+     * @param specialRef special reference;
+     * @param playerRef player reference;
+     */
     @Override
-    public void notifySpecial(int specialRef, int playerRef) {  //notify use of a special by a player
-        server.sendUsedSpecial(playerRef, specialRef);
-    }
+    public void notifySpecial(int specialRef, int playerRef) { server.sendUsedSpecial(playerRef, specialRef); }
+
+    /**
+     * Notify specials of this match with their cost to the server and keeps it so that it is ready to been written on file.
+     * @param specialList ArrayList contains specials of this game;
+     * @param cost ArrayList contains the specials' cost of this game;
+     */
     @Override
     public void notifySpecialList(ArrayList<Integer> specialList, ArrayList<Integer> cost) {
         for(int i = 0; i < 3; i++) {
@@ -466,27 +550,52 @@ public class VirtualView
             ));
         }
     }
+
+    /**
+     * Notify the increase of cost of a special. It also sends the new cost to the server.
+     * @param specialRef special reference;
+     * @param newCost new cost;
+     */
     @Override
     public void notifyIncreasedCost(int specialRef, int newCost) {
         server.setSpecial(specialRef, newCost);
         specialList.get(findSpecial(specialRef)).incSpecialCost();
     }
+
+    /**
+     * Notify the increase or decrease of the number of noEntryCards on special5 and sends it to the server;
+     * @param cards number of cards on special5;
+     */
     @Override
     public void notifyNoEntry(int cards) {
         server.sendInfoSpecial5(cards);
         specialList.get(findSpecial(5)).setNoEntryCards(cards);
     }
+
+    /**
+     * Notify a change of students on special1, special7 or special11 and send it to the server.
+     * @param specialIndex special reference;
+     * @param color color reference;
+     * @param value new value of this color on this special;
+     */
     @Override
     public void specialStudentsNotify(int specialIndex, int color, int value) {
         server.sendInfoSpecial1or7or11(specialIndex, color, value);
         specialList.get(findSpecial(specialIndex)).setColorForSpecial1or7or11(color,value);
     }
 
+    /**
+     * TurnInfo keeps info about the current player taking his turn and in which part of the turn we are (planningPhase or actionPhase).
+     */
     private static class TurnInfo implements Serializable{
         private int currentUser;
         private String phase;
 
         public void setCurrentUser(int currentUser){ this.currentUser = currentUser; }
+
+        /**
+         * @param phase phase == 0 -> PlanningPhase, phase == 1 -> ActionPhase;
+         */
         public void setPhase(int phase){
             if(phase == 0) this.phase = "PlanningPhase";
             else if(phase == 1) this.phase = "ActionPhase";
@@ -494,6 +603,12 @@ public class VirtualView
         public int getCurrentUser() { return currentUser; }
         public String getPhase() { return phase; }
     }
+
+    /**
+     * Special keeps info about a special.
+     * The attribute colorForSpecial1or7or11 is only for special1, special7 or special11.
+     * The attribute noEntryCards is only for special5.
+     */
     private static class Special implements Serializable{
         private final int indexSpecial;
         private int cost;
@@ -503,8 +618,8 @@ public class VirtualView
         public Special(int indexSpecial, int cost) {
             this.indexSpecial = indexSpecial;
             this.cost = cost;
-            this.colorForSpecial1or7or11 = new int[]{0,0,0,0,0};
-            this.noEntryCards = 4;
+            this.colorForSpecial1or7or11 = new int[]{0,0,0,0,0};    //not initialized because is not for every special
+            this.noEntryCards = 4;  //initialized at 4, but only special5 use it
         }
 
         public void incSpecialCost(){ cost++; }
@@ -515,7 +630,10 @@ public class VirtualView
         public void setNoEntryCards(int numCards){ noEntryCards = numCards; }
         public int getNoEntryCards() { return noEntryCards; }
     }
-    //private class SchoolBoard keeps the state of each player's school board
+
+    /**
+     * SchoolBoard keeps the state of each player's school board.
+     */
     private static class SchoolBoard implements Serializable{
         private final String nickname;
         private boolean alreadyConnected;
@@ -555,6 +673,10 @@ public class VirtualView
         public int getTowersNumber() { return towersNumber; }
         public boolean[] getProfessors() { return professors; }
     }
+
+    /**
+     * Islands keeps info about an islands.
+     */
     private static class Island implements Serializable{
         private final int[] studentsIsland;
         private int towersNumber;
@@ -567,14 +689,14 @@ public class VirtualView
             this.towersNumber = 1;
             this.towersColor = -1;
             this.isInhibited = 0;
-            this.isMotherPosition=false;
+            this.isMotherPosition = false;
         }
 
         public void setTowersNumber(int towersNumber) { this.towersNumber = towersNumber; }
         public void setStudentsIsland(int color, int newValue) { this.studentsIsland[color] = newValue; }
-        public void setTowersColor(int newColor){ this.towersColor=newColor; }
-        public void setInhibited(int isInhibited) { this.isInhibited=isInhibited; }
-        public void setMotherPosition(boolean isMotherPos) { this.isMotherPosition=isMotherPos; }
+        public void setTowersColor(int newColor){ this.towersColor = newColor; }
+        public void setInhibited(int isInhibited) { this.isInhibited = isInhibited; }
+        public void setMotherPosition(boolean isMotherPos) { this.isMotherPosition = isMotherPos; }
         public boolean isMotherPosition() { return isMotherPosition; }
         public int[] getStudentsIsland() { return studentsIsland; }
         public int getTowersNumber() { return towersNumber; }
@@ -586,6 +708,10 @@ public class VirtualView
         }
         public int getIsInhibited() { return isInhibited; }
     }
+
+    /**
+     * Cloud keeps info about a cloud.
+     */
     private static class Cloud implements Serializable{
         private final int[] students;
 
@@ -594,6 +720,10 @@ public class VirtualView
         public void setCloudStudents(int color, int newStudentsValue) { students[color] = newStudentsValue; }
         public int[] getStudents() { return students; }
     }
+
+    /**
+     * Hand keeps info about cards, last play card and coins of a player.
+     */
     private static class Hand implements Serializable{
         int coins;
         String lastPlayedCard;
@@ -613,6 +743,11 @@ public class VirtualView
         public ArrayList<String> getCards() { return cards; }
         public void setCards(ArrayList<String> cards) { this.cards = cards;}
     }
+
+    /**
+     * Queue keeps info about playerRef value of card played and max movement of mother nature given by the card played of a player.
+     * It is an element of list of Queue used to decide who gets to play.
+     */
     private static class Queue implements Serializable{
         private int playerRef;
         private int valueCard;

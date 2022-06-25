@@ -83,7 +83,7 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
 
 
     public String lastPhase(){
-        if(!isCardPlayed()) return "PlayCard";
+        if(!isCardPlayed()) return "PlayCardAnswer";
         if(!isStudentMoved()) return "MoveStudent";
         if(!isMotherMoved()) return "MoveMother";
         if(!isCloudChosen()) return "ChoseCloud";

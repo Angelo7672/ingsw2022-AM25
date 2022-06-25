@@ -640,7 +640,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     }
 
     private void phaseHandler(String phase) throws IOException, ClassNotFoundException {
-        if(phase.equals("PlayCard")) {
+        if(phase.equals("PlayCardAnswer")) {
             playCard();
         }
         else if(!constants.isActionPhaseStarted()) {

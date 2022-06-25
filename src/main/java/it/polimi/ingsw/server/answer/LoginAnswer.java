@@ -2,11 +2,11 @@ package it.polimi.ingsw.server.answer;
 
 import java.util.ArrayList;
 
-public class LoginMessage implements Answer{
+public class LoginAnswer implements Answer{
     private final String message;
     ArrayList<String> characterAlreadyChosen;
 
-    public LoginMessage(ArrayList<String> characterAlreadyChosen){
+    public LoginAnswer(ArrayList<String> characterAlreadyChosen){
         this.message = "Login!";
         this.characterAlreadyChosen = characterAlreadyChosen;
     }
