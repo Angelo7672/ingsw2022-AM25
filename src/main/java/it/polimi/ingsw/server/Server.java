@@ -14,9 +14,9 @@ import java.util.List;
 
 public class Server implements Entrance,ControllerServer{
     private ServerController controller;
-    private Exit proxy;
+    private final Exit proxy;
     private ExpertGame expertGame;
-    private String filename;
+    private final String filename;
 
     public Server(int port){
         this.filename = "saveGame.bin";
@@ -27,8 +27,7 @@ public class Server implements Entrance,ControllerServer{
     @Override
     public boolean checkFile(){
         File file = new File(filename);
-        if (file.length() != 0)  return true;
-        return false;
+        return file.length() != 0;
     }
     @Override
     public List<Integer> lastSavedGame(){
@@ -41,9 +40,7 @@ public class Server implements Entrance,ControllerServer{
             lastPlayed.add(tmp.getNumberOfPlayer());
             if(tmp.isExpertMode()) lastPlayed.add(1);
             else lastPlayed.add(0);
-        } catch (FileNotFoundException e) { e.printStackTrace();
-        } catch (IOException e) { e.printStackTrace();
-        } catch (ClassNotFoundException e) { e.printStackTrace(); }
+        } catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
 
         return lastPlayed;
     }
@@ -82,8 +79,7 @@ public class Server implements Entrance,ControllerServer{
         if(!controller.userLoginNickname(nickname)) return -1;
         for(int i = 0; i < 4 && !checker; i++)
             if(character.equalsIgnoreCase(characters[i])) checker = true;
-        if(!checker) return -1;
-        if(!controller.userLoginCharacter(character)) return -1;
+        if (!checker || !controller.userLoginCharacter(character)) return -1;
 
         return controller.addNewPlayer(nickname,character);
     }
@@ -203,8 +199,7 @@ public class Server implements Entrance,ControllerServer{
     public void exitError(){ System.exit(-1); }
 
     public static void main(String[] args) {
-        System.out.println("Eryantis Server | Welcome!");
-        Server server = new Server(2525);
-
+        System.out.println("Eriantys Server | Welcome!");
+        new Server(2525);
     }
 }

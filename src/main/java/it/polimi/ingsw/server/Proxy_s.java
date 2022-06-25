@@ -5,17 +5,15 @@ import it.polimi.ingsw.server.expertmode.ExpertGame;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Proxy_s implements Exit {
-    private final int port;
     private final Entrance server;
     private ServerSocket serverSocket;
     private int connectionsAllowed;
-    private List<VirtualClient> user;
+    private final List<VirtualClient> user;
     private final ExecutorService executor;
     private int limiter;
     private int clientReady;
@@ -23,8 +21,7 @@ public class Proxy_s implements Exit {
     private boolean first;
     private boolean restoreGame;
 
-    public Proxy_s(int port,Entrance server) {
-        this.port = port;
+    public Proxy_s(int port, Entrance server) {
         this.server = server;
         try { serverSocket = new ServerSocket(port);
         }catch (IOException e){
@@ -76,10 +73,7 @@ public class Proxy_s implements Exit {
             virtualClientInOrder();
             if(start != connectionsAllowed) synchronized (this){ this.wait(); }
             server.startGame();
-        } catch (IOException e) {
-            System.err.println("Connection lost with a client!");
-            server.exitError();
-        }catch (InterruptedException ex){
+        } catch (IOException | InterruptedException e) {
             System.err.println("Connection lost with a client!");
             server.exitError();
         }
@@ -229,5 +223,5 @@ public class Proxy_s implements Exit {
     }
     public boolean isRestoreGame() { return restoreGame; }
     public void setRestoreGame(boolean restoreGame) { this.restoreGame = restoreGame; }
-    private void virtualClientInOrder(){ Collections.sort(user, VirtualClient::compareTo); }
+    private void virtualClientInOrder(){ user.sort(VirtualClient::compareTo); }
 }

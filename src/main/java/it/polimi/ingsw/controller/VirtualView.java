@@ -117,6 +117,11 @@ public class VirtualView
                 addNewPlayer(s.getNickname(), s.getCharacter());
         } catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
     }
+
+    /**
+     * Read from file info about last saved game.
+     * @param expertMode indicates if we have to read also info about specials;
+     */
     public void restoreGame(boolean expertMode){
         try{
             ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
@@ -135,10 +140,20 @@ public class VirtualView
             inputFile.close();
         } catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
     }
+
+    /**
+     * Restore turn status of last saved game (current user which have to play and current phase of turn).
+     * @param turnInfosTmp object read from saveGame file;
+     */
     private void turnStatusRestore(TurnInfo turnInfosTmp){
         controller.setCurrentUser(turnInfosTmp.getCurrentUser());
         controller.setJumpPhaseForRestore(turnInfosTmp.getPhase());
     }
+
+    /**
+     * Restore queue of last saved game (it contains the ordered list of player ready for play with valueCard and maxMove).
+     * @param queueTmp object read from saveGame file;
+     */
     private void queueRestore(ArrayList<Queue> queueTmp){
         ArrayList<Integer> playerRef = new ArrayList<>();
         ArrayList<Integer> valueCard = new ArrayList<>();
@@ -151,6 +166,11 @@ public class VirtualView
         }
         controller.queueRestore(playerRef,valueCard,maxMoveMotherNature);
     }
+
+    /**
+     * Restore schools of last saved game.
+     * @param schoolBoardsTmp object read from saveGame file;
+     */
     private void schoolsRestore(ArrayList<SchoolBoard> schoolBoardsTmp){
         for(int i = 0; i < numberOfPlayers; i++){
             int[] studentsEntrance = schoolBoardsTmp.get(i).getStudentsEntrance();
@@ -161,6 +181,11 @@ public class VirtualView
             controller.schoolRestore(i,studentsEntrance,studentsTable,towers,professors,team);
         }
     }
+
+    /**
+     * Restore islands of last saved game.
+     * @param islandsTmp object read from saveGame file;
+     */
     private void islandsRestore(ArrayList<Island> islandsTmp){
         if(islandsTmp.size() != 12) controller.setIslandsSizeAfterRestore(islandsTmp.size());
         for(int i = 0; i < islandsTmp.size(); i++){
@@ -172,12 +197,23 @@ public class VirtualView
             controller.islandRestore(i,students,towerValue,towerTeam,inhibited);
         }
     }
+
+    /**
+     * Restore clouds of last saved game.
+     * @param cloudsTmp object read from saveGame file;
+     */
     private void cloudsRestore(ArrayList<Cloud> cloudsTmp){
         for(int i = 0; i < numberOfPlayers; i++){
             int[] students = cloudsTmp.get(i).getStudents();
             controller.cloudRestore(i,students);
         }
     }
+
+    /**
+     * Restore hands and coins of player of last saved game.
+     * It also sends to the server, for each player, last played card.
+     * @param handsTmp object read from saveGame file;
+     */
     private void handAndCoinsRestore(ArrayList<Hand> handsTmp){
         for(int i = 0; i < numberOfPlayers; i++){
             ArrayList<String> cards = handsTmp.get(i).getCards();
@@ -188,7 +224,19 @@ public class VirtualView
         for(int i = 0; i < numberOfPlayers; i++)
             server.lastCardPlayedFromAPlayer(i, getLastPlayedCard(i));
     }
+
+    /**
+     * Restore bag of last saved game.
+     * @param bagTmp object read from saveGame file;
+     */
     private void bagRestore(ArrayList<Integer> bagTmp){  controller.bagRestore(bagTmp); }
+
+    /**
+     * Restore specials of last saved game.
+     * If in the list of specials there are special1, special7 or special11, restore also students on them.
+     * If in the list of specials there is special5, restore noEntryCards on its.
+     * @param specialsListTmp object read from saveGame file;
+     */
     private void specialRestore(ArrayList<Special> specialsListTmp){
         for (int i = 0; i < 3; i++) {
             int indexSpecial = specialsListTmp.get(i).getIndexSpecial();
@@ -199,6 +247,22 @@ public class VirtualView
                 controller.noEntryCardsRestore(specialsListTmp.get(i).getNoEntryCards());
         }
     }
+
+    /**
+     * @param indexSpecial special that we want to find in specialList;
+     * @return the index in specialList of a special if it is present, else return -1.
+     */
+    private int findSpecial(int indexSpecial){
+        for (int i = 0; i < 3; i++)
+            if(specialList.get(i).getIndexSpecial() == indexSpecial) return i;
+        return -1;
+    }
+
+    /**
+     * Check if after restore this nickname is present in last saved game.
+     * @param nickname of the player;
+     * @return position of the player in the list.
+     */
     public int checkRestoreNickname(String nickname){
         int checker = -1;
 
@@ -214,6 +278,9 @@ public class VirtualView
         return checker;
     }
 
+    /**
+     * @return an ArrayList of already chosen characters by other players in game, so that a new player can choose an available character.
+     */
     public ArrayList<String> getAlreadyChosenCharacters(){
         ArrayList<String> chosenCharacters = new ArrayList<>();
 
@@ -222,34 +289,48 @@ public class VirtualView
 
         return chosenCharacters;
     }
+
+    /**
+     * @param newNickname that a new player chosen;
+     * @return if none has already chosen that nickname.
+     */
     public boolean checkNewNickname(String newNickname){
         for(SchoolBoard player:schoolBoards)
             if(player.nickname.equals(newNickname)) return false;
         return true;
     }
+
+    /**
+     * @param newCharacter that a new player chosen;
+     * @return if none has already chosen that character.
+     */
     public boolean checkNewCharacter(String newCharacter){
         for(SchoolBoard player:schoolBoards)
             if(player.character.equals(newCharacter)) return false;
         return true;
     }
-    public String getCharacter(int playerRef){ return this.schoolBoards.get(playerRef).character; }
-    public String getLastPlayedCard(int playerRef){ return hands.get(playerRef).getLastPlayedCard(); }
-    public String getNickname(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
-    public int  addNewPlayer(String nickname, String character){
+
+    /**
+     * Add a new player in schoolBoards, so add a cloud in clouds and a hand in hands.
+     * @param nickname choose by the player to add;
+     * @param character choose by the player to add;
+     * @return the index of the player in schoolBoards.
+     */
+    public int addNewPlayer(String nickname, String character){
         int player;
         schoolBoards.add(new SchoolBoard(nickname,character));
         hands.add(new Hand());
         clouds.add(new Cloud());
 
         player = schoolBoards.size() - 1;
-        if(numberOfPlayers==3) {
+        if(numberOfPlayers == 3) {
             schoolBoards.get(player).setTowersNumber(6);
             schoolBoards.get(player).setTeam(player);
-        } else if(numberOfPlayers==4){
-            if(player==0 || player== 2)
+        } else if(numberOfPlayers == 4){
+            if(player == 0 || player == 2)
                 schoolBoards.get(player).setTowersNumber(8);
             else schoolBoards.get(player).setTowersNumber(0);
-            if(player==0 || player==1)
+            if(player == 0 || player == 1)
                 schoolBoards.get(player).setTeam(0);
             else schoolBoards.get(player).setTeam(1);
         } else {
@@ -261,29 +342,42 @@ public class VirtualView
 
     public void setCurrentUser(int currentUser){ turnInfo.setCurrentUser(currentUser); }
     public void setPhase(int phase){ turnInfo.setPhase(phase); }
+    public String getCharacter(int playerRef){ return this.schoolBoards.get(playerRef).character; }
+    public String getLastPlayedCard(int playerRef){ return hands.get(playerRef).getLastPlayedCard(); }
+    public String getNickname(int playerRef){ return this.schoolBoards.get(playerRef).nickname; }
 
-    private int findSpecial(int indexSpecial){
-        for (int i = 0; i < 3; i++)
-            if(specialList.get(i).getIndexSpecial() == indexSpecial) return i;
-        return -1;
-    }
+    //Notify
 
+    /**
+     * Notify a change of students value somewhere in the model. It also sends new value to the server.
+     * @param place place == 0 -> school entrance, place == 1 -> school table, place == 2 -> island, place == 3 -> cloud;
+     * @param componentRef reference of the component in the respective list;
+     * @param color color reference;
+     * @param newStudentsValue new value to replace with the older in the corresponding list;
+     */
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
-        if(place==0){
+        if(place == 0){
             schoolBoards.get(componentRef).setStudentsEntrance(color, newStudentsValue);
             server.studentsChangeInSchool(color, "Entrance", componentRef, newStudentsValue);
-        } else if(place==1){
+        } else if(place == 1){
             schoolBoards.get(componentRef).setStudentsTable(color, newStudentsValue);
             server.studentsChangeInSchool(color, "Table", componentRef, newStudentsValue);
-        } else if(place==2){
+        } else if(place == 2){
             islands.get(componentRef).setStudentsIsland(color, newStudentsValue);
             server.studentChangeOnIsland(componentRef, color, newStudentsValue);
-        } else if(place==3){
+        } else if(place == 3){
             clouds.get(componentRef).setCloudStudents(color, newStudentsValue);
             server.studentChangeOnCloud(componentRef, color, newStudentsValue);
         }
     }
+
+    /**
+     * Notify a change of professors value in a school. It also sends new value to the server.
+     * @param playerRef player reference;
+     * @param color color reference;
+     * @param newProfessorValue new value to replace with the older in schoolBoards;
+     */
     @Override
     public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
         schoolBoards.get(playerRef).setProfessors(color, newProfessorValue);

@@ -108,8 +108,7 @@ public abstract class RoundStrategy {
             playerManager.transferStudent(playerRef, colour, inSchool, false);
             islandsManager.incStudent(islandRef,colour,1);
         }
-        else if(inSchool)
-            playerManager.transferStudent(playerRef, colour, inSchool, false);
+        else if(inSchool) playerManager.transferStudent(playerRef, colour, inSchool, false);
     }
 
     public void effect(){}

@@ -268,13 +268,14 @@ public class Game implements GameManager{
         boolean stop = false;
 
         if(!expertMode) roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
-        else
-            for(int i = 0; i < 3 && !stop; i++)
-                if(indexSpecial == extractedSpecials.get(i)){
+        else {
+            for (int i = 0; i < 3 && !stop; i++)
+                if (indexSpecial == extractedSpecials.get(i)) {
                     stop = true;
-                    roundStrategies.get(i+1).moveStudent(playerRef, colour, inSchool, islandRef);
+                    roundStrategies.get(i + 1).moveStudent(playerRef, colour, inSchool, islandRef);
                 }
-            if(!stop) roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
+            if (!stop) roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
+        }
         //setSpecial(0,-1);
     }
 
