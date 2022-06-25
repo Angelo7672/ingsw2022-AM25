@@ -268,8 +268,7 @@ public class MainSceneController implements SceneController {
         int y;
         int studentsNumber;
         int color;
-        int nodeId;
-        ImageView studentImage;
+        Image studentImage;
 
         public Table(int initialX, int initialY, int color){
             this.x=initialX;
@@ -277,23 +276,18 @@ public class MainSceneController implements SceneController {
             this.studentsNumber=0;
             this.color=color;
             if(color==0){
-                this.studentImage =new ImageView(new Image(GREENSTUDENT));
-                this.nodeId=0;
+                this.studentImage = new Image(GREENSTUDENT);
             } else if(color==1){
-                this.studentImage =new ImageView(new Image(REDSTUDENT));
-                this.nodeId=2;
+                this.studentImage = new Image(REDSTUDENT);
             } else if(color==2){
-                this.studentImage =new ImageView(new Image(YELLOWSTUDENT));
-                this.nodeId=3;
+                this.studentImage = new Image(YELLOWSTUDENT);
             } else if(color==3){
-                this.studentImage =new ImageView(new Image(PINKSTUDENT));
-                this.nodeId=4;
+                this.studentImage = new Image(PINKSTUDENT);
             } else if(color==4){
-                this.studentImage =new ImageView(new Image(BLUESTUDENT));
-                this.nodeId=5;
+                this.studentImage = new Image(BLUESTUDENT);
             }
-            studentImage.setFitWidth(16.0);
-            studentImage.setFitHeight(16.0);
+            //studentImage.setFitWidth(16.0);
+            //studentImage.setFitHeight(16.0);
 
         }
         public int getX() {
@@ -322,14 +316,7 @@ public class MainSceneController implements SceneController {
         public void setStudentsNumber() {
             this.studentsNumber++;
         }
-        public int getNodeId() {
-            return nodeId;
-        }
-        public void setNodeId() {
-            this.nodeId = nodeId+5;
-        }
-
-        public ImageView getStudentImage() {
+        public Image getStudentImage() {
             return studentImage;
         }
     }
@@ -583,9 +570,10 @@ public class MainSceneController implements SceneController {
 
 
     public void setStudentsTable(int playerRef, int color, int newStudentsValue) {
-        AnchorPane tablePane= tablesMap.get(playerRef);
+        AnchorPane tablePane = tablesMap.get(playerRef);
         Table table = null;
         ImageView student;
+        int oldStudentsValue;
 
         if(color==0){
             table= greenTables.get(playerRef);
@@ -598,16 +586,39 @@ public class MainSceneController implements SceneController {
         }else if (color==4){
             table= blueTables.get(playerRef);
         }
-        tablePane.getChildren().add(table.getStudentImage());
-        student= (ImageView) tablePane.getChildren().get(0);
-        student.setX(table.getX());
-        student.setY(table.getY());
-        table.setNewX(playerRef);
-        table.setNewY(playerRef);
-        table.setNodeId();
-        table.setStudentsNumber();
+        oldStudentsValue = table.getStudentsNumber();
 
-        student.setVisible(true);
+        if(newStudentsValue>oldStudentsValue){
+            tablePane.getChildren().add(new ImageView(table.getStudentImage()));
+            student= (ImageView) tablePane.getChildren().get(tablePane.getChildren().size()-1);
+            student.setFitHeight(16.0);
+            student.setFitWidth(16.0);
+            student.setX(table.getX());
+            student.setY(table.getY());
+            table.setNewX(playerRef);
+            table.setNewY(playerRef);
+            table.setStudentsNumber();
+            student.setVisible(true);
+
+        } else {
+
+            for(int i=tablePane.getChildren().size()-1; i>=0; i--){
+                student = (ImageView) tablePane.getChildren().get(i);
+                String imageName = student.getImage().getUrl();
+                if(imageName.equals(GREENSTUDENT) && color==0){
+                    tablePane.getChildren().remove(i);
+                } else if(imageName.equals(REDSTUDENT) && color==1){
+                    tablePane.getChildren().remove(i);
+                } else if(imageName.equals(YELLOWSTUDENT) && color==2){
+                    tablePane.getChildren().remove(i);
+                } else if(imageName.equals(PINKSTUDENT) && color==3){
+                    tablePane.getChildren().remove(i);
+                } else if(imageName.equals(BLUESTUDENT) && color==4){
+                    tablePane.getChildren().remove(i);
+                }
+            }
+        }
+
 }
 
 
