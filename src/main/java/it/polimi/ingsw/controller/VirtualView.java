@@ -60,8 +60,9 @@ public class VirtualView
 
     /**
      * Save all virtualView's inner class which represent a certain game configuration.
+     * @param expertMode if is true, save also specialList;
      */
-    public void saveVirtualView(){
+    public void saveVirtualView(boolean expertMode){
         try{
             clearFile();
             FileOutputStream outputFile = new FileOutputStream(fileName);
@@ -75,7 +76,7 @@ public class VirtualView
             objectOut.writeObject(clouds);
             objectOut.writeObject(hands);
             objectOut.writeObject(bag);
-            objectOut.writeObject(specialList);
+            if(expertMode) objectOut.writeObject(specialList);
 
             objectOut.close();
             outputFile.close();
@@ -116,7 +117,7 @@ public class VirtualView
                 addNewPlayer(s.getNickname(), s.getCharacter());
         } catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }
     }
-    public void restoreGame(){
+    public void restoreGame(boolean expertMode){
         try{
             ObjectInputStream inputFile = new ObjectInputStream(new FileInputStream(fileName));
 
@@ -129,7 +130,7 @@ public class VirtualView
             cloudsRestore((ArrayList<Cloud>) inputFile.readObject());
             handAndCoinsRestore((ArrayList<Hand>) inputFile.readObject());
             bagRestore((ArrayList<Integer>) inputFile.readObject());
-            specialRestore((ArrayList<Special>) inputFile.readObject());
+            if(expertMode) specialRestore((ArrayList<Special>) inputFile.readObject());
 
             inputFile.close();
         } catch (ClassNotFoundException | IOException e) { e.printStackTrace(); }

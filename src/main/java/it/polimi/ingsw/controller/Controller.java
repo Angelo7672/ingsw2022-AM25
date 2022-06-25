@@ -116,7 +116,7 @@ public class Controller implements ServerController, Match, Restore{
         server.sendGameInfo(numberOfPlayers, expertMode);   //at every client
         for(int i = 0; i < numberOfPlayers; i++)
             server.sendUserInfo(i, virtualView.getNickname(i), virtualView.getCharacter(i));    //send info about player
-        virtualView.restoreGame();
+        virtualView.restoreGame(expertMode);
         if(expertMode) server.setExpertGame();
     }
 
@@ -261,7 +261,7 @@ public class Controller implements ServerController, Match, Restore{
      * @see VirtualView
      */
     @Override
-    public void saveGame(){ virtualView.saveVirtualView(); }
+    public void saveGame(){ virtualView.saveVirtualView(expertMode); }
 
     /**
      * @see VirtualView
