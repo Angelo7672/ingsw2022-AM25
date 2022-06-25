@@ -218,11 +218,24 @@ public class View {
         specialListener.notifySpecial(specialIndex, playerRef);
     }
     public void setSpecial(int name, int cost){
-        if(specials.size()<3) specials.add(new Special(cost, name));
+        if(specials.size()<3) {
+            specials.add(new Special(cost, name));
+            if(specials.size()==3) specialComplete();
+        }
         else {
             int specialIndex = getSpecialIndex(name);
             specials.get(specialIndex).setCost(cost);
+            specialListener.notifyIncreasedCost(specialIndex, cost);
         }
+    }
+    public void specialComplete(){
+        ArrayList<Integer> specialsName = new ArrayList<>();
+        ArrayList<Integer> specialsCost = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            specialsName.add(specials.get(i).getName());
+            specialsCost.add(specials.get(i).getCost());
+        }
+        specialListener.notifySpecialList(specialsName, specialsCost);
     }
     public void setSpecialStudents(int color, int newValue, int special){
         int specialIndex = getSpecialIndex(special);
@@ -428,7 +441,7 @@ public class View {
     private class Special{
         private int cost;
         private int name;
-        private int[]  students;
+        private int[] students;
         private int noEntry;
 
         private Special(int cost, int name) {

@@ -26,7 +26,6 @@ public class LoginRestoreSceneController implements SceneController{
     public LoginRestoreSceneController() {
         this.currentNickname = "";
         this.loginService= new LoginService();
-        this.getPhaseService = new GetPhaseService();
         loginService.setOnSucceeded(workerStateEvent -> {
             Boolean result = loginService.getValue();
             if(result){
@@ -39,7 +38,9 @@ public class LoginRestoreSceneController implements SceneController{
                 gui.switchScene(GUI.LOGINRESTORE);
             }
         });
+        this.getPhaseService = new GetPhaseService();
         getPhaseService.setOnSucceeded(workerStateEvent -> {
+            System.out.println("succeed");
             String phase = getPhaseService.getValue();
             System.out.println("ph in succ "+phase);
             if(phase.equals("Play card!")) gui.phaseHandler("PlayCardAnswer");
@@ -47,16 +48,21 @@ public class LoginRestoreSceneController implements SceneController{
         });
     }
 
-    public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
-        currentNickname = this.nicknameBox.getText();
-        if(currentNickname!="") {
-            if(loginService.getState()== Worker.State.READY)
-                loginService.start();
-            else
-                loginService.restart();
-            gui.switchScene(GUI.WAITING);
+    private class LoginService extends Service<Boolean> {
+
+        @Override
+        protected Task<Boolean> createTask() {
+            System.out.println("loginService started");
+            return new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    System.out.println("call login service");
+                    Boolean result = proxy.setupConnection(currentNickname, null);
+                    System.out.println(result);
+                    return result;
+                }
+            };
         }
-        else showErrorMessage();
     }
 
     private class GetPhaseService extends Service<String>{
@@ -76,21 +82,16 @@ public class LoginRestoreSceneController implements SceneController{
         }
     }
 
-    private class LoginService extends Service<Boolean> {
-
-        @Override
-        protected Task<Boolean> createTask() {
-            System.out.println("loginService started");
-            return new Task<Boolean>() {
-                @Override
-                protected Boolean call() throws Exception {
-                    System.out.println("call login service");
-                    Boolean result = proxy.setupConnection(currentNickname, null);
-                    System.out.println(result);
-                    return result;
-                }
-            };
+    public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
+        currentNickname = this.nicknameBox.getText();
+        if(currentNickname!="") {
+            if(loginService.getState()== Worker.State.READY)
+                loginService.start();
+            else
+                loginService.restart();
+            gui.switchScene(GUI.WAITING);
         }
+        else showErrorMessage();
     }
 
     public void showErrorMessage(){

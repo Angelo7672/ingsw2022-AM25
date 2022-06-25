@@ -5,56 +5,54 @@ import it.polimi.ingsw.client.message.special.*;
 import it.polimi.ingsw.listeners.DisconnectedListener;
 import it.polimi.ingsw.listeners.ServerOfflineListener;
 import it.polimi.ingsw.server.answer.*;
-import it.polimi.ingsw.server.answer.viewmessage.*;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 
-public class Proxy_c implements Exit {
-    private final ObjectInputStream inputStream;
+public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListener {
+    private Receiver receiver;
+
     private final ObjectOutputStream outputStream;
     private final Socket socket;
     private Answer tempObj;
     private View view;
     private Thread ping;
-    private Thread receive;
-    private ArrayList<Answer> answersList;
-    private final Object lock1;
     private final Object lock2;
-    private DisconnectedListener disconnectedListener;
-    private ServerOfflineListener serverOfflineListener;
     private boolean disconnected;
-    private boolean initializedView;
 
     public Proxy_c(Socket socket) throws IOException{
         this.socket = socket;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
-        inputStream = new ObjectInputStream(socket.getInputStream());
         startPing();
-        startReceive();
         socket.setSoTimeout(15000);
-        answersList = new ArrayList<>();
-        lock1 = new Object();
         lock2 = new Object();
         view = new View();
-        disconnected=false;
+        receiver = new Receiver(lock2, socket, view);
     }
 
     public boolean readyForLogin() throws IOException {
         send(new GenericMessage("Ready for login!"));
-        tempObj = receive();
+        tempObj = receiver.receive();
         if(tempObj instanceof LoginRestoreAnswer) return true;
         return false;
 
     }
 
+    @Override
+    public void setDisconnectedListener(DisconnectedListener disconnectedListener) {
+        receiver.setDisconnectedListener(disconnectedListener);
+    }
+
+    @Override
+    public void setServerOfflineListener(ServerOfflineListener serverOfflineListener) {
+        receiver.setServerOfflineListener(serverOfflineListener);
+    }
+
     public String first() throws IOException, ClassNotFoundException {
         send(new GenericMessage("Ready for login!"));
-        tempObj = receive();
+        tempObj = receiver.receive();
         if(tempObj instanceof SoldOutAnswer) return ((SoldOutAnswer) tempObj).getMessage();
         else if(tempObj instanceof SetupGameAnswer) return "SetupGame";
         else if(tempObj instanceof SavedGameAnswer) return "SavedGame";
@@ -68,7 +66,7 @@ public class Proxy_c implements Exit {
 
     public boolean savedGame(String decision) throws IOException {
         send(new GenericMessage(decision));
-        tempObj = receive();
+        tempObj = receiver.receive();
         if (tempObj instanceof GenericAnswer) {
             if(((GenericAnswer)tempObj).getMessage().equals("error"))
             return false;
@@ -78,7 +76,7 @@ public class Proxy_c implements Exit {
 
     public String getPhase() throws IOException {
         send(new GenericMessage("Ready to play!"));
-        tempObj = receive();
+        tempObj = receiver.receive();
         if(tempObj instanceof PlayCardAnswer){
             return ((PlayCardAnswer) tempObj).getMessage();
         }
@@ -92,7 +90,7 @@ public class Proxy_c implements Exit {
         if(nickname.length()>10) nickname = nickname.substring(0,9);
         send(new SetupConnection(nickname, character));
         System.out.println("MESSAGE SENT: setupConnection "+nickname+" "+character);
-        tempObj = receive();
+        tempObj = receiver.receive();
         System.out.println("ANSWER: "+tempObj);
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
         else return false;
@@ -109,19 +107,19 @@ public class Proxy_c implements Exit {
         send(new SetupGame(numberOfPlayers, isExpert));
         System.out.println("MESSAGE SENT: setupGame"+numberOfPlayers+" "+expertMode);
 
-        tempObj = receive();
+        tempObj = receiver.receive();
         System.out.println("ANSWER: "+tempObj);
         if(!((GenericAnswer)tempObj).getMessage().equals("ok")) return false;
         send(new GenericMessage("Ready for login!"));
         System.out.println("MESSAGE SENT: Ready for login!");
-        tempObj = receive();
+        tempObj = receiver.receive();
         System.out.println("ANSWER: "+tempObj);
         return true;
     }
 
     public ArrayList<String> getChosenCharacters() {
         if(tempObj == null) {
-            tempObj = receive();
+            tempObj = receiver.receive();
         }
         LoginAnswer msg = (LoginAnswer) tempObj;
         tempObj = null;
@@ -138,7 +136,7 @@ public class Proxy_c implements Exit {
 
     public void setView(){
         synchronized (lock2){
-            initializedView=true;
+            receiver.setViewInitialized();
             lock2.notify();
         }
 
@@ -147,7 +145,7 @@ public class Proxy_c implements Exit {
     public boolean startPlanningPhase() throws IOException {
         send(new GenericMessage("Ready for Planning Phase"));
         while(true) {
-            tempObj = receive();
+            tempObj = receiver.receive();
             System.out.println("ANSWER: "+tempObj);
             if(((PlayCardAnswer)tempObj).getMessage().equals("Play card!")){
                 return true;
@@ -157,7 +155,7 @@ public class Proxy_c implements Exit {
 
     public String playCard(String card) throws IOException, ClassNotFoundException {
         send(new CardMessage(card));
-        tempObj = receive();
+        tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) {
             view.setCards(card);
             send(new GenericMessage("Ready for Action Phase"));
@@ -171,7 +169,7 @@ public class Proxy_c implements Exit {
 
     public boolean startActionPhase() throws IOException, ClassNotFoundException {
         while(true) {
-            tempObj = receive();
+            tempObj = receiver.receive();
             if(((StartTurnAnswer)tempObj).getMessage().equals("Start your Action Phase!")){
                 System.out.println("recived action");
                 return true;
@@ -186,7 +184,7 @@ public class Proxy_c implements Exit {
         else if(where.equalsIgnoreCase("island")) inSchool = false;
         else return "Error, insert school or island";
         send(new MoveStudent(color, inSchool, islandRef));
-        tempObj = receive();
+        tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage();
         if(tempObj instanceof MoveNotAllowedAnswer) return ((MoveNotAllowedAnswer) tempObj).getMessage();
         return "Error, try again";
@@ -195,7 +193,7 @@ public class Proxy_c implements Exit {
 
     public String moveMotherNature(int steps) throws IOException, ClassNotFoundException {
         send(new MoveMotherNature(steps));
-        tempObj = receive();
+        tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage();
         if(tempObj instanceof MoveNotAllowedAnswer) return ((MoveNotAllowedAnswer) tempObj).getMessage();
         return "Error, try again";
@@ -203,7 +201,7 @@ public class Proxy_c implements Exit {
 
     public String chooseCloud(int cloud) throws IOException, ClassNotFoundException {
         send(new ChosenCloud(cloud));
-        tempObj = receive();
+        tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage();
         if(tempObj instanceof MoveNotAllowedAnswer) return ((MoveNotAllowedAnswer) tempObj).getMessage();
         return "Error, try again";
@@ -211,7 +209,7 @@ public class Proxy_c implements Exit {
 
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
         send(new UseSpecial(special));
-        tempObj = receive();
+        tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer) tempObj).getMessage().equals("ok");
         return false;
     }
@@ -219,7 +217,7 @@ public class Proxy_c implements Exit {
     public boolean useSpecial(int special,ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException {
         if(special == 7) send(new Special7Message(color1, color2));
         else if(special == 10) send(new Special10Message(color1, color2));
-        tempObj = receive();
+        tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
         return false;
     }
@@ -229,14 +227,14 @@ public class Proxy_c implements Exit {
         else if(special == 9) send(new Special9Message(ref));
         else if(special == 11) send(new Special11Message(ref));
         else if(special == 12) send(new Special12Message(ref));
-        tempObj = receive();
+        tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
         return false;
     }
 
     public boolean useSpecial(int special, int playerRef, int ref) throws IOException {
         send(new Special1Message(playerRef, ref));
-        tempObj = receive();
+        tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
         return false;
     }
@@ -249,184 +247,6 @@ public class Proxy_c implements Exit {
         } catch (IOException e){
 
         }
-    }
-    private Answer receive() {
-        Answer tmp;
-            synchronized (lock1){
-                try {
-                    if (answersList.size() == 0){
-                        lock1.wait();
-                    }
-                }catch (InterruptedException e){
-                }
-            tmp = answersList.get(0);
-            answersList.remove(0);
-        }
-        return tmp;
-    }
-
-    private void startReceive(){
-        receive = new Thread(() -> {
-            ArrayList<Answer> answersTmpList = new ArrayList<>();
-            Answer tmp;
-            try {
-                this.socket.setSoTimeout(15000);
-                while (!disconnected) {
-                    tmp = (Answer) inputStream.readObject();
-                    if (tmp instanceof PongAnswer) {
-                        this.socket.setSoTimeout(15000);
-                    } else if (tmp instanceof GameInfoAnswer) {
-                        synchronized (lock2) {
-                            view.initializedView(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());
-                            lock2.notify();
-                        }
-                    } else if (tmp instanceof UserInfoAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) {
-                                lock2.wait();
-                            }
-                            view.setUserInfo(((UserInfoAnswer) tmp).getPlayerRef(), ((UserInfoAnswer) tmp).getCharacter(),((UserInfoAnswer) tmp).getNickname());
-                        }
-                    } else if (tmp instanceof LastCardAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setLastCard(((LastCardAnswer) tmp).getPlayerRef(), ((LastCardAnswer) tmp).getCard());
-                        }
-                    } else if (tmp instanceof NumberOfCardsAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setNumberOfCards(((NumberOfCardsAnswer) tmp).getPlayerRef(), ((NumberOfCardsAnswer) tmp).getNumberOfCards());
-                        }
-                    } else if (tmp instanceof HandAfterRestoreAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.restoreCards(((HandAfterRestoreAnswer) tmp).getHand());
-                        }
-                    } else if (tmp instanceof SchoolStudentAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setSchoolStudents(((SchoolStudentAnswer) tmp).getPlace(), ((SchoolStudentAnswer) tmp).getComponentRef(), ((SchoolStudentAnswer) tmp).getColor(), ((SchoolStudentAnswer) tmp).getNewValue());
-                        }
-                    } else if (tmp instanceof ProfessorAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setProfessors(((ProfessorAnswer) tmp).getPlayerRef(), ((ProfessorAnswer) tmp).getColor(), ((ProfessorAnswer) tmp).isProfessor());
-                        }
-                    } else if (tmp instanceof SchoolTowersAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setSchoolTowers(((SchoolTowersAnswer) tmp).getPlayerRef(), ((SchoolTowersAnswer) tmp).getTowers());
-                        }
-                    } else if (tmp instanceof CoinsAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setCoins(((CoinsAnswer) tmp).getPlayerRef(), ((CoinsAnswer) tmp).getCoin());
-                        }
-                    } else if (tmp instanceof CloudStudentAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setClouds(((CloudStudentAnswer) tmp).getCloudRef(), ((CloudStudentAnswer) tmp).getColor(), ((CloudStudentAnswer) tmp).getNewValue());
-                        }
-                    } else if (tmp instanceof IslandStudentAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setStudentsIsland(((IslandStudentAnswer) tmp).getIslandRef(), ((IslandStudentAnswer) tmp).getColor(), ((IslandStudentAnswer) tmp).getNewValue());
-                        }
-                    } else if (tmp instanceof MotherPositionAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setMotherPosition(((MotherPositionAnswer) tmp).getMotherPosition());
-                        }
-                    } else if (tmp instanceof MaxMovementMotherNatureAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setMaxStepsMotherNature(((MaxMovementMotherNatureAnswer) tmp).getMaxMovement());
-                        }
-                    } else if (tmp instanceof IslandTowersNumberAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setIslandTowers(((IslandTowersNumberAnswer) tmp).getIslandRef(), ((IslandTowersNumberAnswer) tmp).getTowersNumber());
-                        }
-                    } else if (tmp instanceof IslandTowersColorAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setTowersColor(((IslandTowersColorAnswer) tmp).getIslandRef(), ((IslandTowersColorAnswer) tmp).getColor());
-                        }
-                    } else if (tmp instanceof InhibitedIslandAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setInhibited(((InhibitedIslandAnswer) tmp).getIslandRef(), ((InhibitedIslandAnswer) tmp).getInhibited());
-                        }
-                    } else if (tmp instanceof UnifiedIslandAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.removeUnifiedIsland(((UnifiedIslandAnswer) tmp).getUnifiedIsland());
-                        }
-                    } else if (tmp instanceof UseSpecialAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setSpecialUsed(((UseSpecialAnswer) tmp).getSpecialIndex(), ((UseSpecialAnswer) tmp).getPlayerRef());
-                        }
-                    } else if (tmp instanceof SetSpecialAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setSpecial(((SetSpecialAnswer) tmp).getSpecialRef(), ((SetSpecialAnswer) tmp).getCost());
-                        }
-                    } else if (tmp instanceof InfoSpecial1or7or11Answer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmp).getStudentColor(), ((InfoSpecial1or7or11Answer) tmp).getValue(), ((InfoSpecial1or7or11Answer) tmp).getSpecialIndex());
-                        }
-                    } else if (tmp instanceof InfoSpecial5Answer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setNoEntry(((InfoSpecial5Answer) tmp).getCards());
-                        }
-                    } else if (tmp instanceof DisconnectedAnswer) {
-                        disconnected = true;
-                        answersTmpList.clear();
-                        disconnectedListener.notifyDisconnected();
-                    } else if (tmp instanceof GameOverAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setWinner(((GameOverAnswer) tmp).getWinner());
-                        }
-                    }
-                    else {
-                        answersTmpList.add(tmp);
-                    }
-                    synchronized (lock1){
-                        for(int i=0; i<answersTmpList.size(); i++) {
-                            answersList.add(answersTmpList.get(i));
-                            answersTmpList.remove(i);
-                        }
-                        if(answersList.size()!=0) lock1.notify();
-                    }
-                }
-            } catch (SocketException e){
-                try {
-                    serverOfflineListener.notifyServerOffline();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                try {
-                    socket.close();
-                    return;
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            try {
-                inputStream.close();
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        receive.start();
     }
 
     private void startPing() {
@@ -446,14 +266,15 @@ public class Proxy_c implements Exit {
     }
 
     @Override
-    public void setDisconnectedListener(DisconnectedListener disconnectedListener) {
-        this.disconnectedListener = disconnectedListener;
+    public void notifyDisconnected() throws IOException {
+        disconnected = true;
+        outputStream.close();
     }
 
     @Override
-    public void setServerOfflineListener(ServerOfflineListener serverOfflineListener) throws IOException {
-        this.serverOfflineListener = serverOfflineListener;
+    public void notifyServerOffline() throws IOException {
+        disconnected = true;
+        outputStream.close();
     }
-
 }
 

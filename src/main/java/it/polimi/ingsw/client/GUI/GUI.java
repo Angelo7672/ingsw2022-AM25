@@ -28,7 +28,7 @@ import java.util.Set;
 
 public class GUI extends Application implements TowersListener, ProfessorsListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, UserInfoListener,
-        SpecialStudentsListener {
+        SpecialStudentsListener, SpecialListener {
 
     private static Exit proxy;
     private View view;
@@ -54,6 +54,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected static final String MAIN = "MainScene.fxml";
     protected static final String CARDS = "CardsScene.fxml";
     protected static final String CLOUDS = "CloudsScene.fxml";
+    protected static final String SPECIALS = "SpecialsScene.fxml";
     protected PlayerConstants constants;
     protected boolean isMainScene;
     private int initialMotherPosition;
@@ -185,7 +186,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     //called when the GUI is launched, load all the scenes in advance, mapping them and setting the controllers
     public void scenesSetup() {
-        String[] scenes = new String[]{SAVED, LOGINRESTORE, SETUP, LOGIN, MAIN, CARDS, WAITING, CLOUDS};
+        String[] scenes = new String[]{SAVED, LOGINRESTORE, SETUP, LOGIN, MAIN, CARDS, WAITING, CLOUDS, SPECIALS};
         try {
             for (String scene : scenes) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + scene));
@@ -210,6 +211,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public void phaseHandler(String phase) {
+        //PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
+        //ActionPhaseService actionPhaseService = new ActionPhaseService();
+        //SetViewService setViewService = new SetViewService(this);
+
         System.out.println("started phase handler!");
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
         switch (phase) {
@@ -323,6 +328,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     view.setTowersListener(gui);
                     view.setUserInfoListener(gui);
                     view.setSpecialStudentsListener(gui);
+                    view.setSpecialListener(gui);
 
                     return view;
                 }
@@ -353,13 +359,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
     }
 
-    public void initializedSavedScene(int numberOfPlayer, boolean expertMode) {
-        SavedSceneController controller = (SavedSceneController) sceneControllersMap.get(SAVED);
-        String expertModeString;
-        if (expertMode) expertModeString = "YES";
-        else expertModeString = "NO";
-        controller.initializedScene(numberOfPlayer, expertModeString);
-    }
+        private void initializedSavedScene(int numberOfPlayer, boolean expertMode) {
+            SavedSceneController controller = (SavedSceneController) sceneControllersMap.get(SAVED);
+            String expertModeString;
+            if (expertMode) expertModeString = "YES";
+            else expertModeString = "NO";
+            controller.initializedScene(numberOfPlayer, expertModeString);
+        }
 
     //used to load a scene in a new stage (window), instead of the primaryStage
     public void loadScene(String sceneName) {
@@ -401,12 +407,34 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setCharacter(character, playerRef);
         });
 
-    }
+        }
 
 
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
         //controller.setNewCoinsValue(playerRef, newCoinsValue);
+    }
+
+    @Override
+    public void notifySpecial(int specialRef, int playerRef) {
+
+    }
+
+    @Override
+    public void notifySpecialList(ArrayList<Integer> specialList, ArrayList<Integer> cost) {
+        Platform.runLater(() -> {
+            SpecialsSceneController controller = new SpecialsSceneController();
+            controller.initializedSpecialsScene(specialList, cost);
+        });
+
+    }
+
+    @Override
+    public void notifyIncreasedCost(int specialRef, int newCost) {
+        Platform.runLater(() -> {
+            SpecialsSceneController controller = new SpecialsSceneController();
+            controller.setCoins(specialRef, newCost);
+        });
     }
 
     @Override

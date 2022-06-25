@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static it.polimi.ingsw.client.GUI.GUI.SPECIALS;
+
 
 public class MainSceneController implements SceneController {
 
@@ -118,6 +120,16 @@ public class MainSceneController implements SceneController {
         currentStudentColor=-1;
         lastThingClicked="";
 
+    }
+
+    public void useSpecialButtonPressed(){
+        if(!gui.constants.isSpecialUsed()) {
+            gui.switchScene(SPECIALS);
+        }
+        else {
+            errorLabel.setText("Error, move not allowed!");
+            errorLabel.setVisible(true);
+        }
     }
 
     private class StudentsClickHandler implements EventHandler<MouseEvent> {

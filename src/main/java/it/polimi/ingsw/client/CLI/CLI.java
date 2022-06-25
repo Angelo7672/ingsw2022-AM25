@@ -27,7 +27,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     private final String ANSI_RESET = "\u001B[0m";
     private final String ANSI_RED = "\u001B[31m";
     private final String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
-
+    private final Object lock;
 
     public CLI(Socket socket) throws IOException{
         this.socket = socket;
@@ -37,6 +37,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         proxy = new Proxy_c(socket);
         proxy.setDisconnectedListener(this);
         proxy.setServerOfflineListener(this);
+        lock = new Object();
     }
 
     private void setup() throws IOException, ClassNotFoundException, InterruptedException {
@@ -237,225 +238,221 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     }
 
     private void useSpecial() throws IOException, ClassNotFoundException {
-        System.out.println();
-        System.out.print(SPACE+"Do you want to use a special card? [y/n] ");
-        String answer = readNext();
-        if (answer.equalsIgnoreCase("n")) return;
-        else if (answer.equalsIgnoreCase("y")) {
-            int special=-1;
-            printable.printSpecialList();
-            do {
-                try {
+        synchronized (lock) {
+            System.out.println();
+            System.out.print(SPACE + "Do you want to use a special card? [y/n] ");
+            String answer = readNext();
+            if (answer.equalsIgnoreCase("n")) return;
+            else if (answer.equalsIgnoreCase("y")) {
+                int special = -1;
+                printable.printSpecialList();
+                do {
+                    try {
+                        System.out.println();
+                        System.out.print(SPACE + "Which special do you want to use? Insert the number ");
+                        String intString = readNext();
+                        special = Integer.parseInt(intString);
+                    } catch (NumberFormatException e) {
+                        System.out.println();
+                        System.out.println(ANSI_RED + SPACE + "Error, insert a number" + ANSI_RESET);
+                        turn();
+                        return;
+                    }
+                } while (special == -1);
+                if (!proxy.checkSpecial(special)) {
                     System.out.println();
-                    System.out.print(SPACE+"Which special do you want to use? Insert the number ");
-                    String intString = readNext();
-                    special = Integer.parseInt(intString);
-                }catch (NumberFormatException e){
-                    System.out.println();
-                    System.out.println(ANSI_RED+SPACE+"Error, insert a number"+ANSI_RESET);
+                    System.out.println(ANSI_RED + SPACE + "Move not allowed" + ANSI_RESET);
                     turn();
+                } else System.out.println();
+                System.out.println("special accettato");
+                if (special == 2 || special == 4 || special == 6 || special == 8) {
+                    constants.setSpecialUsed(true);
                     return;
                 }
-            } while (special == -1);
-            if(!proxy.checkSpecial(special)) {
-                System.out.println();
-                System.out.println(ANSI_RED+SPACE+"Move not allowed"+ANSI_RESET);
-                turn();
-            }
-            else System.out.println();
-            System.out.println("special accettato");
-            if(special==2 || special==4 || special==6 || special==8 ) {
-                constants.setSpecialUsed(true);
+                if (special(special)) {
+                    constants.setSpecialUsed(true);
+                    return;
+                } else turn();
                 return;
             }
-            if(special(special)) {
-                constants.setSpecialUsed(true);
-                return;
-            }
-            else turn();
-            return;
+            System.out.println();
+            System.out.println(ANSI_RED + SPACE + "Error, try again" + ANSI_RESET);
+            turn();
         }
-        System.out.println();
-        System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
-        turn();
     }
 
     private boolean special(int special) throws IOException, ClassNotFoundException {
-        while(true) {
-            try {
-                if (special == 1) {
-                    String colorString;
-                    int color;
-                    while (true) {
-                        System.out.println();
-                        System.out.print(SPACE + "Which student do you want to move? Insert color ");
-                        colorString = readNext();
-                        color = translateColor(colorString);
-                        if (color == -1) {
-                            System.out.println();
-                            System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
-                        }
-                        else break;
-                    }
-                    int island;
-                    do {
-                        System.out.println();
-                        System.out.print(SPACE + "In witch island? Insert the number ");
-                        String intString = readNext();
-                        island = Integer.parseInt(intString);
-                        if(island < 1 || island > 12 ) {
-                            System.out.println(ANSI_RED + SPACE + "Error, insert an existing island." + ANSI_RESET);
-                            island = -1;
-                        }
-                    } while (island == -1);
-                    island = island - 1;
-                    System.out.println();
-                    if(proxy.useSpecial(special, island, color)) return true;
-                    else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
-                    return false;
-                } else if (special == 3 || special == 5) {
-                    int island;
-                    do {
-                        System.out.println();
-                        System.out.print(SPACE + "Which island? Insert the number ");
-                        String intString = readNext();
-                        island = Integer.parseInt(intString);
-                        if(island < 1 || island > 12 ) {
-                            System.out.println(ANSI_RED + SPACE + "Error, insert an existing island." + ANSI_RESET);
-                            island = -1;
-                        }
-                    } while (island == -1);
-                    island = island - 1;
-                    System.out.println();
-                    if(proxy.useSpecial(special, island)) return true;
-                    else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
-                    return false;
-                } else if (special == 7) {
-                    ArrayList<Integer> entranceStudents = new ArrayList<>();
-                    ArrayList<Integer> cardStudents = new ArrayList<>();
-                    String color;
-                    for (int i = 0; i < 3; i++) {
+        synchronized (lock) {
+            while (true) {
+                try {
+                    if (special == 1) {
+                        String colorString;
+                        int color;
                         while (true) {
                             System.out.println();
-                            System.out.print(SPACE + "Which student on the card? ");
+                            System.out.print(SPACE + "Which student do you want to move? Insert color ");
+                            colorString = readNext();
+                            color = translateColor(colorString);
+                            if (color == -1) {
+                                System.out.println();
+                                System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
+                            } else break;
+                        }
+                        int island;
+                        do {
+                            System.out.println();
+                            System.out.print(SPACE + "In witch island? Insert the number ");
+                            String intString = readNext();
+                            island = Integer.parseInt(intString);
+                            if (island < 1 || island > 12) {
+                                System.out.println(ANSI_RED + SPACE + "Error, insert an existing island." + ANSI_RESET);
+                                island = -1;
+                            }
+                        } while (island == -1);
+                        island = island - 1;
+                        System.out.println();
+                        if (proxy.useSpecial(special, island, color)) return true;
+                        else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                        return false;
+                    } else if (special == 3 || special == 5) {
+                        int island;
+                        do {
+                            System.out.println();
+                            System.out.print(SPACE + "Which island? Insert the number ");
+                            String intString = readNext();
+                            island = Integer.parseInt(intString);
+                            if (island < 1 || island > 12) {
+                                System.out.println(ANSI_RED + SPACE + "Error, insert an existing island." + ANSI_RESET);
+                                island = -1;
+                            }
+                        } while (island == -1);
+                        island = island - 1;
+                        System.out.println();
+                        if (proxy.useSpecial(special, island)) return true;
+                        else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                        return false;
+                    } else if (special == 7) {
+                        ArrayList<Integer> entranceStudents = new ArrayList<>();
+                        ArrayList<Integer> cardStudents = new ArrayList<>();
+                        String color;
+                        for (int i = 0; i < 3; i++) {
+                            while (true) {
+                                System.out.println();
+                                System.out.print(SPACE + "Which student on the card? ");
+                                color = readNext();
+                                if (translateColor(color) == -1) {
+                                    System.out.println();
+                                    System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
+                                } else break;
+                            }
+                            cardStudents.add(translateColor(color));
+                            while (true) {
+                                System.out.println();
+                                System.out.print(SPACE + "Which student in the entrance? ");
+                                color = readNext();
+                                if (translateColor(color) == -1) {
+                                    System.out.println();
+                                    System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
+                                } else break;
+                            }
+                            entranceStudents.add(translateColor(color));
+                            if (i < 2) {
+                                System.out.println();
+                                System.out.print(SPACE + "Do you want to move student again? [Y/N] ");
+                                String answer = readNext();
+                                if (answer.equalsIgnoreCase("n")) break;
+                            }
+                        }
+                        System.out.println();
+                        if (proxy.useSpecial(special, entranceStudents, cardStudents)) return true;
+                        else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                        return false;
+                    } else if (special == 9) {
+                        String color;
+                        while (true) {
+                            System.out.println();
+                            System.out.print(SPACE + "Which color? ");
                             color = readNext();
                             if (translateColor(color) == -1) {
                                 System.out.println();
                                 System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
                             } else break;
                         }
-                        cardStudents.add(translateColor(color));
+                        System.out.println();
+                        if (proxy.useSpecial(special, translateColor(color))) return true;
+                        else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                        return false;
+                    } else if (special == 10) {
+                        ArrayList<Integer> entranceStudents = new ArrayList<>();
+                        ArrayList<Integer> tableStudents = new ArrayList<>();
+                        String color;
+                        for (int i = 0; i < 2; i++) {
+                            while (true) {
+                                System.out.println();
+                                System.out.print(SPACE + "Which student on the table? ");
+                                color = readNext();
+                                if (translateColor(color) == -1) {
+                                    System.out.println();
+                                    System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
+                                } else break;
+                            }
+                            tableStudents.add(translateColor(color));
+                            while (true) {
+                                System.out.println();
+                                System.out.print(SPACE + "Which student in the entrance? ");
+                                color = readNext();
+                                if (translateColor(color) == -1) {
+                                    System.out.println();
+                                    System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
+                                } else break;
+                            }
+                            entranceStudents.add(translateColor(color));
+                            if (i < 1) {
+                                System.out.println();
+                                System.out.print(SPACE + "Do you want to move student again? [Y/N] ");
+                                String answer = readNext();
+                                if (answer.equalsIgnoreCase("n")) break;
+                            }
+                        }
+                        System.out.println();
+                        if (proxy.useSpecial(special, entranceStudents, tableStudents)) return true;
+                        else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                        return false;
+                    } else if (special == 11) {
+                        String color;
                         while (true) {
                             System.out.println();
-                            System.out.print(SPACE + "Which student in the entrance? ");
+                            System.out.print(SPACE + "Which student do you want to move? Insert color ");
                             color = readNext();
                             if (translateColor(color) == -1) {
                                 System.out.println();
                                 System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
                             } else break;
                         }
-                        entranceStudents.add(translateColor(color));
-                        if (i < 2) {
-                            System.out.println();
-                            System.out.print(SPACE + "Do you want to move student again? [Y/N] ");
-                            String answer = readNext();
-                            if (answer.equalsIgnoreCase("n")) break;
-                        }
-                    }
-                    System.out.println();
-                    if (proxy.useSpecial(special, entranceStudents, cardStudents)) return true;
-                    else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
-                    return false;
-                } else if (special == 9) {
-                    String color;
-                    while (true) {
                         System.out.println();
-                        System.out.print(SPACE + "Which color? ");
-                        color = readNext();
-                        if (translateColor(color) == -1) {
-                            System.out.println();
-                            System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
-                        }
-                        else break;
-                    }
-                    System.out.println();
-                    if (proxy.useSpecial(special, translateColor(color))) return true;
-                    else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
-                    return false;
-                } else if (special == 10) {
-                    ArrayList<Integer> entranceStudents = new ArrayList<>();
-                    ArrayList<Integer> tableStudents = new ArrayList<>();
-                    String color;
-                    for (int i = 0; i < 2; i++) {
+                        if (proxy.useSpecial(special, translateColor(color))) return true;
+                        else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                        return false;
+                    } else if (special == 12) {
+                        String color;
                         while (true) {
                             System.out.println();
-                            System.out.print(SPACE + "Which student on the table? ");
+                            System.out.print(SPACE + "Which color? Insert color ");
                             color = readNext();
                             if (translateColor(color) == -1) {
                                 System.out.println();
-                                System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
-                            }
-                            else break;
+                                System.out.print(ANSI_RED + SPACE + "Error, enter an existing color" + ANSI_RESET);
+                            } else break;
                         }
-                        tableStudents.add(translateColor(color));
-                        while (true) {
-                            System.out.println();
-                            System.out.print(SPACE + "Which student in the entrance? ");
-                            color = readNext();
-                            if (translateColor(color) == -1) {
-                                System.out.println();
-                                System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
-                            }
-                            else break;
-                        }
-                        entranceStudents.add(translateColor(color));
-                        if (i < 1) {
-                            System.out.println();
-                            System.out.print(SPACE + "Do you want to move student again? [Y/N] ");
-                            String answer = readNext();
-                            if (answer.equalsIgnoreCase("n")) break;
-                        }
-                    }
-                    System.out.println();
-                    if (proxy.useSpecial(special, entranceStudents, tableStudents)) return true;
-                    else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
-                    return false;
-                } else if (special == 11) {
-                    String color;
-                    while (true) {
                         System.out.println();
-                        System.out.print(SPACE + "Which student do you want to move? Insert color ");
-                        color = readNext();
-                        if (translateColor(color) == -1) {
-                            System.out.println();
-                            System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
-                        }
-                        else break;
+                        if (proxy.useSpecial(special, translateColor(color))) return true;
+                        else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
+                        return false;
                     }
+                } catch (NumberFormatException e) {
                     System.out.println();
-                    if (proxy.useSpecial(special, translateColor(color))) return true;
-                    else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
-                    return false;
-                } else if (special == 12) {
-                    String color;
-                    while (true) {
-                        System.out.println();
-                        System.out.print(SPACE + "Which color? Insert color ");
-                        color = readNext();
-                        if (translateColor(color) == -1) {
-                            System.out.println();
-                            System.out.print(ANSI_RED + SPACE + "Error, enter an existing color" + ANSI_RESET);
-                        }
-                        else break;
-                    }
-                    System.out.println();
-                    if (proxy.useSpecial(special, translateColor(color))) return true;
-                    else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
-                    return false;
+                    System.out.println(ANSI_RED + SPACE + "Error, insert a number" + ANSI_RESET);
                 }
-            } catch (NumberFormatException e) {
-                System.out.println();
-                System.out.println(ANSI_RED + SPACE + "Error, insert a number" + ANSI_RESET);
             }
         }
     }
@@ -471,11 +468,10 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             if (!result.equalsIgnoreCase("ok")) {
                 System.out.println();
                 System.out.println(ANSI_RED + SPACE + result + ANSI_RESET);
-            }
-            else {
+            } else {
                 constants.setCardPlayed(true);
+                System.out.print(SPACE + "It's your opponent turn, wait...");
                 System.out.println();
-                System.out.println(SPACE + "It's your opponent turn, wait...");
                 return;
             }
         }
@@ -492,117 +488,121 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         int colorInt=-1;
         int islandRef = -1;
         try {
-            while(color==null) {
-                System.out.println();
-                System.out.print(SPACE+"Which student do you want to move? Insert color ");
-                color = readNext();
-                colorInt = translateColor(color);
-                if(colorInt==-1) {
+            while (color == null) {
+                synchronized (lock) {
                     System.out.println();
-                    System.out.println(ANSI_RED+SPACE+"Error, enter an existing color"+ANSI_RESET);
-                    color = null;
-                    System.out.println();
+                    System.out.print(SPACE + "Which student do you want to move? Insert color ");
+                    color = readNext();
+                    colorInt = translateColor(color);
+                    if (colorInt == -1) {
+                        System.out.println();
+                        System.out.println(ANSI_RED + SPACE + "Error, enter an existing color" + ANSI_RESET);
+                        color = null;
+                    }
                 }
             }
-            while(where==null) {
-                System.out.println();
-                System.out.print(SPACE+"Where do you want to move the student? School or Island ");
-                where = readNext();
-                if(!where.equalsIgnoreCase("island")&&!where.equalsIgnoreCase("school")){
+            while (where == null) {
+                synchronized (lock) {
                     System.out.println();
-                    System.out.println(ANSI_RED+SPACE+"Error, insert school or island"+ANSI_RESET);
-                    where=null;
+                    System.out.print(SPACE + "Where do you want to move the student? School or Island ");
+                    where = readNext();
+                    if (!where.equalsIgnoreCase("island") && !where.equalsIgnoreCase("school")) {
+                        System.out.println();
+                        System.out.println(ANSI_RED + SPACE + "Error, insert school or island" + ANSI_RESET);
+                        where = null;
+                    }
                 }
             }
             System.out.println();
             if (where.equalsIgnoreCase("island")) {
-                while (islandRef==-1) {
-                    System.out.print(SPACE+"Which island? insert the number ");
-                    String intString = readNext();
-                    islandRef = Integer.parseInt(intString);
-                    islandRef = islandRef - 1;
-                    System.out.println();
-                    if(islandRef<0 || islandRef>=view.getIslandSize()){
+                synchronized (lock) {
+                    while (islandRef == -1) {
+                        System.out.print(SPACE + "Which island? insert the number ");
+                        String intString = readNext();
+                        islandRef = Integer.parseInt(intString);
+                        islandRef = islandRef - 1;
                         System.out.println();
-                        System.out.println(ANSI_RED+SPACE+"Error, insert an existing island"+ANSI_RESET);
-                        islandRef = -1;
+                        if (islandRef < 0 || islandRef >= view.getIslandSize()) {
+                            System.out.println();
+                            System.out.println(ANSI_RED + SPACE + "Error, insert an existing island" + ANSI_RESET);
+                            islandRef = -1;
+                        }
                     }
                 }
             }
             accepted = proxy.moveStudent(colorInt, where, islandRef);
             if (accepted.equals("transfer complete")) constants.setStudentMoved(true);
-            else if(accepted.equals("move not allowed")) {
-                System.out.println(ANSI_RED+SPACE+"Move not allowed"+ANSI_RESET);
+            else if (accepted.equals("move not allowed")) {
+                System.out.println(ANSI_RED + SPACE + "Move not allowed" + ANSI_RESET);
             }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println();
-            System.out.println(ANSI_RED+SPACE+"Error, try again"+ANSI_RESET);
-        } catch (NumberFormatException e){
+            System.out.println(ANSI_RED + SPACE + "Error, try again" + ANSI_RESET);
+        } catch (NumberFormatException e) {
             System.out.println();
-            System.out.println(ANSI_RED+SPACE+"Error, insert a number"+ANSI_RESET);
+            System.out.println(ANSI_RED + SPACE + "Error, insert a number" + ANSI_RESET);
         }
     }
 
     private void moveMotherNature() throws IOException, ClassNotFoundException {
         int steps = -1;
-        try {
-            do {
-                printable.printMotherNature();
-                System.out.print(SPACE+"How many steps do you want to move Mother Nature? Maximum number of steps "+view.getMaxStepsMotherNature()+" ");
-                String intString = readNext();
-                steps = Integer.parseInt(intString);
-                if(steps>view.getMaxStepsMotherNature()) {
-                    System.out.println();
-                    System.out.println(ANSI_RED+SPACE+"Error, insert a number between 1 and "+view.getMaxStepsMotherNature()+ANSI_RESET);
-                    steps=-1;
-                }
-            } while (steps <= 0);
-        }catch (NumberFormatException e){
-            System.out.println();
-            System.out.println(ANSI_RED+SPACE+"Error, insert a number."+ANSI_RESET);
-            return;
-        }
-        String result = proxy.moveMotherNature(steps);
-        if (result.equalsIgnoreCase("ok")) constants.setMotherMoved(true);
-        else System.out.println(result);
+            try {
+                do {
+                    printable.printMotherNature();
+                    System.out.print(SPACE + "How many steps do you want to move Mother Nature? Maximum number of steps " + view.getMaxStepsMotherNature() + " ");
+                    String intString = readNext();
+                    steps = Integer.parseInt(intString);
+                    if (steps > view.getMaxStepsMotherNature()) {
+                        System.out.println();
+                        System.out.println(ANSI_RED + SPACE + "Error, insert a number between 1 and " + view.getMaxStepsMotherNature() + ANSI_RESET);
+                        steps = -1;
+                    }
+                } while (steps <= 0);
+            } catch (NumberFormatException e) {
+                System.out.println();
+                System.out.println(ANSI_RED + SPACE + "Error, insert a number." + ANSI_RESET);
+                return;
+            }
+            String result = proxy.moveMotherNature(steps);
+            if (result.equalsIgnoreCase("ok")) constants.setMotherMoved(true);
+            else System.out.println(result);
     }
 
     private void chooseCloud() throws IOException, ClassNotFoundException {
         int cloud = -1;
         constants.setEndTurn(true);
-        try{
-            do {
-                printable.printCloud();
-                System.out.print(SPACE+"Which cloud do you want? ");
-                String intString = readNext();
-                cloud = Integer.parseInt(intString);
-                if(cloud<=0 || cloud>view.getNumberOfPlayers()) {
-                    cloud = -1;
-                    System.out.println();
-                    System.out.println(ANSI_RED+SPACE+"Error, insert an existing cloud."+ANSI_RESET);
-                }
-            } while (cloud == -1);
-        }catch (NumberFormatException e){
-            System.out.println();
-            System.out.println(ANSI_RED+SPACE+"Error, insert a number."+ANSI_RESET);
-            return;
-        }
-        cloud = cloud-1;
-        String result = proxy.chooseCloud(cloud);
-        if (result.equalsIgnoreCase("ok")) {
-            constants.setCloudChosen(true);
-            System.out.println();
-            printable.cli();
-            System.out.println();
-            System.out.println(SPACE+"it's your opponent turn, wait...");
-            constants.setEndTurn(false);
-            constants.setPlanningPhaseStarted(false);
-        }
-        else {
-            System.out.println();
-            System.out.println(ANSI_RED+SPACE+result+ANSI_RESET);
-            System.out.println();
-        }
+            try {
+                do {
+                    printable.printCloud();
+                    System.out.print(SPACE + "Which cloud do you want? ");
+                    String intString = readNext();
+                    cloud = Integer.parseInt(intString);
+                    if (cloud <= 0 || cloud > view.getNumberOfPlayers()) {
+                        cloud = -1;
+                        System.out.println();
+                        System.out.println(ANSI_RED + SPACE + "Error, insert an existing cloud." + ANSI_RESET);
+                    }
+                } while (cloud == -1);
+            } catch (NumberFormatException e) {
+                System.out.println();
+                System.out.println(ANSI_RED + SPACE + "Error, insert a number." + ANSI_RESET);
+                return;
+            }
+            cloud = cloud - 1;
+            String result = proxy.chooseCloud(cloud);
+            if (result.equalsIgnoreCase("ok")) {
+                constants.setCloudChosen(true);
+                System.out.println();
+                printable.cli();
+                System.out.println();
+                System.out.println(SPACE + "it's your opponent turn, wait...");
+                constants.setEndTurn(false);
+                constants.setPlanningPhaseStarted(false);
+            } else {
+                System.out.println();
+                System.out.println(ANSI_RED + SPACE + result + ANSI_RESET);
+                System.out.println();
+            }
     }
 
     @Override
@@ -673,65 +673,81 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     }
 
     private void serverOffline() throws IOException {
-        System.out.println();
-        System.out.println(ANSI_RED+SPACE+"Server is offline, Game over."+ANSI_RESET);
-        socket.close();
-        setActive(false);
-        System.exit(-1);
+        synchronized (lock) {
+            System.out.println();
+            System.out.println(ANSI_RED + SPACE + "Server is offline, Game over." + ANSI_RESET);
+            socket.close();
+            setActive(false);
+            System.exit(-1);
+        }
     }
 
     private void disconnectClient() throws IOException {
-        System.out.println();
-        System.out.println(ANSI_RED+SPACE+"One of the player is offline, Game over."+ANSI_RESET);
-        socket.close();
-        setActive(false);
-        System.exit(-1);
+        synchronized (lock) {
+            System.out.println();
+            System.out.println(ANSI_RED + SPACE + "One of the player is offline, Game over." + ANSI_RESET);
+            socket.close();
+            setActive(false);
+            System.exit(-1);
+        }
     }
 
     private void winner() throws IOException {
-        printable.cli();
-        System.out.println();
-        System.out.println(ANSI_RED+SPACE+"Game over, the winner is "+view.getWinner()+"."+ANSI_RESET);
-        socket.close();
-        setActive(false);
-        System.exit(0);
+        synchronized (lock) {
+            printable.cli();
+            System.out.println();
+            System.out.println(ANSI_RED + SPACE + "Game over, the winner is " + view.getWinner() + "." + ANSI_RESET);
+            socket.close();
+            setActive(false);
+            System.exit(0);
+        }
     }
 
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
         if(constants.isStartGame()) {
-            printable.printCoins(playerRef);
+            synchronized (lock) {
+                printable.printCoins(playerRef);
+            }
         }
     }
 
     @Override
     public void notifyInhibited(int islandRef, int isInhibited) {
         if(constants.isStartGame()) {
-            System.out.println("New play: "+"\t"+"\t"+"island "+(islandRef+1)+" No Entry tiles: "+isInhibited);
-            System.out.println();
+            synchronized (lock) {
+                System.out.println("New play: " + "\t" + "\t" + "island " + (islandRef + 1) + " No Entry tiles: " + isInhibited);
+                System.out.println();
+            }
         }
     }
 
     @Override
     public void notifyIslandChange(int islandToDelete) {
         if(constants.isStartGame()) {
-            //System.out.println();
-            System.out.println("New play: "+"\t"+"\t"+" island "+(islandToDelete+1)+" had been united.");
+            synchronized (lock) {
+                //System.out.println();
+                System.out.println("New play: " + "\t" + "\t" + " island " + (islandToDelete + 1) + " had been united.");
+            }
         }
     }
 
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
         if(constants.isStartGame()) {
-            System.out.println();
-            printable.printMotherNature();
+            synchronized (lock) {
+                System.out.println();
+                printable.printMotherNature();
+            }
         }
     }
 
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
         if(constants.isStartGame()) {
-            printable.printLastCard();
+            synchronized (lock) {
+                printable.printLastCard();
+            }
         }
     }
 
@@ -743,49 +759,53 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     @Override
     public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
         if(constants.isStartGame()) {
-            printable.printProf(playerRef);
+            synchronized (lock) {
+                printable.printProf(playerRef);
+            }
         }
     }
 
     @Override
     public void notifySpecial(int specialRef, int playerRef) {
         if(constants.isStartGame()) {
-            System.out.print("New play: "+"\t"+"\t");
-            System.out.println("Player "+view.getNickname(playerRef)+" used special "+view.getSpecialName(view.getSpecialIndex(specialRef)));
-            System.out.println();
+            synchronized (lock) {
+                System.out.print("New play: " + "\t" + "\t");
+                System.out.println("Player " + view.getNickname(playerRef) + " used special " + view.getSpecialName(view.getSpecialIndex(specialRef)));
+                System.out.println();
+            }
         }
     }
 
     @Override
-    public void notifySpecialList(ArrayList<Integer> specialsList, ArrayList<Integer> cost) {
-        if(constants.isStartGame()) {
-
-        }
-    }
+    public void notifySpecialList(ArrayList<Integer> specialsList, ArrayList<Integer> cost) {}
 
     @Override
-    public void notifyIncreasedCost(int specialRef, int newCost) {
-
-    }
+    public void notifyIncreasedCost(int specialRef, int newCost) {}
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
         if(constants.isStartGame()&&!constants.isEndTurn()) {
-            printable.printStudentsChange(place, componentRef);
+            synchronized (lock) {
+                printable.printStudentsChange(place, componentRef);
+            }
         }
     }
 
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
         if(constants.isStartGame()&&!constants.isEndTurn()) {
-            printable.printTowersChange(place, componentRef);
+            synchronized (lock) {
+                printable.printTowersChange(place, componentRef);
+            }
         }
     }
 
     @Override
     public void notifyTowerColor(int islandRef, int newColor) {
         if(constants.isStartGame()&&!constants.isEndTurn()) {
-            printable.printTowersOwner(islandRef);
+            synchronized (lock) {
+                printable.printTowersOwner(islandRef);
+            }
         }
     }
 
@@ -807,9 +827,11 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     @Override
     public void notifyNoEntry(int newValue) {
         if(constants.isStartGame()) {
-            System.out.print("New play: "+"\t"+"\t");
-            System.out.println("No Entry tiles: "+newValue);
-            System.out.println();
+            synchronized (lock) {
+                System.out.print("New play: " + "\t" + "\t");
+                System.out.println("No Entry tiles: " + newValue);
+                System.out.println();
+            }
         }
     }
 
