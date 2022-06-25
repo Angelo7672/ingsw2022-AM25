@@ -91,7 +91,7 @@
                <children>
                   <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="4.0" layoutY="2.0" preserveRatio="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                      <image>
-                        <Image url="@../graphics/island1.png" />
+                        <Image url="@../graphics/island2.png" />
                      </image>
                   </ImageView>
                  <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
@@ -165,7 +165,7 @@
               <children>
                     <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                        <image>
-                          <Image url="@../graphics/island1.png" />
+                          <Image url="@../graphics/island3.png" />
                        </image>
                     </ImageView>
                     <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
@@ -313,7 +313,7 @@
                <children>
                      <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                         <image>
-                           <Image url="@../graphics/island1.png" />
+                           <Image url="@../graphics/island2.png" />
                         </image>
                      </ImageView>
                      <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
@@ -387,7 +387,7 @@
               <children>
                     <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                        <image>
-                          <Image url="@../graphics/island1.png" />
+                          <Image url="@../graphics/island3.png" />
                        </image>
                     </ImageView>
                     <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
@@ -535,7 +535,7 @@
               <children>
                     <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                        <image>
-                          <Image url="@../graphics/island1.png" />
+                          <Image url="@../graphics/island2.png" />
                        </image>
                     </ImageView>
                     <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
@@ -609,7 +609,7 @@
               <children>
                     <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                        <image>
-                          <Image url="@../graphics/island1.png" />
+                          <Image url="@../graphics/island3.png" />
                        </image>
                     </ImageView>
                     <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
@@ -757,7 +757,7 @@
              <children>
                        <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                           <image>
-                             <Image url="@../graphics/island1.png" />
+                             <Image url="@../graphics/island2.png" />
                           </image>
                        </ImageView>
                        <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
@@ -831,7 +831,7 @@
                <children>
                  <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                     <image>
-                       <Image url="@../graphics/island1.png" />
+                       <Image url="@../graphics/island3.png" />
                     </image>
                  </ImageView>
                  <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
@@ -1649,7 +1649,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="cardPane2" layoutX="862.0" layoutY="14.0" prefHeight="105.0" prefWidth="160.0">
+      <AnchorPane fx:id="cardPane2" layoutX="847.0" layoutY="14.0" prefHeight="105.0" prefWidth="160.0">
          <children>
             <ImageView fitHeight="88.0" fitWidth="62.0" layoutX="93.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>

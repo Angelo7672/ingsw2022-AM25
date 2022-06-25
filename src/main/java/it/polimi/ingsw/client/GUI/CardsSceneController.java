@@ -77,10 +77,13 @@ public class CardsSceneController implements SceneController{
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            alreadyPlayedCards.add(playedCard);
 
             if (result.equalsIgnoreCase("ok")) {
-                gui.constants.setCardPlayed(true);
+                //gui.constants.setCardPlayed(true);
+                alreadyPlayedCards.add(playedCard);
+                disableCard(playedCard);
+                Stage stage = (Stage) confirmButton.getScene().getWindow();
+                stage.close();
                 gui.phaseHandler("ActionPhase");
 
             } else
@@ -117,6 +120,31 @@ public class CardsSceneController implements SceneController{
                     turtleButton.setVisible(false);
                 }
             }
+
+    }
+
+    public void disableCard(String card){
+        if(card.equalsIgnoreCase("lion")){
+            lionButton.setVisible(false);
+        } else if(card.equalsIgnoreCase("goose")){
+            gooseButton.setVisible(false);
+        } else if(card.equalsIgnoreCase("cat")){
+            catButton.setVisible(false);
+        } else if(card.equalsIgnoreCase("eagle")){
+            eagleButton.setVisible(false);
+        } else if(card.equalsIgnoreCase("fox")){
+            foxButton.setVisible(false);
+        } else if(card.equalsIgnoreCase("lizard")){
+            lizardButton.setVisible(false);
+        } else if(card.equalsIgnoreCase("octopus")){
+            octopusButton.setVisible(false);
+        } else if(card.equalsIgnoreCase("dog")){
+            dogButton.setVisible(false);
+        } else if(card.equalsIgnoreCase("elephant")){
+            elephantButton.setVisible(false);
+        } else if(card.equalsIgnoreCase("turtle")){
+            turtleButton.setVisible(false);
+        }
 
     }
 

@@ -2,20 +2,16 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.View;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.sonatype.guice.bean.binders.SpaceModule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,11 +49,6 @@ public class MainSceneController implements SceneController {
     private ArrayList<Table> yellowTables;
     private ArrayList<Table> pinkTables;
     private ArrayList<Table> blueTables;
-
-    private final String WIZARD = "/graphics/character_wizard.png";
-    private final String WITCH = "/graphics/character_witch.png";
-    private final String SAMURAI = "/graphics/character_samurai.png";
-    private final String KING = "/graphics/character_king.png";
 
     private final String GREENSTUDENT = "/graphics/wooden_pieces/greenStudent3D.png";
     private final String REDSTUDENT = "/graphics/wooden_pieces/redStudent3D.png";
@@ -102,8 +93,6 @@ public class MainSceneController implements SceneController {
 
     @FXML private Button showCardsButton;
     @FXML private Button showCloudsButton;
-
-
 
 
     public MainSceneController() {
@@ -356,7 +345,6 @@ public class MainSceneController implements SceneController {
             player4Box.setVisible(false);
             cardPane4.setVisible(false);
         }
-        System.out.println("players ok");
         useSpecialButton.setVisible(expertMode);
 
         userInfo1.getChildren().get(2).setVisible(expertMode);
@@ -381,18 +369,12 @@ public class MainSceneController implements SceneController {
 
 
         for (int i = 0; i < numberOfPlayers; i++) {
-        /*setNickname(nicknamesMap.get(i), i);
-        charactersImageMap.get(i).setImage(characterToImage(charactersMap.get(i)));*/
-
             //maps the children of school panes, 0:school imageView, 1: entrance, 2: table 3: professors, 4: towers
             this.entrancesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(1)); //maps all the entrances
             this.tablesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(2)); //maps all the tables
             this.professorsMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(3)); //maps all the professors panes
             this.towersMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(4));//maps all the towers panes
-
-
         }
-        System.out.println("Maps set");
         AnchorPane island;
         for (int i = 0; i < 12; i++) {
             island = (AnchorPane) islandsPane.getChildren().get(i);
@@ -417,7 +399,6 @@ public class MainSceneController implements SceneController {
 
     //inizializza le isole, nascondendo le torri (che non ci sono a inizio partita)
     public void islandsInitialization() {
-        System.out.println("island initialization");
         AnchorPane island;
         IslandClickHandler islandClickHandler = new IslandClickHandler();
         for (int i = 0; i < 12; i++) {
@@ -428,12 +409,10 @@ public class MainSceneController implements SceneController {
                 island.getChildren().get(j).setVisible(false);
             }
         }
-        System.out.println("islands are initialized");
     }
 
     //inizializza le scuole, mettendo le torri del colore giusto a seconda del numero di giocatori
     public void schoolsInitialization() {
-        System.out.println("schoolInitialization");
         ImageView tower;
         if (numberOfPlayers == 2) {
             for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
@@ -490,10 +469,8 @@ public class MainSceneController implements SceneController {
                 tablesMap.get(i).setOnMouseClicked(tableClickHandler);
             }
         }
-        System.out.println("schools are initialized");
     }
     public void tablesInitialization() {
-        System.out.println("initialize tables");
         greenTables.add(new Table(10, 4, 0));
         redTables.add(new Table(10, 28, 1));
         yellowTables.add(new Table(10, 52, 2));
@@ -517,22 +494,6 @@ public class MainSceneController implements SceneController {
         yellowTables.add(new Table(76, 176, 2));
         pinkTables.add( new Table(102, 176, 3));
         blueTables.add(new Table(128, 176, 4));
-        System.out.println("tables are initialized");
-    }
-
-
-    public Image characterToImage(String characterName) {
-        Image image = null;
-        if (characterName.equalsIgnoreCase("WIZARD")) {
-            image = new Image(WIZARD);
-        } else if (characterName.equalsIgnoreCase("WITCH")) {
-            image = new Image(WITCH);
-        } else if (characterName.equalsIgnoreCase("SAMURAI")) {
-            image = new Image(SAMURAI);
-        } else if (characterName.equalsIgnoreCase("KING")) {
-            image = new Image(KING);
-        }
-        return image;
     }
 
     public void setNickname(String nickname, int playerRef) {
@@ -554,7 +515,7 @@ public class MainSceneController implements SceneController {
     }
 
     public void setCharacter(String character, int playerRef){
-        Image characterImage = characterToImage(character);
+        Image characterImage = stringToImage(character);
         switch (playerRef){
             case 0 -> character1.setImage(characterImage);
             case 1 -> character2.setImage(characterImage);
@@ -680,19 +641,23 @@ public class MainSceneController implements SceneController {
         return image;
     }
 
-    public Image assistantToImage(String assistant){
+    public Image stringToImage(String assistant){
         Image image=null;
         switch (assistant){
-            case "LION" -> image= new Image("/graphics/assistants/lion_1.png");
-            case "GOOSE" -> image= new Image("/graphics/assistants/goose_2.png");
-            case "CAT" -> image= new Image("/graphics/assistants/cat_3.png");
-            case "EAGLE" -> image= new Image("/graphics/assistants/eagle_4.png");
-            case "FOX" -> image= new Image("/graphics/assistants/fox_5.png");
-            case "LIZARD" -> image= new Image("/graphics/assistants/lizard_6.png");
-            case "OCTOPUS" -> image= new Image("/graphics/assistants/octopus_7.png");
-            case "DOG" -> image= new Image("/graphics/assistants/dog_8.png");
-            case "ELEPHANT" -> image= new Image("/graphics/assistants/elephant_9.png");
-            case "TURTLE" -> image= new Image("/graphics/assistants/turtle_10.png");
+            case "LION" -> image = new Image("/graphics/assistants/lion_1.png");
+            case "GOOSE" -> image = new Image("/graphics/assistants/goose_2.png");
+            case "CAT" -> image = new Image("/graphics/assistants/cat_3.png");
+            case "EAGLE" -> image = new Image("/graphics/assistants/eagle_4.png");
+            case "FOX" -> image = new Image("/graphics/assistants/fox_5.png");
+            case "LIZARD" -> image = new Image("/graphics/assistants/lizard_6.png");
+            case "OCTOPUS" -> image = new Image("/graphics/assistants/octopus_7.png");
+            case "DOG" -> image = new Image("/graphics/assistants/dog_8.png");
+            case "ELEPHANT" -> image = new Image("/graphics/assistants/elephant_9.png");
+            case "TURTLE" -> image = new Image("/graphics/assistants/turtle_10.png");
+            case "WIZARD" -> image = new Image("/graphics/character_wizard.png");
+            case "WITCH" -> image = new Image("/graphics/character_witch.png");
+            case "SAMURAI" -> image = new Image("/graphics/character_samurai.png");
+            case "KING" -> image = new Image("/graphics/character_king.png");
         }
         return image;
 
@@ -707,7 +672,7 @@ public class MainSceneController implements SceneController {
             case 3 -> card= (ImageView) cardPane4.getChildren().get(0);
         }
         //card.setText(assistantCard);
-        card.setImage(assistantToImage(assistantCard));
+        card.setImage(stringToImage(assistantCard));
         card.setVisible(true);
     }
 

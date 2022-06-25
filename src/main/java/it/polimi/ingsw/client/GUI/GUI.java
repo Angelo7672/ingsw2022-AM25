@@ -236,7 +236,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 //startPlanningPhase();
                 //System.out.println("planning finished");
             }
-            case "PlayCard" -> switchScene(CARDS);
+            case "PlayCard" -> /*switchScene(CARDS);*/ loadScene(CARDS);
 
             case "ActionPhase" -> {
                 System.out.println("actionPhase");
@@ -247,7 +247,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 actionPhaseService= new ActionPhaseService();
                 actionPhaseService.start();
                 // }
-                switchScene(MAIN);
+                //switchScene(MAIN);
 
             }
             case "StartTurn" -> controller.setCurrentPlayer();
