@@ -2,11 +2,11 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
-public class LastCardMessage implements Answer {
+public class LastCardAnswer implements Answer {
     private final int playerRef;
     private String card;
 
-    public LastCardMessage(int playerRef, String card) {
+    public LastCardAnswer(int playerRef, String card) {
         this.playerRef = playerRef;
         this.card = card;
     }

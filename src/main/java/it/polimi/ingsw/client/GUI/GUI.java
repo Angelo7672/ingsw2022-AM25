@@ -236,7 +236,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 //startPlanningPhase();
                 //System.out.println("planning finished");
             }
-            case "PlayCard" -> /*switchScene(CARDS);*/ loadScene(CARDS);
+            case "PlayCardAnswer" -> /*switchScene(CARDS);*/ loadScene(CARDS);
 
             case "ActionPhase" -> {
                 System.out.println("actionPhase");
@@ -250,7 +250,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 //switchScene(MAIN);
 
             }
-            case "StartTurn" -> controller.setCurrentPlayer();
+            case "StartTurnAnswer" -> controller.setCurrentPlayer();
         }
     }
 
@@ -282,7 +282,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             System.out.println("Planning phase service on succeded");
             CardsSceneController controller= (CardsSceneController) sceneControllersMap.get(CARDS);
             controller.sceneInitialize();
-            phaseHandler("PlayCard");
+            phaseHandler("PlayCardAnswer");
         }
 
         @Override
@@ -307,7 +307,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         @Override
         protected void succeeded() {
             System.out.println("Planning phase service on succeded");
-            phaseHandler("StartTurn");
+            phaseHandler("StartTurnAnswer");
         }
 
         @Override

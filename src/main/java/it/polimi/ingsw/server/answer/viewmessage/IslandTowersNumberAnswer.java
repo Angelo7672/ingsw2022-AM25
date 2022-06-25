@@ -2,11 +2,11 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
-public class IslandTowersNumberMessage implements Answer {
+public class IslandTowersNumberAnswer implements Answer {
     private final int islandRef;
     private final int towersNumber;
 
-    public IslandTowersNumberMessage(int islandRef, int towersNumber) {
+    public IslandTowersNumberAnswer(int islandRef, int towersNumber) {
         this.islandRef = islandRef;
         this.towersNumber = towersNumber;
     }

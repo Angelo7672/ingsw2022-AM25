@@ -2,13 +2,13 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
-public class SchoolStudentMessage implements Answer {
+public class SchoolStudentAnswer implements Answer {
     String place; //entrance or table
     private final int color;
     private final int componentRef;
     private final int newValue;
 
-    public SchoolStudentMessage(int color, String place, int componentRef, int newValue){
+    public SchoolStudentAnswer(int color, String place, int componentRef, int newValue){
         this.color = color;
         this.place = place;
         this.componentRef = componentRef;

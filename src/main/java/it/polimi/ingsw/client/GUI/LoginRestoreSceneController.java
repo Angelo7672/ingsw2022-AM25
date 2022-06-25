@@ -42,8 +42,8 @@ public class LoginRestoreSceneController implements SceneController{
         getPhaseService.setOnSucceeded(workerStateEvent -> {
             String phase = getPhaseService.getValue();
             System.out.println("ph in succ "+phase);
-            if(phase.equals("Play card!")) gui.phaseHandler("PlayCard");
-            else if(phase.equals("Start your Action Phase!")) gui.phaseHandler("StartTurn");
+            if(phase.equals("Play card!")) gui.phaseHandler("PlayCardAnswer");
+            else if(phase.equals("Start your Action Phase!")) gui.phaseHandler("StartTurnAnswer");
         });
     }
 

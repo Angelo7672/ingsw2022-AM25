@@ -2,11 +2,11 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
-public class CoinsMessage implements Answer {
+public class CoinsAnswer implements Answer {
     private final int coin;
     private final int playerRef;
 
-    public CoinsMessage(int coin, int playerRef) {
+    public CoinsAnswer(int coin, int playerRef) {
         this.coin = coin;
         this.playerRef = playerRef;
     }

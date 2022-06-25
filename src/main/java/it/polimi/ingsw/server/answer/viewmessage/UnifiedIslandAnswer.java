@@ -2,10 +2,10 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
-public class UnifiedIsland implements Answer{
+public class UnifiedIslandAnswer implements Answer{
     private final int unifiedIsland;
 
-    public UnifiedIsland(int unifiedIsland) {
+    public UnifiedIslandAnswer(int unifiedIsland) {
         this.unifiedIsland = unifiedIsland;
     }
 

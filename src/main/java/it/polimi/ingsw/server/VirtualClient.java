@@ -226,8 +226,8 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void unlockActionPhase(){ readyActionPhase = true; }
 
     //Message to client
-    public void sendPlayCard(){ send(new PlayCard()); }
-    public void sendStartTurn(){ send(new StartTurn()); }
+    public void sendPlayCard(){ send(new PlayCardAnswer()); }
+    public void sendStartTurn(){ send(new StartTurnAnswer()); }
     public void sendMaxMovementMotherNature(int maxMovement){ send(new MaxMovementMotherNatureAnswer(maxMovement)); }
     public void sendWinner(String winner){ send(new GameOverAnswer(winner)); }
 
@@ -268,18 +268,18 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
 
     public void sendGameInfo(int numberOfPlayers, boolean expertMode){ send(new GameInfoAnswer(numberOfPlayers,expertMode)); }
     public void sendUserInfo(int playerRef, String nickname, String character){ send(new UserInfoAnswer(playerRef,nickname,character)); }
-    public void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue){ send(new SchoolStudentMessage(color,place,componentRef,newStudentsValue)); }
-    public void studentChangeOnIsland(int islandRef, int color, int newStudentsValue){ send(new IslandStudentMessage(islandRef,color,newStudentsValue)); }
-    public void studentChangeOnCloud(int cloudRef, int color, int newStudentsValue){ send(new CloudStudentMessage(cloudRef,color,newStudentsValue)); }
-    public void professorChangePropriety(int playerRef, int color, boolean newProfessorValue){ send(new ProfessorMessage(playerRef,newProfessorValue,color));}
-    public void motherChangePosition(int newMotherPosition){ send(new MotherPositionMessage(newMotherPosition)); }
-    public void lastCardPlayedFromAPlayer(int playerRef, String assistantCard){ send(new LastCardMessage(playerRef,assistantCard)); }
-    public void numberOfCoinsChangeForAPlayer(int playerRef, int newCoinsValue){ send(new CoinsMessage(newCoinsValue,playerRef)); }
-    public void dimensionOfAnIslandIsChange(int islandToDelete){ send(new UnifiedIsland(islandToDelete)); }
-    public void towersChangeInSchool(int playerRef, int towersNumber){ send(new SchoolTowersMessage(playerRef,towersNumber)); }
-    public void towersChangeOnIsland(int islandRef, int towersNumber){ send(new IslandTowersNumberMessage(islandRef,towersNumber)); }
-    public void towerChangeColorOnIsland(int islandRef, int newColor){ send(new IslandTowersColorMessage(islandRef,newColor)); }
-    public void islandInhibited(int islandRef, int isInhibited){ send(new InhibitedIslandMessage(islandRef,isInhibited)); }
+    public void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue){ send(new SchoolStudentAnswer(color,place,componentRef,newStudentsValue)); }
+    public void studentChangeOnIsland(int islandRef, int color, int newStudentsValue){ send(new IslandStudentAnswer(islandRef,color,newStudentsValue)); }
+    public void studentChangeOnCloud(int cloudRef, int color, int newStudentsValue){ send(new CloudStudentAnswer(cloudRef,color,newStudentsValue)); }
+    public void professorChangePropriety(int playerRef, int color, boolean newProfessorValue){ send(new ProfessorAnswer(playerRef,newProfessorValue,color));}
+    public void motherChangePosition(int newMotherPosition){ send(new MotherPositionAnswer(newMotherPosition)); }
+    public void lastCardPlayedFromAPlayer(int playerRef, String assistantCard){ send(new LastCardAnswer(playerRef,assistantCard)); }
+    public void numberOfCoinsChangeForAPlayer(int playerRef, int newCoinsValue){ send(new CoinsAnswer(newCoinsValue,playerRef)); }
+    public void dimensionOfAnIslandIsChange(int islandToDelete){ send(new UnifiedIslandAnswer(islandToDelete)); }
+    public void towersChangeInSchool(int playerRef, int towersNumber){ send(new SchoolTowersAnswer(playerRef,towersNumber)); }
+    public void towersChangeOnIsland(int islandRef, int towersNumber){ send(new IslandTowersNumberAnswer(islandRef,towersNumber)); }
+    public void towerChangeColorOnIsland(int islandRef, int newColor){ send(new IslandTowersColorAnswer(islandRef,newColor)); }
+    public void islandInhibited(int islandRef, int isInhibited){ send(new InhibitedIslandAnswer(islandRef,isInhibited)); }
     public void setSpecial(int specialRef, int cost){ send(new SetSpecialAnswer(specialRef,cost)); }
     public void sendUsedSpecial(int playerRef, int indexSpecial){ send(new UseSpecialAnswer(playerRef,indexSpecial)); }
     public void sendHandAfterRestore(ArrayList<String> hand){ send(new HandAfterRestoreAnswer(hand)); }
@@ -339,7 +339,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             userDecision(saveMsg.getNumberOfPlayers(),saveMsg.isExpertMode());
                         }
                     } else {
-                        send(new SetupGameMessage());
+                        send(new SetupGameAnswer());
                         synchronized (setupLocker) {
                             gameSetupInitialization = true;
                             setupLocker.wait();
@@ -427,7 +427,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             readyRestore();
                         }
                     }else {
-                        send(new LoginMessage(server.alreadyChosenCharacters()));
+                        send(new LoginAnswer(server.alreadyChosenCharacters()));
                         synchronized (setupLocker) {
                             loginInitialization = true;
                             setupLocker.wait();
@@ -486,7 +486,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         readyStart();
                     }
                 } else {
-                    send(new LoginMessage(server.alreadyChosenCharacters()));
+                    send(new LoginAnswer(server.alreadyChosenCharacters()));
                     synchronized (errorLocker) {
                         loginInitialization = true;
                         error = true;

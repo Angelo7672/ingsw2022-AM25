@@ -56,7 +56,7 @@ public class Proxy_c implements Exit {
         send(new GenericMessage("Ready for login!"));
         tempObj = receive();
         if(tempObj instanceof SoldOutAnswer) return ((SoldOutAnswer) tempObj).getMessage();
-        else if(tempObj instanceof SetupGameMessage) return "SetupGame";
+        else if(tempObj instanceof SetupGameAnswer) return "SetupGame";
         else if(tempObj instanceof SavedGameAnswer) return "SavedGame";
         else if (tempObj instanceof LoginRestoreAnswer) return "LoginRestore";
         else return "Not first";
@@ -79,11 +79,11 @@ public class Proxy_c implements Exit {
     public String getPhase() throws IOException {
         send(new GenericMessage("Ready to play!"));
         tempObj = receive();
-        if(tempObj instanceof PlayCard){
-            return ((PlayCard) tempObj).getMessage();
+        if(tempObj instanceof PlayCardAnswer){
+            return ((PlayCardAnswer) tempObj).getMessage();
         }
-        if(tempObj instanceof StartTurn){
-            return ((StartTurn) tempObj).getMessage();
+        if(tempObj instanceof StartTurnAnswer){
+            return ((StartTurnAnswer) tempObj).getMessage();
         }
         return null;
     }
@@ -123,7 +123,7 @@ public class Proxy_c implements Exit {
         if(tempObj == null) {
             tempObj = receive();
         }
-        LoginMessage msg = (LoginMessage) tempObj;
+        LoginAnswer msg = (LoginAnswer) tempObj;
         tempObj = null;
         return (msg.getCharacterAlreadyChosen());
     }
@@ -149,7 +149,7 @@ public class Proxy_c implements Exit {
         while(true) {
             tempObj = receive();
             System.out.println("ANSWER: "+tempObj);
-            if(((PlayCard)tempObj).getMessage().equals("Play card!")){
+            if(((PlayCardAnswer)tempObj).getMessage().equals("Play card!")){
                 return true;
             }
         }
@@ -172,7 +172,7 @@ public class Proxy_c implements Exit {
     public boolean startActionPhase() throws IOException, ClassNotFoundException {
         while(true) {
             tempObj = receive();
-            if(((StartTurn)tempObj).getMessage().equals("Start your Action Phase!")){
+            if(((StartTurnAnswer)tempObj).getMessage().equals("Start your Action Phase!")){
                 System.out.println("recived action");
                 return true;
             }
@@ -287,80 +287,80 @@ public class Proxy_c implements Exit {
                             }
                             view.setUserInfo(((UserInfoAnswer) tmp).getPlayerRef(), ((UserInfoAnswer) tmp).getCharacter(),((UserInfoAnswer) tmp).getNickname());
                         }
-                    } else if (tmp instanceof LastCardMessage) {
+                    } else if (tmp instanceof LastCardAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.setLastCard(((LastCardMessage) tmp).getPlayerRef(), ((LastCardMessage) tmp).getCard());
+                            view.setLastCard(((LastCardAnswer) tmp).getPlayerRef(), ((LastCardAnswer) tmp).getCard());
                         }
-                    } else if (tmp instanceof NumberOfCardsMessage) {
+                    } else if (tmp instanceof NumberOfCardsAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.setNumberOfCards(((NumberOfCardsMessage) tmp).getPlayerRef(), ((NumberOfCardsMessage) tmp).getNumberOfCards());
+                            view.setNumberOfCards(((NumberOfCardsAnswer) tmp).getPlayerRef(), ((NumberOfCardsAnswer) tmp).getNumberOfCards());
                         }
                     } else if (tmp instanceof HandAfterRestoreAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
                             view.restoreCards(((HandAfterRestoreAnswer) tmp).getHand());
                         }
-                    } else if (tmp instanceof SchoolStudentMessage) {
+                    } else if (tmp instanceof SchoolStudentAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.setSchoolStudents(((SchoolStudentMessage) tmp).getPlace(), ((SchoolStudentMessage) tmp).getComponentRef(), ((SchoolStudentMessage) tmp).getColor(), ((SchoolStudentMessage) tmp).getNewValue());
+                            view.setSchoolStudents(((SchoolStudentAnswer) tmp).getPlace(), ((SchoolStudentAnswer) tmp).getComponentRef(), ((SchoolStudentAnswer) tmp).getColor(), ((SchoolStudentAnswer) tmp).getNewValue());
                         }
-                    } else if (tmp instanceof ProfessorMessage) {
+                    } else if (tmp instanceof ProfessorAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.setProfessors(((ProfessorMessage) tmp).getPlayerRef(), ((ProfessorMessage) tmp).getColor(), ((ProfessorMessage) tmp).isProfessor());
+                            view.setProfessors(((ProfessorAnswer) tmp).getPlayerRef(), ((ProfessorAnswer) tmp).getColor(), ((ProfessorAnswer) tmp).isProfessor());
                         }
-                    } else if (tmp instanceof SchoolTowersMessage) {
+                    } else if (tmp instanceof SchoolTowersAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.setSchoolTowers(((SchoolTowersMessage) tmp).getPlayerRef(), ((SchoolTowersMessage) tmp).getTowers());
+                            view.setSchoolTowers(((SchoolTowersAnswer) tmp).getPlayerRef(), ((SchoolTowersAnswer) tmp).getTowers());
                         }
-                    } else if (tmp instanceof CoinsMessage) {
+                    } else if (tmp instanceof CoinsAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.setCoins(((CoinsMessage) tmp).getPlayerRef(), ((CoinsMessage) tmp).getCoin());
+                            view.setCoins(((CoinsAnswer) tmp).getPlayerRef(), ((CoinsAnswer) tmp).getCoin());
                         }
-                    } else if (tmp instanceof CloudStudentMessage) {
+                    } else if (tmp instanceof CloudStudentAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.setClouds(((CloudStudentMessage) tmp).getCloudRef(), ((CloudStudentMessage) tmp).getColor(), ((CloudStudentMessage) tmp).getNewValue());
+                            view.setClouds(((CloudStudentAnswer) tmp).getCloudRef(), ((CloudStudentAnswer) tmp).getColor(), ((CloudStudentAnswer) tmp).getNewValue());
                         }
-                    } else if (tmp instanceof IslandStudentMessage) {
+                    } else if (tmp instanceof IslandStudentAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.setStudentsIsland(((IslandStudentMessage) tmp).getIslandRef(), ((IslandStudentMessage) tmp).getColor(), ((IslandStudentMessage) tmp).getNewValue());
+                            view.setStudentsIsland(((IslandStudentAnswer) tmp).getIslandRef(), ((IslandStudentAnswer) tmp).getColor(), ((IslandStudentAnswer) tmp).getNewValue());
                         }
-                    } else if (tmp instanceof MotherPositionMessage) {
+                    } else if (tmp instanceof MotherPositionAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.setMotherPosition(((MotherPositionMessage) tmp).getMotherPosition());
+                            view.setMotherPosition(((MotherPositionAnswer) tmp).getMotherPosition());
                         }
                     } else if (tmp instanceof MaxMovementMotherNatureAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
                             view.setMaxStepsMotherNature(((MaxMovementMotherNatureAnswer) tmp).getMaxMovement());
                         }
-                    } else if (tmp instanceof IslandTowersNumberMessage) {
+                    } else if (tmp instanceof IslandTowersNumberAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.setIslandTowers(((IslandTowersNumberMessage) tmp).getIslandRef(), ((IslandTowersNumberMessage) tmp).getTowersNumber());
+                            view.setIslandTowers(((IslandTowersNumberAnswer) tmp).getIslandRef(), ((IslandTowersNumberAnswer) tmp).getTowersNumber());
                         }
-                    } else if (tmp instanceof IslandTowersColorMessage) {
+                    } else if (tmp instanceof IslandTowersColorAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.setTowersColor(((IslandTowersColorMessage) tmp).getIslandRef(), ((IslandTowersColorMessage) tmp).getColor());
+                            view.setTowersColor(((IslandTowersColorAnswer) tmp).getIslandRef(), ((IslandTowersColorAnswer) tmp).getColor());
                         }
-                    } else if (tmp instanceof InhibitedIslandMessage) {
+                    } else if (tmp instanceof InhibitedIslandAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.setInhibited(((InhibitedIslandMessage) tmp).getIslandRef(), ((InhibitedIslandMessage) tmp).getInhibited());
+                            view.setInhibited(((InhibitedIslandAnswer) tmp).getIslandRef(), ((InhibitedIslandAnswer) tmp).getInhibited());
                         }
-                    } else if (tmp instanceof UnifiedIsland) {
+                    } else if (tmp instanceof UnifiedIslandAnswer) {
                         synchronized (lock2) {
                             if (!initializedView) lock2.wait();
-                            view.removeUnifiedIsland(((UnifiedIsland) tmp).getUnifiedIsland());
+                            view.removeUnifiedIsland(((UnifiedIslandAnswer) tmp).getUnifiedIsland());
                         }
                     } else if (tmp instanceof UseSpecialAnswer) {
                         synchronized (lock2) {
