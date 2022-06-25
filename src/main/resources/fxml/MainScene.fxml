@@ -89,11 +89,11 @@
             </AnchorPane>
             <AnchorPane fx:id="island2" layoutX="60.0" prefHeight="190.0" prefWidth="175.0">
                <children>
-                 <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
-                    <image>
-                       <Image url="@../graphics/island1.png" />
-                    </image>
-                 </ImageView>
+                  <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="4.0" layoutY="2.0" preserveRatio="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
+                     <image>
+                        <Image url="@../graphics/island1.png" />
+                     </image>
+                  </ImageView>
                  <ImageView fx:id="motherNature" fitHeight="40.0" fitWidth="40.0" layoutX="49.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="101.4" AnchorPane.topAnchor="27.0">
                     <image>
                        <Image url="@../graphics/wooden_pieces/mother_nature.png" />
@@ -931,9 +931,14 @@
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font></Label>
-                  <Label id="nickname2" fx:id="card2" layoutX="10.0" layoutY="160.0" text="card" visible="false">
+                  <ImageView fx:id="coin2" fitHeight="40.0" fitWidth="40.0" layoutX="-50.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../graphics/coin.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="coinLabel2" layoutX="-50.0" layoutY="45.0" text="coins: 1" visible="false">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
                </children>
@@ -1227,9 +1232,14 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label id="nickname3" fx:id="card3" contentDisplay="CENTER" layoutX="10.0" layoutY="140.0" prefHeight="18.0" prefWidth="89.0" text="card" textAlignment="CENTER" visible="false" wrapText="true">
+                  <ImageView fx:id="coin3" fitHeight="40.0" fitWidth="40.0" layoutX="100.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../graphics/coin.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="coinLabel3" layoutX="100.0" layoutY="59.0" text="coins: 1" visible="false">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
                </children>
@@ -1386,9 +1396,14 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label id="nickname1" fx:id="card1" layoutX="18.0" layoutY="140.0" text="card" visible="false">
+                  <ImageView fx:id="coin1" fitHeight="40.0" fitWidth="40.0" layoutX="120.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../graphics/coin.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="coinLabel1" layoutX="120.0" layoutY="45.0" text="coins: 1" visible="false">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
                </children>
@@ -1408,9 +1423,14 @@
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font></Label>
-                  <Label id="nickname4" fx:id="card4" layoutX="73.0" layoutY="140.0" text="card" visible="false">
+                  <ImageView fx:id="coin4" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@../graphics/coin.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="coinLabel4" layoutY="45.0" text="coins: 1" visible="false">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
                </children>
@@ -1558,6 +1578,101 @@
       <Button fx:id="useSpecialButton" layoutX="50.0" layoutY="100.0" mnemonicParsing="false" text="Use a special card" visible="false" />
       <Button fx:id="showCardsButton" layoutX="48.0" layoutY="28.0" mnemonicParsing="false" text="Show Cards" />
       <Button fx:id="showCloudsButton" layoutX="48.0" layoutY="63.0" mnemonicParsing="false" text="Show Clouds" />
+      <AnchorPane fx:id="cardPane3" layoutX="16.0" layoutY="126.0" prefHeight="105.0" prefWidth="160.0">
+         <children>
+            <ImageView fitHeight="88.0" fitWidth="62.0" layoutX="93.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../graphics/assistants/lion_1.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="14.0" layoutY="14.0" text="Last">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font></Label>
+            <Label layoutX="14.0" layoutY="36.0" text="played">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="58.0" text="card:">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="cardPane1" layoutX="234.0" layoutY="625.0" prefHeight="105.0" prefWidth="160.0">
+         <children>
+            <ImageView fitHeight="88.0" fitWidth="62.0" layoutX="93.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../graphics/assistants/lion_1.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="14.0" layoutY="14.0" text="Last">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="36.0" text="played">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="58.0" text="card:">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="cardPane4" layoutX="1110.0" layoutY="625.0" prefHeight="105.0" prefWidth="160.0">
+         <children>
+            <ImageView fitHeight="88.0" fitWidth="62.0" layoutX="93.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../graphics/assistants/lion_1.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="14.0" layoutY="14.0" text="Last">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="36.0" text="played">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="58.0" text="card:">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="cardPane2" layoutX="862.0" layoutY="14.0" prefHeight="105.0" prefWidth="160.0">
+         <children>
+            <ImageView fitHeight="88.0" fitWidth="62.0" layoutX="93.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../graphics/assistants/lion_1.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="14.0" layoutY="14.0" text="Last">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="36.0" text="played">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="14.0" layoutY="58.0" text="card:">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
 
    </children>
 </AnchorPane>

@@ -27,7 +27,8 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class GUI extends Application implements TowersListener, ProfessorsListener, PlayedCardListener,
-        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, UserInfoListener {
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, UserInfoListener,
+        SpecialStudentsListener {
 
     private static Exit proxy;
     private View view;
@@ -149,6 +150,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         areListenerSet = false;
 
         scenesSetup();
+        //planningPhaseService= new PlanningPhaseService(this);
+        //actionPhaseService= new ActionPhaseService();
 
         String result = null;
         try {
@@ -207,53 +210,50 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public void phaseHandler(String phase) {
-        PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
-        ActionPhaseService actionPhaseService = new ActionPhaseService();
+        //PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
+        //ActionPhaseService actionPhaseService = new ActionPhaseService();
         //SetViewService setViewService = new SetViewService(this);
 
         System.out.println("started phase handler!");
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
         switch (phase) {
-            case "SetView" -> {
-                setViewService.start();
-            }
+            case "SetView" -> setViewService.start();
+
             case "InitializeMain" -> {
                 setViewService.cancel();
                 initializeMainService.start();
             }
             case "PlanningPhase" -> {
-                //PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
+                planningPhaseService = new PlanningPhaseService(this);
                 initializeMainService.cancel();
+
                 //if (planningPhaseService.getState()== Worker.State.READY)
                 //  planningPhaseService.restart();
                 //else{
                 planningPhaseService.start();
+                switchScene(MAIN);
                 //}
                 //startPlanningPhase();
                 //System.out.println("planning finished");
             }
-            case "PlayCard" -> {
-                switchScene(CARDS);
+            case "PlayCard" -> switchScene(CARDS);
 
-
-            }
             case "ActionPhase" -> {
                 System.out.println("actionPhase");
+                //planningPhaseService.cancel();
                 //if(actionPhaseService.getState()==Worker.State.READY)
                 //actionPhaseService.start();
                 //else {
-                //ActionPhaseService actionPhaseService= new ActionPhaseService();
+                actionPhaseService= new ActionPhaseService();
                 actionPhaseService.start();
                 // }
                 switchScene(MAIN);
 
             }
-            case "StartTurn" -> {
-                controller.setCurrentPlayer();
-            }
-
+            case "StartTurn" -> controller.setCurrentPlayer();
         }
     }
+
 
     public class PlanningPhaseService extends Service<Boolean> {
         Boolean result;
@@ -266,13 +266,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         @Override
         protected Task<Boolean> createTask() {
-            System.out.println("planningPhaseService started");
             return new Task<Boolean>() {
                 @Override
                 protected Boolean call() throws Exception {
-                    System.out.println("calling startPlanningPhase");
+                    System.out.println("prima di startPlanning");
                     result = proxy.startPlanningPhase();
-                    System.out.println("called startPlanningPhase: " + result);
+                    System.out.println("dopo start planning");
                     return result;
                 }
             };
@@ -280,7 +279,15 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         @Override
         protected void succeeded() {
+            System.out.println("Planning phase service on succeded");
+            CardsSceneController controller= (CardsSceneController) sceneControllersMap.get(CARDS);
+            controller.sceneInitialize();
             phaseHandler("PlayCard");
+        }
+
+        @Override
+        protected void failed(){
+            System.out.println("Task failed");
         }
     }
 
@@ -299,8 +306,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         @Override
         protected void succeeded() {
+            System.out.println("Planning phase service on succeded");
             phaseHandler("StartTurn");
+        }
 
+        @Override
+        protected void failed(){
+            System.out.println("Task failed");
         }
     }
 
@@ -317,7 +329,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 @Override
                 protected View call() throws Exception {
                     View view = proxy.startView();
-                    //isViewSet = true;
 
                     view.setCoinsListener(gui);
                     view.setInhibitedListener(gui);
@@ -328,21 +339,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     view.setStudentsListener(gui);
                     view.setTowersListener(gui);
                     view.setUserInfoListener(gui);
+                    view.setSpecialStudentsListener(gui);
 
                     return view;
                 }
             };
         }
-
-        /*@Override
-        protected void succeeded(){
-            View view= setViewService.getValue();
-            gui.view = view;
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            controller.setView(view);
-            phaseHandler("InitializeMain");
-        }*/
-
     }
 
     public class InitializeMainService extends Service<Boolean> {
@@ -425,11 +427,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         //startGame();
 
     }*/
-    /*
+
     //used to load a scene in a new stage (window), instead of the primaryStage
     public void loadScene(String sceneName) {
         Stage stage = new Stage();
-        currentScene=sceneName;
         if(sceneName.equals(CARDS)){
             //Platform.runLater(()->{
                 CardsSceneController controller = (CardsSceneController) sceneControllersMap.get(sceneName);
@@ -440,7 +441,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         stage.centerOnScreen();
         stage.show();
 
-    }*/
+    }
 
         public void setSocket(Socket socket) {
             this.socket = socket;
@@ -486,9 +487,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         @Override
         public void userInfoNotify(String nickname, String character, int playerRef) {
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            controller.setNickname(nickname, playerRef);
-            controller.setCharacter(character, playerRef);
+            Platform.runLater(()->{
+                System.out.println("NOTIFY: userInfo: "+nickname+" "+character+" "+playerRef);
+                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+                controller.setNickname(nickname, playerRef);
+                controller.setCharacter(character, playerRef);
+            });
+
         }
 
 
@@ -505,6 +510,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         @Override
         public void notifyIslandChange(int islandToDelete) {
             Platform.runLater(() -> {
+                System.out.println("NOTIFY: islandChange- to delete: "+islandToDelete);
                 MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
                 controller.unifyIsland(islandToDelete);
             });
@@ -513,6 +519,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         @Override
         public void notifyMotherPosition(int newMotherPosition) {
             Platform.runLater(() -> {
+                System.out.println("NOTIFY: Mother Position : "+newMotherPosition);
                 MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
                 //if(isMainSceneInitialized){
                 controller.setMotherPosition(newMotherPosition);
@@ -526,6 +533,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         @Override
         public void notifyPlayedCard(int playerRef, String assistantCard) {
             Platform.runLater(() -> {
+                System.out.println("NOTIFY: Played Card: "+assistantCard+" "+playerRef);
                 MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
                 controller.setLastPlayedCard(playerRef, assistantCard);
             });
@@ -540,8 +548,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         @Override
         public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             Platform.runLater(() -> {
+                System.out.println("NOTIFY: professors: "+playerRef+ ","+color+","+newProfessorValue);
+                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
                 controller.setProfessor(playerRef, color, newProfessorValue);
             });
         }
@@ -549,6 +558,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         @Override
         public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
             Platform.runLater(() -> {
+
+                System.out.println("NOTIFY: student change: "+place+","+componentRef+","+color+","+newStudentsValue);;
                 MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
                 CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
 
@@ -585,8 +596,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         @Override
         public void notifyTowersChange(int place, int componentRef, int towersNumber) {
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             Platform.runLater(() -> {
+                System.out.println("NOTIFY: towers change: "+place +","+componentRef+","+towersNumber);
+                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
                 //if(isMainSceneInitialized){
                 if (place == 0) {
                     controller.setTowersSchool(componentRef, towersNumber);
@@ -606,14 +618,21 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         @Override
         public void notifyTowerColor(int islandRef, int newColor) {
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             Platform.runLater(() -> {
+                MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+                System.out.println("NOTIFY tower color: "+islandRef+","+newColor);
                 // if(isMainSceneInitialized){
                 //controller.setTowerColor()
                 //}
 
             });
         }
+
+
+    @Override
+    public void specialStudentsNotify(int special, int color, int value) {
+
+    }
 
         public void setYourNickname(String yourNickname) {
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);

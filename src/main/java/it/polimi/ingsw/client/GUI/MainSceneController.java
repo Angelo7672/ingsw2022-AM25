@@ -91,10 +91,10 @@ public class MainSceneController implements SceneController {
     @FXML private HBox player2Box;
     @FXML private VBox player3Box;
     @FXML private VBox player4Box;
-    @FXML private Label card1;
-    @FXML private Label card2;
-    @FXML private Label card3;
-    @FXML private Label card4;
+    @FXML private AnchorPane cardPane1;
+    @FXML private AnchorPane cardPane2;
+    @FXML private AnchorPane cardPane3;
+    @FXML private AnchorPane cardPane4;
 
     @FXML private Label actionLabel;
     @FXML private Label turnLabel;
@@ -345,61 +345,70 @@ public class MainSceneController implements SceneController {
         }
     }
     public void initializeScene() {
-        System.out.println(Thread.currentThread());
-        //Platform.runLater(()->{
-            System.out.println("initialize scene method");
-            System.out.println(Thread.currentThread());
-            if (numberOfPlayers == 2) {
-                player3Box.setVisible(false);
-                player4Box.setVisible(false);
+        System.out.println("initialize scene method");
+        if (numberOfPlayers == 2) {
+            player3Box.setVisible(false);
+            cardPane3.setVisible(false);
+            player4Box.setVisible(false);
+            cardPane4.setVisible(false);
 
-            } else if (numberOfPlayers == 3) {
-                player4Box.setVisible(false);
-            }
-            System.out.println("players ok");
-            useSpecialButton.setVisible(expertMode);
+        } else if (numberOfPlayers == 3) {
+            player4Box.setVisible(false);
+            cardPane4.setVisible(false);
+        }
+        System.out.println("players ok");
+        useSpecialButton.setVisible(expertMode);
 
-            charactersImageMap.put(0, character1);
-            charactersImageMap.put(1, character2);
-            charactersImageMap.put(2, character3);
-            charactersImageMap.put(3, character4);
+        userInfo1.getChildren().get(2).setVisible(expertMode);
+        userInfo1.getChildren().get(3).setVisible(expertMode);
+        userInfo2.getChildren().get(2).setVisible(expertMode);
+        userInfo2.getChildren().get(3).setVisible(expertMode);
+        userInfo3.getChildren().get(2).setVisible(expertMode);
+        userInfo3.getChildren().get(3).setVisible(expertMode);
+        userInfo4.getChildren().get(2).setVisible(expertMode);
+        userInfo4.getChildren().get(3).setVisible(expertMode);
 
-            schoolMap.put(0, school1);
-            schoolMap.put(1, school2);
-            schoolMap.put(2, school3);
-            schoolMap.put(3, school4);
+        charactersImageMap.put(0, character1);
+        charactersImageMap.put(1, character2);
+        charactersImageMap.put(2, character3);
+        charactersImageMap.put(3, character4);
 
-
-
-            for (int i = 0; i < numberOfPlayers; i++) {
-            /*setNickname(nicknamesMap.get(i), i);
-            charactersImageMap.get(i).setImage(characterToImage(charactersMap.get(i)));*/
-
-                //maps the children of school panes, 0:school imageView, 1: entrance, 2: table 3: professors, 4: towers
-                this.entrancesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(1)); //maps all the entrances
-                this.tablesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(2)); //maps all the tables
-                this.professorsMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(3)); //maps all the professors panes
-                this.towersMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(4));//maps all the towers panes
+        schoolMap.put(0, school1);
+        schoolMap.put(1, school2);
+        schoolMap.put(2, school3);
+        schoolMap.put(3, school4);
 
 
-            }
-            System.out.println("Maps set");
-            AnchorPane island;
-            for (int i = 0; i < 12; i++) {
-                island = (AnchorPane) islandsPane.getChildren().get(i);
-                islandsMap.put(i, island);
-            }
 
-            schoolsInitialization();
+        for (int i = 0; i < numberOfPlayers; i++) {
+        /*setNickname(nicknamesMap.get(i), i);
+        charactersImageMap.get(i).setImage(characterToImage(charactersMap.get(i)));*/
 
-            islandsInitialization();
-            tablesInitialization();
+            //maps the children of school panes, 0:school imageView, 1: entrance, 2: table 3: professors, 4: towers
+            this.entrancesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(1)); //maps all the entrances
+            this.tablesMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(2)); //maps all the tables
+            this.professorsMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(3)); //maps all the professors panes
+            this.towersMap.put(i, (AnchorPane) schoolMap.get(i).getChildren().get(4));//maps all the towers panes
 
-            gui.isMainSceneInitialized=true;
-            actionAllowed=-1; //not your turn
-            System.out.println("ALL initialized");
-            //gui.phaseHandler("PlanningPhase");
-       // });
+
+        }
+        System.out.println("Maps set");
+        AnchorPane island;
+        for (int i = 0; i < 12; i++) {
+            island = (AnchorPane) islandsPane.getChildren().get(i);
+            islandsMap.put(i, island);
+        }
+
+        schoolsInitialization();
+
+        islandsInitialization();
+        tablesInitialization();
+
+        gui.isMainSceneInitialized=true;
+        actionAllowed=-1; //not your turn
+        System.out.println("ALL initialized");
+        //gui.phaseHandler("PlanningPhase");
+   // });
 
 
     }
@@ -545,7 +554,13 @@ public class MainSceneController implements SceneController {
     }
 
     public void setCharacter(String character, int playerRef){
-        charactersImageMap.put(playerRef, new ImageView(characterToImage(character)));
+        Image characterImage = characterToImage(character);
+        switch (playerRef){
+            case 0 -> character1.setImage(characterImage);
+            case 1 -> character2.setImage(characterImage);
+            case 2 -> character3.setImage(characterImage);
+            case 3 -> character4.setImage(characterImage);
+        }
     }
 
     public void moveStudent() {
@@ -665,15 +680,34 @@ public class MainSceneController implements SceneController {
         return image;
     }
 
-    public void setLastPlayedCard(int playerRef, String assistantCard) {
-        Label card=null;
-        switch (playerRef){
-            case 0 -> card=card1;
-            case 1 -> card=card2;
-            case 2 -> card=card3;
-            case 3 -> card=card4;
+    public Image assistantToImage(String assistant){
+        Image image=null;
+        switch (assistant){
+            case "LION" -> image= new Image("/graphics/assistants/lion_1.png");
+            case "GOOSE" -> image= new Image("/graphics/assistants/goose_2.png");
+            case "CAT" -> image= new Image("/graphics/assistants/cat_3.png");
+            case "EAGLE" -> image= new Image("/graphics/assistants/eagle_4.png");
+            case "FOX" -> image= new Image("/graphics/assistants/fox_5.png");
+            case "LIZARD" -> image= new Image("/graphics/assistants/lizard_6.png");
+            case "OCTOPUS" -> image= new Image("/graphics/assistants/octopus_7.png");
+            case "DOG" -> image= new Image("/graphics/assistants/dog_8.png");
+            case "ELEPHANT" -> image= new Image("/graphics/assistants/elephant_9.png");
+            case "TURTLE" -> image= new Image("/graphics/assistants/turtle_10.png");
         }
-        card.setText(assistantCard);
+        return image;
+
+    }
+
+    public void setLastPlayedCard(int playerRef, String assistantCard) {
+        ImageView card=null;
+        switch (playerRef){
+            case 0 -> card= (ImageView) cardPane1.getChildren().get(0);
+            case 1 -> card= (ImageView) cardPane2.getChildren().get(0);
+            case 2 -> card= (ImageView) cardPane3.getChildren().get(0);
+            case 3 -> card= (ImageView) cardPane4.getChildren().get(0);
+        }
+        //card.setText(assistantCard);
+        card.setImage(assistantToImage(assistantCard));
         card.setVisible(true);
     }
 
