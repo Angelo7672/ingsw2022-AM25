@@ -1581,8 +1581,8 @@
          </children>
       </VBox>
       <Button fx:id="useSpecialButton" layoutX="50.0" layoutY="100.0" mnemonicParsing="false" text="Use a special card" visible="false" />
-      <Button fx:id="showCardsButton" layoutX="48.0" layoutY="28.0" mnemonicParsing="false" text="Show Cards" />
-      <Button fx:id="showCloudsButton" layoutX="48.0" layoutY="63.0" mnemonicParsing="false" text="Show Clouds" />
+      <Button fx:id="showCardsButton" layoutX="48.0" layoutY="28.0" mnemonicParsing="false" onAction="#showCardsPressed" text="Show Cards" />
+      <Button fx:id="showCloudsButton" layoutX="48.0" layoutY="63.0" mnemonicParsing="false" onAction="#showCloudsPressed" text="Show Clouds" />
       <AnchorPane fx:id="cardPane3" layoutX="16.0" layoutY="126.0" prefHeight="105.0" prefWidth="160.0">
          <children>
             <ImageView fitHeight="88.0" fitWidth="62.0" layoutX="93.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" visible="false">
