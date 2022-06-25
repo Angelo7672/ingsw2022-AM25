@@ -226,7 +226,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     private void loginRestore() throws IOException, ClassNotFoundException {
         while (true){
             System.out.println();
-            System.out.print(SPACE+"Insert nickname for restore last game: ");
+            System.out.print(SPACE+"Insert your previous nickname for restore last game: ");
             String nickname = readNext();
             if(proxy.setupConnection(nickname, null)) return;
             else {

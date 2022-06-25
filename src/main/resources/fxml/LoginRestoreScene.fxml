@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fxml.LoginRestoreScene"
-            prefHeight="400.0" prefWidth="600.0" >
-
+<AnchorPane fx:id="loginRestoreScene" prefHeight="600" prefWidth="500" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.LoginRestoreSceneController">
+   <children>
+      <ImageView fitHeight="275.0" fitWidth="511.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/eriantys_banner2.jpg" />
+         </image>
+      </ImageView>
+      <TextField fx:id="nicknameBox" layoutX="148.0" layoutY="407.0" prefHeight="26.0" prefWidth="215.0" />
+      <Label fx:id="insertNickname" layoutX="117.0" layoutY="356.0" text="Insert your previous nickname for restore last game:" />
+      <Button fx:id="next" layoutX="235.0" layoutY="525.0" mnemonicParsing="false" onAction="#nextPressed" text="Next" />
+      <Label fx:id="errorMessage" layoutX="200.0" layoutY="568.0" text="Error, try again" textFill="#cd0909" visible="false" />
+   </children>
 </AnchorPane>

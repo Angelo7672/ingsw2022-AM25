@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fxml.SavedScene"
-            prefHeight="400.0" prefWidth="600.0" >
-
+<AnchorPane fx:id="savedScene" prefHeight="600" prefWidth="500" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.SavedSceneController">
+   <children>
+      <ImageView fitHeight="275.0" fitWidth="511.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/eriantys_banner2.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="insertNickname" layoutX="190.0" layoutY="333.0" text="There is a game started: " />
+      <Button fx:id="YES" layoutX="180.0" layoutY="507.0" mnemonicParsing="false" onAction="#YESPressed" text="YES" />
+      <Label fx:id="errorMessage" layoutX="216.0" layoutY="555.0" text="Error, try again" textFill="#cd0909" visible="false" />
+      <Button fx:id="NO" layoutX="294.0" layoutY="507.0" mnemonicParsing="false" onAction="#NOPressed" text="NO" />
+      <Label layoutX="155.0" layoutY="391.0" text="Number of players:" />
+      <Label layoutX="155.0" layoutY="440.0" text="Expert mode:" />
+      <Label fx:id="numberOfPlayers" layoutX="322.0" layoutY="391.0" prefHeight="17.0" prefWidth="35.0" />
+      <Label fx:id="expertMode" layoutX="318.0" layoutY="431.0" prefHeight="17.0" prefWidth="42.0" />
+   </children>
 </AnchorPane>
