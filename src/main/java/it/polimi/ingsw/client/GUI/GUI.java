@@ -40,12 +40,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private Service<View> setViewService;
     private Service<Boolean> initializeMainService;
 
-    private Boolean taskSucceded;
-
     protected boolean active;
     protected boolean isMainSceneInitialized;
     protected boolean areListenerSet;
-    protected boolean isViewSet;
+
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String SAVED = "SavedScene.fxml";
     protected static final String LOGINRESTORE = "LoginRestoreScene.fxml";
@@ -57,7 +55,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected static final String SPECIALS = "SpecialsScene.fxml";
     protected PlayerConstants constants;
     protected boolean isMainScene;
-    private int initialMotherPosition;
+
     private ArrayList<int[]> initialStudentsIsland;
     private ArrayList<int []> initialStudentsEntrance;
     private ArrayList<int []> initialStudentsCloud;
@@ -71,7 +69,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public GUI() {
-        //taskSucceded=false;
         active = true;
         scenesMap = new HashMap<>();
         sceneControllersMap = new HashMap<>();
@@ -226,7 +223,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
             case "PlanningPhase" -> {
                 initializeMainService.cancel();
-                planningPhaseService = new PlanningPhaseService(this);
+                PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
                 planningPhaseService.start();
                 switchScene(MAIN);
             }
@@ -234,7 +231,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
             case "ActionPhase" -> {
                 System.out.println("actionPhase");
-                actionPhaseService= new ActionPhaseService();
+                ActionPhaseService actionPhaseService= new ActionPhaseService();
                 actionPhaseService.start();
             }
             case "StartTurnAnswer" -> controller.setCurrentPlayer();
@@ -370,10 +367,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     //used to load a scene in a new stage (window), instead of the primaryStage
     public void loadScene(String sceneName) {
         Stage stage = new Stage();
-        if(sceneName.equals(CARDS)){
-            CardsSceneController controller = (CardsSceneController) sceneControllersMap.get(sceneName);
-            stage.setScene(scenesMap.get(sceneName));
-        }
+        stage.setScene(scenesMap.get(sceneName));
         stage.centerOnScreen();
         stage.show();
 
@@ -558,6 +552,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     }
 
+     public void setActionAllowed(int actionAllowed){
+       //this.actionAllowed = actionAllowed;
+     }
 }
 
 

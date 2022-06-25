@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.View;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -274,63 +275,6 @@ public class MainSceneController implements SceneController {
         }
 
 
-    private class Table{
-        int x;
-        int y;
-        int studentsNumber;
-        int color;
-        Image studentImage;
-
-        public Table(int initialX, int initialY, int color){
-            this.x=initialX;
-            this.y=initialY;
-            this.studentsNumber=0;
-            this.color=color;
-            if(color==0){
-                this.studentImage = new Image(GREENSTUDENT);
-            } else if(color==1){
-                this.studentImage = new Image(REDSTUDENT);
-            } else if(color==2){
-                this.studentImage = new Image(YELLOWSTUDENT);
-            } else if(color==3){
-                this.studentImage = new Image(PINKSTUDENT);
-            } else if(color==4){
-                this.studentImage = new Image(BLUESTUDENT);
-            }
-            //studentImage.setFitWidth(16.0);
-            //studentImage.setFitHeight(16.0);
-
-        }
-        public int getX() {
-            return x;
-        }
-        public void setNewX(int schoolRef) {
-            if(schoolRef==0)
-                this.x = x+SPACE;
-            else if(schoolRef==1){
-                this.x=x-SPACE;
-            }
-        }
-        public int getY() {
-            return y;
-        }
-        public void setNewY(int schoolRef) {
-           if(schoolRef==3){
-               this.y=y+SPACE;
-           } else if(schoolRef==4){
-               this.y=y-SPACE;
-           }
-        }
-        public int getStudentsNumber() {
-            return studentsNumber;
-        }
-        public void setStudentsNumber() {
-            this.studentsNumber++;
-        }
-        public Image getStudentImage() {
-            return studentImage;
-        }
-    }
     public void initializeScene() {
         System.out.println("initialize scene method");
         if (numberOfPlayers == 2) {
@@ -389,8 +333,6 @@ public class MainSceneController implements SceneController {
         System.out.println("ALL initialized");
         //gui.phaseHandler("PlanningPhase");
    // });
-
-
     }
 
 
@@ -493,6 +435,21 @@ public class MainSceneController implements SceneController {
         pinkTables.add( new Table(102, 176, 3));
         blueTables.add(new Table(128, 176, 4));
     }
+
+    public void showCloudsPressed(){
+        gui.loadScene(GUI.CLOUDS);
+    }
+
+    public void showCardsPressed(){
+        gui.loadScene(GUI.CARDS);
+    }
+
+    public void useSpecialPressed(){
+        //gui.loadScene(SPECIALS);
+    }
+
+
+
 
     public void setNickname(String nickname, int playerRef) {
         Label nicknameLabel;
