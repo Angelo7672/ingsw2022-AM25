@@ -71,20 +71,17 @@ public class IslandsManager {
      * @param inhibited number of no entry tiles which were on island.
      */
     public void restoreIslands(int islandRef, int[] students, int towerValue, Team towerTeam, int inhibited){
-        System.out.println("Island Restore");
-        System.out.println("Ref "+islandRef);
         //Students
         for(int i = 0; i < 5; i++)
             incStudent(islandRef,i,students[i]);
         //Tower
-        System.out.println("Tower "+towerValue);
         islands.get(islandRef).setTowerValue(towerValue);
         islands.get(islandRef).setTowerTeam(towerTeam);
         this.towersListener.notifyTowersChange(1, islandRef, getTowerValue(islandRef));
         this.towersListener.notifyTowerColor(islandRef, islands.get(islandRef).getTowerTeam().getTeam());
         //Special
-        for(int i = 0; i < inhibited; i++){
-            increaseInhibited(islandRef);System.out.println("inhibited");}
+        for(int i = 0; i < inhibited; i++)
+            increaseInhibited(islandRef);
     }
 
     /**
@@ -105,9 +102,9 @@ public class IslandsManager {
      * @param studentOfThisColor number of students.
      */
     public void incStudent(int island, int color, int studentOfThisColor){
-        for(int i = 0; i < studentOfThisColor; i ++) {
+        for(int i = 0; i < studentOfThisColor; i ++)
             islands.get(island).incStudents(color);
-        }
+
         this.studentListener.notifyStudentsChange(2, island, color, getStudent(island, color));
     }
     public int getStudent(int island, int color){ return islands.get(island).getNumStudents(color); }
@@ -137,7 +134,6 @@ public class IslandsManager {
         if(!islands.get(islandRef).getTowerTeam().equals(team)) { //if new team not equals old one
             if (islands.get(islandRef).getTowerTeam().equals(Team.NONE)) { //if old team is no one
                 islands.get(islandRef).setTowerTeam(team);
-                //this.towersListener.notifyTowersChange(2, islandRef, getTowerValue(islandRef));
                 this.towersListener.notifyTowerColor(islandRef, islands.get(islandRef).getTowerTeam().getTeam());
                 checkAdjacentIslands(islandRef);
                 returnItem[0] = 1;

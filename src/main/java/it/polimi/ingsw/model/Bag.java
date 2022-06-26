@@ -33,8 +33,8 @@ public class Bag {
      * @param bag in the previous game;
      */
     public void bagRestore(List<Integer> bag){
-        this.bagListener.notifyBag(bag);
         this.bag = bag;
+        this.bagListener.notifyBag(this.bag);
     }
 
     /**
@@ -45,8 +45,8 @@ public class Bag {
         int colorExtracted;
 
         colorExtracted = bag.get(0);
-        this.bagListener.notifyBagExtraction();
         bag.remove(0);
+        this.bagListener.notifyBagExtraction();
 
         return colorExtracted;
     }

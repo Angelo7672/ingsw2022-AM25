@@ -438,7 +438,6 @@ public class VirtualView
     public void notifyIslandChange(int islandToDelete) {
         islands.remove(islandToDelete);
         server.dimensionOfAnIslandIsChange(islandToDelete);
-        System.out.println("Island size "+islands.size());
     }
 
     /**
@@ -487,7 +486,7 @@ public class VirtualView
     @Override
     public void notifyBagExtraction() {
         bag.remove(0);
-        if(bag.isEmpty()) controller.setEnd(true);
+        if(bag.isEmpty()){ controller.setEnd(true); System.out.println("Fine bag"); }
     }
 
     /**

@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Proxy_s is server's proxy, it manages connections with clients and excess connections.
+ */
 public class Proxy_s implements Exit {
     private final Entrance server;
     private ServerSocket serverSocket;
@@ -21,14 +24,19 @@ public class Proxy_s implements Exit {
     private boolean first;
     private boolean restoreGame;
 
+    /**
+     * Create ServerSocket.
+     * @param port where to create the server;
+     * @param server to which the proxy is connected;
+     */
     public Proxy_s(int port, Entrance server) {
         this.server = server;
         try { serverSocket = new ServerSocket(port);
         }catch (IOException e){
-            System.out.println("Port not available");
+            System.err.println("Port not available");
             server.exitError();
         }
-        this.connectionsAllowed = -1;
+        this.connectionsAllowed = 1;   //initialized a 1, so that proxy is ready for first client which will change this attribute
         this.user = new ArrayList<>();
         this.executor = Executors.newCachedThreadPool(); //Create threads when needed, but re-use existing ones as much as possible
         this.limiter = 0;
@@ -37,6 +45,9 @@ public class Proxy_s implements Exit {
         this.first = true;
     }
 
+    /**
+     * Start proxy so that it is possible to accept connections (from 2 to 4 connections, the others are immediately discharged with a SoldOut)
+     */
     @Override
     public void start() {
         SoldOut soldOut = new SoldOut(serverSocket);
@@ -47,32 +58,32 @@ public class Proxy_s implements Exit {
             VirtualClient firstClient = new VirtualClient(serverSocket.accept(), server, this);
             System.out.println("Connected players: " + limiter);
             user.add(firstClient);
-            executor.submit(firstClient);
+            executor.submit(firstClient);   //send VirtualClient to executor
 
-            while(connectionsAllowed == -1) synchronized (this) { this.wait(); }
+            while(connectionsAllowed == 1) synchronized (this) { this.wait(); } //stop here until the first player decides the number of players in the game
 
             VirtualClient secondClient = new VirtualClient(serverSocket.accept(), server, this);   //There must be two players to play
             System.out.println("Connected players: " + limiter);
             user.add(secondClient);
             executor.submit(secondClient);
 
-            while (limiter < connectionsAllowed) {
+            while (limiter < connectionsAllowed) {  //accept also other players (if we play in 3 or 4 players)
                 VirtualClient virtualClient = new VirtualClient(serverSocket.accept(), server, this);
                 user.add(virtualClient);
                 System.out.println("Connected players: " + limiter);
                 executor.submit(virtualClient);
             }
 
-            soldOut.start();
+            soldOut.start();    //from this moment all other connections are discharged
             synchronized (this){ this.wait(); }
 
-            if(restoreGame) server.restoreGame();
-            else {
+            if(restoreGame) server.restoreGame();   //If the first player decides to load the save
+            else {  //otherwise, initialize a new game
                 server.createGame();
                 server.initializeGame();
             }
-            virtualClientInOrder();
-            if(start != connectionsAllowed) synchronized (this){ this.wait(); }
+            virtualClientInOrder(); //order VirtualClient, in the order they logged in
+            if(start != connectionsAllowed) synchronized (this){ this.wait(); } //wait for everyone to be ready
             server.startGame();
         } catch (IOException | InterruptedException e) {
             System.err.println("Connection lost with a client!");
@@ -80,28 +91,74 @@ public class Proxy_s implements Exit {
         }
     }
 
+    /**
+     * @see VirtualClient
+     * @param ref client reference;
+     */
     @Override
     public void goPlayCard(int ref){ user.get(ref).sendPlayCard(); }
+
+    /**
+     * @see VirtualClient
+     * @param ref client reference;
+     */
     @Override
     public void unlockPlanningPhase(int ref){ user.get(ref).unlockPlanningPhase(); }
 
+    /**
+     * @see VirtualClient
+     * @param ref client reference;
+     */
     @Override
     public void startActionPhase(int ref){ user.get(ref).sendStartTurn(); }
+
+    /**
+     * @see VirtualClient
+     * @param ref client reference;
+     */
     @Override
     public void unlockActionPhase(int ref){ user.get(ref).unlockActionPhase(); }
+
+    /**
+     * @see VirtualClient
+     * @param ref client reference;
+     */
     @Override
     public void sendMaxMovementMotherNature(int ref, int maxMovement){ user.get(ref).sendMaxMovementMotherNature(maxMovement); }
 
+    /**
+     * Send at every client info about this game.
+     * @see VirtualClient
+     * @param numberOfPlayers number of players in this game;
+     * @param expertMode game mode;
+     */
     @Override
     public void sendGameInfo(int numberOfPlayers, boolean expertMode){
         for (VirtualClient client:user)
             client.sendGameInfo(numberOfPlayers, expertMode);
     }
+
+    /**
+     * Send at every client user's info.
+     * @see VirtualClient
+     * @param playerRef player reference;
+     * @param nickname chosen from player;
+     * @param character chosen from character;
+     */
     @Override
     public void sendUserInfo(int playerRef, String nickname, String character){
         for (VirtualClient client:user)
             client.sendUserInfo(playerRef, nickname, character);
     }
+
+    /**
+     * Send at every client the number of students of a color in a school.
+     * @see VirtualClient
+     * @param color color reference;
+     * @param place place reference;
+     * @param componentRef school reference;
+     * @param newStudentsValue number of student of this color;
+     */
     @Override
     public void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue){
         for (VirtualClient client:user)
@@ -190,6 +247,9 @@ public class Proxy_s implements Exit {
             client.sendInfoSpecial5(cards);
     }
 
+    /**
+     * Send at every client the team winner.
+     */
     @Override
     public void gameOver(){
         String winner = server.endGame();
@@ -198,31 +258,60 @@ public class Proxy_s implements Exit {
             client.sendWinner(winner);
     }
 
+    /**
+     * Notify all clients (except the disconnected one) that a client has disconnected.
+     * @param clientLost client reference to which not to send the message;
+     */
     public void clientDisconnected(int clientLost){
         for(int i = 0; i < user.size(); i++)
             if(i != clientLost) user.get(i).closeSocket();
     }
 
+    /**
+     * Increment limiter (counter) of connections.
+     */
     public void incrLimiter(){ this.limiter++; }
+
+    /**
+     * Return if is first, but in any case set first = false.
+     * @return if is first.
+     */
     public boolean isFirst() {
         boolean tmp = first;
         first = false;
         return tmp;
     }
+
+    /**
+     * Increment clientReady counter and if is it equal to connections allowed notify.
+     */
     public synchronized void thisClientIsReady(){
         clientReady++;
         if(clientReady == connectionsAllowed) this.notify();
     }
+
+    /**
+     * Increment start counter and if is it equal to connections allowed notify.
+     */
     public synchronized void startGame(){
         start++;
         if(start == connectionsAllowed) this.notify();
     }
     public int getConnectionsAllowed() { return connectionsAllowed; }
+
+    /**
+     * Set connections allowed then notify.
+     * @param connectionsAllowed number of connections allowed;
+     */
     public void setConnectionsAllowed(int connectionsAllowed) {
         this.connectionsAllowed = connectionsAllowed;
         synchronized (this){ this.notify(); }
     }
     public boolean isRestoreGame() { return restoreGame; }
     public void setRestoreGame(boolean restoreGame) { this.restoreGame = restoreGame; }
+
+    /**
+     * Order VirtualClient by playerRef.
+     */
     private void virtualClientInOrder(){ user.sort(VirtualClient::compareTo); }
 }
