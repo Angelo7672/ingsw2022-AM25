@@ -390,7 +390,9 @@ public class VirtualView
      */
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
-        islands.get(newMotherPosition).setMotherPosition(true);
+        for (Island i:islands)
+            i.removeMotherNature();
+        islands.get(newMotherPosition).setMotherPosition();
         server.motherChangePosition(newMotherPosition);
     }
 
@@ -696,7 +698,8 @@ public class VirtualView
         public void setStudentsIsland(int color, int newValue) { this.studentsIsland[color] = newValue; }
         public void setTowersColor(int newColor){ this.towersColor = newColor; }
         public void setInhibited(int isInhibited) { this.isInhibited = isInhibited; }
-        public void setMotherPosition(boolean isMotherPos) { this.isMotherPosition = isMotherPos; }
+        public void setMotherPosition() { this.isMotherPosition = true; }
+        public void removeMotherNature(){ this.isMotherPosition = false; }
         public boolean isMotherPosition() { return isMotherPosition; }
         public int[] getStudentsIsland() { return studentsIsland; }
         public int getTowersNumber() { return towersNumber; }

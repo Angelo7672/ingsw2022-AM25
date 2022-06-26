@@ -265,6 +265,6 @@ public class IslandsManager {
         private void incStudents(int color){ students[color]++; }
         private int getInhibited(){ return inhibited; }
         private void increaseInhibited(){ this.inhibited++; }
-        private void decreaseInhibited(){this.inhibited--;}
+        private void decreaseInhibited(){ this.inhibited--; }
     }
 }

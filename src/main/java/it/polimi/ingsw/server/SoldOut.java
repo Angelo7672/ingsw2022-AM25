@@ -11,6 +11,9 @@ import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * SoldOut reply with an answer that notifies you that there are no more connections available in the current game.
+ */
 public class SoldOut extends Thread{
     private final ExecutorService executor;
     private final ServerSocket serverSocket;
@@ -25,11 +28,14 @@ public class SoldOut extends Thread{
         while(true){
             try {
                 Expired expired = new Expired(serverSocket.accept());
-                executor.submit(expired);
+                executor.submit(expired);   //send to executor new socket
             } catch (IOException e) { e.printStackTrace(); }
         }
     }
 
+    /**
+     * Expired is a new Thread that send a SoldOutAnswer to client and close socket.
+     */
     private static class Expired implements Runnable{
         private final Socket socket;
 
@@ -43,8 +49,8 @@ public class SoldOut extends Thread{
                 output.reset();
                 output.writeObject(new SoldOutAnswer());
                 output.flush();
-                this.socket.setSoTimeout(4000);
-                input.readObject();
+                this.socket.setSoTimeout(4000); //in any case, close the socket after 4 seconds
+                input.readObject(); //when receives reply from client close socket
                 socket.close();
                 System.err.println("A client tried to connect, but there were no connections available!");
             } catch (SocketException socketException){ System.err.println("A client tried to connect, but there were no connections available!");

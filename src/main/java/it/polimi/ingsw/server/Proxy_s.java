@@ -25,7 +25,7 @@ public class Proxy_s implements Exit {
         this.server = server;
         try { serverSocket = new ServerSocket(port);
         }catch (IOException e){
-            System.out.println("port not available");
+            System.out.println("Port not available");
             server.exitError();
         }
         this.connectionsAllowed = -1;
