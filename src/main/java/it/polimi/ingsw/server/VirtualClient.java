@@ -232,26 +232,12 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     public void sendWinner(String winner){ send(new GameOverAnswer(winner)); }
 
     public synchronized void send(Answer serverAnswer){
-        /*try {
+        try {
             output.reset();
             output.writeObject(serverAnswer);
             output.flush();
-        }catch (IOException e){ clientConnectionExpired(e); }*/
-        try {
-            output.reset();
-        } catch (IOException e) {
-            System.out.println("1");
-        }
-        try {
-            output.writeObject(serverAnswer);
-        } catch (IOException e) {
-            System.out.println("2");
-        }
-        try{
-            output.flush();
-        } catch (IOException e) {
-            System.out.println("3");
-        }
+        }catch (IOException e){ clientConnectionExpired(e); }
+
     }
     private void clientConnectionExpired(IOException e){
         System.err.println("Client " + playerRef + " disconnected!");

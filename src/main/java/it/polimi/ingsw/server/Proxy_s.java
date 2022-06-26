@@ -48,11 +48,12 @@ public class Proxy_s implements Exit {
             System.out.println("Connected players: " + limiter);
             user.add(firstClient);
             executor.submit(firstClient);
+
+            while(connectionsAllowed == -1) synchronized (this) { this.wait(); }
+
             VirtualClient secondClient = new VirtualClient(serverSocket.accept(), server, this);   //There must be two players to play
             System.out.println("Connected players: " + limiter);
             user.add(secondClient);
-
-            while(connectionsAllowed == -1) synchronized (this) { this.wait(); }
             executor.submit(secondClient);
 
             while (limiter < connectionsAllowed) {
