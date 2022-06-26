@@ -107,7 +107,6 @@ public class QueueManager {
      */
     public void increaseMaxMoveMotherNature(int queueRef){
         queue.get(queueRef).increaseMaxMoveMotherNature();
-        System.out.println("Increase");
         this.queueListener.notifyMaxMove(queueRef, queue.get(queueRef).getMaxMoveMotherNature());
     }
 
