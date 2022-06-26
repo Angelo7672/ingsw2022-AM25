@@ -75,6 +75,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             socket.close();
             scanner.close();
             setActive(false);
+            System.exit(-1);
         }
         if(!savedGame) {
             setupConnection();
