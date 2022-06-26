@@ -33,6 +33,7 @@ public class CardsSceneController implements SceneController{
     @FXML private Label errorMessage;
 
     @FXML private Button confirmButton;
+    @FXML private Label cardsLabel;
 
     public CardsSceneController(){
 
@@ -186,9 +187,11 @@ public class CardsSceneController implements SceneController{
 
     public void enableConfirm(){
         this.confirmButton.setDisable(false);
+        this.cardsLabel.setVisible(true);
     }
     public void disableConfirm(){
         this.confirmButton.setDisable(true);
+        this.cardsLabel.setVisible(false);
     }
 
 }

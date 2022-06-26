@@ -100,7 +100,7 @@
          </graphic>
       </Button>
       <Button fx:id="confirmButton" layoutX="274.0" layoutY="343.0" mnemonicParsing="false" onAction="#confirmPressed" text="Confirm" />
-      <Label layoutX="114.0" layoutY="7.0" prefHeight="31.0" prefWidth="371.0" text="It's your turn! Choose an assistant card">
+      <Label fx:id="cardsLabel" layoutX="114.0" layoutY="7.0" prefHeight="31.0" prefWidth="371.0" text="It's your turn! Choose an assistant card">
          <font>
             <Font size="21.0" />
          </font>

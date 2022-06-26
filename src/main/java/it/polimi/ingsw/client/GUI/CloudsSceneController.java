@@ -28,6 +28,8 @@ public class CloudsSceneController implements SceneController  {
     @FXML private AnchorPane cloud4;
     @FXML private Button cloud4Button;
     @FXML private Button confirmButton;
+    @FXML private Label cloudsLabel;
+    @FXML private Label errorMessage;
 
     @FXML
     public void chooseCloud(ActionEvent evt){
@@ -52,17 +54,20 @@ public class CloudsSceneController implements SceneController  {
             System.out.println("chosen cloud is: "+chosenCloud);
             String result = proxy.chooseCloud(chosenCloud);
             System.out.println("Result is: "+result);
+
             if(result.equalsIgnoreCase("ok")){
+                errorMessage.setVisible(false);
                 System.out.println("cloud chosen");
                 gui.setNotYourTurn();
                 disableConfirm();
-                //gui.switchScene(GUI.MAIN);
                 Stage stage = (Stage) confirmButton.getScene().getWindow();
                 stage.close();
 
                 System.out.println("calling Phase Handler PlanningPhase");
                 gui.phaseHandler("PlanningPhase");
 
+            } else {
+                errorMessage.setVisible(true);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -124,11 +129,15 @@ public class CloudsSceneController implements SceneController  {
 
     public void enableConfirm(){
         this.confirmButton.setDisable(false);
+        this.cloudsLabel.setVisible(true);
     }
 
     public void disableConfirm(){
         this.confirmButton.setDisable(true);
+        this.cloudsLabel.setVisible(false);
+
     }
+
 }
 
 

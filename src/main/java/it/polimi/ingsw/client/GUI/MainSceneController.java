@@ -43,6 +43,7 @@ public class MainSceneController implements SceneController {
     private HashMap<Integer, AnchorPane> entrancesMap;
     private HashMap<Integer, AnchorPane> tablesMap;
     private HashMap<Integer, AnchorPane> professorsMap;
+    private HashMap<Integer, Integer> towersNumber;
 
     private String lastThingClicked;
     private int currentStudentColor;
@@ -107,6 +108,7 @@ public class MainSceneController implements SceneController {
         this.professorsMap = new HashMap<>();
         this.schoolMap = new HashMap<>();
         this.playedCards = new HashMap<>();
+        this.towersNumber = new HashMap<>();
         this.greenTables= new ArrayList<>();
         this.redTables= new ArrayList<>();
         this.yellowTables= new ArrayList<>();
@@ -255,7 +257,6 @@ public class MainSceneController implements SceneController {
                     if(result.equalsIgnoreCase("ok")){
                         errorLabel.setVisible(false);
                         setActionAllowed(2);
-                        //gui.setCloudsPhase(true);
                     } else {
                         errorLabel.setText("Error, move not allowed!");
                         errorLabel.setVisible(true);
@@ -353,6 +354,8 @@ public class MainSceneController implements SceneController {
     public void schoolsInitialization() {
         ImageView tower;
         if (numberOfPlayers == 2) {
+            towersNumber.put(0, 8);
+            towersNumber.put(1, 8);
             for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
                 tower = (ImageView) towersMap.get(0).getChildren().get(i);
                 tower.setImage(new Image(WHITETOWER));
@@ -364,6 +367,9 @@ public class MainSceneController implements SceneController {
 
         }
         if (numberOfPlayers == 3) {
+            towersNumber.put(0, 6);
+            towersNumber.put(1, 6);
+            towersNumber.put(2, 6);
             for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
                 tower = (ImageView) towersMap.get(0).getChildren().get(i);
                 tower.setImage(new Image(WHITETOWER));
@@ -382,6 +388,10 @@ public class MainSceneController implements SceneController {
             }
         }
         if (numberOfPlayers == 4) {
+            towersNumber.put(0, 8);
+            towersNumber.put(1, 0);
+            towersNumber.put(2, 8);
+            towersNumber.put(3, 0);
             for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
                 tower = (ImageView) towersMap.get(0).getChildren().get(i);
                 tower.setImage(new Image(WHITETOWER));
@@ -652,44 +662,19 @@ public class MainSceneController implements SceneController {
         card.setVisible(true);
     }
 
-    public void setTowersSchool(int schoolRef, int towersNumber) {
+    public void setTowersSchool(int schoolRef, int newTowersNumber) {
         AnchorPane towerPane = towersMap.get(schoolRef);
-        int lastVisibleTower=0;
-        ImageView tower;
+        int oldTowersNumber = towersNumber.get(schoolRef);
 
-        for(int i=0; i<towerPane.getChildren().size(); i++){
-            if(!towerPane.getChildren().get(i).isVisible())
-                lastVisibleTower = i-1;
-        }
-
-        if(towersNumber>lastVisibleTower){
-            for(int i=lastVisibleTower; i<towersNumber; i++){
-                towerPane.getChildren().get(i).setVisible(true);
-            }
-        } else if(towersNumber<lastVisibleTower){
-            for(int i=lastVisibleTower; i>=towersNumber; i++){
+        if(newTowersNumber<oldTowersNumber){
+            for(int i=oldTowersNumber-1; i>=newTowersNumber; i--){
                 towerPane.getChildren().get(i).setVisible(false);
             }
+        } else if(newTowersNumber>oldTowersNumber){
+            for(int i=oldTowersNumber; i<newTowersNumber; i++){
+                towerPane.getChildren().get(i).setVisible(true);
+            }
         }
-        /*Boolean ok = false;
-        if(towersNumber<oldTowersNumber){
-            for(int i=oldTowersNumber-1; i>=0 && !ok; i--) {
-                tower = (ImageView) towerPane.getChildren().get(i);
-                if (tower.isVisible()) {
-                    tower.setVisible(false);
-                    ok = true;
-                }
-            }
-        } else if(towersNumber>oldTowersNumber) {
-                for(int i=0; i<oldTowersNumber && !ok; i++){
-                    tower= (ImageView) towersMap.get(schoolRef).getChildren().get(i);
-                    if(!tower.isVisible()) {
-                        tower.setVisible(true);
-                        ok = true;
-                }
-
-            }
-        }*/
     }
 
     public void setTowersIsland(int islandRef, int towersNumber) {
@@ -716,7 +701,6 @@ public class MainSceneController implements SceneController {
     public void unifyIsland(int islandToDelete){
         AnchorPane island= islandsMap.get(islandToDelete);
         islandsPane.getChildren().remove(island);
-
         System.out.println(islandsPane.getChildren());
     }
 
@@ -759,7 +743,6 @@ public class MainSceneController implements SceneController {
         if(!tower.isVisible()){
             setTowersIsland(islandRef, 1);
         }
-
         if(newColor == 0){
             tower.setImage(new Image(WHITETOWER));
             towerLabel.setTextFill(Color.BLACK);

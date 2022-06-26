@@ -335,10 +335,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         @Override
         protected void succeeded() {
             System.out.println("Planning phase service on succeded");
-            //CardsSceneController controller= (CardsSceneController) sceneControllersMap.get(CARDS);
-            //controller.sceneInitialize();
             phaseHandler("PlayCardAnswer");
-            //phaseHandler("PlayCard");
         }
 
         @Override
@@ -529,11 +526,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         Platform.runLater(() -> {
             System.out.println("NOTIFY: Mother Position : "+newMotherPosition);
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            //if(isMainSceneInitialized){
             controller.setMotherPosition(newMotherPosition);
-            //} else
-            //this.initialMotherPosition=newMotherPosition;
-
         });
 
     }
