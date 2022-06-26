@@ -36,9 +36,7 @@ public class CardsSceneController implements SceneController{
     @FXML private Label cardsLabel;
 
     public CardsSceneController(){
-
         currentPlayedCards= new HashMap<>();
-        //alreadyPlayedCards = new ArrayList<>();
         playedCard="";
     }
 
@@ -109,29 +107,9 @@ public class CardsSceneController implements SceneController{
         if (playedCard != "") {
             PlayCardService playCardService = new PlayCardService();
             playCardService.start();
-            /*String result = null;
-            try {
-                result = proxy.playCard(playedCard);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            if (result.equalsIgnoreCase("ok")) {
-                //alreadyPlayedCards.add(playedCard);
-                disableCard(playedCard);
-                disableConfirm();
-                Stage stage = (Stage) confirmButton.getScene().getWindow();
-                stage.close();
-                gui.phaseHandler("ActionPhase");
-
-            } else
-                showErrorMessage();*/
         } else {
             showErrorMessage();
         }
-
     }
 
     public void showErrorMessage(){
@@ -160,7 +138,6 @@ public class CardsSceneController implements SceneController{
         } else if(card.equalsIgnoreCase("turtle")){
             turtleButton.setVisible(false);
         }
-
     }
 
     @Override
@@ -171,10 +148,6 @@ public class CardsSceneController implements SceneController{
     @Override
     public void setProxy(Exit proxy) {
         this.proxy=proxy;
-    }
-
-    public void setPlayedCard(int playerRef, String card){
-        this.currentPlayedCards.put(playerRef, card);
     }
 
     public void enableConfirm(){
