@@ -22,7 +22,8 @@ public class IslandsManager {
      */
     public IslandsManager() {
         islands = new ArrayList<>();
-        for (int i=0; i<12; i++) islands.add(new Island());
+        for (int i = 0; i < 12; i++)
+            islands.add(new Island());
     }
 
     /**
@@ -56,8 +57,8 @@ public class IslandsManager {
         int toDelete = 12 - size;
 
         for(int i = 0; i < toDelete; i++) {
-            islands.remove(i);
-            this.islandListener.notifyIslandChange(i);
+            islands.remove(0);
+            this.islandListener.notifyIslandChange(0);
         }
     }
 
@@ -70,17 +71,20 @@ public class IslandsManager {
      * @param inhibited number of no entry tiles which were on island.
      */
     public void restoreIslands(int islandRef, int[] students, int towerValue, Team towerTeam, int inhibited){
+        System.out.println("Island Restore");
+        System.out.println("Ref "+islandRef);
         //Students
         for(int i = 0; i < 5; i++)
             incStudent(islandRef,i,students[i]);
         //Tower
+        System.out.println("Tower "+towerValue);
         islands.get(islandRef).setTowerValue(towerValue);
         islands.get(islandRef).setTowerTeam(towerTeam);
         this.towersListener.notifyTowersChange(1, islandRef, getTowerValue(islandRef));
         this.towersListener.notifyTowerColor(islandRef, islands.get(islandRef).getTowerTeam().getTeam());
         //Special
-        for(int i = 0; i < inhibited; i++)
-            increaseInhibited(islandRef);
+        for(int i = 0; i < inhibited; i++){
+            increaseInhibited(islandRef);System.out.println("inhibited");}
     }
 
     /**
@@ -178,7 +182,7 @@ public class IslandsManager {
     private boolean checkAdjacent(int pos, int posTemp){
         if (islands.get(pos).getTowerTeam() == islands.get(posTemp).getTowerTeam()) {
             for (int i = 0; i < 5; i++) {   //move student from posTemp to pos
-                if(islands.get(posTemp).getNumStudents(i)!=0) {
+                if(islands.get(posTemp).getNumStudents(i) != 0) {
                     islands.get(pos).copyStudents(i, islands.get(pos).getNumStudents(i) + islands.get(posTemp).getNumStudents(i));
                     this.studentListener.notifyStudentsChange(2, pos, i, islands.get(pos).getNumStudents(i));
                 }
