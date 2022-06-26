@@ -29,12 +29,12 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     private final String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
     private final Object lock;
 
-    public CLI(Socket socket) throws IOException{
+    public CLI(Socket socket, Exit proxy) throws IOException{
         this.socket = socket;
         scanner = new Scanner(System.in);
         active = true;
         constants = new PlayerConstants();
-        proxy = new Proxy_c(socket);
+        this.proxy = proxy;
         proxy.setDisconnectedListener(this);
         proxy.setServerOfflineListener(this);
         lock = new Object();

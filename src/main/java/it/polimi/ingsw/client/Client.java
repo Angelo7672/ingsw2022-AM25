@@ -25,13 +25,14 @@ public class Client {
         String graph = scanner.next();
         if(graph.equalsIgnoreCase("CLI")) {
             try {
-                socket = new Socket("192.168.0.1", 2525);
+                socket = new Socket("127.0.0.1", 2525);
             } catch (IOException e) {
                 System.out.println(SPACE+ANSI_RED+"Some errors occurred, try again."+ANSI_RESET);
                 return;
             }
             System.out.println(SPACE+"Connection established");
-            CLI cli = new CLI(socket);
+            Exit proxy = new Proxy_c(socket);
+            CLI cli = new CLI(socket, proxy);
             cli.run();
         }
         else if (graph.equalsIgnoreCase("GUI")) {
@@ -42,8 +43,8 @@ public class Client {
                 return;
             }
             System.out.println(SPACE+"Connection established");
+            Exit proxy = new Proxy_c(socket);
             GUI gui = new GUI();
-            Proxy_c proxy = new Proxy_c(socket);
             gui.setSocket(socket);
             gui.setProxy(proxy);
             System.out.println(SPACE+"GUI is starting...");

@@ -239,7 +239,6 @@ public class MainSceneController implements SceneController {
 
             } else if (actionAllowed==1) {
                 int motherMov = 0;
-                System.out.println("you can move mother nature now");
                 for (int i = 0; i < 12; i++) {
                     if ((mouseEvent.getSource() == islandsMap.get(i))) {
                         islandRef = i;
@@ -251,9 +250,7 @@ public class MainSceneController implements SceneController {
                     }
                 }
                 try {
-                    System.out.println("calling moveMotherNature");
                     String result = proxy.moveMotherNature(motherMov);
-                    System.out.println("Result is: "+result);
                     if(result.equalsIgnoreCase("ok")){
                         errorLabel.setVisible(false);
                         setActionAllowed(2);
@@ -275,7 +272,6 @@ public class MainSceneController implements SceneController {
 
 
     public void initializeScene() {
-        System.out.println("initialize scene method");
         if (numberOfPlayers == 2) {
             player3Box.setVisible(false);
             cardPane3.setVisible(false);
@@ -329,7 +325,6 @@ public class MainSceneController implements SceneController {
 
         gui.isMainSceneInitialized=true;
         actionAllowed=-1; //not your turn
-        System.out.println("ALL initialized");
         //gui.phaseHandler("PlanningPhase");
    // });
     }

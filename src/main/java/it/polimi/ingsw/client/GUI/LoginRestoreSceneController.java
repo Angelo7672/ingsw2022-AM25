@@ -17,7 +17,6 @@ public class LoginRestoreSceneController implements SceneController{
     private GUI gui;
     private String currentNickname;
     private Service<Boolean> loginService;
-    private Service<String> getPhaseService;
     @FXML private Button next;
     @FXML private TextField nicknameBox;
     @FXML private Label errorMessage;
@@ -31,19 +30,13 @@ public class LoginRestoreSceneController implements SceneController{
             if(result){
                 gui.setYourNickname(currentNickname);
                 gui.phaseHandler("SetView");
-                getPhaseService.start();
             }
             else{
                 showErrorMessage();
                 gui.switchScene(GUI.LOGINRESTORE);
             }
         });
-        this.getPhaseService = new GetPhaseService();
-        getPhaseService.setOnSucceeded(workerStateEvent -> {
-            String phase = getPhaseService.getValue();
-            if(phase.equals("Play card!")) gui.phaseHandler("PlayCardAnswer");
-            else if(phase.equals("Start your Action Phase!")) gui.phaseHandler("StartTurnAnswer");
-        });
+
     }
 
     private class LoginService extends Service<Boolean> {
@@ -53,28 +46,13 @@ public class LoginRestoreSceneController implements SceneController{
             return new Task<Boolean>() {
                 @Override
                 protected Boolean call() throws Exception {
-                    Boolean result = proxy.setupConnection(currentNickname, null);
-                    System.out.println(result);
-                    return result;
+                    return proxy.setupConnection(currentNickname, null);
                 }
             };
         }
     }
 
-    private class GetPhaseService extends Service<String>{
 
-        @Override
-        protected Task<String> createTask() {
-            return new Task<String>(){
-                @Override
-                protected String call() throws IOException {
-                    String phase = proxy.getPhase();
-                    System.out.println(phase);
-                    return phase;
-                }
-            };
-        }
-    }
 
     public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
         currentNickname = this.nicknameBox.getText();

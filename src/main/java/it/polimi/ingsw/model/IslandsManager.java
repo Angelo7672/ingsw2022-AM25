@@ -133,7 +133,7 @@ public class IslandsManager {
         if(!islands.get(islandRef).getTowerTeam().equals(team)) { //if new team not equals old one
             if (islands.get(islandRef).getTowerTeam().equals(Team.NONE)) { //if old team is no one
                 islands.get(islandRef).setTowerTeam(team);
-                this.towersListener.notifyTowersChange(2, islandRef, getTowerValue(islandRef));
+                //this.towersListener.notifyTowersChange(2, islandRef, getTowerValue(islandRef));
                 this.towersListener.notifyTowerColor(islandRef, islands.get(islandRef).getTowerTeam().getTeam());
                 checkAdjacentIslands(islandRef);
                 returnItem[0] = 1;

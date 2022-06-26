@@ -91,9 +91,7 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
     public boolean setupConnection(String nickname, String character) throws IOException {
         if(nickname.length()>10) nickname = nickname.substring(0,9);
         send(new SetupConnection(nickname, character));
-        System.out.println("MESSAGE SENT: setupConnection "+nickname+" "+character);
         tempObj = receiver.receive();
-        System.out.println("ANSWER: "+tempObj);
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
         else return false;
     }
