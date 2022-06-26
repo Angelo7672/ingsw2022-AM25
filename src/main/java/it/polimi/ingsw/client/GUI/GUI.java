@@ -28,7 +28,7 @@ import java.util.Set;
 
 public class GUI extends Application implements TowersListener, ProfessorsListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, UserInfoListener,
-        SpecialStudentsListener, SpecialListener {
+        SpecialStudentsListener, SpecialListener, DisconnectedListener, ServerOfflineListener{
 
     private static Exit proxy;
     private View view;
@@ -74,7 +74,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         scenesMap = new HashMap<>();
         sceneControllersMap = new HashMap<>();
         constants = new PlayerConstants();
-        view = new View();
         isMainScene = false;
         initialStudentsIsland = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
@@ -245,7 +244,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         gameRestored = true;
     }
 
-
     public class PlanningPhaseService extends Service<Boolean> {
         Boolean result;
         GUI gui;
@@ -386,6 +384,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     public void setProxy(Proxy_c proxy) {
         this.proxy = proxy;
+        proxy.setServerOfflineListener(this);
+        proxy.setDisconnectedListener(this);
+
     }
 
     public void setYourNickname(String yourNickname) {
@@ -563,6 +564,17 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
      public void setActionAllowed(int actionAllowed){
        //this.actionAllowed = actionAllowed;
      }
+
+
+    @Override
+    public void notifyDisconnected() throws IOException {
+        System.out.println("client disconnected");
+    }
+
+    @Override
+    public void notifyServerOffline() throws IOException {
+        System.out.println("server offline");
+    }
 }
 
 

@@ -30,6 +30,8 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
         lock2 = new Object();
         view = new View();
         receiver = new Receiver(lock2, socket, view);
+        setDisconnectedListener(this);
+        setServerOfflineListener(this);
     }
 
     public boolean readyForLogin() throws IOException {
@@ -137,7 +139,6 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
     public void setView(){
         synchronized (lock2){
             receiver.setViewInitialized();
-            lock2.notify();
         }
 
     }
