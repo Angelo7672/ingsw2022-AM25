@@ -936,12 +936,12 @@
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font></Label>
-                  <ImageView fx:id="coin2" fitHeight="40.0" fitWidth="40.0" layoutX="-50.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <ImageView fx:id="coin2" fitHeight="40.0" fitWidth="40.0" layoutX="-50.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" visible="false">
                      <image>
                         <Image url="@../graphics/coin.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="coinLabel2" layoutX="-50.0" layoutY="45.0" text="coins: 1" visible="false">
+                  <Label fx:id="coinLabel2" layoutX="-50.0" layoutY="55.0" text="coins: 1" visible="false">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font>
@@ -957,52 +957,52 @@
                   </ImageView>
                   <AnchorPane id="entrancePane2" fx:id="entrancePane2" layoutX="306.0" layoutY="10.0" prefHeight="160.0" prefWidth="62.0">
                      <children>
-                        <ImageView id="greenStudent" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="121.0" preserveRatio="true">
+                        <ImageView id="greenStudent" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="121.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView id="redStudent" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="95.0" preserveRatio="true">
+                        <ImageView id="redStudent" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="95.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView id="yellowStudent" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="70.0" preserveRatio="true">
+                        <ImageView id="yellowStudent" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="70.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView id="pinkStudent" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="45.0" preserveRatio="true">
+                        <ImageView id="pinkStudent" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="45.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView id="blueStudent" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="18.0" preserveRatio="true">
+                        <ImageView id="blueStudent" fitHeight="21.0" fitWidth="21.0" layoutX="11.0" layoutY="18.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                            </image>
                         </ImageView>
-                        <Label id="greenLabel" layoutX="42.0" layoutY="116.0" text="1">
+                        <Label id="greenLabel" layoutX="42.0" layoutY="116.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label id="redLabel" layoutX="42.0" layoutY="90.0" text="1">
+                        <Label id="redLabel" layoutX="42.0" layoutY="90.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label id="yellowLabel" layoutX="42.0" layoutY="66.0" text="1">
+                        <Label id="yellowLabel" layoutX="42.0" layoutY="66.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label id="pinkLabel" layoutX="42.0" layoutY="42.0" text="1">
+                        <Label id="pinkLabel" layoutX="42.0" layoutY="42.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label id="blueLabel" layoutX="42.0" layoutY="14.0" text="1">
+                        <Label id="blueLabel" layoutX="42.0" layoutY="14.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
@@ -1097,52 +1097,52 @@
                   </ImageView>
                   <AnchorPane fx:id="entrancePane3" layoutX="6.0" layoutY="3.0" prefHeight="58.0" prefWidth="170.0">
                      <children>
-                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="126.0" layoutY="18.0" preserveRatio="true">
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="126.0" layoutY="18.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="100.0" layoutY="18.0" preserveRatio="true">
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="100.0" layoutY="18.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="75.0" layoutY="18.0" preserveRatio="true">
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="75.0" layoutY="18.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="48.0" layoutY="18.0" preserveRatio="true">
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="48.0" layoutY="18.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="21.0" layoutY="19.0" preserveRatio="true">
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="21.0" layoutY="19.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="131.0" layoutY="-9.0" text="1">
+                        <Label layoutX="131.0" layoutY="-9.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="104.0" layoutY="-9.0" text="1">
+                        <Label layoutX="104.0" layoutY="-9.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="79.0" layoutY="-9.0" text="1">
+                        <Label layoutX="79.0" layoutY="-9.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="54.0" layoutY="-9.0" text="1">
+                        <Label layoutX="54.0" layoutY="-9.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="26.0" layoutY="-9.0" text="1">
+                        <Label layoutX="26.0" layoutY="-9.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
@@ -1262,52 +1262,52 @@
                   </ImageView>
                   <AnchorPane id="entrancePane2" fx:id="entrancePane1" prefHeight="160.0" prefWidth="62.0">
                      <children>
-                        <ImageView id="greenStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="18.0" preserveRatio="true">
+                        <ImageView id="greenStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="18.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView id="redStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="44.0" preserveRatio="true">
+                        <ImageView id="redStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="44.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView id="yellowStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="70.0" preserveRatio="true">
+                        <ImageView id="yellowStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="70.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView id="pinkStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="97.0" preserveRatio="true">
+                        <ImageView id="pinkStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="97.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView id="blueStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="123.0" preserveRatio="true">
+                        <ImageView id="blueStudent" fitHeight="21.0" fitWidth="21.0" layoutX="30.0" layoutY="123.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                            </image>
                         </ImageView>
-                        <Label id="greenLabel" layoutX="8.0" layoutY="15.0" text="1">
+                        <Label id="greenLabel" layoutX="8.0" layoutY="15.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label id="redLabel" layoutX="8.0" layoutY="42.0" text="1">
+                        <Label id="redLabel" layoutX="8.0" layoutY="42.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label id="blueLabel" layoutX="8.0" layoutY="67.0" text="1">
+                        <Label id="blueLabel" layoutX="8.0" layoutY="67.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label id="blueLabel" layoutX="8.0" layoutY="92.0" text="1">
+                        <Label id="blueLabel" layoutX="8.0" layoutY="92.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label id="blueLabel" layoutX="8.0" layoutY="118.0" text="1">
+                        <Label id="blueLabel" layoutX="8.0" layoutY="118.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
@@ -1449,52 +1449,52 @@
                   </ImageView>
                   <AnchorPane fx:id="entrancePane4" layoutY="305.0" prefHeight="66.0" prefWidth="160.0">
                      <children>
-                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="21.0" layoutY="19.0" preserveRatio="true">
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="21.0" layoutY="19.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="48.0" layoutY="18.0" preserveRatio="true">
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="48.0" layoutY="18.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="75.0" layoutY="18.0" preserveRatio="true">
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="75.0" layoutY="18.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="100.0" layoutY="18.0" preserveRatio="true">
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="100.0" layoutY="18.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="126.0" layoutY="18.0" preserveRatio="true">
+                        <ImageView fitHeight="21.0" fitWidth="21.0" layoutX="126.0" layoutY="18.0" preserveRatio="true" visible="false">
                            <image>
                               <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="26.0" layoutY="38.0" text="1">
+                        <Label layoutX="26.0" layoutY="38.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="54.0" layoutY="38.0" text="1">
+                        <Label layoutX="54.0" layoutY="38.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="80.0" layoutY="38.0" text="1">
+                        <Label layoutX="80.0" layoutY="38.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="105.0" layoutY="38.0" text="1">
+                        <Label layoutX="105.0" layoutY="38.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="131.0" layoutY="38.0" text="1">
+                        <Label layoutX="131.0" layoutY="38.0" text="1" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>

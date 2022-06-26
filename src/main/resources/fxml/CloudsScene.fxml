@@ -266,5 +266,10 @@
             </AnchorPane>
          </graphic>
       </Button>
+      <Label layoutX="26.0" layoutY="14.0" text="Choose a cloud!">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

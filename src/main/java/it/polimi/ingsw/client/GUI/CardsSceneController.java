@@ -1,7 +1,8 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
-import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CardsSceneController implements SceneController{
@@ -40,6 +40,27 @@ public class CardsSceneController implements SceneController{
         //alreadyPlayedCards = new ArrayList<>();
         playedCard="";
     }
+
+
+    /*public class PlayCardService extends Service<Void>{
+
+        @Override
+        protected Task<Void> createTask() {
+            return new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    try {
+                        String result = proxy.playCard(playedCard);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    return Void;
+                }
+            };
+        }
+    }*/
 
     @FXML
     public void setPlayedCard(ActionEvent event) {

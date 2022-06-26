@@ -24,11 +24,15 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Set;
 
 public class GUI extends Application implements TowersListener, ProfessorsListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, UserInfoListener,
-        SpecialStudentsListener, SpecialListener, DisconnectedListener, ServerOfflineListener{
+        SpecialStudentsListener, SpecialListener, DisconnectedListener, ServerOfflineListener, WinnerListener,
+        NoEntryListener{
+
+
 
     private static Exit proxy;
     private View view;
@@ -89,9 +93,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
 
 
-        // planningPhaseService= new PlanningPhaseService(this);
+        planningPhaseService= new PlanningPhaseService(this);
 
-        //actionPhaseService= new ActionPhaseService();
+        actionPhaseService= new ActionPhaseService();
 
 
         setViewService = new SetViewService(this);
@@ -147,7 +151,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         isMainSceneInitialized = false;
         areListenerSet = false;
-
+        //firstClientService = new FirstClientService();
+        //primaryStage.setScene(LOADING);
         scenesSetup();
         //planningPhaseService= new PlanningPhaseService(this);
         //actionPhaseService= new ActionPhaseService();
@@ -233,6 +238,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
             case "ActionPhase" -> {
                 System.out.println("actionPhase");
+                //planningPhaseService.cancel();
                 ActionPhaseService actionPhaseService= new ActionPhaseService();
                 actionPhaseService.start();
             }
@@ -243,6 +249,55 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void setGameRestored(){
         gameRestored = true;
     }
+
+
+    private class FirstClientService extends Service<String>{
+
+        @Override
+        protected Task<String> createTask() {
+            return new Task<String>() {
+                @Override
+                protected String call() throws Exception {
+                    scenesSetup();
+                    String result = null;
+                    try {
+                        result = proxy.first();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    return result;
+                }
+            };
+        }
+
+        @Override
+        protected void succeeded(){
+            String result = this.getValue();
+            if (result.equals("SavedGame")) {
+                SavedGameAnswer savedGame = (SavedGameAnswer) proxy.getMessage();
+                initializedSavedScene(savedGame.getNumberOfPlayers(), savedGame.isExpertMode());
+                primaryStage.setScene(scenesMap.get(SAVED));
+                primaryStage.centerOnScreen();
+            } else if (result.equals("SetupGame")) {
+                primaryStage.setScene(scenesMap.get(SETUP));
+                primaryStage.centerOnScreen();
+
+            } else if (result.equals("Server Sold Out")) {
+                System.out.println(result);
+
+            } else if (result.equals("Not first")) {
+                primaryStage.setScene(scenesMap.get(LOGIN));
+                primaryStage.centerOnScreen();
+            } else if (result.equals("LoginRestore")) {
+                setGameRestored();
+                primaryStage.setScene(scenesMap.get(LOGINRESTORE));
+                primaryStage.centerOnScreen();
+            }
+        }
+    }
+
 
     public class PlanningPhaseService extends Service<Boolean> {
         Boolean result;
@@ -561,6 +616,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     }
 
+
+    @Override
+    public void notifyNoEntry(int newValue) {
+
+    }
+
+
+
      public void setActionAllowed(int actionAllowed){
        //this.actionAllowed = actionAllowed;
      }
@@ -569,12 +632,32 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     @Override
     public void notifyDisconnected() throws IOException {
         System.out.println("client disconnected");
+        //loadScene(GAMEOVER);
+        //primaryStage.close();
+        //socket.close();
+        //GameOverSceneController controller = sceneControllersMap.get(GAMEOVER);
+        //controller.setClientDisconnected();
     }
 
     @Override
     public void notifyServerOffline() throws IOException {
         System.out.println("server offline");
+        //loadScene(GAMEOVER);
+        //primaryStage.close();
+        //socket.close();
+        //GameOverSceneController controller = sceneControllersMap.get(GAMEOVER);
+        //controller.setServerOffline();
     }
+
+    @Override
+    public void notifyWinner() throws IOException {
+        //loadScene(GAMEOVER);
+        //primaryStage.close();
+        //socket.close();
+        //GameOverSceneController controller = sceneControllersMap.get(GAMEOVER);
+        //controller.setWinner(view.getWinner);
+    }
+
 }
 
 

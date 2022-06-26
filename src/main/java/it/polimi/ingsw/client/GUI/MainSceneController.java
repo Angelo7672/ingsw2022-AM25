@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.View;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -408,6 +407,9 @@ public class MainSceneController implements SceneController {
                 entrancesMap.get(i).getChildren().get(j).setOnMouseClicked(studentsClickHandler);
                 tablesMap.get(i).setOnMouseClicked(tableClickHandler);
             }
+            /*for(int j=0; j<entrancesMap.get(i).getChildren().size(); i++){
+                entrancesMap.get(i).getChildren().get(j).setVisible(false);
+            }*/
         }
     }
     public void tablesInitialization() {
@@ -436,9 +438,7 @@ public class MainSceneController implements SceneController {
         blueTables.add(new Table(128, 176, 4));
     }
 
-    public void showCloudsPressed(){
-        gui.loadScene(GUI.CLOUDS);
-    }
+    public void showCloudsPressed(){gui.loadScene(GUI.CLOUDS);}
 
     public void showCardsPressed(){
         gui.loadScene(GUI.CARDS);
@@ -521,9 +521,9 @@ public class MainSceneController implements SceneController {
         ImageView studentImage;
 
         studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5); //Labels are located 5 position after images
-        studentLabel.setText(String.valueOf(newStudentsValue));
         studentImage = (ImageView) entrancesMap.get(playerRef).getChildren().get(color);
         if (newStudentsValue != 0) {
+            studentLabel.setText(String.valueOf(newStudentsValue));
             studentLabel.setVisible(true);
             studentImage.setVisible(true);
         } else {
@@ -653,9 +653,24 @@ public class MainSceneController implements SceneController {
 
     public void setTowersSchool(int schoolRef, int towersNumber) {
         AnchorPane towerPane = towersMap.get(schoolRef);
-        int oldTowersNumber = towerPane.getChildren().size();
+        int lastVisibleTower=0;
         ImageView tower;
-        Boolean ok = false;
+
+        for(int i=0; i<towerPane.getChildren().size(); i++){
+            if(!towerPane.getChildren().get(i).isVisible())
+                lastVisibleTower = i-1;
+        }
+
+        if(towersNumber>lastVisibleTower){
+            for(int i=lastVisibleTower; i<towersNumber; i++){
+                towerPane.getChildren().get(i).setVisible(true);
+            }
+        } else if(towersNumber<lastVisibleTower){
+            for(int i=lastVisibleTower; i>=towersNumber; i++){
+                towerPane.getChildren().get(i).setVisible(false);
+            }
+        }
+        /*Boolean ok = false;
         if(towersNumber<oldTowersNumber){
             for(int i=oldTowersNumber-1; i>=0 && !ok; i--) {
                 tower = (ImageView) towerPane.getChildren().get(i);
@@ -664,7 +679,7 @@ public class MainSceneController implements SceneController {
                     ok = true;
                 }
             }
-        } else {
+        } else if(towersNumber>oldTowersNumber) {
                 for(int i=0; i<oldTowersNumber && !ok; i++){
                     tower= (ImageView) towersMap.get(schoolRef).getChildren().get(i);
                     if(!tower.isVisible()) {
@@ -673,7 +688,7 @@ public class MainSceneController implements SceneController {
                 }
 
             }
-        }
+        }*/
     }
 
     public void setTowersIsland(int islandRef, int towersNumber) {

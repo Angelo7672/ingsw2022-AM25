@@ -105,10 +105,13 @@ public class CloudsSceneController implements SceneController  {
     public void initializeCloudScene(int numberOfPlayers) {
         if(numberOfPlayers==2){
             cloud3.setVisible(false);
+            cloud3Button.setDisable(true);
             cloud4.setVisible(false);
+            cloud4Button.setDisable(true);
         }
         else if(numberOfPlayers==3){
             cloud4.setVisible(false);
+            cloud4Button.setDisable(true);
         }
 
     }
