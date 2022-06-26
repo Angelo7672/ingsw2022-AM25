@@ -37,7 +37,8 @@ public class MainSceneController implements SceneController {
     private HashMap<Integer, ImageView> charactersImageMap;
     private HashMap<Integer, String> playedCards;
 
-    private HashMap<Integer, AnchorPane> islandsMap;
+    //private HashMap<Integer, AnchorPane> islandsMap;
+    private ArrayList<AnchorPane> islandsList;
     private HashMap<Integer, AnchorPane> schoolMap;
     private HashMap<Integer, AnchorPane> towersMap;
     private HashMap<Integer, AnchorPane> entrancesMap;
@@ -101,7 +102,8 @@ public class MainSceneController implements SceneController {
         this.charactersImageMap = new HashMap<>();
         this.numberOfPlayers = 4;
         this.expertMode = false;
-        this.islandsMap = new HashMap<>();
+        //this.islandsMap = new HashMap<>();
+        this.islandsList = new ArrayList<>();
         this.towersMap = new HashMap<>();
         this.entrancesMap = new HashMap<>();
         this.tablesMap = new HashMap<>();
@@ -189,7 +191,6 @@ public class MainSceneController implements SceneController {
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
             else{
@@ -208,8 +209,9 @@ public class MainSceneController implements SceneController {
                     lastThingClicked = "island";
                     System.out.println("island clicked");
                     System.out.println("mouseEvent source: " + mouseEvent.getSource());
-                    for (int i = 0; i < 12; i++) {
-                        if ((mouseEvent.getSource() == islandsMap.get(i))) {
+                    for (int i = 0; i < islandsList.size(); i++) {
+                        //if ((mouseEvent.getSource() == islandsMap.get(i))) {
+                        if ((mouseEvent.getSource() == islandsList.get(i))) {
                             islandRef = i;
                         }
                     }
@@ -238,19 +240,21 @@ public class MainSceneController implements SceneController {
                 }
 
             } else if (actionAllowed==1) {
-                int motherMov = 0;
-                for (int i = 0; i < 12; i++) {
-                    if ((mouseEvent.getSource() == islandsMap.get(i))) {
-                        islandRef = i;
+                int motherMovement = 0;
+                int currentMotherPos = view.getMotherPosition();
+                for (int i = 0; i < islandsList.size(); i++) {
+                    //if ((mouseEvent.getSource() == islandsMap.get(i))) {
+                    if ((mouseEvent.getSource() == islandsList.get(i))) {
+                        islandRef = i; // non sono sicura
                     }
-                    if(view.getMotherPosition()<islandRef){
-                        motherMov = islandRef - view.getMotherPosition();
+                    if(currentMotherPos<islandRef){
+                        motherMovement = islandRef - currentMotherPos;
                     } else {
-                        motherMov= view.getMotherPosition() - islandRef;
+                        motherMovement= islandsList.size() - currentMotherPos + islandRef;
                     }
                 }
                 try {
-                    String result = proxy.moveMotherNature(motherMov);
+                    String result = proxy.moveMotherNature(motherMovement);
                     if(result.equalsIgnoreCase("ok")){
                         errorLabel.setVisible(false);
                         setActionAllowed(2);
@@ -315,7 +319,7 @@ public class MainSceneController implements SceneController {
         AnchorPane island;
         for (int i = 0; i < 12; i++) {
             island = (AnchorPane) islandsPane.getChildren().get(i);
-            islandsMap.put(i, island);
+            islandsList.add(island);
         }
 
         schoolsInitialization();
@@ -333,7 +337,7 @@ public class MainSceneController implements SceneController {
         AnchorPane island;
         IslandClickHandler islandClickHandler = new IslandClickHandler();
         for (int i = 0; i < 12; i++) {
-            island = islandsMap.get(i);
+            island = islandsList.get(i);
             island.setOnMouseClicked(islandClickHandler);
 
             for (int j = 1; j <= 13; j++) {
@@ -408,9 +412,6 @@ public class MainSceneController implements SceneController {
                 entrancesMap.get(i).getChildren().get(j).setOnMouseClicked(studentsClickHandler);
                 tablesMap.get(i).setOnMouseClicked(tableClickHandler);
             }
-            /*for(int j=0; j<entrancesMap.get(i).getChildren().size(); i++){
-                entrancesMap.get(i).getChildren().get(j).setVisible(false);
-            }*/
         }
     }
     public void tablesInitialization() {
@@ -445,9 +446,6 @@ public class MainSceneController implements SceneController {
     public void showCardsPressed(){
         gui.loadScene(GUI.CARDS);
     }
-
-
-
 
     public void setNickname(String nickname, int playerRef) {
         Label nicknameLabel;
@@ -509,8 +507,9 @@ public class MainSceneController implements SceneController {
 
     public void setMotherPosition(int islandRef) {
         ImageView motherNature;
-        for (int i = 0; i < islandsMap.size(); i++) {
-            motherNature = (ImageView) islandsMap.get(i).getChildren().get(1); //children 1 is always MotherNature
+        for (int i=0; i < islandsList.size(); i++){
+            //children 1 is always MotherNature
+            motherNature = (ImageView) islandsList.get(i).getChildren().get(1);
             if (islandRef == i) {
                 motherNature.setVisible(true);
             } else
@@ -522,8 +521,8 @@ public class MainSceneController implements SceneController {
         Label studentLabel;
         ImageView studentImage;
         String labelValue = String.valueOf(newStudentsValue);
-        System.out.println("label value is: "+labelValue);
-        studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5); //Labels are located 5 position after images
+        studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5);
+        //Labels are located 5 position after images
         studentImage = (ImageView) entrancesMap.get(playerRef).getChildren().get(color);
         studentLabel.setText(labelValue);
 
@@ -586,12 +585,11 @@ public class MainSceneController implements SceneController {
                 }
             }
         }
-
-}
+    }
 
 
     public void setStudentsIsland(int islandRef, int color, int newStudentsValue) {
-        AnchorPane island = islandsMap.get(islandRef);
+        AnchorPane island = islandsList.get(islandRef);
         Label studentLabel;
         ImageView studentImage;
         studentImage = (ImageView) island.getChildren().get(color + 3);
@@ -599,25 +597,11 @@ public class MainSceneController implements SceneController {
         studentLabel.setText(String.valueOf(newStudentsValue));
         studentImage.setVisible(true);
         studentLabel.setVisible(true);
-
     }
 
     public void setProfessor(int schoolRef, int color, boolean newProfessorValue) {
         AnchorPane professorsTable = professorsMap.get(schoolRef);
         professorsTable.getChildren().get(color).setVisible(newProfessorValue);
-    }
-
-    public String colorToImage(int color) {
-        String image = null;
-            switch (color) {
-                case 0 -> image = GREENSTUDENT;
-                case 1 -> image = REDSTUDENT;
-                case 2 -> image = YELLOWSTUDENT;
-                case 3 -> image = PINKSTUDENT;
-                case 4 -> image = BLUESTUDENT;
-            }
-
-        return image;
     }
 
     public Image stringToImage(String assistant){
@@ -639,7 +623,6 @@ public class MainSceneController implements SceneController {
             case "KING" -> image = new Image("/graphics/character_king.png");
         }
         return image;
-
     }
 
     public void setLastPlayedCard(int playerRef, String assistantCard) {
@@ -670,13 +653,12 @@ public class MainSceneController implements SceneController {
     }
 
     public void setTowersIsland(int islandRef, int towersNumber) {
-        ImageView towerImage = (ImageView) islandsMap.get(islandRef).getChildren().get(2);
-        Label towerLabel = (Label) islandsMap.get(islandRef).getChildren().get(13);
-        ImageView islandImage = (ImageView) islandsMap.get(islandRef).getChildren().get(0);
-        double currentH = islandImage.getFitHeight();
-        double currentW = islandImage.getFitWidth();
+        ImageView towerImage = (ImageView) islandsList.get(islandRef).getChildren().get(2);
+        Label towerLabel = (Label) islandsList.get(islandRef).getChildren().get(13);
+        ImageView islandImage = (ImageView) islandsList.get(islandRef).getChildren().get(0);
 
-        //double currentSize = islandImage.get
+        /*double currentH = islandImage.getFitHeight();
+        double currentW = islandImage.getFitWidth();*/
 
         towerLabel.setText(String.valueOf(towersNumber));
         if(towersNumber!=0){
@@ -686,13 +668,14 @@ public class MainSceneController implements SceneController {
             towerLabel.setVisible(false);
             towerImage.setVisible(false);
         }
-        islandImage.setFitWidth(currentW+2);
-        islandImage.setFitHeight(currentH+2);
+        /*islandImage.setFitWidth(currentW+2);
+        islandImage.setFitHeight(currentH+2);*/
     }
 
     public void unifyIsland(int islandToDelete){
-        AnchorPane island= islandsMap.get(islandToDelete);
+        AnchorPane island= islandsList.get(islandToDelete);
         islandsPane.getChildren().remove(island);
+        islandsList.remove(islandToDelete);
         System.out.println(islandsPane.getChildren());
     }
 
@@ -715,12 +698,10 @@ public class MainSceneController implements SceneController {
             actionLabel.setText("Move a student in your school or on an island!");
             actionLabel.setVisible(true);
             errorLabel.setVisible(false);
-
         } else if(actionAllowed==1){
             actionLabel.setText("Move Mother Nature on a Island! (Max movement is: "+view.getMaxStepsMotherNature()+")");
             actionLabel.setVisible(true);
         } else if(actionAllowed==2){
-            //gui.switchScene(GUI.CLOUDS);
             gui.phaseHandler("ChooseCloud");
         } else if(actionAllowed == -1){
             turnLabel.setText("It's your opponent's turn. Wait...");
@@ -729,8 +710,8 @@ public class MainSceneController implements SceneController {
     }
 
     public void setTowerColor(int islandRef, int newColor) {
-        ImageView tower = (ImageView) islandsMap.get(islandRef).getChildren().get(2);
-        Label towerLabel= (Label) islandsMap.get(islandRef).getChildren().get(13);
+        ImageView tower = (ImageView) islandsList.get(islandRef).getChildren().get(2);
+        Label towerLabel= (Label) islandsList.get(islandRef).getChildren().get(13);
 
         if(!tower.isVisible()){
             setTowersIsland(islandRef, 1);

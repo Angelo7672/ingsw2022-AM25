@@ -35,35 +35,25 @@ public class CloudsSceneController implements SceneController  {
     public void chooseCloud(ActionEvent evt){
         if(evt.getSource()==cloud1Button){
             chosenCloud=0;
-            System.out.println("chosen cloud 0");
         } else if(evt.getSource()==cloud2Button){
             chosenCloud=1;
-            System.out.println("chosen cloud 1");
         } else if(evt.getSource()==cloud3Button){
             chosenCloud=2;
-            System.out.println("chosen cloud 2");
         } else if(evt.getSource()==cloud4){
-            System.out.println("chosen cloud 3");
             chosenCloud=3;
         }
     }
     @FXML
     public void confirmPressed(){
         try {
-            System.out.println("Confirm pressed, calling chooseCloud");
-            System.out.println("chosen cloud is: "+chosenCloud);
             String result = proxy.chooseCloud(chosenCloud);
-            System.out.println("Result is: "+result);
 
             if(result.equalsIgnoreCase("ok")){
                 errorMessage.setVisible(false);
-                System.out.println("cloud chosen");
                 gui.setNotYourTurn();
                 disableConfirm();
                 Stage stage = (Stage) confirmButton.getScene().getWindow();
                 stage.close();
-
-                System.out.println("calling Phase Handler PlanningPhase");
                 gui.phaseHandler("PlanningPhase");
 
             } else {
@@ -124,7 +114,6 @@ public class CloudsSceneController implements SceneController  {
             cloud4.setVisible(false);
             cloud4Button.setDisable(true);
         }
-
     }
 
     public void enableConfirm(){
