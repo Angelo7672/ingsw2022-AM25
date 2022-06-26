@@ -134,7 +134,7 @@ public class Receiver {
                                     });
                                     thread.start();
                                 }
-                                view.restoreCards(((HandAfterRestoreAnswer) tmp).getHand());
+                                else view.restoreCards(((HandAfterRestoreAnswer) tmp).getHand());
                     } else if (tmp instanceof SchoolStudentAnswer) {
                             if (!initializedView) {
                                 final Answer tmpMsg = tmp;
@@ -148,7 +148,7 @@ public class Receiver {
                                 });
                                 thread.start();
                             }
-                            view.setSchoolStudents(((SchoolStudentAnswer) tmp).getPlace(), ((SchoolStudentAnswer) tmp).getComponentRef(), ((SchoolStudentAnswer) tmp).getColor(), ((SchoolStudentAnswer) tmp).getNewValue());
+                            else view.setSchoolStudents(((SchoolStudentAnswer) tmp).getPlace(), ((SchoolStudentAnswer) tmp).getComponentRef(), ((SchoolStudentAnswer) tmp).getColor(), ((SchoolStudentAnswer) tmp).getNewValue());
                     } else if (tmp instanceof ProfessorAnswer) {
                             if (!initializedView) {
                                 final Answer tmpMsg = tmp;
