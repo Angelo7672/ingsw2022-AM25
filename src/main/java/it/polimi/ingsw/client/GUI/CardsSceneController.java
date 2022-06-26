@@ -43,25 +43,41 @@ public class CardsSceneController implements SceneController{
     }
 
 
-    /*public class PlayCardService extends Service<Void>{
+    public class PlayCardService extends Service<String>{
 
         @Override
-        protected Task<Void> createTask() {
-            return new Task<Void>() {
+        protected Task<String> createTask() {
+            return new Task<String>() {
                 @Override
-                protected Void call() throws Exception {
+                protected String call() throws Exception {
+                    String result = null;
                     try {
-                        String result = proxy.playCard(playedCard);
+                        result = proxy.playCard(playedCard);
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
-                    return Void;
+                    return result;
                 }
             };
+
         }
-    }*/
+        @Override
+        protected void succeeded(){
+            String result = this.getValue();
+            if (result.equalsIgnoreCase("ok")) {
+                disableCard(playedCard);
+                disableConfirm();
+                Stage stage = (Stage) confirmButton.getScene().getWindow();
+                stage.close();
+                gui.phaseHandler("ActionPhase");
+            } else
+                showErrorMessage();
+
+
+        }
+    }
 
     @FXML
     public void setPlayedCard(ActionEvent event) {
@@ -91,7 +107,9 @@ public class CardsSceneController implements SceneController{
     @FXML
     void confirmPressed(ActionEvent event) {
         if (playedCard != "") {
-            String result = null;
+            PlayCardService playCardService = new PlayCardService();
+            playCardService.start();
+            /*String result = null;
             try {
                 result = proxy.playCard(playedCard);
             } catch (IOException e) {
@@ -109,7 +127,9 @@ public class CardsSceneController implements SceneController{
                 gui.phaseHandler("ActionPhase");
 
             } else
-                showErrorMessage();
+                showErrorMessage();*/
+        } else {
+            showErrorMessage();
         }
 
     }

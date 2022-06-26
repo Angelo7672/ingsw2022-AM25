@@ -12,10 +12,12 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.iq80.snappy.Main;
 
 import javax.swing.*;
@@ -143,6 +145,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         primaryStage.setResizable(false);
         primaryStage.centerOnScreen();
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                System.exit(-1);
+            }
+        });
 
         isMainSceneInitialized = false;
         areListenerSet = false;
@@ -302,8 +311,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 primaryStage.centerOnScreen();
 
             } else if (result.equals("Server Sold Out")) {
-                System.out.println(result);
-
+                try {
+                    notifyServerOffline();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else if (result.equals("Not first")) {
                 primaryStage.setScene(scenesMap.get(LOGIN));
                 primaryStage.centerOnScreen();
@@ -314,7 +326,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
         }
     }
-
 
     private class PlanningPhaseService extends Service<Boolean> {
         Boolean result;
@@ -446,6 +457,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void loadScene(String sceneName) {
         Stage stage = new Stage();
         stage.setScene(scenesMap.get(sceneName));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
+        stage.setTitle("Eriantys");
+        stage.setResizable(false);
         stage.centerOnScreen();
         stage.show();
 
