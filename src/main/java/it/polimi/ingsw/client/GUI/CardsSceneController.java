@@ -102,6 +102,7 @@ public class CardsSceneController implements SceneController{
             if (result.equalsIgnoreCase("ok")) {
                 //alreadyPlayedCards.add(playedCard);
                 disableCard(playedCard);
+                disableConfirm();
                 Stage stage = (Stage) confirmButton.getScene().getWindow();
                 stage.close();
                 gui.phaseHandler("ActionPhase");
@@ -115,6 +116,7 @@ public class CardsSceneController implements SceneController{
     public void showErrorMessage(){
         errorMessage.setVisible(true);
     }
+
     /*public void sceneInitialize(){
 
             for(String card : alreadyPlayedCards){
@@ -182,5 +184,11 @@ public class CardsSceneController implements SceneController{
         this.currentPlayedCards.put(playerRef, card);
     }
 
+    public void enableConfirm(){
+        this.confirmButton.setDisable(false);
+    }
+    public void disableConfirm(){
+        this.confirmButton.setDisable(true);
+    }
 
 }

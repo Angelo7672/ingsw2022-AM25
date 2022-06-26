@@ -63,8 +63,6 @@ public class MainSceneController implements SceneController {
     private final String WHITETOWER = "/graphics/wooden_pieces/white_tower.png";
     private final String GREYTOWER = "/graphics/wooden_pieces/grey_tower.png";
 
-    private final int SPACE = 18;
-
     @FXML private Button useSpecialButton;
     @FXML private AnchorPane islandsPane;
     @FXML private AnchorPane school1;
@@ -203,7 +201,7 @@ public class MainSceneController implements SceneController {
         @Override
         public void handle(MouseEvent mouseEvent) {
             int islandRef = 0;
-            if (actionAllowed == 0) {
+            if (actionAllowed==0) {
                 if (lastThingClicked.equals("student")) {
                     lastThingClicked = "island";
                     System.out.println("island clicked");
@@ -237,7 +235,7 @@ public class MainSceneController implements SceneController {
                     errorLabel.setVisible(true);
                 }
 
-            } else if (actionAllowed == 1) {
+            } else if (actionAllowed==1) {
                 int motherMov = 0;
                 System.out.println("you can move mother nature now");
                 for (int i = 0; i < 12; i++) {
@@ -257,6 +255,7 @@ public class MainSceneController implements SceneController {
                     if(result.equalsIgnoreCase("ok")){
                         errorLabel.setVisible(false);
                         setActionAllowed(2);
+                        //gui.setCloudsPhase(true);
                     } else {
                         errorLabel.setText("Error, move not allowed!");
                         errorLabel.setVisible(true);
@@ -438,7 +437,8 @@ public class MainSceneController implements SceneController {
         blueTables.add(new Table(128, 176, 4));
     }
 
-    public void showCloudsPressed(){gui.loadScene(GUI.CLOUDS);}
+    public void showCloudsPressed(){
+        gui.loadScene(GUI.CLOUDS);}
 
     public void showCardsPressed(){
         gui.loadScene(GUI.CARDS);
@@ -519,11 +519,13 @@ public class MainSceneController implements SceneController {
     public void setStudentsEntrance(int playerRef, int color, int newStudentsValue) {
         Label studentLabel;
         ImageView studentImage;
-
+        String labelValue = String.valueOf(newStudentsValue);
+        System.out.println("label value is: "+labelValue);
         studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5); //Labels are located 5 position after images
         studentImage = (ImageView) entrancesMap.get(playerRef).getChildren().get(color);
+        studentLabel.setText(labelValue);
+
         if (newStudentsValue != 0) {
-            studentLabel.setText(String.valueOf(newStudentsValue));
             studentLabel.setVisible(true);
             studentImage.setVisible(true);
         } else {
@@ -646,7 +648,6 @@ public class MainSceneController implements SceneController {
             case 2 -> card= (ImageView) cardPane3.getChildren().get(0);
             case 3 -> card= (ImageView) cardPane4.getChildren().get(0);
         }
-        //card.setText(assistantCard);
         card.setImage(stringToImage(assistantCard));
         card.setVisible(true);
     }
@@ -698,6 +699,8 @@ public class MainSceneController implements SceneController {
         double currentH = islandImage.getFitHeight();
         double currentW = islandImage.getFitWidth();
 
+        //double currentSize = islandImage.get
+
         towerLabel.setText(String.valueOf(towersNumber));
         if(towersNumber!=0){
             towerLabel.setVisible(true);
@@ -712,7 +715,9 @@ public class MainSceneController implements SceneController {
 
     public void unifyIsland(int islandToDelete){
         AnchorPane island= islandsMap.get(islandToDelete);
-        island.setVisible(false);
+        islandsPane.getChildren().remove(island);
+
+        System.out.println(islandsPane.getChildren());
     }
 
     public void setYourNickname(String yourNickname){
@@ -739,7 +744,8 @@ public class MainSceneController implements SceneController {
             actionLabel.setText("Move Mother Nature on a Island! (Max movement is: "+view.getMaxStepsMotherNature()+")");
             actionLabel.setVisible(true);
         } else if(actionAllowed==2){
-            gui.switchScene(GUI.CLOUDS);
+            //gui.switchScene(GUI.CLOUDS);
+            gui.phaseHandler("ChooseCloud");
         } else if(actionAllowed == -1){
             turnLabel.setText("It's your opponent's turn. Wait...");
             actionLabel.setVisible(false);
@@ -749,6 +755,10 @@ public class MainSceneController implements SceneController {
     public void setTowerColor(int islandRef, int newColor) {
         ImageView tower = (ImageView) islandsMap.get(islandRef).getChildren().get(2);
         Label towerLabel= (Label) islandsMap.get(islandRef).getChildren().get(13);
+
+        if(!tower.isVisible()){
+            setTowersIsland(islandRef, 1);
+        }
 
         if(newColor == 0){
             tower.setImage(new Image(WHITETOWER));

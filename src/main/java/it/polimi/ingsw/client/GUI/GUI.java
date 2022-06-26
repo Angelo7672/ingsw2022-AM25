@@ -32,8 +32,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         SpecialStudentsListener, SpecialListener, DisconnectedListener, ServerOfflineListener, WinnerListener,
         NoEntryListener{
 
-
-
     private static Exit proxy;
     private View view;
     private Socket socket;
@@ -48,6 +46,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected boolean isMainSceneInitialized;
     protected boolean areListenerSet;
     private boolean gameRestored;
+    private int actionAllowed;
 
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String SAVED = "SavedScene.fxml";
@@ -138,6 +137,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
 
         });
+
+        actionAllowed = -1;
     }
 
     @Override
@@ -221,6 +222,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         System.out.println("started phase handler!");
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        CardsSceneController cardsSceneController = (CardsSceneController) sceneControllersMap.get(CARDS);
+        CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
         switch (phase) {
             case "SetView" -> setViewService.start();
 
@@ -234,7 +237,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 planningPhaseService.start();
                 switchScene(MAIN);
             }
-            case "PlayCardAnswer" ->  loadScene(CARDS);
+            case "PlayCardAnswer" -> {
+                cardsSceneController.enableConfirm();
+                loadScene(CARDS);
+            }
 
             case "ActionPhase" -> {
                 System.out.println("actionPhase");
@@ -243,6 +249,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 actionPhaseService.start();
             }
             case "StartTurnAnswer" -> controller.setCurrentPlayer();
+            case "ChooseCloud" -> {
+                cloudsSceneController.enableConfirm();
+                loadScene(CLOUDS);
+            }
+
         }
     }
 
@@ -404,8 +415,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     Boolean ok;
                     MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
                     CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
+                    CardsSceneController cardsSceneController = (CardsSceneController) sceneControllersMap.get(CARDS);
+
                     controller.setNumberOfPlayers(view.getNumberOfPlayers());
                     cloudsSceneController.initializeCloudScene(view.getNumberOfPlayers());
+                    cloudsSceneController.disableConfirm();
+                    cardsSceneController.disableConfirm();
                     controller.setExpertMode(view.getExpertMode());
                     controller.initializeScene();
                     ok = true;
@@ -416,13 +431,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
     }
 
-        private void initializedSavedScene(int numberOfPlayer, boolean expertMode) {
-            SavedSceneController controller = (SavedSceneController) sceneControllersMap.get(SAVED);
-            String expertModeString;
-            if (expertMode) expertModeString = "YES";
-            else expertModeString = "NO";
-            controller.initializedScene(numberOfPlayer, expertModeString);
-        }
+    private void initializedSavedScene(int numberOfPlayer, boolean expertMode) {
+        SavedSceneController controller = (SavedSceneController) sceneControllersMap.get(SAVED);
+        String expertModeString;
+        if (expertMode) expertModeString = "YES";
+        else expertModeString = "NO";
+        controller.initializedScene(numberOfPlayer, expertModeString);
+    }
 
     //used to load a scene in a new stage (window), instead of the primaryStage
     public void loadScene(String sceneName) {
@@ -556,33 +571,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
             CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
 
-            //if(isMainSceneInitialized){
             switch (place) {
                 case 0 -> mainSceneController.setStudentsEntrance(componentRef, color, newStudentsValue);
                 case 1 -> mainSceneController.setStudentsTable(componentRef, color, newStudentsValue);
                 case 2 -> mainSceneController.setStudentsIsland(componentRef, color, newStudentsValue);
                 case 3 -> cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);
             }
-            //}
-        /*else{
-            int[] students;
-            switch (place) {
-                case 0 -> {
-                    students= initialStudentsEntrance.get(componentRef);
-                    students[color]= newStudentsValue;
-                }
-                case 2 -> {
-                    students= initialStudentsIsland.get(componentRef);
-                    students[color]= newStudentsValue;
-                }
-
-                case 3 -> {
-                    students= initialStudentsCloud.get(componentRef);
-                    students[color]=newStudentsValue;
-                }
-
-            }
-        }*/
         });
     }
 
@@ -621,12 +615,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void notifyNoEntry(int newValue) {
 
     }
-
-
-
-     public void setActionAllowed(int actionAllowed){
-       //this.actionAllowed = actionAllowed;
-     }
 
 
     @Override
