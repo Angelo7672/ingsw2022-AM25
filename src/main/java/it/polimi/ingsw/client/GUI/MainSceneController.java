@@ -319,14 +319,11 @@ public class MainSceneController implements SceneController {
         }
 
         schoolsInitialization();
-
         islandsInitialization();
         tablesInitialization();
 
         gui.isMainSceneInitialized=true;
         actionAllowed=-1; //not your turn
-        //gui.phaseHandler("PlanningPhase");
-   // });
     }
 
 
@@ -741,12 +738,21 @@ public class MainSceneController implements SceneController {
         if(newColor == 0){
             tower.setImage(new Image(WHITETOWER));
             towerLabel.setTextFill(Color.BLACK);
+            tower.setVisible(true);
+            towerLabel.setVisible(true);
         } else if(newColor == 1){
             tower.setImage(new Image(BLACKTOWER));
             towerLabel.setTextFill(Color.WHITE);
+            tower.setVisible(true);
+            towerLabel.setVisible(true);
         } else if(newColor == 2){
             tower.setImage(new Image(GREYTOWER));
             towerLabel.setTextFill(Color.BLACK);
+            tower.setVisible(true);
+            towerLabel.setVisible(true);
+        } else if(newColor == -1){
+            tower.setVisible(false);
+            towerLabel.setVisible(false);
         }
     }
 

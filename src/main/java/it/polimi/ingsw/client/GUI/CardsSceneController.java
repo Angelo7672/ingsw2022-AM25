@@ -118,34 +118,6 @@ public class CardsSceneController implements SceneController{
         errorMessage.setVisible(true);
     }
 
-    /*public void sceneInitialize(){
-
-            for(String card : alreadyPlayedCards){
-                if(card.equalsIgnoreCase("lion")){
-                    lionButton.setVisible(false);
-                } else if(card.equalsIgnoreCase("goose")){
-                    gooseButton.setVisible(false);
-                } else if(card.equalsIgnoreCase("cat")){
-                    catButton.setVisible(false);
-                } else if(card.equalsIgnoreCase("eagle")){
-                    eagleButton.setVisible(false);
-                } else if(card.equalsIgnoreCase("fox")){
-                    foxButton.setVisible(false);
-                } else if(card.equalsIgnoreCase("lizard")){
-                    lizardButton.setVisible(false);
-                } else if(card.equalsIgnoreCase("octopus")){
-                    octopusButton.setVisible(false);
-                } else if(card.equalsIgnoreCase("dog")){
-                    dogButton.setVisible(false);
-                } else if(card.equalsIgnoreCase("elephant")){
-                    elephantButton.setVisible(false);
-                } else if(card.equalsIgnoreCase("turtle")){
-                    turtleButton.setVisible(false);
-                }
-            }
-
-    }*/
-
     public void disableCard(String card){
         if(card.equalsIgnoreCase("lion")){
             lionButton.setVisible(false);
