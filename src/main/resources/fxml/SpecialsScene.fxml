@@ -45,152 +45,152 @@
       <Label fx:id="special2Cost" layoutX="286.0" layoutY="100.0" prefHeight="17.0" prefWidth="28.0" />
       <Label fx:id="special1Cost" layoutX="125.0" layoutY="100.0" prefHeight="17.0" prefWidth="28.0" />
       <Label fx:id="special3Cost" layoutX="448.0" layoutY="100.0" prefHeight="17.0" prefWidth="28.0" />
-      <ImageView fx:id="pinkImage1" fitHeight="18.0" fitWidth="18.0" layoutX="152.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="pinkImage1" fitHeight="18.0" fitWidth="18.0" layoutX="152.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="greenImage1" fitHeight="18.0" fitWidth="18.0" layoutX="78.0" layoutY="270.0" preserveRatio="true">
+      <ImageView fx:id="greenImage1" fitHeight="18.0" fitWidth="18.0" layoutX="78.0" layoutY="270.0" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="redImage1" fitHeight="18.0" fitWidth="18.0" layoutX="103.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="redImage1" fitHeight="18.0" fitWidth="18.0" layoutX="103.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="yellowImage1" fitHeight="18.0" fitWidth="18.0" layoutX="126.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="yellowImage1" fitHeight="18.0" fitWidth="18.0" layoutX="126.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="blueImage1" fitHeight="18.0" fitWidth="18.0" layoutX="175.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="blueImage1" fitHeight="18.0" fitWidth="18.0" layoutX="175.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="pinkImage2" fitHeight="18.0" fitWidth="18.0" layoutX="314.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="pinkImage2" fitHeight="18.0" fitWidth="18.0" layoutX="314.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="greenImage2" fitHeight="18.0" fitWidth="18.0" layoutX="240.0" layoutY="270.0" preserveRatio="true">
+      <ImageView fx:id="greenImage2" fitHeight="18.0" fitWidth="18.0" layoutX="240.0" layoutY="270.0" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="redImage2" fitHeight="18.0" fitWidth="18.0" layoutX="263.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="redImage2" fitHeight="18.0" fitWidth="18.0" layoutX="263.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="yellowImage2" fitHeight="18.0" fitWidth="18.0" layoutX="287.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="yellowImage2" fitHeight="18.0" fitWidth="18.0" layoutX="287.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="blueImage2" fitHeight="18.0" fitWidth="18.0" layoutX="339.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="blueImage2" fitHeight="18.0" fitWidth="18.0" layoutX="339.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="pinkImage3" fitHeight="18.0" fitWidth="18.0" layoutX="482.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="pinkImage3" fitHeight="18.0" fitWidth="18.0" layoutX="482.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="greenImage3" fitHeight="18.0" fitWidth="18.0" layoutX="409.0" layoutY="270.0" preserveRatio="true">
+      <ImageView fx:id="greenImage3" fitHeight="18.0" fitWidth="18.0" layoutX="409.0" layoutY="270.0" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="redImage3" fitHeight="18.0" fitWidth="18.0" layoutX="433.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="redImage3" fitHeight="18.0" fitWidth="18.0" layoutX="433.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="yellowImage3" fitHeight="18.0" fitWidth="18.0" layoutX="457.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="yellowImage3" fitHeight="18.0" fitWidth="18.0" layoutX="457.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="blueImage3" fitHeight="18.0" fitWidth="18.0" layoutX="508.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="blueImage3" fitHeight="18.0" fitWidth="18.0" layoutX="508.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
          </image>
       </ImageView>
-      <Label fx:id="greenLabel1" layoutX="81.0" layoutY="286.0" text="0">
+      <Label fx:id="greenLabel1" layoutX="81.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="redLabel1" layoutX="105.0" layoutY="286.0" text="0">
+      <Label fx:id="redLabel1" layoutX="105.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="yellowLabel1" layoutX="129.0" layoutY="286.0" text="0">
+      <Label fx:id="yellowLabel1" layoutX="129.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="pinkLabel1" layoutX="155.0" layoutY="286.0" text="0">
+      <Label fx:id="pinkLabel1" layoutX="155.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="blueLabel1" layoutX="180.0" layoutY="286.0" text="0">
+      <Label fx:id="blueLabel1" layoutX="180.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="greenLabel2" layoutX="243.0" layoutY="286.0" text="0">
+      <Label fx:id="greenLabel2" layoutX="243.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="redLabel2" layoutX="267.0" layoutY="286.0" text="0">
+      <Label fx:id="redLabel2" layoutX="267.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="yellowLabel2" layoutX="291.0" layoutY="286.0" text="0">
+      <Label fx:id="yellowLabel2" layoutX="291.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="pinkLabel2" layoutX="317.0" layoutY="286.0" text="0">
+      <Label fx:id="pinkLabel2" layoutX="317.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="blueLabel2" layoutX="342.0" layoutY="286.0" text="0">
+      <Label fx:id="blueLabel2" layoutX="342.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="greenLabel3" layoutX="412.0" layoutY="286.0" text="0">
+      <Label fx:id="greenLabel3" layoutX="412.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="redLabel3" layoutX="436.0" layoutY="286.0" text="0">
+      <Label fx:id="redLabel3" layoutX="436.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="yellowLabel3" layoutX="460.0" layoutY="286.0" text="0">
+      <Label fx:id="yellowLabel3" layoutX="460.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="pinkLabel3" layoutX="486.0" layoutY="286.0" text="0">
+      <Label fx:id="pinkLabel3" layoutX="486.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="blueLabel3" layoutX="511.0" layoutY="286.0" text="0">
+      <Label fx:id="blueLabel3" layoutX="511.0" layoutY="286.0" text="0" visible="false">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>

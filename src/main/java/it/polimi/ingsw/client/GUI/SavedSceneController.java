@@ -30,8 +30,9 @@ public class SavedSceneController implements SceneController{
     }
 
     public void YESPressed(ActionEvent e) throws IOException {
-        proxy.savedGame("y");;
-        gui.switchScene(GUI.LOGINRESTORE);
+        gui.setGameRestored();
+        proxy.savedGame("y");
+        if(proxy.readyForLogin()) gui.switchScene(GUI.LOGINRESTORE);
     }
 
     public void NOPressed(ActionEvent e) throws IOException {

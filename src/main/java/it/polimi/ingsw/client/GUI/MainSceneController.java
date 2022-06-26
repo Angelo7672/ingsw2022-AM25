@@ -125,7 +125,7 @@ public class MainSceneController implements SceneController {
 
     public void useSpecialButtonPressed(){
         if(!gui.constants.isSpecialUsed()) {
-            gui.switchScene(SPECIALS);
+            gui.loadScene(SPECIALS);
         }
         else {
             errorLabel.setText("Error, move not allowed!");
@@ -444,10 +444,6 @@ public class MainSceneController implements SceneController {
         gui.loadScene(GUI.CARDS);
     }
 
-    public void useSpecialPressed(){
-        //gui.loadScene(SPECIALS);
-    }
-
 
 
 
@@ -544,7 +540,7 @@ public class MainSceneController implements SceneController {
         int oldStudentsValue;
 
         if(color==0){
-            table= greenTables.get(playerRef);
+            table = greenTables.get(playerRef);
         }else if (color==1){
             table= redTables.get(playerRef);
         }else if (color==2){

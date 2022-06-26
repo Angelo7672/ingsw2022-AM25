@@ -25,7 +25,7 @@ public class LoginRestoreSceneController implements SceneController{
 
     public LoginRestoreSceneController() {
         this.currentNickname = "";
-        this.loginService= new LoginService();
+        this.loginService = new LoginService();
         loginService.setOnSucceeded(workerStateEvent -> {
             Boolean result = loginService.getValue();
             if(result){
@@ -40,9 +40,7 @@ public class LoginRestoreSceneController implements SceneController{
         });
         this.getPhaseService = new GetPhaseService();
         getPhaseService.setOnSucceeded(workerStateEvent -> {
-            System.out.println("succeed");
             String phase = getPhaseService.getValue();
-            System.out.println("ph in succ "+phase);
             if(phase.equals("Play card!")) gui.phaseHandler("PlayCardAnswer");
             else if(phase.equals("Start your Action Phase!")) gui.phaseHandler("StartTurnAnswer");
         });
@@ -52,11 +50,9 @@ public class LoginRestoreSceneController implements SceneController{
 
         @Override
         protected Task<Boolean> createTask() {
-            System.out.println("loginService started");
             return new Task<Boolean>() {
                 @Override
                 protected Boolean call() throws Exception {
-                    System.out.println("call login service");
                     Boolean result = proxy.setupConnection(currentNickname, null);
                     System.out.println(result);
                     return result;
@@ -69,11 +65,9 @@ public class LoginRestoreSceneController implements SceneController{
 
         @Override
         protected Task<String> createTask() {
-            System.out.println("get phase");
             return new Task<String>(){
                 @Override
                 protected String call() throws IOException {
-                    System.out.println("call phase");
                     String phase = proxy.getPhase();
                     System.out.println(phase);
                     return phase;

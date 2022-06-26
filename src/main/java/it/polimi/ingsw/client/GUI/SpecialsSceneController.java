@@ -91,6 +91,9 @@ public class SpecialsSceneController implements SceneController{
             specialsName.put(i, specialsList.get(i));
             specialsCost.put(i, cost.get(i));
         }
+        special1View.setImage(specials.get(0));
+        special2View.setImage(specials.get(1));
+        special2View.setImage(specials.get(2));
     }
 
     private Image specialFactory(int name){

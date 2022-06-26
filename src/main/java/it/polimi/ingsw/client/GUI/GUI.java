@@ -43,6 +43,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected boolean active;
     protected boolean isMainSceneInitialized;
     protected boolean areListenerSet;
+    private boolean gameRestored;
 
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String SAVED = "SavedScene.fxml";
@@ -119,6 +120,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             //isViewSet = true;
             //System.out.println("set done");
             //phaseHandler("PlanningPhase");
+            System.out.println("initMain");
             phaseHandler("InitializeMain");
             //startGame();
         });
@@ -129,7 +131,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             Boolean ok = initializeMainService.getValue();
             if (ok) {
                 proxy.setView();
-                phaseHandler("PlanningPhase");
+                if(!gameRestored) phaseHandler("PlanningPhase");
             }
 
         });
@@ -176,6 +178,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             primaryStage.setScene(scenesMap.get(LOGIN));
             primaryStage.centerOnScreen();
         } else if (result.equals("LoginRestore")) {
+            setGameRestored();
             primaryStage.setScene(scenesMap.get(LOGINRESTORE));
             primaryStage.centerOnScreen();
         }
@@ -236,6 +239,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
             case "StartTurnAnswer" -> controller.setCurrentPlayer();
         }
+    }
+
+    public void setGameRestored(){
+        gameRestored = true;
     }
 
 
@@ -417,6 +424,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     @Override
     public void notifySpecialList(ArrayList<Integer> specialList, ArrayList<Integer> cost) {
         Platform.runLater(() -> {
+            System.out.println("NOTIFY special list");
             SpecialsSceneController controller = new SpecialsSceneController();
             controller.initializedSpecialsScene(specialList, cost);
         });
