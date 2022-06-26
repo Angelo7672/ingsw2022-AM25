@@ -13,7 +13,7 @@ public class Eriantys {
         System.out.println("Welcome to Eriantys game!\nWhat do you want to launch?");
         System.out.println("0 -> Server\n1 -> Client");
         Scanner scanner = new Scanner(System.in);
-        int userInput = -1;
+        int userInput;
 
         try{
             userInput = scanner.nextInt();

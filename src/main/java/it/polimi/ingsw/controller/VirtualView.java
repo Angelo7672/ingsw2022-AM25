@@ -438,6 +438,7 @@ public class VirtualView
     public void notifyIslandChange(int islandToDelete) {
         islands.remove(islandToDelete);
         server.dimensionOfAnIslandIsChange(islandToDelete);
+        System.out.println("Island size "+islands.size());
     }
 
     /**
@@ -677,7 +678,7 @@ public class VirtualView
     }
 
     /**
-     * Islands keeps info about an islands.
+     * Islands keeps info about an island.
      */
     private static class Island implements Serializable{
         private final int[] studentsIsland;
