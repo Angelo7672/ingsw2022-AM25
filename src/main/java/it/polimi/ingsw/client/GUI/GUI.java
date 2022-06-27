@@ -277,10 +277,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         gameRestored = true;
     }
 
-    @Override
-    public void notifySoldOut() throws IOException {
 
-    }
 
     private class GetPhaseService extends Service<String>{
 
@@ -433,8 +430,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     view.setSpecialStudentsListener(gui);
                     view.setSpecialListener(gui);
                     view.setWinnerListener(gui);
-                    proxy.setDisconnectedListener(gui);
-                    proxy.setServerOfflineListener(gui);
 
                     return view;
                 }
@@ -729,6 +724,15 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }*/
         });
 
+    }
+    @Override
+    public void notifySoldOut() throws IOException {
+        Platform.runLater(()->{
+            GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
+            controller.setSoldOut();
+            loadScene(GAMEOVER);
+            primaryStage.close();
+        });
     }
 }
 

@@ -50,4 +50,10 @@ public class GameOverSceneController implements SceneController {
         messageLabel.setText("The winner is: "+winner);
         messageLabel.setVisible(true);
     }
+
+    public void setSoldOut() {
+        exitStatus=-1;
+        messageLabel.setText("Server Sold Out");
+        messageLabel.setVisible(true);
+    }
 }
