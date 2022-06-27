@@ -30,7 +30,7 @@ public class Client {
                 System.out.println(SPACE+ANSI_RED+"Some errors occurred, try again."+ANSI_RESET);
                 return;
             }
-            System.out.println(SPACE+"Connection established");
+            System.out.println(SPACE+"Connection established, waiting for server...");
             Exit proxy = new Proxy_c(socket);
             CLI cli = new CLI(socket, proxy);
             cli.run();

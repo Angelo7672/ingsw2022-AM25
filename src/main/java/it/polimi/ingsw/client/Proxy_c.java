@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.message.*;
 import it.polimi.ingsw.client.message.special.*;
 import it.polimi.ingsw.listeners.DisconnectedListener;
 import it.polimi.ingsw.listeners.ServerOfflineListener;
+import it.polimi.ingsw.listeners.SoldOutListener;
 import it.polimi.ingsw.server.answer.*;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListener {
+public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListener, SoldOutListener {
     private Receiver receiver;
 
     private final ObjectOutputStream outputStream;
@@ -32,6 +33,8 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
         receiver = new Receiver(lock2, socket, view);
         setDisconnectedListener(this);
         setServerOfflineListener(this);
+        setSoldOutListener(this);
+
     }
 
     public boolean readyForLogin() throws IOException {
@@ -50,6 +53,11 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
     @Override
     public void setServerOfflineListener(ServerOfflineListener serverOfflineListener) {
         receiver.setServerOfflineListener(serverOfflineListener);
+    }
+
+    @Override
+    public void setSoldOutListener(SoldOutListener soldOutListener) throws IOException {
+        receiver.setSoldOutListener(soldOutListener);
     }
 
     public String first() throws IOException, ClassNotFoundException {
@@ -272,6 +280,12 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
 
     @Override
     public void notifyServerOffline() throws IOException {
+        disconnected = true;
+        outputStream.close();
+    }
+
+    @Override
+    public void notifySoldOut() throws IOException {
         disconnected = true;
         outputStream.close();
     }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.listeners.DisconnectedListener;
 import it.polimi.ingsw.listeners.ServerOfflineListener;
+import it.polimi.ingsw.listeners.SoldOutListener;
 import it.polimi.ingsw.server.answer.*;
 import it.polimi.ingsw.server.answer.viewmessage.*;
 
@@ -22,6 +23,7 @@ public class Receiver {
     private final Socket socket;
     private DisconnectedListener disconnectedListener;
     private ServerOfflineListener serverOfflineListener;
+    private SoldOutListener soldOutListener;
     private boolean disconnected;
     private final View view;
     private boolean initializedView;
@@ -48,6 +50,10 @@ public class Receiver {
     }
     public void setServerOfflineListener(ServerOfflineListener serverOfflineListener){
         this.serverOfflineListener = serverOfflineListener;
+    }
+
+    public void setSoldOutListener(SoldOutListener soldOutListener){
+        this.soldOutListener = soldOutListener;
     }
 
     public Answer receive() {
@@ -358,6 +364,9 @@ public class Receiver {
                             if (!initializedView) lock2.wait();
                             view.setWinner(((GameOverAnswer) tmp).getWinner());
                         }
+                    }  else if(tmp instanceof SoldOutAnswer){
+                        disconnected = true;
+                        soldOutListener.notifySoldOut();
                     }
                     else answersTmpList.add(tmp);
                     synchronized (lock1){

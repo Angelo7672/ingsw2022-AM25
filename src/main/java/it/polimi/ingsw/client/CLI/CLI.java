@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class CLI implements Runnable, UserInfoListener, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, WinnerListener, DisconnectedListener,
-        NoEntryClientListener, ServerOfflineListener, SpecialStudentsListener{
+        NoEntryClientListener, ServerOfflineListener, SpecialStudentsListener, SoldOutListener{
 
     private final Exit proxy;
     private final Scanner scanner;
@@ -37,14 +37,13 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         this.proxy = proxy;
         proxy.setDisconnectedListener(this);
         proxy.setServerOfflineListener(this);
+        proxy.setSoldOutListener(this);
         lock = new Object();
     }
 
     private void setup() throws IOException, ClassNotFoundException, InterruptedException {
         boolean savedGame=false;
         boolean gameRestored = false;
-        System.out.println();
-        System.out.println(SPACE+"Waiting for server...");
         String result = proxy.first();
         if(result.equals("SavedGame")){
             savedGame = true;
@@ -68,14 +67,6 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             loginRestore();
             System.out.println();
             System.out.println(SPACE+"Setup Connection done, waiting for players...");
-        }
-        else  if (result.equals("Server Sold Out")){
-            System.out.println();
-            System.out.print(ANSI_RED+SPACE+result+ANSI_RESET);
-            socket.close();
-            scanner.close();
-            setActive(false);
-            System.exit(-1);
         }
         if(!savedGame) {
             setupConnection();
@@ -844,5 +835,15 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                 System.out.println();
             }
         }
+    }
+
+    @Override
+    public void notifySoldOut() throws IOException {
+        System.out.println();
+        System.out.print(ANSI_RED+SPACE+"Server Sold Out, game over."+ANSI_RESET);
+        socket.close();
+        scanner.close();
+        setActive(false);
+        System.exit(-1);
     }
 }

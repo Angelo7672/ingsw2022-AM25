@@ -31,7 +31,7 @@ import java.util.Set;
 
 public class GUI extends Application implements TowersListener, ProfessorsListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, UserInfoListener,
-        SpecialStudentsListener, NoEntryClientListener, SpecialListener, DisconnectedListener, ServerOfflineListener, WinnerListener{
+        SpecialStudentsListener, NoEntryClientListener, SpecialListener, DisconnectedListener, ServerOfflineListener, WinnerListener, SoldOutListener{
 
     private static Exit proxy;
     private View view;
@@ -277,6 +277,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         gameRestored = true;
     }
 
+    @Override
+    public void notifySoldOut() throws IOException {
+
+    }
+
     private class GetPhaseService extends Service<String>{
 
         @Override
@@ -491,7 +496,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         this.proxy = proxy;
         proxy.setServerOfflineListener(this);
         proxy.setDisconnectedListener(this);
-
+        proxy.setSoldOutListener(this);
     }
 
     public void setYourNickname(String yourNickname) {
