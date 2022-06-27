@@ -81,7 +81,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         scenesMap = new HashMap<>();
         sceneControllersMap = new HashMap<>();
         constants = new PlayerConstants();
-        isMainScene = false;
+        isMainSceneInitialized = false;
         initialStudentsIsland = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             initialStudentsIsland.add(new int[]{0, 0, 0, 0, 0});
@@ -116,7 +116,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             if (ok) {
                 proxy.setView();
                 if(!gameRestored){
-                    switchScene(MAIN);
+                    //switchScene(MAIN);
                     phaseHandler("PlanningPhase");
                 }
                 else {
@@ -365,6 +365,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         @Override
         protected void succeeded() {
             System.out.println("Planning phase service on succeded");
+            //isMainSceneInitialized=true;
+            //sendInitialInformation();
+            switchScene(MAIN);
             phaseHandler("PlayCardAnswer");
         }
 
@@ -500,6 +503,15 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
         controller.setActionAllowed(-1);
     }
+    /*public void sendInitialInformation(){
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        for(int i=0; i<initialStudentsEntrance.size(); i++){
+            for(int j=0; j<5; j++){
+                controller.setStudentsEntrance(i, j, initialStudentsEntrance.get(i)[j]);
+            }
+        }
+
+    }*/
 
 
     @Override
@@ -588,17 +600,36 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
-        Platform.runLater(() -> {
+       // Platform.runLater(() -> {
+            System.out.println("NOTIFY student change");
             MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
             CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
 
             switch (place) {
-                case 0 -> mainSceneController.setStudentsEntrance(componentRef, color, newStudentsValue);
-                case 1 -> mainSceneController.setStudentsTable(componentRef, color, newStudentsValue);
-                case 2 -> mainSceneController.setStudentsIsland(componentRef, color, newStudentsValue);
-                case 3 -> cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);
+                case 0 ->
+                    //if(!isMainSceneInitialized){
+                        //this.initialStudentsEntrance.get(componentRef)[color]= newStudentsValue;
+                    //} else {
+                    Platform.runLater(()->{
+                        mainSceneController.setStudentsEntrance(componentRef, color, newStudentsValue);
+                    });
+                        //mainSceneController.setStudentsEntrance(componentRef, color, newStudentsValue);
+                    //}
+
+                case 1 ->
+                    Platform.runLater(()->{mainSceneController.setStudentsTable(componentRef, color, newStudentsValue);});
+                //} mainSceneController.setStudentsTable(componentRef, color, newStudentsValue);
+                case 2 ->
+                        Platform.runLater(()->{mainSceneController.setStudentsIsland(componentRef, color, newStudentsValue);});
+
+                        //mainSceneController.setStudentsIsland(componentRef, color, newStudentsValue);
+
+                case 3 ->
+                    Platform.runLater(()->{cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);});
+
+
             }
-        });
+       // });
     }
 
 
@@ -606,7 +637,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
         Platform.runLater(() -> {
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            //if(isMainSceneInitialized){
             if (place == 0) {
                 controller.setTowersSchool(componentRef, towersNumber);
             } else if (place == 1) {
@@ -652,11 +682,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setClientDisconnected();
             loadScene(GAMEOVER);
             primaryStage.close();
-            try {
+            /*try {
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         });
 
     }
@@ -687,11 +717,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setWinner(winner);
             loadScene(GAMEOVER);
             primaryStage.close();
-            try {
+            /*try {
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         });
 
     }

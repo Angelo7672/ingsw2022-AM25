@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.View;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -553,10 +554,14 @@ public class MainSceneController implements SceneController {
     public void setStudentsEntrance(int playerRef, int color, int newStudentsValue) {
         Label studentLabel;
         ImageView studentImage;
+        System.out.println("students value: "+newStudentsValue+" player: "+playerRef+" color: "+color)  ;
         String labelValue = String.valueOf(newStudentsValue);
+
         studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5);
         //Labels are located 5 position after images
         studentImage = (ImageView) entrancesMap.get(playerRef).getChildren().get(color);
+
+        studentLabel.setText(String.valueOf(newStudentsValue));
         studentLabel.setText(labelValue);
 
         if (newStudentsValue != 0) {

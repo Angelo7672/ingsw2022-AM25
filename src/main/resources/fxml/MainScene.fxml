@@ -18,7 +18,7 @@
       </ImageView>
       <AnchorPane fx:id="islandsPane" layoutX="196.0" layoutY="186.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="414.0" prefWidth="886.0">
          <children>
-            <AnchorPane fx:id="island1" layoutX="-52.0" layoutY="102.0" prefHeight="190.0" prefWidth="175.0">
+            <AnchorPane fx:id="island1" layoutX="-52.0" layoutY="95.0" prefHeight="190.0" prefWidth="175.0">
                <children>
                   <ImageView fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                      <image>
@@ -92,7 +92,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="island2" layoutX="60.0" maxHeight="-Infinity" maxWidth="-Infinity">
+            <AnchorPane fx:id="island2" layoutX="65.0" layoutY="-15.0" maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
                   <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="4.0" layoutY="2.0" preserveRatio="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                      <image>
@@ -166,7 +166,7 @@
                  </Label>
               </children>
             </AnchorPane>
-            <AnchorPane fx:id="island3" layoutX="200.0" layoutY="-25.0" prefHeight="190.0" prefWidth="175.0">
+            <AnchorPane fx:id="island3" layoutX="210.0" layoutY="-25.0" prefHeight="190.0" prefWidth="175.0">
               <children>
                     <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                        <image>
@@ -240,7 +240,7 @@
                     </Label>
                  </children>
             </AnchorPane>
-            <AnchorPane fx:id="island4" layoutX="350.0" layoutY="-28.0" prefHeight="190.0" prefWidth="175.0">
+            <AnchorPane fx:id="island4" layoutX="370.0" layoutY="-28.0" prefHeight="190.0" prefWidth="175.0">
                <children>
                      <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                         <image>
@@ -314,7 +314,7 @@
                      </Label>
                   </children>
             </AnchorPane>
-            <AnchorPane fx:id="island5" layoutX="500.0" layoutY="-18.0" prefHeight="190.0" prefWidth="175.0">
+            <AnchorPane fx:id="island5" layoutX="520.0" layoutY="-18.0" prefHeight="190.0" prefWidth="175.0">
                <children>
                      <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                         <image>
@@ -388,7 +388,7 @@
                      </Label>
                   </children>
             </AnchorPane>
-            <AnchorPane fx:id="island6" layoutX="650.0" layoutY="7.0" prefHeight="190.0" prefWidth="175.0">
+            <AnchorPane fx:id="island6" layoutX="670.0" layoutY="7.0" prefHeight="190.0" prefWidth="175.0">
               <children>
                     <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                        <image>
@@ -462,7 +462,7 @@
                     </Label>
                  </children>
             </AnchorPane>
-            <AnchorPane fx:id="island7" layoutX="700.0" layoutY="130.0" prefHeight="190.0" prefWidth="175.0">
+            <AnchorPane fx:id="island7" layoutX="730.0" layoutY="130.0" prefHeight="190.0" prefWidth="175.0">
              <children>
                    <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                       <image>
@@ -832,7 +832,7 @@
                        </Label>
                     </children>
             </AnchorPane>
-            <AnchorPane fx:id="island12" layoutX="30.0" layoutY="225.0" prefHeight="190.0" prefWidth="175.0">
+            <AnchorPane fx:id="island12" layoutX="25.0" layoutY="225.0" prefHeight="190.0" prefWidth="175.0">
                <children>
                  <ImageView fx:id="islandImage" fitHeight="190.0" fitWidth="175.0" layoutX="16.0" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0">
                     <image>
@@ -1122,27 +1122,27 @@
                               <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="131.0" layoutY="-9.0" text="1" visible="false">
+                        <Label layoutX="131.0" layoutY="-9.0" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="104.0" layoutY="-9.0" text="1" visible="false">
+                        <Label layoutX="104.0" layoutY="-9.0" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="79.0" layoutY="-9.0" text="1" visible="false">
+                        <Label layoutX="79.0" layoutY="-9.0" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="54.0" layoutY="-9.0" text="1" visible="false">
+                        <Label layoutX="54.0" layoutY="-9.0" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="26.0" layoutY="-9.0" text="1" visible="false">
+                        <Label layoutX="26.0" layoutY="-9.0" visible="false">
                            <font>
                               <Font name="System Bold" size="19.0" />
                            </font>

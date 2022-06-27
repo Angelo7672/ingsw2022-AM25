@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 
 public class GameOverSceneController implements SceneController {
     GUI gui;
@@ -45,6 +46,7 @@ public class GameOverSceneController implements SceneController {
 
     public void setWinner(String winner) {
         exitStatus=0;
+        messageLabel.setTextFill(Color.BLACK);
         messageLabel.setText("The winner is: "+winner);
         messageLabel.setVisible(true);
     }
