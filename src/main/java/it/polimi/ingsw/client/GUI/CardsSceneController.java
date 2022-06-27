@@ -65,6 +65,7 @@ public class CardsSceneController implements SceneController{
         protected void succeeded(){
             String result = this.getValue();
             if (result.equalsIgnoreCase("ok")) {
+                errorMessage.setVisible(false);
                 disableCard(playedCard);
                 disableConfirm();
                 Stage stage = (Stage) confirmButton.getScene().getWindow();

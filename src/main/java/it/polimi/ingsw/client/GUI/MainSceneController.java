@@ -564,6 +564,14 @@ public class MainSceneController implements SceneController {
         studentLabel.setText(String.valueOf(newStudentsValue));
         studentLabel.setText(labelValue);
 
+        /*if(newStudentsValue==1){
+            studentLabel.setText(String.valueOf(1));
+            studentLabel.setVisible(true);
+        } else if(newStudentsValue==2) {
+            studentLabel.setText(String.valueOf(2));
+            studentLabel.setVisible(true);
+        }*/
+
         if (newStudentsValue != 0) {
             studentLabel.setVisible(true);
             studentImage.setVisible(true);

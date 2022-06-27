@@ -294,7 +294,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
 
-    private class FirstClientService extends Service<String>{
+    /*private class FirstClientService extends Service<String>{
 
         @Override
         protected Task<String> createTask() {
@@ -342,7 +342,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 primaryStage.centerOnScreen();
             }
         }
-    }
+    }*/
 
     private class PlanningPhaseService extends Service<Boolean> {
         Boolean result;
@@ -699,11 +699,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setServerOffline();
             loadScene(GAMEOVER);
             primaryStage.close();
-            /*try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
         });
 
     }
@@ -717,11 +712,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setWinner(winner);
             loadScene(GAMEOVER);
             primaryStage.close();
-            /*try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
         });
 
     }
