@@ -29,13 +29,14 @@ public class RoundSpecial11 extends RoundStrategy{
 
     @Override
     public boolean effect(int playerRef, int color){
+        int extracted = -1;
         if(getStudents(color) > 0) {
             try { playerManager.setStudentTable(playerRef, color, 1);
             } catch (NotAllowedException notAllowedException){ return false; }
-            int extracted = bag.extraction();
+            if(!bag.checkVictory()) extracted = bag.extraction();
             special.effect(color, extracted);   //color is the student I remove, extracted is the which one I add
             specialStudentsListener.specialStudentsNotify(11, color, getStudents(color));
-            specialStudentsListener.specialStudentsNotify(11, extracted, getStudents(extracted));
+            if(!bag.checkVictory()) specialStudentsListener.specialStudentsNotify(11, extracted, getStudents(extracted));
             return true;
         }
         return false;
@@ -84,7 +85,7 @@ public class RoundSpecial11 extends RoundStrategy{
         @Override
         public void effect(int chosen, int extracted) {
             students[chosen]--;
-            students[extracted]++;
+            if(extracted != -1) students[extracted]++;
         }
     }
 }
