@@ -842,6 +842,9 @@ public class MainSceneController implements SceneController {
             studentsToExchange=2; //puoi scambiare max 2 studenti
             actionLabel.setText("Select a student from the entrance, and then a student at the table: "+studentsToExchange+" more left");
             actionLabel.setVisible(true);
+        } else if(actionAllowed == 6){
+            actionLabel.setText("Select students ");
+            actionLabel.setVisible(true);
         }
     }
 

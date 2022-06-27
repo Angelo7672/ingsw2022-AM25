@@ -201,72 +201,72 @@
       </AnchorPane>
       <AnchorPane fx:id="paneSpecial3" layoutX="405.0" layoutY="267.0" prefHeight="28.0" prefWidth="123.0" visible="false">
          <children>
-            <Button fx:id="greenButton12" mnemonicParsing="false" onAction="#setStudentColor" opacity="0.0" prefHeight="25.0" prefWidth="18.0" visible="false">
+            <Button fx:id="greenButton12" mnemonicParsing="false" onAction="#setStudentColor" opacity="0.0" prefHeight="25.0" prefWidth="18.0">
                <graphic>
-                  <ImageView fx:id="greenImage12" fitHeight="18.0" fitWidth="18.0" preserveRatio="true" visible="false">
+                  <ImageView fx:id="greenImage12" fitHeight="18.0" fitWidth="18.0" preserveRatio="true">
                      <image>
                         <Image url="@../graphics/wooden_pieces/greenStudent3D.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="redButton12" layoutX="26.0" layoutY="2.0" mnemonicParsing="false" onAction="#setStudentColor" opacity="0.0" prefHeight="25.0" prefWidth="18.0" visible="false">
+            <Button fx:id="redButton12" layoutX="26.0" layoutY="2.0" mnemonicParsing="false" onAction="#setStudentColor" opacity="0.0" prefHeight="25.0" prefWidth="18.0">
                <graphic>
-                  <ImageView fx:id="redImage12" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <ImageView fx:id="redImage12" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../graphics/wooden_pieces/redStudent3D.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="yellowButton12" layoutX="49.0" mnemonicParsing="false" onAction="#setStudentColor" opacity="0.0" prefHeight="25.0" prefWidth="18.0" visible="false">
+            <Button fx:id="yellowButton12" layoutX="49.0" mnemonicParsing="false" onAction="#setStudentColor" opacity="0.0" prefHeight="25.0" prefWidth="18.0">
                <graphic>
-                  <ImageView fx:id="yellowImage12" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <ImageView fx:id="yellowImage12" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../graphics/wooden_pieces/yellowStudent3D.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="pinkButton12" layoutX="75.0" mnemonicParsing="false" onAction="#setStudentColor" opacity="0.0" prefHeight="25.0" prefWidth="18.0" visible="false">
+            <Button fx:id="pinkButton12" layoutX="75.0" mnemonicParsing="false" onAction="#setStudentColor" opacity="0.0" prefHeight="25.0" prefWidth="18.0">
                <graphic>
-                  <ImageView fx:id="pinkImage12" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <ImageView fx:id="pinkImage12" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="blueButton12" layoutX="101.0" layoutY="2.0" mnemonicParsing="false" onAction="#setStudentColor" opacity="0.0" prefHeight="25.0" prefWidth="18.0" visible="false">
+            <Button fx:id="blueButton12" layoutX="101.0" layoutY="2.0" mnemonicParsing="false" onAction="#setStudentColor" opacity="0.0" prefHeight="25.0" prefWidth="18.0">
                <graphic>
-                  <ImageView fx:id="blueImage12" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <ImageView fx:id="blueImage12" fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../graphics/wooden_pieces/blueStudent3D.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Label fx:id="redLabel12" layoutX="29.0" layoutY="19.0" text="0" visible="false">
+            <Label fx:id="redLabel12" layoutX="29.0" layoutY="19.0" text="0">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
             </Label>
-            <Label fx:id="yellowLabel12" layoutX="53.0" layoutY="19.0" text="0" visible="false">
+            <Label fx:id="yellowLabel12" layoutX="53.0" layoutY="19.0" text="0">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
             </Label>
-            <Label fx:id="pinkLabel12" layoutX="78.0" layoutY="19.0" text="0" visible="false">
+            <Label fx:id="pinkLabel12" layoutX="78.0" layoutY="19.0" text="0">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
             </Label>
-            <Label fx:id="blueLabel12" layoutX="104.0" layoutY="19.0" text="0" visible="false">
+            <Label fx:id="blueLabel12" layoutX="104.0" layoutY="19.0" text="0">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
             </Label>
-            <Label fx:id="greenLabel12" layoutX="4.0" layoutY="19.0" text="0" visible="false">
+            <Label fx:id="greenLabel12" layoutX="4.0" layoutY="19.0" text="0">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>

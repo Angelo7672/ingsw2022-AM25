@@ -203,7 +203,6 @@ public class SpecialsSceneController implements SceneController{
             }catch (IOException | ClassNotFoundException e ){}
             if(result) {
                 if(specialChosen!=2 && specialChosen!=4 && specialChosen!=6 && specialChosen!=8) {
-                    System.out.println("special param");
                     useSpecial(specialChosen);
                 }
                 else {
@@ -219,8 +218,20 @@ public class SpecialsSceneController implements SceneController{
 
     @FXML
     public void confirmSpecialButtonPressed(ActionEvent event) {
-        if(!studentsChosen.isEmpty()){
-            gui.useSpecial(specialChosen);
+        if(specialChosen==7 && !studentsChosen.isEmpty()){
+            gui.useSpecial(specialChosen, studentsChosen);
+        }
+        else if(specialChosen==11){
+            boolean result=false;
+            try {
+                result = proxy.useSpecial(11, studentChosen);
+            }catch (IOException e){}
+            if(result){
+                gui.setConstants("SpecialUsed");
+                Stage stage = (Stage) confirmButton.getScene().getWindow();
+                stage.close();
+            }
+            else showErrorMessage();
         }
         else showErrorMessage();
     }
@@ -255,6 +266,8 @@ public class SpecialsSceneController implements SceneController{
             //da carta a sala
             disableImage(specialsName.indexOf(11));
             showStudents(specialsName.indexOf(11));
+            confirmSpecialButton.setVisible(true);
+            questionLabel.setText("Which student do you want to move?");
         }
     }
 

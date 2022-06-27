@@ -264,19 +264,29 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         if(special == 3 ){
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setActionAllowed(3);
+            setConstants("SpecialUsed");
         }
         else if(special == 5){
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setActionAllowed(4);
-        }
-        else if(special == 7){
-
+            setConstants("SpecialUsed");
         }
         else if(special == 9||special == 12){
             Special9or12SceneController controller = (Special9or12SceneController) sceneControllersMap.get(SPECIALS9OR12);
             controller.setSpecial(special);
             loadScene(SPECIALS9OR12);
         }
+    }
+
+    //special 7
+    public void useSpecial(int special, ArrayList<Integer> cardStudents){
+
+    }
+    //special 1
+    public void useSpecial(int special, int color){
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+
+        setConstants("SpecialUsed");
     }
 
     public void setGameRestored(){
@@ -524,7 +534,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void setConstants(String phase){
         switch(phase){
             case "CardPlayed" -> constants.setCardPlayed(true);
-            case "SpecialUsed" -> constants.setSpecialUsed(true);
+            case "SpecialUsed" -> {
+                constants.setSpecialUsed(true);
+                SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
+                controller.resetScene();
+            }
             case "Reset" -> constants.resetAll();
         }
     }
