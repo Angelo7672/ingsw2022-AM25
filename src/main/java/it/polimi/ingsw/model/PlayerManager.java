@@ -112,7 +112,10 @@ public class PlayerManager  {
         }else placeTower(team,towers);
         //Professors
         for (int i = 0; i < 5; i++)
-            if(professors[i]) setProfessor(playerRef,i);
+            if(professors[i]){
+                setProfessor(playerRef,i);
+                professorPropriety[i] = playerRef;
+            }
     }
 
     /**

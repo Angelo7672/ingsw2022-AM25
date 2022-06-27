@@ -138,7 +138,8 @@ public class Game implements GameManager{
     public void handAndCoinsRestore(int playerRef, ArrayList<String> cards, int coins){
         ArrayList<Assistant> hand = new ArrayList<>();
 
-        for (String card : cards) hand.add(stringToAssistant(card));
+        for (String card : cards)
+            hand.add(stringToAssistant(card));
 
         playerManager.restoreHandAndCoins(playerRef, hand, coins);
     }

@@ -15,7 +15,7 @@ public abstract class RoundStrategy {
     public int numberOfPlayer;
 
     public RoundStrategy(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
-        this.numberOfPlayer=numberOfPlayer;
+        this.numberOfPlayer = numberOfPlayer;
         this.bag = bag;
         this.cloudsManager = cloudsManager;
         this.islandsManager = islandsManager;
@@ -49,38 +49,57 @@ public abstract class RoundStrategy {
         return false;
     }
     protected Team highInfluenceTeam(int islandRef, int noColor, int playerRef) {
-        int[] studentOnIsland = new int[5];
+        int[] studentOnIsland = new int[]{0,0,0,0,0};
         int professorOwner;
         Team teamOwnerProfessor, teamOwnerTower;
         int influenceTeamWHITE = 0;
         int influenceTeamBLACK = 0;
         int influenceTeamGREY = 0;
+        Team highInfluenceTeam;
 
         for (int i = 0; i < 5; i++) {
-            studentOnIsland[i] = islandsManager.getStudent(islandRef, i);
+            studentOnIsland[i] = islandsManager.getStudent(islandRef, i);   //add student of each color
             if (studentOnIsland[i] > 0) {
-                professorOwner = playerManager.getProfessorPropriety(i);
+                professorOwner = playerManager.getProfessorPropriety(i);    //get professor's owner
                 if (professorOwner != -1) {
-                    teamOwnerProfessor = playerManager.getTeam(professorOwner);
-                    if (teamOwnerProfessor.equals(Team.WHITE)) influenceTeamWHITE += studentOnIsland[i];
-                    else if (teamOwnerProfessor.equals(Team.BLACK)) influenceTeamBLACK += studentOnIsland[i];
+                    teamOwnerProfessor = playerManager.getTeam(professorOwner); //get Team professor's owner
+                    if (teamOwnerProfessor.equals(Team.WHITE)){ influenceTeamWHITE += studentOnIsland[i]; }
+                    else if (teamOwnerProfessor.equals(Team.BLACK)){ influenceTeamBLACK += studentOnIsland[i]; }
                     else if (teamOwnerProfessor.equals(Team.GREY)) influenceTeamGREY += studentOnIsland[i];
                 }
             }
         }
-        teamOwnerTower = islandsManager.getTowerTeam(islandRef);
+        teamOwnerTower = islandsManager.getTowerTeam(islandRef);    //get tower's team owner
         if(teamOwnerTower.equals(Team.WHITE)) influenceTeamWHITE += islandsManager.getTowerValue(islandRef);
         else if(teamOwnerTower.equals(Team.BLACK)) influenceTeamBLACK += islandsManager.getTowerValue(islandRef);
         else if(teamOwnerTower.equals(Team.GREY)) influenceTeamGREY += islandsManager.getTowerValue(islandRef);
 
-        if (influenceTeamBLACK < influenceTeamWHITE) {
-            if (influenceTeamGREY < influenceTeamWHITE) return Team.WHITE;
-        } else if (influenceTeamWHITE < influenceTeamBLACK) {
-            if (influenceTeamGREY < influenceTeamBLACK) return Team.BLACK;
-        } else if (influenceTeamWHITE < influenceTeamGREY){
-            if (influenceTeamBLACK < influenceTeamGREY) return Team.GREY;
+        System.out.println("Influence Team White "+influenceTeamWHITE);
+        System.out.println("Influence Team Black "+influenceTeamBLACK);
+        System.out.println("Influence Team Grey "+influenceTeamGREY);
+
+        if(numberOfPlayer == 2 || numberOfPlayer == 4)
+            highInfluenceTeam = compareInfluenceTeam(Team.WHITE, influenceTeamWHITE, Team.BLACK, influenceTeamBLACK);
+        else {
+            highInfluenceTeam = compareInfluenceTeam(Team.WHITE, influenceTeamWHITE, Team.BLACK, influenceTeamBLACK);
+            if(highInfluenceTeam.equals(Team.WHITE))
+                highInfluenceTeam = compareInfluenceTeam(highInfluenceTeam, influenceTeamWHITE, Team.GREY, influenceTeamGREY);
+            else highInfluenceTeam = compareInfluenceTeam(Team.BLACK, influenceTeamBLACK, Team.GREY, influenceTeamGREY);
         }
-        return Team.NONE;
+
+        return highInfluenceTeam;
+    }
+
+    private Team compareInfluenceTeam(Team team1, int influenceTeam1, Team team2, int influenceTeam2){
+        if(influenceTeam1 == 0) {
+            if (influenceTeam2 != 0) return team2;
+            else return Team.NONE;
+        }
+        if(influenceTeam2 == 0) return team1;
+
+        if(influenceTeam1 == influenceTeam2) return Team.NONE;
+        else if(influenceTeam1 > influenceTeam2) return team1;
+        else return team2;
     }
 
     public boolean moveMotherNature(int queueRef, int desiredMovement, int ref) throws NotAllowedException {

@@ -254,7 +254,7 @@ public class Controller implements ServerController, Match, Restore{
     @Override
     public void oneLastRide(){
         winner = gameManager.oneLastRide();
-        clearFile();
+        virtualView.clearFile();
     }
 
     /**
@@ -262,11 +262,6 @@ public class Controller implements ServerController, Match, Restore{
      */
     @Override
     public void saveGame(){ virtualView.saveVirtualView(expertMode); }
-
-    /**
-     * @see VirtualView
-     */
-    private void clearFile(){ virtualView.clearFile(); }
 
     /**
      * Set the current turn phase after restore.

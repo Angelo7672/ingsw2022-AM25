@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -90,5 +91,15 @@ class VirtualViewTest {
         assertEquals(0,controller1.checkRestoreNickname("Angelo"));
         assertEquals(1,controller1.checkRestoreNickname("Ginevra"));
         assertEquals(-1,controller1.checkRestoreNickname("Gigi"));
+    }
+
+    @Test
+    @DisplayName("Clear file")
+    void clearFile(){
+        controller.startGame();
+        controller.resumeTurn(0);
+        controller.oneLastRide();
+        File file = new File(fileName);
+        assertTrue(file.length() == 0);
     }
 }

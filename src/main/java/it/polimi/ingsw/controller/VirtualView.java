@@ -64,6 +64,7 @@ public class VirtualView
      */
     public void saveVirtualView(boolean expertMode){
         try{
+            System.err.println("sto salvando il file");
             clearFile();
             FileOutputStream outputFile = new FileOutputStream(fileName);
             ObjectOutputStream objectOut = new ObjectOutputStream(outputFile);
