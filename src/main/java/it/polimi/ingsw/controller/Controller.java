@@ -169,7 +169,7 @@ public class Controller implements ServerController, Match, Restore{
         for(int i = 0; i < currentUser; i++)
             alreadyPlayedCard.add(getLastPlayedCard(gameManager.readQueue(i)));
 
-        setEnd(gameManager.playCard(playerRef, currentUser, chosenAssistants, alreadyPlayedCard));
+        setEndCard(gameManager.playCard(playerRef, currentUser, chosenAssistants, alreadyPlayedCard));
     }
 
     //Action Phase
@@ -242,8 +242,16 @@ public class Controller implements ServerController, Match, Restore{
         synchronized (roundController){ roundController.notify(); }
     }
 
+    /**
+     * @see RoundController
+     */
+    private void setEndCard(boolean end){ roundController.setEndCard(end); }
+
+    /**
+     * @see RoundController
+     */
     @Override
-    public void setEnd(boolean end){ roundController.setEnd(end); }
+    public void setEndBag(boolean end){ roundController.setEndBag(end); }
     @Override
     public String getWinner() { return winner; }
 

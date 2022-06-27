@@ -77,5 +77,5 @@ public interface Restore {
     /**
      * @see Controller
      */
-    void setEnd(boolean end);
+    void setEndBag(boolean end);
 }

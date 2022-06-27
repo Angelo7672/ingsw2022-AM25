@@ -10,7 +10,8 @@ public class RoundController extends Thread{
     private final ControllerServer server;
     private final GameManager gameManager;
     private final int numberOfPlayers;
-    private boolean end;
+    private boolean endCard;
+    private boolean endBag;
     private boolean jumpToActionPhase;
     private boolean restoreGame;
     private final Match controller;
@@ -27,7 +28,8 @@ public class RoundController extends Thread{
         this.server = server;
         this.gameManager = gameManager;
         this.numberOfPlayers = numberOfPlayers;
-        this.end = false;
+        this.endBag = false;
+        this.endCard = false;
         this.jumpToActionPhase = jumpToActionPhase;
         if(jumpToActionPhase) restoreGame = true;
         this.controller = controller;
@@ -43,8 +45,7 @@ public class RoundController extends Thread{
             if(!jumpToActionPhase) planningPhase(); //jumpToActionPhase is use when restore a game which is in action phase
             else jumpToActionPhase = false;
             actionPhase();
-            if (end) {
-                System.out.println("RoundController - EndGame");
+            if (endBag || endCard) {
                 controller.oneLastRide();
                 server.gameOver();
             }
@@ -93,5 +94,13 @@ public class RoundController extends Thread{
         } catch (InterruptedException e) { e.printStackTrace(); }
     }
 
-    public void setEnd(boolean end) { this.end = end; }
+    /**
+     * Set true if a player finished him cards.
+     */
+    public void setEndCard(boolean end) { this.endCard = end; }
+
+    /**
+     * Set true if bag is empty.
+     */
+    public void setEndBag(boolean end){ this.endBag = end; }
 }

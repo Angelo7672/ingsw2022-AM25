@@ -4,10 +4,6 @@ package it.polimi.ingsw.controller;
  * This interface is used by RoundController for comunicate with controller.
  */
 public interface Match {
-    /**
-     * @see Controller
-     */
-    void setEnd(boolean end);
 
     /**
      * @see Controller

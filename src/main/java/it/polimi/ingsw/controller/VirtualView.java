@@ -487,7 +487,7 @@ public class VirtualView
     @Override
     public void notifyBagExtraction() {
         bag.remove(0);
-        if(bag.isEmpty()){ controller.setEnd(true); System.out.println("Fine bag"); }
+        if(bag.isEmpty()) controller.setEndBag(true);
     }
 
     /**
