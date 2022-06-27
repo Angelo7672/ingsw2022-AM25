@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static it.polimi.ingsw.client.GUI.GUI.MAIN;
 import static it.polimi.ingsw.client.GUI.GUI.SPECIALS;
 
 
@@ -33,6 +34,9 @@ public class MainSceneController implements SceneController {
     private int currentPlayer;
     private int actionAllowed;
 
+    private int colorToExchange;
+    private int studentsToExchange;
+
     private HashMap<Integer, String> nicknamesMap;
     private HashMap<Integer, String> charactersMap;
     private HashMap<Integer, ImageView> charactersImageMap;
@@ -46,6 +50,10 @@ public class MainSceneController implements SceneController {
     private HashMap<Integer, AnchorPane> tablesMap;
     private HashMap<Integer, AnchorPane> professorsMap;
     private HashMap<Integer, Integer> towersNumber;
+
+    private ArrayList<Integer> fromEntranceToTable;
+    private ArrayList<Integer> fromTableToEntrance;
+
 
     private String lastThingClicked;
     private int currentStudentColor;
@@ -141,7 +149,7 @@ public class MainSceneController implements SceneController {
             if(actionAllowed==0) {
                 System.out.println("student clicked");
 
-                if(mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(0)||
+                if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(0)||
                     mouseEvent.getSource() ==  entrancesMap.get(currentPlayer).getChildren().get(1)||
                     mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(2)||
                     mouseEvent.getSource() ==  entrancesMap.get(currentPlayer).getChildren().get(3)||
@@ -156,6 +164,20 @@ public class MainSceneController implements SceneController {
                     lastThingClicked="";
                     errorLabel.setText("Error, move not allowed!");
                     errorLabel.setVisible(true);
+                }
+            } else if(actionAllowed==5){ //special 10 che scambia ingresso e tavolo
+                if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(0)||
+                    mouseEvent.getSource() ==  entrancesMap.get(currentPlayer).getChildren().get(1)||
+                    mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(2)||
+                    mouseEvent.getSource() ==  entrancesMap.get(currentPlayer).getChildren().get(3)||
+                    mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(4)) {
+
+                    lastThingClicked = "studentEntrance";
+                    for (int i = 0; i < 5; i++) {
+                        if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(i))
+                            colorToExchange = i;
+                    }
+                    fromEntranceToTable.add(colorToExchange);
                 }
             }
             else{
@@ -197,6 +219,39 @@ public class MainSceneController implements SceneController {
             else{
                 errorLabel.setVisible(true);
                 errorLabel.setText("Error, move not allowed!");
+            }
+        }
+    }
+
+    private class StudentTableClickHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            if(actionAllowed == 5){ //special 10
+                if(lastThingClicked.equals("studentEntrance")) {
+                    if(studentsToExchange>0){
+                        lastThingClicked = "studentTable";
+                        ImageView student = (ImageView) mouseEvent.getSource();
+                        if (student.getImage().getUrl().equals(GREENSTUDENT)) {
+                            //colorToExchange = 0;
+                            fromTableToEntrance.add(0);
+                        } else if (student.getImage().getUrl().equals(REDSTUDENT)) {
+                            //colorToExchange = 1;
+                            fromTableToEntrance.add(1);
+                        } else if (student.getImage().getUrl().equals(YELLOWSTUDENT)) {
+                            //colorToExchange = 2;
+                            fromTableToEntrance.add(2);
+                        } else if (student.getImage().getUrl().equals(PINKSTUDENT)) {
+                            //colorToExchange = 3;
+                            fromTableToEntrance.add(3);
+                        } else if (student.getImage().getUrl().equals(BLUESTUDENT)) {
+                            //colorToExchange = 4;
+                            fromTableToEntrance.add(4);
+                        }
+                        studentsToExchange--;
+                        actionLabel.setText("Select a student from the entrance, and then a student at the table: "+studentsToExchange+" more left");
+                    }
+
+                }
             }
         }
     }
@@ -307,6 +362,24 @@ public class MainSceneController implements SceneController {
                 }
             }
         }
+
+    public void confirmSpecial(){ // da fare un bottone sulla main scene
+        if(actionAllowed==5){
+            if(lastThingClicked.equalsIgnoreCase("studentTable")){
+                try {
+                    if(proxy.useSpecial(10, fromEntranceToTable, fromTableToEntrance));
+                        //gui.constants.getLastPhase -> setActionAllowed ...
+                    else
+                        errorLabel.setText("Error, move not allowed!");
+                        errorLabel.setVisible(true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
 
     public void initializeScene() {
@@ -552,33 +625,40 @@ public class MainSceneController implements SceneController {
     }
 
     public void setStudentsEntrance(int playerRef, int color, int newStudentsValue) {
-        Label studentLabel;
-        ImageView studentImage;
-        System.out.println("students value: "+newStudentsValue+" player: "+playerRef+" color: "+color)  ;
-        String labelValue = String.valueOf(newStudentsValue);
+        Platform.runLater(()->{
+            Label studentLabel;
+            ImageView studentImage;
+            System.out.println("students value: "+newStudentsValue+" player: "+playerRef+" color: "+color)  ;
+            String labelValue = ""+newStudentsValue;
 
-        studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5);
-        //Labels are located 5 position after images
-        studentImage = (ImageView) entrancesMap.get(playerRef).getChildren().get(color);
+            //studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5);
+            //Labels are located 5 position after images
+            studentImage = (ImageView) entrancesMap.get(playerRef).getChildren().get(color);
 
+            //studentLabel.setText(String.valueOf(newStudentsValue));
+           // studentLabel.setText(Integer.toString(newStudentsValue));
+            //System.out.println(studentLabel.getText());
+            setEntranceLabel(playerRef, color, newStudentsValue);
+
+
+
+            if (newStudentsValue != 0) {
+                //studentLabel.setVisible(true);
+                studentImage.setVisible(true);
+            } else {
+                //studentLabel.setVisible(false);
+                studentImage.setVisible(false);
+            }
+        });
+    }
+
+    public void setEntranceLabel(int playerRef, int color, int newStudentsValue){
+        Label studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5);
         studentLabel.setText(String.valueOf(newStudentsValue));
-        studentLabel.setText(labelValue);
-
-        /*if(newStudentsValue==1){
-            studentLabel.setText(String.valueOf(1));
+        if(newStudentsValue!=0)
             studentLabel.setVisible(true);
-        } else if(newStudentsValue==2) {
-            studentLabel.setText(String.valueOf(2));
-            studentLabel.setVisible(true);
-        }*/
-
-        if (newStudentsValue != 0) {
-            studentLabel.setVisible(true);
-            studentImage.setVisible(true);
-        } else {
+        else
             studentLabel.setVisible(false);
-            studentImage.setVisible(false);
-        }
     }
 
 
@@ -757,6 +837,10 @@ public class MainSceneController implements SceneController {
             actionLabel.setVisible(true);
         } else if(actionAllowed == 4) {
             turnLabel.setText("Choose an island!");
+            actionLabel.setVisible(true);
+        } else if(actionAllowed == 5){
+            studentsToExchange=2; //puoi scambiare max 2 studenti
+            actionLabel.setText("Select a student from the entrance, and then a student at the table: "+studentsToExchange+" more left");
             actionLabel.setVisible(true);
         }
     }

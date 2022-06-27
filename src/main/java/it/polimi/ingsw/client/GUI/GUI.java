@@ -432,6 +432,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     view.setSpecialStudentsListener(gui);
                     view.setSpecialListener(gui);
                     view.setWinnerListener(gui);
+                    proxy.setServerOfflineListener(gui);
+                    proxy.setDisconnectedListener(gui);
+
                     view.setRestoreCardsListener(gui);
                     return view;
                 }
@@ -610,36 +613,18 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
-       // Platform.runLater(() -> {
+       Platform.runLater(() -> {
             System.out.println("NOTIFY student change");
             MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
             CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
 
             switch (place) {
-                case 0 ->
-                    //if(!isMainSceneInitialized){
-                        //this.initialStudentsEntrance.get(componentRef)[color]= newStudentsValue;
-                    //} else {
-                    Platform.runLater(()->{
-                        mainSceneController.setStudentsEntrance(componentRef, color, newStudentsValue);
-                    });
-                        //mainSceneController.setStudentsEntrance(componentRef, color, newStudentsValue);
-                    //}
-
-                case 1 ->
-                    Platform.runLater(()->{mainSceneController.setStudentsTable(componentRef, color, newStudentsValue);});
-                //} mainSceneController.setStudentsTable(componentRef, color, newStudentsValue);
-                case 2 ->
-                        Platform.runLater(()->{mainSceneController.setStudentsIsland(componentRef, color, newStudentsValue);});
-
-                        //mainSceneController.setStudentsIsland(componentRef, color, newStudentsValue);
-
-                case 3 ->
-                    Platform.runLater(()->{cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);});
-
-
+                case 0 -> mainSceneController.setStudentsEntrance(componentRef, color, newStudentsValue);
+                case 1 -> mainSceneController.setStudentsTable(componentRef, color, newStudentsValue);
+                case 2 -> mainSceneController.setStudentsIsland(componentRef, color, newStudentsValue);
+                case 3 -> cloudsSceneController.setStudentsCloud(componentRef, color, newStudentsValue);
             }
-       // });
+       });
     }
 
     @Override
