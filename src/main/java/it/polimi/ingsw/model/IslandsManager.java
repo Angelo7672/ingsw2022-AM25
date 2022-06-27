@@ -144,8 +144,9 @@ public class IslandsManager {
             returnItem[1] = islands.get(islandRef).getTowerTeam().getTeam();
             islands.get(islandRef).setTowerTeam(team);
             this.towersListener.notifyTowerColor(islandRef, islands.get(islandRef).getTowerTeam().getTeam());
-            checkAdjacentIslands(islandRef);
-            returnItem[0] = islands.get(islandRef).getTowerValue();
+            int towerValue = checkAdjacentIslands(islandRef);
+            if(towerValue != -1) returnItem[0] = towerValue;
+            else returnItem[0] = islands.get(islandRef).getTowerValue();
             return returnItem;
         }
         //if new team equals old one
@@ -158,14 +159,21 @@ public class IslandsManager {
      * Check if the island on the left or/and on the right could be unified.
      * @param pos the islands reference;
      */
-    private void checkAdjacentIslands(int pos) {
+    private int checkAdjacentIslands(int pos) {
         int posTemp;
+        int towerValue = -1;
 
         posTemp = circularArray(pos,-1);    //left tower
-        if(checkAdjacent(pos, posTemp)) pos = circularArray(pos,-1);;
+        if(checkAdjacent(pos, posTemp)) {
+            pos = circularArray(pos,-1);
+            towerValue = islands.get(pos).towerValue;
+        };
 
         posTemp = circularArray(pos,1);     //right tower
-        checkAdjacent(pos, posTemp);
+        if(checkAdjacent(pos, posTemp)) {
+            towerValue = islands.get(pos).towerValue;
+        }
+        return towerValue;
     }
 
     /**
@@ -193,7 +201,7 @@ public class IslandsManager {
                     this.motherPositionListener.notifyMotherPosition(motherPos);
                 }
                 else {
-                    motherPos = pos-1;
+                    motherPos = circularArray(pos, -1);
                     this.motherPositionListener.notifyMotherPosition(motherPos);
                 }
             }
