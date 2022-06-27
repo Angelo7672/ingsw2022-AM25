@@ -30,6 +30,7 @@ public class Receiver {
 
     public Receiver(Object lock2, Socket socket, View view) throws IOException {
         this.socket = socket;
+        socket.setSoTimeout(15000);
         this.inputStream = new ObjectInputStream(socket.getInputStream());
         this.view = view;
         answersList = new ArrayList<>();
@@ -71,16 +72,27 @@ public class Receiver {
         return tmp;
     }
 
+    public void  setTimeout() throws IOException {
+        System.out.println("set time");
+        try {
+            socket.setSoTimeout(15000);
+        }catch (SocketException e){
+            disconnected =true;
+            serverOfflineListener.notifyServerOffline();
+        }
+    }
+
     private void startReceive(){
         receive = new Thread(() -> {
             ArrayList<Answer> answersTmpList = new ArrayList<>();
             Answer tmp;
+            System.out.println("thread started");
             try {
-                this.socket.setSoTimeout(15000);
+                setTimeout();
                 while (!disconnected) {
                     tmp = (Answer) inputStream.readObject();
                     if (tmp instanceof PongAnswer) {
-                        this.socket.setSoTimeout(15000);
+                        //socket.setSoTimeout(15000);
                     } else if (tmp instanceof GameInfoAnswer) {
                         synchronized (lock2) {
                             view.initializedView(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());

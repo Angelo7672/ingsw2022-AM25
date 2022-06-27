@@ -70,6 +70,7 @@ public class CardsSceneController implements SceneController{
                 disableConfirm();
                 Stage stage = (Stage) confirmButton.getScene().getWindow();
                 stage.close();
+                gui.setConstants("CardPlayed");
                 gui.phaseHandler("ActionPhase");
             } else
                 showErrorMessage();

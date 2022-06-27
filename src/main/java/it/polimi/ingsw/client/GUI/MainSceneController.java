@@ -126,7 +126,7 @@ public class MainSceneController implements SceneController {
     }
 
     public void useSpecialButtonPressed(){
-        if(!gui.constants.isSpecialUsed()) {
+        if(!gui.constants.isSpecialUsed()&&gui.constants.isCardPlayed()) {
             gui.loadScene(SPECIALS);
         }
         else {
@@ -276,7 +276,7 @@ public class MainSceneController implements SceneController {
                 }
                 try {
                     if(proxy.useSpecial(3,islandRef)){
-
+                        gui.setConstants("SpecialUsed");
                     }
                     else {
                         errorLabel.setText("Error, move not allowed!");
@@ -292,7 +292,7 @@ public class MainSceneController implements SceneController {
                 }
                 try {
                     if(proxy.useSpecial(5,islandRef)){
-
+                        gui.setConstants("SpecialUsed");
                     }
                     else {
                         errorLabel.setText("Error, move not allowed!");

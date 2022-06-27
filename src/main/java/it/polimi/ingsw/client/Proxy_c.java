@@ -27,7 +27,6 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
         this.socket = socket;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         startPing();
-        socket.setSoTimeout(15000);
         lock2 = new Object();
         view = new View();
         receiver = new Receiver(lock2, socket, view);
@@ -262,6 +261,7 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
             try {
                 Thread.sleep(5000);
                 send(new PingMessage());
+                System.out.println("ping");
             } catch (IOException e) {
                 System.err.println("io");
             } catch (InterruptedException e){

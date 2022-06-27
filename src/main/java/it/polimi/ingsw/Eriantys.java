@@ -24,8 +24,6 @@ public class Eriantys {
         }catch (InputMismatchException inputMismatchException){
             System.out.println("Error, try inserting a valid number");
             System.exit(-1);
-        }catch (IOException e) {
-
         }
     }
 }

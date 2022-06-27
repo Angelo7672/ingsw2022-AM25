@@ -131,7 +131,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         getPhaseService.setOnSucceeded(workerStateEvent -> {
             String phase = getPhaseService.getValue();
             if(phase.equals("Play card!")) phaseHandler("PlayCardAnswer");
-            else if(phase.equals("Start your Action Phase!")) phaseHandler("StartTurnAnswer");
+            else if(phase.equals("Start your Action Phase!")) {
+                setConstants("CardPlayed");
+                phaseHandler("StartTurnAnswer");
+            }
         });
 
         actionAllowed = -1;
@@ -266,7 +269,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setActionAllowed(4);
         }
-        else if(special == 9||special ==12){
+        else if(special == 9||special == 12){
             Special9or12SceneController controller = (Special9or12SceneController) sceneControllersMap.get(SPECIALS9OR12);
             controller.setSpecial(special);
             loadScene(SPECIALS9OR12);
@@ -512,6 +515,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
 
     }*/
+
+    public void setConstants(String phase){
+        switch(phase){
+            case "CardPlayed" -> constants.setCardPlayed(true);
+            case "SpecialUsed" -> constants.setSpecialUsed(true);
+            case "Reset" -> constants.resetAll();
+        }
+    }
 
 
     @Override

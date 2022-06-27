@@ -35,6 +35,7 @@ public class Special9or12SceneController implements SceneController{
     void blueButtonPressed(ActionEvent event) {
         try {
             if (proxy.useSpecial(special, 4)) {
+                gui.setConstants("SpecialUsed");
 
             } else showErrorMessage();
         }catch (IOException e){}
@@ -44,6 +45,7 @@ public class Special9or12SceneController implements SceneController{
     void greenButtonPressed(ActionEvent event) {
         try {
             if (proxy.useSpecial(special, 0)) {
+                gui.setConstants("SpecialUsed");
 
             } else showErrorMessage();
         }catch (IOException e){}
@@ -53,6 +55,7 @@ public class Special9or12SceneController implements SceneController{
     void pinkButtonPressed(ActionEvent event) {
         try {
             if (proxy.useSpecial(special, 3)) {
+                gui.setConstants("SpecialUsed");
 
             } else showErrorMessage();
         }catch (IOException e){}
@@ -62,6 +65,7 @@ public class Special9or12SceneController implements SceneController{
     void redButtonPressed(ActionEvent event) {
         try {
             if (proxy.useSpecial(special, 1)) {
+                gui.setConstants("SpecialUsed");
 
             } else showErrorMessage();
         }catch (IOException e){}
@@ -71,6 +75,7 @@ public class Special9or12SceneController implements SceneController{
     void yellowButtonPressed(ActionEvent event) {
         try {
             if (proxy.useSpecial(special, 2)) {
+                gui.setConstants("SpecialUsed");
 
             } else showErrorMessage();
         }catch (IOException e){}

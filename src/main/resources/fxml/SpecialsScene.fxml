@@ -9,10 +9,19 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.SpecialsSceneController">
    <children>
-      <Button fx:id="special2Button" layoutX="265.0" layoutY="130.0" mnemonicParsing="false" onAction="#setSpecialChosen" prefHeight="135.0" prefWidth="78.0" />
-      <Button fx:id="special3Button" layoutX="427.0" layoutY="130.0" mnemonicParsing="false" onAction="#setSpecialChosen" prefHeight="135.0" prefWidth="78.0" />
-      <Button fx:id="special1Button" layoutX="103.0" layoutY="130.0" mnemonicParsing="false" onAction="#setSpecialChosen" prefHeight="135.0" prefWidth="78.0" />
-      <Button fx:id="ConfirmButton" layoutX="201.0" layoutY="343.0" mnemonicParsing="false" onAction="#confirmPressed" text="Confirm" />
+      <Button fx:id="special2Button" layoutX="265.0" layoutY="130.0" mnemonicParsing="false" onAction="#setSpecialChosen" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fx:id="special2View" fitHeight="135.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true" />
+         </graphic></Button>
+      <Button fx:id="special3Button" layoutX="427.0" layoutY="130.0" mnemonicParsing="false" onAction="#setSpecialChosen" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fx:id="special3View" fitHeight="135.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true" />
+         </graphic></Button>
+      <Button fx:id="special1Button" layoutX="103.0" layoutY="130.0" mnemonicParsing="false" onAction="#setSpecialChosen" prefHeight="135.0" prefWidth="78.0">
+         <graphic>
+            <ImageView fx:id="special1View" fitHeight="135.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true" />
+         </graphic></Button>
+      <Button fx:id="confirmButton" layoutX="275.0" layoutY="344.0" mnemonicParsing="false" onAction="#confirmPressed" text="Confirm" />
       <Label layoutX="142.0" layoutY="34.0" prefHeight="31.0" prefWidth="324.0" text="Do you want to use a special card?">
          <font>
             <Font size="21.0" />
@@ -23,10 +32,6 @@
             <Font size="13.0" />
          </font>
       </Label>
-      <Button fx:id="noButton" layoutX="348.0" layoutY="343.0" mnemonicParsing="false" onAction="#confirmPressed" text="No" />
-      <ImageView fx:id="special1View" fitHeight="135.0" fitWidth="78.0" layoutX="102.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="special2View" fitHeight="135.0" fitWidth="78.0" layoutX="265.0" layoutY="130.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="special3View" fitHeight="135.0" fitWidth="78.0" layoutX="427.0" layoutY="130.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="coinSpecial1" fitHeight="64.0" fitWidth="56.0" layoutX="111.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/specials/Moneta_base.png" />
@@ -37,14 +42,23 @@
             <Image url="@../graphics/specials/Moneta_base.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="64.0" fitWidth="56.0" layoutX="434.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="64.0" fitWidth="56.0" layoutX="443.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/specials/Moneta_base.png" />
          </image>
       </ImageView>
-      <Label fx:id="special2Cost" layoutX="286.0" layoutY="100.0" prefHeight="17.0" prefWidth="28.0" />
-      <Label fx:id="special1Cost" layoutX="125.0" layoutY="100.0" prefHeight="17.0" prefWidth="28.0" />
-      <Label fx:id="special3Cost" layoutX="448.0" layoutY="100.0" prefHeight="17.0" prefWidth="28.0" />
+      <Label fx:id="special2Cost" layoutX="285.0" layoutY="93.0" prefHeight="30.0" prefWidth="35.0">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="special1Cost" layoutX="121.0" layoutY="93.0" prefHeight="30.0" prefWidth="35.0">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="special3Cost" layoutX="451.0" layoutY="89.0" prefHeight="31.0" prefWidth="42.0" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
       <ImageView fx:id="pinkImage1" fitHeight="18.0" fitWidth="18.0" layoutX="152.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../graphics/wooden_pieces/pinkStudent3D.png" />

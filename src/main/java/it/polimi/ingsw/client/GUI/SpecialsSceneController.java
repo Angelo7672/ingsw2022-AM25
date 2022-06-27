@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class SpecialsSceneController implements SceneController{
     private HashMap<Integer, Integer> specialsCost;
     private int specialChosen;
 
-    @FXML private Button ConfirmButton;
+    @FXML private Button confirmButton;
     @FXML private ImageView blueImage1;
     @FXML private ImageView blueImage2;
     @FXML private ImageView blueImage3;
@@ -165,9 +166,16 @@ public class SpecialsSceneController implements SceneController{
     protected void setCoins(int specialIndex, int newValue){
         if(specialIndex==0) {
             special1Cost.setText(Integer.toString(newValue-specialsCost.get(specialIndex)));
+            if(special1Cost.toString().equals("0")) special1Cost.setVisible(true);
         }
-        else if(specialIndex==1) special2Cost.setText(Integer.toString(newValue-specialsCost.get(specialIndex)));
-        else if(specialIndex==2) special3Cost.setText(Integer.toString(newValue-specialsCost.get(specialIndex)));
+        else if(specialIndex==1) {
+            special2Cost.setText(Integer.toString(newValue-specialsCost.get(specialIndex)));
+            if(special2Cost.toString().equals("0")) special2Cost.setVisible(true);
+        }
+        else if(specialIndex==2) {
+            special3Cost.setText(Integer.toString(newValue-specialsCost.get(specialIndex)));
+            if(special3Cost.toString().equals("0")) special3Cost.setVisible(true);
+        }
     }
 
     protected void setStudent(int specialIndex, int color, int value){
@@ -218,7 +226,16 @@ public class SpecialsSceneController implements SceneController{
                 result = proxy.checkSpecial(specialChosen);
             }catch (IOException | ClassNotFoundException e ){}
             if(result) {
-                if(specialChosen!=2 && specialChosen!=4 && specialChosen!=6 && specialChosen!=8) useSpecial(specialChosen);
+                if(specialChosen!=2 && specialChosen!=4 && specialChosen!=6 && specialChosen!=8) {
+                    useSpecial(specialChosen);
+                    Stage stage = (Stage) confirmButton.getScene().getWindow();
+                    stage.close();
+                }
+                else {
+                    gui.setConstants("SpecialUsed");
+                    Stage stage = (Stage) confirmButton.getScene().getWindow();
+                    stage.close();
+                }
             }
             else showErrorMessage();
         }
