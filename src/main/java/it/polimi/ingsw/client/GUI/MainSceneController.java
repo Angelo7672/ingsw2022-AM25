@@ -267,7 +267,40 @@ public class MainSceneController implements SceneController {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-                } else {
+            }else if(actionAllowed == 3){
+                for (int i = 0; i < 12; i++) {
+                    if ((mouseEvent.getSource() == islandsList.get(i))) {
+                        islandRef = i;
+                    }
+                }
+                try {
+                    if(proxy.useSpecial(3,islandRef)){
+
+                    }
+                    else {
+                        errorLabel.setText("Error, move not allowed!");
+                        errorLabel.setVisible(true);
+                    }
+                } catch (IOException e) {}
+
+            }else if(actionAllowed == 4){
+                for (int i = 0; i < 12; i++) {
+                    if ((mouseEvent.getSource() == islandsList.get(i))) {
+                        islandRef = i;
+                    }
+                }
+                try {
+                    if(proxy.useSpecial(5,islandRef)){
+
+                    }
+                    else {
+                        errorLabel.setText("Error, move not allowed!");
+                        errorLabel.setVisible(true);
+                    }
+                } catch (IOException e) {}
+
+            }
+            else {
                     errorLabel.setVisible(true);
                     errorLabel.setText("Error, move not allowed!");
                 }
@@ -706,6 +739,12 @@ public class MainSceneController implements SceneController {
         } else if(actionAllowed == -1){
             turnLabel.setText("It's your opponent's turn. Wait...");
             actionLabel.setVisible(false);
+        } else if(actionAllowed == 3) {
+            turnLabel.setText("Choose an island!");
+            actionLabel.setVisible(true);
+        } else if(actionAllowed == 4) {
+            turnLabel.setText("Choose an island!");
+            actionLabel.setVisible(true);
         }
     }
 

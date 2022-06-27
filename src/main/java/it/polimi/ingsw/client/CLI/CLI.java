@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class CLI implements Runnable, UserInfoListener, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, WinnerListener, DisconnectedListener,
-        NoEntryListener, ServerOfflineListener, SpecialStudentsListener{
+        NoEntryClientListener, ServerOfflineListener, SpecialStudentsListener{
 
     private final Exit proxy;
     private final Scanner scanner;
@@ -826,17 +826,6 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     }
 
     @Override
-    public void notifyNoEntry(int newValue) {
-        if(constants.isStartGame()) {
-            synchronized (lock) {
-                System.out.print("New play: " + "\t" + "\t");
-                System.out.println("No Entry tiles: " + newValue);
-                System.out.println();
-            }
-        }
-    }
-
-    @Override
     public void specialStudentsNotify(int special, int color, int value) {
 
     }
@@ -844,5 +833,16 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     @Override
     public void userInfoNotify(String nickname, String Character, int playerRef) {
 
+    }
+
+    @Override
+    public void notifyNoEntry(int special, int newValue) {
+        if(constants.isStartGame()) {
+            synchronized (lock) {
+                System.out.print("New play: " + "\t" + "\t");
+                System.out.println("No Entry tiles: " + newValue);
+                System.out.println();
+            }
+        }
     }
 }

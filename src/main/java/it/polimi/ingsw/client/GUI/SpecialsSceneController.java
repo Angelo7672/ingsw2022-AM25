@@ -14,18 +14,23 @@ import java.util.HashMap;
 
 public class SpecialsSceneController implements SceneController{
 
-    private final String special1 = "/graphics/specials/CarteTot_front";
-    private final String special2 = "/graphics/specials/CarteTot_front2";
-    private final String special3 = "/graphics/specials/CarteTot_front3";
-    private final String special4 = "/graphics/specials/CarteTot_front4";
-    private final String special5 = "/graphics/specials/CarteTot_front5";
-    private final String special6 = "/graphics/specials/CarteTot_front6";
-    private final String special7 = "/graphics/specials/CarteTot_front7";
-    private final String special8 = "/graphics/specials/CarteTot_front8";
-    private final String special9 = "/graphics/specials/CarteTot_front9";
-    private final String special10 = "/graphics/specials/CarteTot_front10";
-    private final String special11 = "/graphics/specials/CarteTot_front11";
-    private final String special12 = "/graphics/specials/CarteTot_front12";
+    private final String special1 = "graphics/specials/CarteTOT_front1.jpg";
+    private final String special2 = "graphics/specials/CarteTOT_front2.jpg";
+    private final String special3 = "graphics/specials/CarteTot_front3.jpg";
+    private final String special4 = "graphics/specials/CarteTot_front4.jpg";
+    private final String special5 = "graphics/specials/CarteTot_front5.jpg";
+    private final String special6 = "graphics/specials/CarteTot_front6.jpg";
+    private final String special7 = "graphics/specials/CarteTot_front7.jpg";
+    private final String special8 = "graphics/specials/CarteTot_front8.jpg";
+    private final String special9 = "graphics/specials/CarteTot_front9.jpg";
+    private final String special10 = "graphics/specials/CarteTot_front10.jpg";
+    private final String special11 = "graphics/specials/CarteTot_front11.jpg";
+    private final String special12 = "graphics/specials/CarteTot_front12.jpg";
+    private final String GREENSTUDENT = "/graphics/wooden_pieces/greenStudent3D.png";
+    private final String REDSTUDENT = "/graphics/wooden_pieces/redStudent3D.png";
+    private final String YELLOWSTUDENT = "/graphics/wooden_pieces/yellowStudent3D.png";
+    private final String PINKSTUDENT = "/graphics/wooden_pieces/pinkStudent3D.png";
+    private final String BLUESTUDENT = "/graphics/wooden_pieces/blueStudent3D.png";
 
     private Exit proxy;
     private GUI gui;
@@ -78,6 +83,7 @@ public class SpecialsSceneController implements SceneController{
     @FXML private Label yellowLabel2;
     @FXML private Label yellowLabel3;
 
+
     public SpecialsSceneController(){
         specialChosen=-1;
     }
@@ -90,10 +96,12 @@ public class SpecialsSceneController implements SceneController{
             specials.put(i, specialFactory(specialsList.get(i)));
             specialsName.put(i, specialsList.get(i));
             specialsCost.put(i, cost.get(i));
+            if(specialsList.get(i)==1 || specialsList.get(i)==7 || specialsList.get(i)==11) showStudents(i);
         }
         special1View.setImage(specials.get(0));
         special2View.setImage(specials.get(1));
-        special2View.setImage(specials.get(2));
+        special3View.setImage(specials.get(2));
+        System.out.println(specials);
     }
 
     private Image specialFactory(int name){
@@ -124,8 +132,9 @@ public class SpecialsSceneController implements SceneController{
             pinkLabel1.setVisible(true);
             yellowImage1.setVisible(true);
             yellowLabel1.setVisible(true);
-            yellowImage1.setVisible(true);
-            yellowLabel1.setVisible(true);
+            blueImage1.setVisible(true);
+            blueLabel1.setVisible(true);
+
         }
         else if(specialIndex==1){
             greenImage2.setVisible(true);
@@ -136,10 +145,10 @@ public class SpecialsSceneController implements SceneController{
             pinkLabel2.setVisible(true);
             yellowImage2.setVisible(true);
             yellowLabel2.setVisible(true);
-            yellowImage2.setVisible(true);
-            yellowLabel2.setVisible(true);
+            blueImage2.setVisible(true);
+            blueLabel2.setVisible(true);
         }
-        else if(specialIndex==0){
+        else if(specialIndex==2){
             greenImage3.setVisible(true);
             greenLabel3.setVisible(true);
             redImage3.setVisible(true);
@@ -148,8 +157,8 @@ public class SpecialsSceneController implements SceneController{
             pinkLabel3.setVisible(true);
             yellowImage3.setVisible(true);
             yellowLabel3.setVisible(true);
-            yellowImage3.setVisible(true);
-            yellowLabel3.setVisible(true);
+            blueImage3.setVisible(true);
+            blueLabel3.setVisible(true);
         }
     }
 
@@ -186,6 +195,10 @@ public class SpecialsSceneController implements SceneController{
         }
     }
 
+    public void setNoEntry(int special, int value){
+
+    }
+
     @FXML
     public void setSpecialChosen(ActionEvent event){
         if(event.getSource()==special1Button){
@@ -204,21 +217,34 @@ public class SpecialsSceneController implements SceneController{
             try {
                 result = proxy.checkSpecial(specialChosen);
             }catch (IOException | ClassNotFoundException e ){}
-            if(result) {}
+            if(result) {
+                if(specialChosen!=2 && specialChosen!=4 && specialChosen!=6 && specialChosen!=8) useSpecial(specialChosen);
+            }
             else showErrorMessage();
+        }
+    }
+
+    private void useSpecial(int special){
+        if(special == 1) {
+            //sposta studenti da carta a isola
+        }
+        else if(special == 3 || special == 5 || special == 9 || special == 12){
+            gui.useSpecial(special);
+        }
+        else if(special == 7){
+            //scegli studenti da carta a entrata
+        }
+        else if(special == 10){
+            //sposta studenti da entrata a tavolo
+        }
+        else if(special == 11){
+            //da carta a sala
         }
     }
 
     private void showErrorMessage(){
         errorMessage.setVisible(true);
     }
-
-    @FXML
-    public void NOPressed(){
-
-    }
-
-
 
 
     @Override

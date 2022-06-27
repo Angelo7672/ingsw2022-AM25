@@ -6,6 +6,8 @@ import it.polimi.ingsw.server.answer.viewmessage.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class View {
 
@@ -26,7 +28,7 @@ public class View {
     private PlayedCardListener playedCardListener;
     private ProfessorsListener professorsListener;
     private SpecialListener specialListener;
-    private NoEntryListener noEntryListener;
+    private NoEntryClientListener noEntryListener;
     private SpecialStudentsListener specialStudentsListener;
     private StudentsListener studentsListener;
     private WinnerListener winnerListener;
@@ -228,13 +230,28 @@ public class View {
             specialListener.notifyIncreasedCost(specialIndex, cost);
         }
     }
+    public boolean specialSet(){
+        if(specials.size()==3) return true;
+        return false;
+    }
     public void specialComplete(){
         ArrayList<Integer> specialsName = new ArrayList<>();
         ArrayList<Integer> specialsCost = new ArrayList<>();
+        ArrayList<Special> tempList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             specialsName.add(specials.get(i).getName());
-            specialsCost.add(specials.get(i).getCost());
         }
+        Collections.sort(specialsName);
+        for (int i = 0; i < 3; i++) {
+            for(int j=0; j<3; j++){
+                if(specialsName.get(i)==specials.get(j).getName()){
+                    tempList.add(specials.get(j));
+                    specialsCost.add(specials.get(j).getCost());
+                    break;
+                }
+            }
+        }
+        specials = tempList;
         specialListener.notifySpecialList(specialsName, specialsCost);
     }
     public void setSpecialStudents(int color, int newValue, int special){
@@ -251,7 +268,7 @@ public class View {
             }
         }
         specials.get(special).setNoEntry(noEntry);
-        noEntryListener.notifyNoEntry(noEntry);
+        noEntryListener.notifyNoEntry(special, noEntry);
     }
 
     public int getSpecialCost(int special){return specials.get(special).getCost();}
@@ -302,7 +319,7 @@ public class View {
         this.specialListener = specialListener;
     }
     public void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener){this.specialStudentsListener = specialStudentsListener;};
-    public void setNoEntryListener(NoEntryListener noEntryListener){this.noEntryListener = noEntryListener;}
+    public void setNoEntryListener(NoEntryClientListener noEntryListener){this.noEntryListener = noEntryListener;}
     public void setStudentsListener(StudentsListener studentsListener) {
         this.studentsListener = studentsListener;
     }

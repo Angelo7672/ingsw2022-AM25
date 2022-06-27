@@ -31,8 +31,7 @@ import java.util.Set;
 
 public class GUI extends Application implements TowersListener, ProfessorsListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, UserInfoListener,
-        SpecialStudentsListener, SpecialListener, DisconnectedListener, ServerOfflineListener, WinnerListener,
-        NoEntryListener{
+        SpecialStudentsListener, NoEntryClientListener, SpecialListener, DisconnectedListener, ServerOfflineListener, WinnerListener{
 
     private static Exit proxy;
     private View view;
@@ -60,6 +59,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected static final String CARDS = "CardsScene.fxml";
     protected static final String CLOUDS = "CloudsScene.fxml";
     protected static final String SPECIALS = "SpecialsScene.fxml";
+    protected static final String SPECIALS9OR12 = "Special9or12Scene.fxml";
     protected static final String GAMEOVER = "GameOverScene.fxml";
     protected PlayerConstants constants;
     protected boolean isMainScene;
@@ -193,7 +193,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     //called when the GUI is launched, load all the scenes in advance, mapping them and setting the controllers
     public void scenesSetup() {
-        String[] scenes = new String[]{SAVED, LOGINRESTORE, SETUP, LOGIN, MAIN, CARDS, WAITING, CLOUDS, SPECIALS, GAMEOVER};
+        String[] scenes = new String[]{SAVED, LOGINRESTORE, SETUP, LOGIN, MAIN, CARDS, WAITING, CLOUDS, SPECIALS, SPECIALS9OR12, GAMEOVER};
         try {
             for (String scene : scenes) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + scene));
@@ -254,7 +254,22 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 cloudsSceneController.enableConfirm();
                 loadScene(CLOUDS);
             }
+        }
+    }
 
+    public void useSpecial(int special){
+        if(special == 3 ){
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.setActionAllowed(3);
+        }
+        else if(special == 5){
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.setActionAllowed(4);
+        }
+        else if(special == 9||special ==12){
+            Special9or12SceneController controller = (Special9or12SceneController) sceneControllersMap.get(SPECIALS9OR12);
+            controller.setSpecial(special);
+            loadScene(SPECIALS9OR12);
         }
     }
 
@@ -512,7 +527,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void notifySpecialList(ArrayList<Integer> specialList, ArrayList<Integer> cost) {
         Platform.runLater(() -> {
             System.out.println("NOTIFY special list");
-            SpecialsSceneController controller = new SpecialsSceneController();
+            SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
             controller.initializedSpecialsScene(specialList, cost);
         });
 
@@ -521,7 +536,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     @Override
     public void notifyIncreasedCost(int specialRef, int newCost) {
         Platform.runLater(() -> {
-            SpecialsSceneController controller = new SpecialsSceneController();
+            SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
             controller.setCoins(specialRef, newCost);
         });
     }
@@ -611,13 +626,21 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void specialStudentsNotify(int special, int color, int value) {
-
+        System.out.println("NOTIFY SPECIAL STUDENT");
+        Platform.runLater(() -> {
+            SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
+            controller.setStudent(special, color, value);
+        });
     }
 
 
     @Override
-    public void notifyNoEntry(int newValue) {
-
+    public void notifyNoEntry(int special, int newValue) {
+        System.out.println("NOTIFY NO ENTRY");
+        Platform.runLater(() -> {
+            SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
+            controller.setNoEntry(special, newValue);
+        });
     }
 
 
