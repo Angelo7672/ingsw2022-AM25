@@ -30,7 +30,7 @@ import java.util.Locale;
 import java.util.Set;
 
 public class GUI extends Application implements TowersListener, ProfessorsListener, PlayedCardListener,
-        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, UserInfoListener,
+        MotherPositionListener, IslandListener, CoinsListener, StudentsListener, RestoreCardsListener, InhibitedListener, UserInfoListener,
         SpecialStudentsListener, NoEntryClientListener, SpecialListener, DisconnectedListener, ServerOfflineListener, WinnerListener, SoldOutListener{
 
     private static Exit proxy;
@@ -281,7 +281,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
 
-
     private class GetPhaseService extends Service<String>{
 
         @Override
@@ -433,7 +432,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     view.setSpecialStudentsListener(gui);
                     view.setSpecialListener(gui);
                     view.setWinnerListener(gui);
-
+                    view.setRestoreCardsListener(gui);
                     return view;
                 }
             };
@@ -643,6 +642,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
        // });
     }
 
+    @Override
+    public void restoreCardsNotify(ArrayList<String> hand) {
+        Platform.runLater(() -> {
+           CardsSceneController controller = (CardsSceneController) sceneControllersMap.get(CARDS);
+           controller.restoreCards(hand);
+        });
+
+    }
 
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {

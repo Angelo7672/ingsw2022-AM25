@@ -18,7 +18,7 @@ public class View {
     private ArrayList<Cloud> clouds;
     private ArrayList<Hand> hands;
     private ArrayList<Special> specials; //specials keeps the 3 special character for the game
-    private ArrayList<Assistant> cards;
+    private ArrayList<String> cards;
     private boolean expertMode;
     private TowersListener towersListener;
     private CoinsListener coinsListener;
@@ -33,6 +33,7 @@ public class View {
     private StudentsListener studentsListener;
     private WinnerListener winnerListener;
     private UserInfoListener userInfoListener;
+    private RestoreCardsListener restoreCardsListener;
     private int maxStepsMotherNature;
     private int motherNaturePos;
     private String winner;
@@ -76,8 +77,8 @@ public class View {
             schoolBoards.add(new SchoolBoard(8,"BLACK"));
             schoolBoards.add(new SchoolBoard(0,"BLACK"));
         }
-        cards.add(Assistant.LION); cards.add(Assistant.GOOSE); cards.add(Assistant.CAT); cards.add(Assistant.EAGLE); cards.add(Assistant.FOX);
-        cards.add(Assistant.LIZARD); cards.add(Assistant.OCTOPUS); cards.add(Assistant.DOG); cards.add(Assistant.ELEPHANT); cards.add(Assistant.TURTLE);
+        cards.add("LION"); cards.add("GOOSE"); cards.add("CAT"); cards.add("EAGLE"); cards.add("FOX");
+        cards.add("LIZARD"); cards.add("OCTOPUS"); cards.add("DOG"); cards.add("ELEPHANT"); cards.add("TURTLE");
     }
 
     //Mother
@@ -181,37 +182,56 @@ public class View {
         hands.get(playerRef).setLastCard(card);
         this.playedCardListener.notifyPlayedCard(playerRef,card);
     }
+    public Assistant getAssistant(String name){
+        switch (name){
+            case "LION" -> {
+                return Assistant.LION;
+            }
+            case "GOOSE" -> {
+                return Assistant.GOOSE;
+            }
+            case "CAT" -> {
+                return Assistant.CAT;
+            }
+            case "EAGLE" -> {
+                return Assistant.EAGLE;
+            }
+            case "FOX" -> {
+                return Assistant.FOX;
+            }
+            case "LIZARD" -> {
+                return Assistant.LIZARD;
+            }
+            case "OCTOPUS" -> {
+                return Assistant.OCTOPUS;
+            }
+            case "DOG" -> {
+                return Assistant.DOG;
+            }
+            case "ELEPHANT" -> {
+                return Assistant.ELEPHANT;
+            }
+            case "TURTLE" -> {
+                return Assistant.TURTLE;
+            }
+        }
+        return Assistant.NONE;
+    }
     public void setNumberOfCards(int playerRef, int numberOfCards){
         hands.get(playerRef).setNumberOfCards(numberOfCards);
     }
     public void setCards(String card){
-        int index=-1;
-        for (int i = 0; i < cards.size(); i++) {
-            if(cards.get(i).toString().equalsIgnoreCase(card)){
-                index = i;
-                break;
-            }
-        }
-        cards.remove(index);
+        cards.remove(card);
     }
     public void restoreCards(ArrayList<String> hand){
-        for (int i = 0; i < cards.size(); i++) {
-            boolean thereIs = false;
-            for(int j=0; j<hand.size(); j++){
-                if(cards.get(i).toString().equals(hand.get(j))) {
-                    thereIs = true;
-                    break;
-                }
-            }
-            if(!thereIs) {
-                cards.remove(i);
-                i--;
-            }
-        }
+        ArrayList<String> cardRemoved = cards;
+        cards = hand;
+        cardRemoved.removeAll(cards);
+        restoreCardsListener.restoreCardsNotify(cardRemoved);
     }
 
     public String getLastCard(int playerRef){return hands.get(playerRef).getLastCard();}
-    public ArrayList<Assistant> getCards(){ return cards; }
+    public ArrayList<String> getCards(){ return cards; }
     public int getNumberOfCards(int playerRef){return hands.get(playerRef).getNumberOfCards();}
 
     //Special
@@ -314,6 +334,7 @@ public class View {
     }
     public void setMotherPositionListener(MotherPositionListener motherPositionListener) {this.motherPositionListener = motherPositionListener;}
     public void setPlayedCardListener(PlayedCardListener playedCardListener) {this.playedCardListener = playedCardListener;}
+    public void setRestoreCardsListener(RestoreCardsListener restoreCardsListener){this.restoreCardsListener = restoreCardsListener;}
     public void setProfessorsListener(ProfessorsListener professorsListener) {this.professorsListener = professorsListener;}
     public void setSpecialListener(SpecialListener specialListener) {
         this.specialListener = specialListener;

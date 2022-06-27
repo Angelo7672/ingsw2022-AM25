@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CardsSceneController implements SceneController{
@@ -76,6 +77,12 @@ public class CardsSceneController implements SceneController{
                 showErrorMessage();
 
 
+        }
+    }
+
+    public void restoreCards(ArrayList<String> card){
+        for (int i = 0; i < card.size(); i++) {
+            disableCard(card.get(i));
         }
     }
 

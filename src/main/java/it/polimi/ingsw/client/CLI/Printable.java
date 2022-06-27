@@ -202,8 +202,8 @@ public class Printable {
 
         System.out.println(UNDERLINE+"YOUR CARDS"+ANSI_RESET);
         for (int i = 0; i < view.getCards().size(); i++) {
-            System.out.println("\t"+view.getCards().get(i).name()+" value: "+view.getCards().get(i).getValue()+
-                    " movement: "+view.getCards().get(i).getMovement());
+            System.out.println("\t"+view.getCards().get(i)+" value: "+view.getAssistant(view.getCards().get(i)).getValue()+
+                    " movement: "+view.getAssistant(view.getCards().get(i)).getMovement());
         }
 
         if(view.getExpertMode()){

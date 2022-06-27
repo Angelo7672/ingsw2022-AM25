@@ -30,7 +30,7 @@ public class Receiver {
 
     public Receiver(Object lock2, Socket socket, View view) throws IOException {
         this.socket = socket;
-        socket.setSoTimeout(15000);
+        //socket.setSoTimeout(15000);
         this.inputStream = new ObjectInputStream(socket.getInputStream());
         this.view = view;
         answersList = new ArrayList<>();
@@ -44,6 +44,7 @@ public class Receiver {
     public void setViewInitialized(){
         initializedView = true;
         lock2.notifyAll();
+        System.out.println("lock2 notify");
     }
 
     public void setDisconnectedListener(DisconnectedListener disconnectedListener){
@@ -103,12 +104,10 @@ public class Receiver {
                             final Answer tmpMsg = tmp;
                             Thread thread = new Thread(() -> {
                                 synchronized (lock2) {
-                                    if (!initializedView) {
-                                        try {
-                                            lock2.wait();
-                                        } catch (InterruptedException e) {}
-                                        view.setUserInfo(((UserInfoAnswer) tmpMsg).getPlayerRef(), ((UserInfoAnswer) tmpMsg).getCharacter(), ((UserInfoAnswer) tmpMsg).getNickname());
-                                    }
+                                    try {
+                                        lock2.wait();
+                                    } catch (InterruptedException e) {}
+                                    view.setUserInfo(((UserInfoAnswer) tmpMsg).getPlayerRef(), ((UserInfoAnswer) tmpMsg).getCharacter(), ((UserInfoAnswer) tmpMsg).getNickname());
                                 }
                             }); thread.start();
                         } else{
@@ -151,7 +150,9 @@ public class Receiver {
                                 }
                             });thread.start();
                         }
-                        else view.restoreCards(((HandAfterRestoreAnswer) tmp).getHand());
+                        else {
+                            view.restoreCards(((HandAfterRestoreAnswer) tmp).getHand());
+                        }
                     } else if (tmp instanceof SchoolStudentAnswer) {
                         if (!initializedView) {
                             final Answer tmpMsg = tmp;
@@ -326,47 +327,73 @@ public class Receiver {
                                     }
                                 }
                             }); thread.start();
-                            } else view.setSpecial(((SetSpecialAnswer) tmp).getSpecialRef(), ((SetSpecialAnswer) tmp).getCost());
+                            } else {
+                                synchronized (specialLock) {
+                                    if (!view.specialSet()) {
+                                    try {
+                                        specialLock.wait();
+                                    } catch (InterruptedException e) {}
+                                }
+                            }
+                            view.setSpecial(((SetSpecialAnswer) tmp).getSpecialRef(), ((SetSpecialAnswer) tmp).getCost());
+                        }
                         } else if (tmp instanceof InfoSpecial1or7or11Answer) {
                         if (!initializedView) {
                             final Answer tmpMsg = tmp;
                             Thread thread = new Thread(() -> {
-                                synchronized (specialLock) {
-                                    if (!view.specialSet()) {
+                                if (!view.specialSet()) {
+                                    synchronized (specialLock) {
                                         try {
                                             specialLock.wait();
                                         } catch (InterruptedException e) {}
+                                    }
+                                }
+                                synchronized (lock2) {
+                                    try {
+                                        lock2.wait();
+                                    } catch (InterruptedException e) {}
+                                    view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmpMsg).getStudentColor(), ((InfoSpecial1or7or11Answer) tmpMsg).getValue(), ((InfoSpecial1or7or11Answer) tmpMsg).getSpecialIndex());
+                                }
+                            }); thread.start();
+                        } else{
+                            if (!view.specialSet()) {
+                                synchronized (specialLock) {
+                                    try {
+                                        specialLock.wait();
+                                    } catch (InterruptedException e) {}
+                                }
+                            }
+                            view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmp).getStudentColor(), ((InfoSpecial1or7or11Answer) tmp).getValue(), ((InfoSpecial1or7or11Answer) tmp).getSpecialIndex());
+
+                        }
+                    } else if (tmp instanceof InfoSpecial5Answer) {
+                            if (!initializedView) {
+                                final Answer tmpMsg = tmp;
+                                Thread thread = new Thread(() -> {
+                                    if (!view.specialSet()) {
+                                        synchronized (specialLock) {
+                                            try {
+                                                specialLock.wait();
+                                            } catch (InterruptedException e) {}
+                                        }
                                     }
                                     synchronized (lock2) {
                                         try {
                                             lock2.wait();
                                         } catch (InterruptedException e) {}
-                                        view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmpMsg).getStudentColor(), ((InfoSpecial1or7or11Answer) tmpMsg).getValue(), ((InfoSpecial1or7or11Answer) tmpMsg).getSpecialIndex());
-                                    }
-                                }
-                            }); thread.start();
-                        } else
-                            view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmp).getStudentColor(), ((InfoSpecial1or7or11Answer) tmp).getValue(), ((InfoSpecial1or7or11Answer) tmp).getSpecialIndex());
-                    } else if (tmp instanceof InfoSpecial5Answer) {
-                            if (!initializedView) {
-                                final Answer tmpMsg = tmp;
-                                Thread thread = new Thread(() -> {
-                                    synchronized (specialLock) {
-                                        if (!view.specialSet()) {
-                                            try {
-                                                specialLock.wait();
-                                            } catch (InterruptedException e) {}
-                                        }
-                                        synchronized (lock2) {
-                                            try {
-                                                lock2.wait();
-                                            } catch (InterruptedException e) {
-                                            }
-                                            view.setNoEntry(((InfoSpecial5Answer) tmpMsg).getCards());
-                                        }
+                                        view.setNoEntry(((InfoSpecial5Answer) tmpMsg).getCards());
                                     }
                                 }); thread.start();
-                            } else view.setNoEntry(((InfoSpecial5Answer) tmp).getCards());
+                            } else {
+                                if (!view.specialSet()) {
+                                    synchronized (specialLock) {
+                                        try {
+                                            specialLock.wait();
+                                        } catch (InterruptedException e) {}
+                                    }
+                                }
+                                view.setNoEntry(((InfoSpecial5Answer) tmp).getCards());
+                            }
                     } else if (tmp instanceof DisconnectedAnswer) {
                         disconnected = true;
                         answersTmpList.clear();

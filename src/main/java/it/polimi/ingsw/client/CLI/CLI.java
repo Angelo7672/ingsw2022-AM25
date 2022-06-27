@@ -697,7 +697,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
 
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
-        if(constants.isStartGame()) {
+        if(view.getExpertMode() && constants.isStartGame()) {
             synchronized (lock) {
                 printable.printCoins(playerRef);
             }

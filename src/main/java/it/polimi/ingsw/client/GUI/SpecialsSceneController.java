@@ -163,6 +163,7 @@ public class SpecialsSceneController implements SceneController{
         }
     }
 
+    //da sistemare per restore
     protected void setCoins(int specialIndex, int newValue){
         if(specialIndex==0) {
             special1Cost.setText(Integer.toString(newValue-specialsCost.get(specialIndex)));
