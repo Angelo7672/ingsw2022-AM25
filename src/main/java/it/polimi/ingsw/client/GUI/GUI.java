@@ -536,7 +536,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     public void setConstants(String phase){
         switch(phase){
-            case "CardPlayed" -> constants.setCardPlayed(true);
+            case "CardPlayed" -> {
+                constants.setCardPlayed(true);
+            }
+            case "StudentsMoved" -> constants.setStudentMoved(true);
+            case "MotherNatureMoved" -> constants.setMotherMoved(true);
             case "SpecialUsed" -> {
                 constants.setSpecialUsed(true);
                 SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);

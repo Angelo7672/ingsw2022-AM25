@@ -134,7 +134,6 @@ public class SpecialsSceneController implements SceneController{
         return null;
     }
 
-    //da sistemare per restore
     protected void setCoins(int specialIndex, int newValue){
         if(specialIndex==0) {
             special1Cost.setText(Integer.toString(newValue-specialsCost.get(specialIndex)));
@@ -182,6 +181,7 @@ public class SpecialsSceneController implements SceneController{
             specialChosen = specialsName.get(2);
         }
     }
+
     @FXML
     public void setStudentColor(ActionEvent event){
         if(event.getSource()==paneSpecial1.getChildren().get(0) || event.getSource()==paneSpecial2.getChildren().get(0) || event.getSource()==paneSpecial3.getChildren().get(0))
@@ -224,7 +224,7 @@ public class SpecialsSceneController implements SceneController{
         if(specialChosen==7 && !studentsChosen.isEmpty()){
             gui.useSpecial(specialChosen, studentsChosen);
         }
-        else if(specialChosen==11){
+        else if(specialChosen==11 && studentChosen != -1){
             boolean result=false;
             try {
                 result = proxy.useSpecial(11, studentChosen);
@@ -236,8 +236,12 @@ public class SpecialsSceneController implements SceneController{
             }
             else showErrorMessage();
         }
+        else if(specialChosen == 1 && studentChosen != -1){
+            gui.useSpecial(specialChosen, studentChosen);
+        }
         else showErrorMessage();
     }
+
     @FXML
     public void addButtonPressed(ActionEvent event){
         if(studentChosen!=-1 && studentsChosen.size()<3)
@@ -248,12 +252,13 @@ public class SpecialsSceneController implements SceneController{
         if(special == 1) {
             //sposta studenti da carta a isola
             disableImage(specialsName.indexOf(1));
+            confirmSpecialButton.setVisible(true);
+            questionLabel.setText("Which student do you want to move?");
         }
         else if(special == 3 || special == 5 || special == 9 || special == 12){
             gui.useSpecial(special);
         }
         else if(special == 7){
-            System.out.println("special 7");
             //scegli studenti da carta a entrata
             disableImage(specialsName.indexOf(7));
             confirmSpecialButton.setVisible(true);
@@ -311,10 +316,6 @@ public class SpecialsSceneController implements SceneController{
     }
 
     private void showErrorMessage(){
-        special3Cost.setVisible(false);
-        special3View.setVisible(false);
-        special3Button.setVisible(false);
-        coinSpecial3.setVisible(false);
         errorMessage.setVisible(true);
     }
 

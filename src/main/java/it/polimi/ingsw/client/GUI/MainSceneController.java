@@ -203,6 +203,7 @@ public class MainSceneController implements SceneController {
                             errorLabel.setVisible(false);
                         } else if(result.equalsIgnoreCase("transfer complete")) {
                         System.out.println("movement successful, fine");
+                        gui.setConstants("StudentsMoved");
                         setActionAllowed(1);
                     } else {
                         System.out.println("mossa non consentita");
@@ -313,6 +314,7 @@ public class MainSceneController implements SceneController {
                     String result = proxy.moveMotherNature(motherMovement);
                     if(result.equalsIgnoreCase("ok")){
                         errorLabel.setVisible(false);
+                        gui.setConstants("MotherNatureMoved");
                         setActionAllowed(2);
                     } else {
                         errorLabel.setText("Error, move not allowed!");

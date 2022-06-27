@@ -66,6 +66,7 @@ public class CardsSceneController implements SceneController{
         protected void succeeded(){
             String result = this.getValue();
             if (result.equalsIgnoreCase("ok")) {
+                gui.setConstants("CardPlayed");
                 errorMessage.setVisible(false);
                 disableCard(playedCard);
                 disableConfirm();
@@ -113,7 +114,7 @@ public class CardsSceneController implements SceneController{
 
     @FXML
     void confirmPressed(ActionEvent event) {
-        if (playedCard != "") {
+        if (!playedCard.equals("")) {
             PlayCardService playCardService = new PlayCardService();
             playCardService.start();
         } else {
