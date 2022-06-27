@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class View {
 
@@ -221,7 +222,7 @@ public class View {
         hands.get(playerRef).setNumberOfCards(numberOfCards);
     }
     public void setCards(String card){
-        cards.remove(card);
+        cards.remove(card.toUpperCase());
     }
     public void restoreCards(ArrayList<String> hand){
         ArrayList<String> cardRemoved = cards;

@@ -14,7 +14,8 @@ public class RoundSpecial10 extends RoundStrategy{
 
     @Override
     public boolean effect(int playerRef, ArrayList<Integer> entranceStudent, ArrayList<Integer> tableStudent){
-        if(playerManager.checkStudentsEntranceForSpecial(entranceStudent, playerRef) && playerManager.checkStudentsTableForSpecial(tableStudent,playerRef)) {
+        if(playerManager.checkStudentsEntranceForSpecial(entranceStudent, playerRef) && playerManager.checkStudentsTableForSpecial(tableStudent,playerRef)
+                && entranceStudent.size()==tableStudent.size()) {
             for (int i = 0; i < entranceStudent.size(); i++) {
                 try {
                     playerManager.transferStudent(playerRef, entranceStudent.get(i), true, false);

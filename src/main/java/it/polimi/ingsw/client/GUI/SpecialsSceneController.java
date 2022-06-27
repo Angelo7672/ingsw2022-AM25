@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,38 +37,23 @@ public class SpecialsSceneController implements SceneController{
     private Exit proxy;
     private GUI gui;
     private HashMap<Integer, Image> specials;
-    private HashMap<Integer, Integer> specialsName;
+    private ArrayList<Integer> specialsName;
     private HashMap<Integer, Integer> specialsCost;
     private int specialChosen;
+    private int studentChosen;
+    private ArrayList<Integer> studentsChosen;
 
     @FXML private Button confirmButton;
-    @FXML private ImageView blueImage1;
-    @FXML private ImageView blueImage2;
-    @FXML private ImageView blueImage3;
-    @FXML private Label blueLabel1;
-    @FXML private Label blueLabel2;
-    @FXML private Label blueLabel3;
+    @FXML private Button addButton;
     @FXML private ImageView coinSpecial1;
+    @FXML private ImageView coinSpecial2;
+    @FXML private ImageView coinSpecial3;
+    @FXML private Button confirmSpecialButton;
     @FXML private Label errorMessage;
-    @FXML private ImageView greenImage1;
-    @FXML private ImageView greenImage2;
-    @FXML private ImageView greenImage3;
-    @FXML private Label greenLabel1;
-    @FXML private Label greenLabel2;
-    @FXML private Label greenLabel3;
-    @FXML private Button noButton;
-    @FXML private ImageView pinkImage1;
-    @FXML private ImageView pinkImage2;
-    @FXML private ImageView pinkImage3;
-    @FXML private Label pinkLabel1;
-    @FXML private Label pinkLabel2;
-    @FXML private Label pinkLabel3;
-    @FXML private ImageView redImage1;
-    @FXML private ImageView redImage2;
-    @FXML private ImageView redImage3;
-    @FXML private Label redLabel1;
-    @FXML private Label redLabel2;
-    @FXML private Label redLabel3;
+    @FXML private AnchorPane paneSpecial1;
+    @FXML private AnchorPane paneSpecial2;
+    @FXML private AnchorPane paneSpecial3;
+    @FXML private Label questionLabel;
     @FXML private Button special1Button;
     @FXML private Label special1Cost;
     @FXML private ImageView special1View;
@@ -77,32 +63,54 @@ public class SpecialsSceneController implements SceneController{
     @FXML private Button special3Button;
     @FXML private Label special3Cost;
     @FXML private ImageView special3View;
-    @FXML private ImageView yellowImage1;
-    @FXML private ImageView yellowImage2;
-    @FXML private ImageView yellowImage3;
-    @FXML private Label yellowLabel1;
-    @FXML private Label yellowLabel2;
-    @FXML private Label yellowLabel3;
 
 
     public SpecialsSceneController(){
         specialChosen=-1;
+        studentChosen=-1;
     }
 
     public void initializedSpecialsScene(ArrayList<Integer> specialsList, ArrayList<Integer> cost){
         this.specials = new HashMap<>();
-        this.specialsName = new HashMap<>();
+        this.specialsName = new ArrayList<>();
         this.specialsCost = new HashMap<>();
         for (int i = 0; i < specialsList.size(); i++) {
             specials.put(i, specialFactory(specialsList.get(i)));
-            specialsName.put(i, specialsList.get(i));
+            specialsName.add(i, specialsList.get(i));
             specialsCost.put(i, cost.get(i));
             if(specialsList.get(i)==1 || specialsList.get(i)==7 || specialsList.get(i)==11) showStudents(i);
         }
         special1View.setImage(specials.get(0));
         special2View.setImage(specials.get(1));
         special3View.setImage(specials.get(2));
-        System.out.println(specials);
+    }
+
+    public void resetScene(){
+        confirmButton.setVisible(true);
+        special1Cost.setVisible(true);
+        special1View.setVisible(true);
+        special1Button.setVisible(true);
+        coinSpecial1.setVisible(true);
+        paneSpecial1.setVisible(true);
+        confirmButton.setVisible(true);
+        special2Cost.setVisible(true);
+        special2View.setVisible(true);
+        special2Button.setVisible(true);
+        coinSpecial2.setVisible(true);
+        paneSpecial2.setVisible(true);
+        confirmButton.setVisible(true);
+        special3Cost.setVisible(true);
+        special3View.setVisible(true);
+        special3Button.setVisible(true);
+        coinSpecial3.setVisible(true);
+        paneSpecial3.setVisible(true);
+        addButton.setVisible(false);
+        confirmSpecialButton.setVisible(false);
+        specialChosen = -1;
+        studentChosen = -1;
+        for (int i = 0; i < 3; i++) {
+            showStudents(i);
+        }
     }
 
     private Image specialFactory(int name){
@@ -123,85 +131,38 @@ public class SpecialsSceneController implements SceneController{
         return null;
     }
 
-    private void showStudents(int specialIndex){
-        if(specialIndex==0){
-            greenImage1.setVisible(true);
-            greenLabel1.setVisible(true);
-            redImage1.setVisible(true);
-            redLabel1.setVisible(true);
-            pinkImage1.setVisible(true);
-            pinkLabel1.setVisible(true);
-            yellowImage1.setVisible(true);
-            yellowLabel1.setVisible(true);
-            blueImage1.setVisible(true);
-            blueLabel1.setVisible(true);
-
-        }
-        else if(specialIndex==1){
-            greenImage2.setVisible(true);
-            greenLabel2.setVisible(true);
-            redImage2.setVisible(true);
-            redLabel2.setVisible(true);
-            pinkImage2.setVisible(true);
-            pinkLabel2.setVisible(true);
-            yellowImage2.setVisible(true);
-            yellowLabel2.setVisible(true);
-            blueImage2.setVisible(true);
-            blueLabel2.setVisible(true);
-        }
-        else if(specialIndex==2){
-            greenImage3.setVisible(true);
-            greenLabel3.setVisible(true);
-            redImage3.setVisible(true);
-            redLabel3.setVisible(true);
-            pinkImage3.setVisible(true);
-            pinkLabel3.setVisible(true);
-            yellowImage3.setVisible(true);
-            yellowLabel3.setVisible(true);
-            blueImage3.setVisible(true);
-            blueLabel3.setVisible(true);
-        }
-    }
-
     //da sistemare per restore
     protected void setCoins(int specialIndex, int newValue){
         if(specialIndex==0) {
             special1Cost.setText(Integer.toString(newValue-specialsCost.get(specialIndex)));
-            if(special1Cost.toString().equals("0")) special1Cost.setVisible(true);
+            if(!special1Cost.toString().equals("0")) {
+                special1Cost.setVisible(true);
+                coinSpecial1.setVisible(true);
+            }
         }
         else if(specialIndex==1) {
             special2Cost.setText(Integer.toString(newValue-specialsCost.get(specialIndex)));
-            if(special2Cost.toString().equals("0")) special2Cost.setVisible(true);
+            if(!special2Cost.toString().equals("0")) {
+                special2Cost.setVisible(true);
+                coinSpecial2.setVisible(true);
+            }
         }
         else if(specialIndex==2) {
             special3Cost.setText(Integer.toString(newValue-specialsCost.get(specialIndex)));
-            if(special3Cost.toString().equals("0")) special3Cost.setVisible(true);
+            if(!special3Cost.toString().equals("0")) {
+                special3Cost.setVisible(true);
+                coinSpecial3.setVisible(true);
+            }
         }
     }
 
     protected void setStudent(int specialIndex, int color, int value){
-        if(specialIndex==0) {
-            if(color==0) greenLabel1.setText(Integer.toString(value));
-            else if(color==1) redLabel1.setText(Integer.toString(value));
-            else if(color==2) yellowLabel1.setText(Integer.toString(value));
-            else if(color==3) pinkLabel1.setText(Integer.toString(value));
-            else if(color==4) blueLabel1.setText(Integer.toString(value));
-
-        }
-        else if(specialIndex==1) {
-            if(color==0) greenLabel2.setText(Integer.toString(value));
-            else if(color==1) redLabel2.setText(Integer.toString(value));
-            else if(color==2) yellowLabel2.setText(Integer.toString(value));
-            else if(color==3) pinkLabel2.setText(Integer.toString(value));
-            else if(color==4) blueLabel2.setText(Integer.toString(value));
-        }
-        else if(specialIndex==2) {
-            if(color==0) greenLabel3.setText(Integer.toString(value));
-            else if(color==1) redLabel3.setText(Integer.toString(value));
-            else if(color==2) yellowLabel3.setText(Integer.toString(value));
-            else if(color==3) pinkLabel3.setText(Integer.toString(value));
-            else if(color==4) blueLabel3.setText(Integer.toString(value));
-        }
+        if(specialIndex==0)
+            ((Label)paneSpecial1.getChildren().get(color)).setText(Integer.toString(value));
+        else if(specialIndex==1)
+            ((Label)paneSpecial2.getChildren().get(color)).setText(Integer.toString(value));
+        else if(specialIndex==2)
+            ((Label)paneSpecial3.getChildren().get(color)).setText(Integer.toString(value));
     }
 
     public void setNoEntry(int special, int value){
@@ -218,6 +179,19 @@ public class SpecialsSceneController implements SceneController{
             specialChosen = specialsName.get(2);
         }
     }
+    @FXML
+    public void setStudentColor(ActionEvent event){
+        if(event.getSource()==paneSpecial1.getChildren().get(0) || event.getSource()==paneSpecial2.getChildren().get(0) || event.getSource()==paneSpecial3.getChildren().get(0))
+            studentChosen = 0;
+        else if(event.getSource()==paneSpecial1.getChildren().get(1) || event.getSource()==paneSpecial2.getChildren().get(1) || event.getSource()==paneSpecial3.getChildren().get(1))
+        studentChosen = 1;
+        else if(event.getSource()==paneSpecial1.getChildren().get(2) || event.getSource()==paneSpecial2.getChildren().get(2) || event.getSource()==paneSpecial3.getChildren().get(2))
+            studentChosen = 2;
+        else if(event.getSource()==paneSpecial1.getChildren().get(3) || event.getSource()==paneSpecial2.getChildren().get(3) || event.getSource()==paneSpecial3.getChildren().get(3))
+            studentChosen = 3;
+        else if(event.getSource()==paneSpecial1.getChildren().get(4) || event.getSource()==paneSpecial2.getChildren().get(4) || event.getSource()==paneSpecial3.getChildren().get(4))
+            studentChosen = 4;
+    }
 
     @FXML
     public void confirmPressed(ActionEvent event) {
@@ -225,15 +199,16 @@ public class SpecialsSceneController implements SceneController{
             boolean result = false;
             try {
                 result = proxy.checkSpecial(specialChosen);
+                System.out.println(result);
             }catch (IOException | ClassNotFoundException e ){}
             if(result) {
                 if(specialChosen!=2 && specialChosen!=4 && specialChosen!=6 && specialChosen!=8) {
+                    System.out.println("special param");
                     useSpecial(specialChosen);
-                    Stage stage = (Stage) confirmButton.getScene().getWindow();
-                    stage.close();
                 }
                 else {
                     gui.setConstants("SpecialUsed");
+                    resetScene();
                     Stage stage = (Stage) confirmButton.getScene().getWindow();
                     stage.close();
                 }
@@ -242,25 +217,90 @@ public class SpecialsSceneController implements SceneController{
         }
     }
 
+    @FXML
+    public void confirmSpecialButtonPressed(ActionEvent event) {
+        if(!studentsChosen.isEmpty()){
+            gui.useSpecial(specialChosen);
+        }
+        else showErrorMessage();
+    }
+    @FXML
+    public void addButtonPressed(ActionEvent event){
+        if(studentChosen!=-1 && studentsChosen.size()<3)
+            studentsChosen.add(studentChosen);
+    }
+
     private void useSpecial(int special){
         if(special == 1) {
             //sposta studenti da carta a isola
+            disableImage(specialsName.indexOf(1));
         }
         else if(special == 3 || special == 5 || special == 9 || special == 12){
             gui.useSpecial(special);
         }
         else if(special == 7){
+            System.out.println("special 7");
             //scegli studenti da carta a entrata
+            disableImage(specialsName.indexOf(7));
+            showStudents(specialsName.indexOf(7));
+            confirmSpecialButton.setVisible(true);
+            addButton.setVisible(true);
+            questionLabel.setText("Which student do you want to move?");
         }
         else if(special == 10){
             //sposta studenti da entrata a tavolo
+            useSpecial(special);
         }
         else if(special == 11){
             //da carta a sala
+            disableImage(specialsName.indexOf(11));
+            showStudents(specialsName.indexOf(11));
+        }
+    }
+
+    private void showStudents(int specialIndex){
+        if(specialIndex==0){
+            paneSpecial1.setVisible(true);
+        }
+        else if(specialIndex==1){
+            paneSpecial2.setVisible(true);
+        }
+        else if(specialIndex==2){
+            paneSpecial3.setVisible(true);
+        }
+    }
+    private void disableImage(int special){
+        if(special!=0){
+            confirmButton.setVisible(false);
+            special1Cost.setVisible(false);
+            special1View.setVisible(false);
+            special1Button.setVisible(false);
+            coinSpecial1.setVisible(false);
+            paneSpecial1.setVisible(false);
+        }
+        if(special!=1){
+            confirmButton.setVisible(false);
+            special2Cost.setVisible(false);
+            special2View.setVisible(false);
+            special2Button.setVisible(false);
+            coinSpecial2.setVisible(false);
+            paneSpecial2.setVisible(false);
+        }
+        if(special!=2){
+            confirmButton.setVisible(false);
+            special3Cost.setVisible(false);
+            special3View.setVisible(false);
+            special3Button.setVisible(false);
+            coinSpecial3.setVisible(false);
+            paneSpecial3.setVisible(false);
         }
     }
 
     private void showErrorMessage(){
+        special3Cost.setVisible(false);
+        special3View.setVisible(false);
+        special3Button.setVisible(false);
+        coinSpecial3.setVisible(false);
         errorMessage.setVisible(true);
     }
 
