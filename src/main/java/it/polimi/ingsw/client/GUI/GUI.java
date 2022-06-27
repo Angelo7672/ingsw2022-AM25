@@ -271,6 +271,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setActionAllowed(4);
             setConstants("SpecialUsed");
         }
+        else if(special == 10){
+
+        }
         else if(special == 9||special == 12){
             Special9or12SceneController controller = (Special9or12SceneController) sceneControllersMap.get(SPECIALS9OR12);
             controller.setSpecial(special);

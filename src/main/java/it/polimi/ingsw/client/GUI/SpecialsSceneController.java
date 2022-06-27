@@ -83,6 +83,9 @@ public class SpecialsSceneController implements SceneController{
         special1View.setImage(specials.get(0));
         special2View.setImage(specials.get(1));
         special3View.setImage(specials.get(2));
+        for (int i = 0; i < 3; i++) {
+            if(specialsName.get(i)==1 || specialsName.get(i)==7 || specialsName.get(i)==11) showStudents(i);
+        }
     }
 
     public void resetScene(){
@@ -109,7 +112,7 @@ public class SpecialsSceneController implements SceneController{
         specialChosen = -1;
         studentChosen = -1;
         for (int i = 0; i < 3; i++) {
-            showStudents(i);
+            if(specialsName.get(i)==1 || specialsName.get(i)==7 || specialsName.get(i)==11) showStudents(i);
         }
     }
 
@@ -253,7 +256,6 @@ public class SpecialsSceneController implements SceneController{
             System.out.println("special 7");
             //scegli studenti da carta a entrata
             disableImage(specialsName.indexOf(7));
-            showStudents(specialsName.indexOf(7));
             confirmSpecialButton.setVisible(true);
             addButton.setVisible(true);
             questionLabel.setText("Which student do you want to move?");
@@ -265,7 +267,6 @@ public class SpecialsSceneController implements SceneController{
         else if(special == 11){
             //da carta a sala
             disableImage(specialsName.indexOf(11));
-            showStudents(specialsName.indexOf(11));
             confirmSpecialButton.setVisible(true);
             questionLabel.setText("Which student do you want to move?");
         }
