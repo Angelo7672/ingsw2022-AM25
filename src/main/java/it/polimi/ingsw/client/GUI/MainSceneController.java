@@ -138,7 +138,6 @@ public class MainSceneController implements SceneController {
         this.charactersImageMap = new HashMap<>();
         this.numberOfPlayers = 4;
         this.expertMode = false;
-        //this.islandsMap = new HashMap<>();
         this.islandsList = new ArrayList<>();
         this.towersMap = new HashMap<>();
         this.entrancesMap = new HashMap<>();
@@ -152,6 +151,9 @@ public class MainSceneController implements SceneController {
         this.yellowTables = new ArrayList<>();
         this.pinkTables = new ArrayList<>();
         this.blueTables = new ArrayList<>();
+        this.fromEntranceToTable = new ArrayList<>();
+        this.fromTableToEntrance = new ArrayList<>();
+        this.
 
         oldStudentsValue = 0;
         actionAllowed = -1;
@@ -695,19 +697,18 @@ public class MainSceneController implements SceneController {
         public void setStudentsEntrance(int playerRef, int color, int newStudentsValue) {
             Label studentLabel;
             ImageView studentImage;
+            String text = String.valueOf(newStudentsValue);
 
             studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5); //Labels are located 5 position after images
             studentImage = (ImageView) entrancesMap.get(playerRef).getChildren().get(color);
-            studentLabel.setText(String.valueOf(newStudentsValue));
-            //System.out.println("Label value: "+studentLabel.getText());
 
             if (newStudentsValue != 0) {
                 studentLabel.setVisible(true);
                 studentImage.setVisible(true);
-                //studentLabel.setText(String.valueOf(newStudentsValue));
             } else {
-                studentLabel.setVisible(false);
+                //studentLabel.setVisible(false);
                 studentImage.setVisible(false);
+                entrancesMap.get(playerRef).getChildren().get(color + 5).setVisible(false);
             }
         }
 
@@ -892,6 +893,7 @@ public class MainSceneController implements SceneController {
                 actionLabel.setText("Choose an island!");
                 actionLabel.setVisible(true);
             } else if (actionAllowed == 6) { //special 7
+                confirmSpecialButton.setVisible(true);
                 actionLabel.setText("Select students from the entrance");
                 studentsToExchange = fromCardToEntrance.size();
                 actionLabel.setVisible(true);
