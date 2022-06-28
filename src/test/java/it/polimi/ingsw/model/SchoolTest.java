@@ -20,6 +20,9 @@ class SchoolTest {
     int[] restoreTable;
     boolean[] restoreProfessors;
 
+    /**
+     * Initialize PlayerManager and Bag with their listeners.
+     */
     @BeforeEach
     void initialization() {
         restoreEntrance = new int[]{0,0,0,0,0};
@@ -45,32 +48,24 @@ class SchoolTest {
                 @Override
                 public void notifyTowerColor(int islandRef, int newColor) {}
             };
-            playerManager.professorsListener = new ProfessorsListener() {
-                @Override
-                public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
-                    restoreProfessors[color] = true;
-                }
-            };
-            playerManager.coinsListener = new CoinsListener() {
-                @Override
-                public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {}
-            };
+            playerManager.professorsListener = (playerRef, color, newProfessorValue) -> restoreProfessors[color] = true;
+            playerManager.coinsListener = (playerRef, newCoinsValue) -> {};
             playerManager.playedCardListener = new PlayedCardListener() {
                 @Override
                 public void notifyPlayedCard(int playerRef, String assistantCard) {}
                 @Override
                 public void notifyHand(int playerRef, ArrayList<String> hand) {}
             };
-            playerManager.studentsListener = new StudentsListener() {
-                @Override
-                public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
-                    if(place == 0) restoreEntrance[color] = newStudentsValue;
-                    else if(place == 1) restoreTable[color] = newStudentsValue;
-                }
+            playerManager.studentsListener = (place, componentRef, color, newStudentsValue) -> {
+                if(place == 0) restoreEntrance[color] = newStudentsValue;
+                else if(place == 1) restoreTable[color] = newStudentsValue;
             };
         }
     }
 
+    /**
+     * Test movement of students from entrance to table.
+     */
     @Test
     @DisplayName("First test: make students move around the school")
     void schoolStudent(){
@@ -121,20 +116,31 @@ class SchoolTest {
         );
     }
 
+    /**
+     * Test place and remove tower from school.
+     */
     @Test
     @DisplayName("Second test: place and remove towers")
     void towers(){
         playerManager3P.initializeSchool();
         playerManager3P.removeTower(Team.WHITE,2);
-        assertEquals(4,towersNum,"we have removed 2 towers");
+        assertEquals(4, towersNum, "we have removed 2 towers");
+        playerManager3P.placeTower(Team.WHITE, 1);
+        assertEquals(5, towersNum, "we have placed 1 tower");
     }
 
+    /**
+     * Check victory, with counting tower and later with counting professors.
+     */
     @Test
     @DisplayName("Third test: check victory")
     void victory(){
+        //Tower
         playerManager2P.removeTower(Team.BLACK,2);
         Team teamWin1 = playerManager2P.checkVictory();
-        assertEquals(Team.BLACK,teamWin1,"The black team built more towers");
+        assertEquals(Team.BLACK, teamWin1, "The black team built more towers");
+
+        //Professors
         try{
             playerManager3P.setStudentEntrance(2,3,1);
             playerManager3P.transferStudent(2,3,true,false);
@@ -142,10 +148,13 @@ class SchoolTest {
             playerManager3P.transferStudent(2,1,true,false);
             Team teamWin2 = playerManager3P.checkVictory();
             assertEquals(Team.GREY,teamWin2,"The gray team has more professors");
-        }catch (NotAllowedException notAllowedException){ notAllowedException.printStackTrace(); return; }
+        }catch (NotAllowedException notAllowedException){ notAllowedException.printStackTrace(); }
 
     }
 
+    /**
+     * Restore school.
+     */
     @Test
     @DisplayName("Fourth test: restore school")
     void restoreSchool(){
@@ -153,6 +162,7 @@ class SchoolTest {
         int[] table = new int[]{2,5,3,7,1};
         int towers = 4;
         boolean[] professors = new boolean[]{false,true,true,false,false};
+
         playerManager2P.restoreSingleSchool(0,entrance,table,towers,professors,Team.WHITE);
         for(int i = 0; i < 5; i++) {
             assertEquals(entrance[i], restoreEntrance[i]);

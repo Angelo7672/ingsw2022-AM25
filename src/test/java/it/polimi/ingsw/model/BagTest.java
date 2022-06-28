@@ -14,6 +14,9 @@ class BagTest {
     Bag bag;
     List<Integer> bagRestore;
 
+    /**
+     * Initialize bag with its listeners.
+     */
     @BeforeEach
     void initialization() {
         bagRestore = new ArrayList<>();
@@ -29,6 +32,9 @@ class BagTest {
         bag.bagInitialize();
     }
 
+    /**
+     * Test students' extraction.
+     */
     @Test
     @DisplayName("First test: check if all 120 numbers drawn are compatible with the legend")
     void bagInit() {
@@ -41,6 +47,9 @@ class BagTest {
         }
     }
 
+    /**
+     * Check if bag is empty after 120 extractions.
+     */
     @Test
     @DisplayName("Second test: extracts 120 students and check the victory")
     void checkVictory(){
@@ -52,11 +61,15 @@ class BagTest {
         assertTrue(bag.checkVictory(),"The bag be empty");
     }
 
+    /**
+     * Restore a bag of three students
+     */
     @Test
     @DisplayName("Third test: bag restore")
     void restoreBag(){
         List<Integer> bagTmp = new ArrayList<>();
-        bagTmp.add(1);bagTmp.add(2);bagTmp.add(3);
+        bagTmp.add(1);bagTmp.add(2);bagTmp.add(3);  //add three students
+
         bag.bagRestore(bagTmp);
         for(int i = 0; i < bagTmp.size(); i++)
             assertEquals(bagTmp.get(i),bagRestore.get(i));

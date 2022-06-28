@@ -17,6 +17,9 @@ class QueueManagerTest {
     Bag bag;
     QueueManager queueManager2P,queueManager3P,queueManager4P;
 
+    /**
+     * Initialize QueueManager, PlayerManager and Bag with their listeners.
+     */
     @BeforeEach
     void initialization() {
         bag = new Bag();
@@ -37,24 +40,15 @@ class QueueManagerTest {
                 @Override
                 public void notifyTowerColor(int islandRef, int newColor) {}
             };
-            playerManager.professorsListener = new ProfessorsListener() {
-                @Override
-                public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {}
-            };
-            playerManager.coinsListener = new CoinsListener() {
-                @Override
-                public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {}
-            };
+            playerManager.professorsListener = (playerRef, color, newProfessorValue) -> {};
+            playerManager.coinsListener = (playerRef, newCoinsValue) -> {};
             playerManager.playedCardListener = new PlayedCardListener() {
                 @Override
                 public void notifyPlayedCard(int playerRef, String assistantCard) {}
                 @Override
                 public void notifyHand(int playerRef, ArrayList<String> hand) {}
             };
-            playerManager.studentsListener = new StudentsListener() {
-                @Override
-                public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-            };
+            playerManager.studentsListener = (place, componentRef, color, newStudentsValue) -> {};
             playerManager.initializeSchool();
         }
         queueManager2P = new QueueManager(2, playerManager2P);
@@ -78,6 +72,9 @@ class QueueManagerTest {
         }
     }
 
+    /**
+     * Test initialization of queue.
+     */
     @Test
     @DisplayName("First test: check queue initialization for first Planing Phase")
     void queueInit(){
@@ -90,6 +87,9 @@ class QueueManagerTest {
         }
     }
 
+    /**
+     * Check queue for action phase.
+     */
     @Test
     @DisplayName("Second test: check queue for Action Phase")
     void actionPhase(){
@@ -134,126 +134,129 @@ class QueueManagerTest {
                     ()->assertEquals(4,queueManager4P.readMaxMotherNatureMovement(2),"The DOG card has been played -> 4"),
                     ()->assertEquals(5,queueManager4P.readMaxMotherNatureMovement(3),"The ELEPHANT card has been played -> 5")
             );
-        }catch (NotAllowedException notAllowedException) { notAllowedException.printStackTrace(); return; }
+        }catch (NotAllowedException notAllowedException) { notAllowedException.printStackTrace(); }
     }
 
-   @Test
-   @DisplayName("Third test: extreme cases")
-   void extremeCases(){
-       int numberOfPlayer = 4;
-       boolean win, checker = false;
-       ArrayList<Assistant> alreadyPlayedCards = new ArrayList<>();
-       ArrayList<Assistant> alreadyPlayedCards1 = new ArrayList<>();
+    /**
+     * Test cases in which some players have to play an already played card.
+     */
+    @Test
+    @DisplayName("Third test: extreme cases")
+    void extremeCases(){
+        int numberOfPlayer = 4;
+        boolean win, checker = false;
+        ArrayList<Assistant> alreadyPlayedCards = new ArrayList<>();
+        ArrayList<Assistant> alreadyPlayedCards1 = new ArrayList<>();
 
-       try {
-           queueManager4P.queueForPlanificationPhase();
-           for(int i = 0; i < numberOfPlayer; i++) {
-               if(queueManager4P.readQueue(i) == 0){
-                   queueManager4P.playCard(0, i, Assistant.FOX, alreadyPlayedCards);    //First Player
-                   queueManager4P.playCard(0, i, Assistant.LIZARD, alreadyPlayedCards);
-                   queueManager4P.playCard(0, i, Assistant.OCTOPUS, alreadyPlayedCards);
-                   queueManager4P.playCard(0, i, Assistant.DOG, alreadyPlayedCards);
-                   queueManager4P.playCard(0, i, Assistant.ELEPHANT, alreadyPlayedCards);
-                   queueManager4P.playCard(0, i, Assistant.TURTLE, alreadyPlayedCards);
-               }else if(queueManager4P.readQueue(i) == 1){
-                   queueManager4P.playCard(1, i, Assistant.LION, alreadyPlayedCards);   //Second Player
-                   queueManager4P.playCard(1, i, Assistant.CAT, alreadyPlayedCards);
-                   queueManager4P.playCard(1, i, Assistant.LIZARD, alreadyPlayedCards);
-                   queueManager4P.playCard(1, i, Assistant.OCTOPUS, alreadyPlayedCards);
-                   queueManager4P.playCard(1, i, Assistant.DOG, alreadyPlayedCards);
-                   queueManager4P.playCard(1, i, Assistant.ELEPHANT, alreadyPlayedCards);
-                   queueManager4P.playCard(1, i, Assistant.TURTLE, alreadyPlayedCards);
-               }else if(queueManager4P.readQueue(i) == 2){
-                   queueManager4P.playCard(2, i, Assistant.LION, alreadyPlayedCards);   //Third Player
-                   queueManager4P.playCard(2, i, Assistant.FOX, alreadyPlayedCards);
-                   queueManager4P.playCard(2, i, Assistant.LIZARD, alreadyPlayedCards);
-                   queueManager4P.playCard(2, i, Assistant.OCTOPUS, alreadyPlayedCards);
-                   queueManager4P.playCard(2, i, Assistant.DOG, alreadyPlayedCards);
-                   queueManager4P.playCard(2, i, Assistant.ELEPHANT, alreadyPlayedCards);
-                   queueManager4P.playCard(2, i, Assistant.TURTLE, alreadyPlayedCards);
-               }else if(queueManager4P.readQueue(i) == 3){
-                   queueManager4P.playCard(3, i, Assistant.LION, alreadyPlayedCards);   //Fourth Player
-                   queueManager4P.playCard(3, i, Assistant.CAT, alreadyPlayedCards);
-                   queueManager4P.playCard(3, i, Assistant.FOX, alreadyPlayedCards);
-                   queueManager4P.playCard(3, i, Assistant.LIZARD, alreadyPlayedCards);
-                   queueManager4P.playCard(3, i, Assistant.DOG, alreadyPlayedCards);
-                   queueManager4P.playCard(3, i, Assistant.ELEPHANT, alreadyPlayedCards);
-                   queueManager4P.playCard(3, i, Assistant.TURTLE, alreadyPlayedCards);
-               }
-           }
+        try {
+            queueManager4P.queueForPlanificationPhase();
+            for(int i = 0; i < numberOfPlayer; i++) {   //initialize hands of players for our test
+                if(queueManager4P.readQueue(i) == 0){
+                    queueManager4P.playCard(0, i, Assistant.FOX, alreadyPlayedCards);    //First Player
+                    queueManager4P.playCard(0, i, Assistant.LIZARD, alreadyPlayedCards);
+                    queueManager4P.playCard(0, i, Assistant.OCTOPUS, alreadyPlayedCards);
+                    queueManager4P.playCard(0, i, Assistant.DOG, alreadyPlayedCards);
+                    queueManager4P.playCard(0, i, Assistant.ELEPHANT, alreadyPlayedCards);
+                    queueManager4P.playCard(0, i, Assistant.TURTLE, alreadyPlayedCards);
+                }else if(queueManager4P.readQueue(i) == 1){
+                    queueManager4P.playCard(1, i, Assistant.LION, alreadyPlayedCards);   //Second Player
+                    queueManager4P.playCard(1, i, Assistant.CAT, alreadyPlayedCards);
+                    queueManager4P.playCard(1, i, Assistant.LIZARD, alreadyPlayedCards);
+                    queueManager4P.playCard(1, i, Assistant.OCTOPUS, alreadyPlayedCards);
+                    queueManager4P.playCard(1, i, Assistant.DOG, alreadyPlayedCards);
+                    queueManager4P.playCard(1, i, Assistant.ELEPHANT, alreadyPlayedCards);
+                    queueManager4P.playCard(1, i, Assistant.TURTLE, alreadyPlayedCards);
+                }else if(queueManager4P.readQueue(i) == 2){
+                    queueManager4P.playCard(2, i, Assistant.LION, alreadyPlayedCards);   //Third Player
+                    queueManager4P.playCard(2, i, Assistant.FOX, alreadyPlayedCards);
+                    queueManager4P.playCard(2, i, Assistant.LIZARD, alreadyPlayedCards);
+                    queueManager4P.playCard(2, i, Assistant.OCTOPUS, alreadyPlayedCards);
+                    queueManager4P.playCard(2, i, Assistant.DOG, alreadyPlayedCards);
+                    queueManager4P.playCard(2, i, Assistant.ELEPHANT, alreadyPlayedCards);
+                    queueManager4P.playCard(2, i, Assistant.TURTLE, alreadyPlayedCards);
+                }else if(queueManager4P.readQueue(i) == 3){
+                    queueManager4P.playCard(3, i, Assistant.LION, alreadyPlayedCards);   //Fourth Player
+                    queueManager4P.playCard(3, i, Assistant.CAT, alreadyPlayedCards);
+                    queueManager4P.playCard(3, i, Assistant.FOX, alreadyPlayedCards);
+                    queueManager4P.playCard(3, i, Assistant.LIZARD, alreadyPlayedCards);
+                    queueManager4P.playCard(3, i, Assistant.DOG, alreadyPlayedCards);
+                    queueManager4P.playCard(3, i, Assistant.ELEPHANT, alreadyPlayedCards);
+                    queueManager4P.playCard(3, i, Assistant.TURTLE, alreadyPlayedCards);
+                }
+            }
 
-           //This first part serves, based on the cards that will be played, just to know who will start the next planning phase
-           for(int i = 0; i < numberOfPlayer; i++) {
-               if(queueManager4P.readQueue(i) == 0){
-                   win = queueManager4P.playCard(0, i, Assistant.LION, alreadyPlayedCards);   //First Player
-                   assertFalse(win, "Nobody won this round");
-               }else if(queueManager4P.readQueue(i) == 1){
-                   win = queueManager4P.playCard(1, i, Assistant.FOX, alreadyPlayedCards);   //Second Player
-                   assertFalse(win, "Nobody won this round");
-               }else if(queueManager4P.readQueue(i) == 2){
-                   win = queueManager4P.playCard(2, i, Assistant.CAT, alreadyPlayedCards);   //Third Player
-                   assertFalse(win, "Nobody won this round");
-               }else if(queueManager4P.readQueue(i) == 3){
-                   win = queueManager4P.playCard(3, i, Assistant.OCTOPUS, alreadyPlayedCards);   //Fourth Player
-                   assertFalse(win, "Nobody won this round");
-               }
-           }
-           queueManager4P.inOrderForActionPhase();
+            //This first part serves, based on the cards that will be played, just to know who will start the next planning phase
+            for(int i = 0; i < numberOfPlayer; i++) {
+                if(queueManager4P.readQueue(i) == 0){
+                    win = queueManager4P.playCard(0, i, Assistant.LION, alreadyPlayedCards);   //First Player
+                    assertFalse(win, "Nobody won this round");
+                }else if(queueManager4P.readQueue(i) == 1){
+                    win = queueManager4P.playCard(1, i, Assistant.FOX, alreadyPlayedCards);   //Second Player
+                    assertFalse(win, "Nobody won this round");
+                }else if(queueManager4P.readQueue(i) == 2){
+                    win = queueManager4P.playCard(2, i, Assistant.CAT, alreadyPlayedCards);   //Third Player
+                    assertFalse(win, "Nobody won this round");
+                }else if(queueManager4P.readQueue(i) == 3){
+                    win = queueManager4P.playCard(3, i, Assistant.OCTOPUS, alreadyPlayedCards);   //Fourth Player
+                    assertFalse(win, "Nobody won this round");
+                }
+            }
+            queueManager4P.inOrderForActionPhase();
 
-           //Player 0 starts; the previous step was for this
-           //Order of play: 0 1 2 3
-           queueManager4P.queueForPlanificationPhase();
-           for(int i = 0; i < numberOfPlayer; i++) {
-               if(queueManager4P.readQueue(i) == 0){
-                   win = queueManager4P.playCard(0, i, Assistant.EAGLE, alreadyPlayedCards);   //First Player
-                   alreadyPlayedCards.add(Assistant.EAGLE);
-                   assertFalse(win, "Nobody won this round");
-               }else if(queueManager4P.readQueue(i) == 1){
-                   win = queueManager4P.playCard(1, i, Assistant.GOOSE, alreadyPlayedCards);   //Second Player
-                   alreadyPlayedCards.add(Assistant.GOOSE);
-                   assertFalse(win, "Nobody won this round");
-               }else if(queueManager4P.readQueue(i) == 2){
-                   win = queueManager4P.playCard(2, i, Assistant.GOOSE, alreadyPlayedCards);   //Third Player, card already played by the first player
-                   alreadyPlayedCards.add(Assistant.GOOSE);
-                   assertFalse(win, "Nobody won this round");
-               }else if(queueManager4P.readQueue(i) == 3){
-                   win = queueManager4P.playCard(3, i, Assistant.EAGLE, alreadyPlayedCards);   //Fourth Player, card already played by the second player
-                   alreadyPlayedCards.add(Assistant.EAGLE);
-                   assertFalse(win, "Nobody won this round");
-               }
-           }
-           queueManager4P.inOrderForActionPhase();
-           assertAll(
-                   ()->assertEquals(1,queueManager4P.readQueue(0),"The second player played GOOSE"),
-                   ()->assertEquals(2,queueManager4P.readQueue(1),"The third player played GOOSE"),
-                   ()->assertEquals(0,queueManager4P.readQueue(2),"The first player played EAGLE"),
-                   ()->assertEquals(3,queueManager4P.readQueue(3),"The fourth player played EAGLE")
-           );
-       }catch (NotAllowedException notAllowedException){ notAllowedException.printStackTrace(); return; }
+            //Player 0 starts; the previous step was for this
+            //Order of play: 0 1 2 3
+            queueManager4P.queueForPlanificationPhase();
+            for(int i = 0; i < numberOfPlayer; i++) {
+                if(queueManager4P.readQueue(i) == 0){
+                    win = queueManager4P.playCard(0, i, Assistant.EAGLE, alreadyPlayedCards);   //First Player
+                    alreadyPlayedCards.add(Assistant.EAGLE);
+                    assertFalse(win, "Nobody won this round");
+                }else if(queueManager4P.readQueue(i) == 1){
+                    win = queueManager4P.playCard(1, i, Assistant.GOOSE, alreadyPlayedCards);   //Second Player
+                    alreadyPlayedCards.add(Assistant.GOOSE);
+                    assertFalse(win, "Nobody won this round");
+                }else if(queueManager4P.readQueue(i) == 2){
+                    win = queueManager4P.playCard(2, i, Assistant.GOOSE, alreadyPlayedCards);   //Third Player, card already played by the first player
+                    alreadyPlayedCards.add(Assistant.GOOSE);
+                    assertFalse(win, "Nobody won this round");
+                }else if(queueManager4P.readQueue(i) == 3){
+                    win = queueManager4P.playCard(3, i, Assistant.EAGLE, alreadyPlayedCards);   //Fourth Player, card already played by the second player
+                    alreadyPlayedCards.add(Assistant.EAGLE);
+                    assertFalse(win, "Nobody won this round");
+                }
+            }
+            queueManager4P.inOrderForActionPhase();
+            assertAll(
+                    ()->assertEquals(1,queueManager4P.readQueue(0),"The second player played GOOSE"),
+                    ()->assertEquals(2,queueManager4P.readQueue(1),"The third player played GOOSE"),
+                    ()->assertEquals(0,queueManager4P.readQueue(2),"The first player played EAGLE"),
+                    ()->assertEquals(3,queueManager4P.readQueue(3),"The fourth player played EAGLE")
+            );
+        }catch (NotAllowedException notAllowedException){ notAllowedException.printStackTrace(); return; }
 
-       //Player 1 starts (previous planning phase); order of play: 1 2 3 0
-       try{
-           queueManager4P.queueForPlanificationPhase();
-           for(int i = 0; i < numberOfPlayer; i++) {
-               if(queueManager4P.readQueue(i) == 0){
-                   win = queueManager4P.playCard(0, i, Assistant.GOOSE, alreadyPlayedCards1);   //First Player
-                   alreadyPlayedCards1.add(Assistant.GOOSE);
-                   assertFalse(win, "First player has already a card");
-               }else if(queueManager4P.readQueue(i) == 1){
-                   win = queueManager4P.playCard(1, i, Assistant.EAGLE, alreadyPlayedCards1);   //Second Player
-                   alreadyPlayedCards1.add(Assistant.EAGLE);
-                   assertTrue(win, "Second's card finished");
-               }else if(queueManager4P.readQueue(i) == 2){
-                   win = queueManager4P.playCard(2, i, Assistant.EAGLE, alreadyPlayedCards1);   //Third Player
-                   alreadyPlayedCards1.add(Assistant.EAGLE);
-                   assertTrue(win, "Third's card finished");
-               }else if(queueManager4P.readQueue(i) == 3){
-                   win = queueManager4P.playCard(3, i, Assistant.GOOSE, alreadyPlayedCards1);   //Fourth Player
-                   alreadyPlayedCards1.add(Assistant.GOOSE);
-                   assertTrue(win, "Fourth's card finished");
-               }
-           }
-       }catch (NotAllowedException notAllowedException){ checker = true; }
-       assertTrue(checker, "The first player had a different card from those already played to play");
-    }
+        //Player 1 starts (previous planning phase); order of play: 1 2 3 0
+        try{
+            queueManager4P.queueForPlanificationPhase();
+            for(int i = 0; i < numberOfPlayer; i++) {
+                if(queueManager4P.readQueue(i) == 0){
+                    win = queueManager4P.playCard(0, i, Assistant.GOOSE, alreadyPlayedCards1);   //First Player
+                    alreadyPlayedCards1.add(Assistant.GOOSE);
+                    assertFalse(win, "First player has already a card");
+                }else if(queueManager4P.readQueue(i) == 1){
+                    win = queueManager4P.playCard(1, i, Assistant.EAGLE, alreadyPlayedCards1);   //Second Player
+                    alreadyPlayedCards1.add(Assistant.EAGLE);
+                    assertTrue(win, "Second's card finished");
+                }else if(queueManager4P.readQueue(i) == 2){
+                    win = queueManager4P.playCard(2, i, Assistant.EAGLE, alreadyPlayedCards1);   //Third Player
+                    alreadyPlayedCards1.add(Assistant.EAGLE);
+                    assertTrue(win, "Third's card finished");
+                }else if(queueManager4P.readQueue(i) == 3){
+                    win = queueManager4P.playCard(3, i, Assistant.GOOSE, alreadyPlayedCards1);   //Fourth Player
+                    alreadyPlayedCards1.add(Assistant.GOOSE);
+                    assertTrue(win, "Fourth's card finished");
+                }
+            }
+        }catch (NotAllowedException notAllowedException){ checker = true; }
+        assertTrue(checker, "The first player had a different card from those already played to play");
+     }
 }
