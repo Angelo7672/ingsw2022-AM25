@@ -241,22 +241,22 @@ public class MainSceneController implements SceneController {
             System.out.println("studentTable clicked");
             if (actionAllowed == 7) { //special 10
                 if (lastThingClicked.equals("studentEntrance")) {
-                    if (studentsToSwap > 0) {
+                    //if (studentsToSwap > 0) {
                         lastThingClicked = "studentTable";
                         ImageView student = (ImageView) mouseEvent.getSource();
-                        if (student.getImage().getUrl().equals(GREENSTUDENT)) {
+                        if (student.getImage().getUrl().contains(GREENSTUDENT)){
                             fromTableToEntrance.add(0);
-                        } else if (student.getImage().getUrl().equals(REDSTUDENT)) {
+                        } else if (student.getImage().getUrl().contains(REDSTUDENT)) {
                             fromTableToEntrance.add(1);
-                        } else if (student.getImage().getUrl().equals(YELLOWSTUDENT)) {
+                        } else if (student.getImage().getUrl().contains(YELLOWSTUDENT)) {
                             fromTableToEntrance.add(2);
-                        } else if (student.getImage().getUrl().equals(PINKSTUDENT)) {
+                        } else if (student.getImage().getUrl().contains(PINKSTUDENT)) {
                             fromTableToEntrance.add(3);
-                        } else if (student.getImage().getUrl().equals(BLUESTUDENT)) {
+                        } else if (student.getImage().getUrl().contains(BLUESTUDENT)) {
                             fromTableToEntrance.add(4);
                         }
-                        //System.out.println("studentEntrance clicked: "+);
-                    }
+                        System.out.println("list to send: "+fromTableToEntrance);
+                    //}
                 }
             }
         }
