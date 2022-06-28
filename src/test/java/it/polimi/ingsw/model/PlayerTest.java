@@ -18,6 +18,9 @@ class PlayerTest {
     int coinsRestore;
     ArrayList<Assistant> cardsRestore;
 
+    /**
+     * Initialize PlayerManager and Bag with their listeners.
+     */
     @BeforeEach
     void initialization() {
         cardsRestore = new ArrayList<>();
@@ -39,16 +42,8 @@ class PlayerTest {
                 @Override
                 public void notifyTowerColor(int islandRef, int newColor) {}
             };
-            playerManager.professorsListener = new ProfessorsListener() {
-                @Override
-                public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {}
-            };
-            playerManager.coinsListener = new CoinsListener() {
-                @Override
-                public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
-                    coinsRestore = newCoinsValue;
-                }
-            };
+            playerManager.professorsListener = (playerRef, color, newProfessorValue) -> {};
+            playerManager.coinsListener = (playerRef, newCoinsValue) -> coinsRestore = newCoinsValue;
             playerManager.playedCardListener = new PlayedCardListener() {
                 @Override
                 public void notifyPlayedCard(int playerRef, String assistantCard) {}
@@ -58,10 +53,7 @@ class PlayerTest {
                         cardsRestore.add(stringToAssistant(s));
                 }
             };
-            playerManager.studentsListener = new StudentsListener() {
-                @Override
-                public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-            };
+            playerManager.studentsListener = (place, componentRef, color, newStudentsValue) -> {};
         }
     }
     private Assistant stringToAssistant(String string){
@@ -78,6 +70,9 @@ class PlayerTest {
         return Assistant.NONE;
     }
 
+    /**
+     * Test initialization whit 3 players.
+     */
     @Test
     @DisplayName("First test: 3 players initialization")
     void playerInit() {
@@ -98,6 +93,9 @@ class PlayerTest {
         );
     }
 
+    /**
+     * Test initialization whit 4 players
+     */
     @Test
     @DisplayName("First test-bis: 4 players initialization")
     void playerInit2() {
@@ -123,47 +121,56 @@ class PlayerTest {
         );
     }
 
+    /**
+     * Giving coins test.
+     */
     @Test
     @DisplayName("Second test: coins control")
-    void coinsControl() throws NotAllowedException {
+    void coinsControl() {
         int[] studentsGiorgio = new int[]{0, 0, 0, 2, 2, 2, 3, 3, 3, 4};
         int[] studentsMarco = new int[]{0, 0, 0, 0, 0, 0, 2, 2, 3, 3};
 
-        //First player
-        for (int i = 0; i < 10; i++)
-            playerManager2P.setStudentEntrance(0, studentsGiorgio[i], 1);
-        playerManager2P.transferStudent(0,0,true,false);
-        playerManager2P.transferStudent(0,0,true,false);
-        playerManager2P.transferStudent(0,0,true,false);
-        playerManager2P.transferStudent(0,2,true,false);
-        playerManager2P.transferStudent(0,2,true,false);
-        playerManager2P.transferStudent(0,2,true,false);
-        playerManager2P.transferStudent(0,3,true,false);
-        playerManager2P.transferStudent(0,3,true,false);
-        playerManager2P.transferStudent(0,3,true,false);
-        playerManager2P.transferStudent(0,4,true,false);
-        assertEquals(4,playerManager2P.getCoins(0),"The player has four coins");
-        //Second player
-        for (int i = 0; i < 10; i++)
-            playerManager2P.setStudentEntrance(1, studentsMarco[i], 1);
-        playerManager2P.transferStudent(1,0,true,false);
-        playerManager2P.transferStudent(1,0,true,false);
-        playerManager2P.transferStudent(1,0,true,false);
-        playerManager2P.transferStudent(1,0,true,false);
-        playerManager2P.transferStudent(1,0,true,false);
-        playerManager2P.transferStudent(1,0,true,false);
-        playerManager2P.transferStudent(1,2,true,false);
-        playerManager2P.transferStudent(1,2,true,false);
-        playerManager2P.transferStudent(1,3,true,false);
-        playerManager2P.transferStudent(1,3,true,false);
-        assertEquals(3,playerManager2P.getCoins(1),"The player has three coins");
+        try {
+            //First player
+            for (int i = 0; i < 10; i++)
+                playerManager2P.setStudentEntrance(0, studentsGiorgio[i], 1);
+            playerManager2P.transferStudent(0,0,true,false);
+            playerManager2P.transferStudent(0,0,true,false);
+            playerManager2P.transferStudent(0,0,true,false);
+            playerManager2P.transferStudent(0,2,true,false);
+            playerManager2P.transferStudent(0,2,true,false);
+            playerManager2P.transferStudent(0,2,true,false);
+            playerManager2P.transferStudent(0,3,true,false);
+            playerManager2P.transferStudent(0,3,true,false);
+            playerManager2P.transferStudent(0,3,true,false);
+            playerManager2P.transferStudent(0,4,true,false);
+            assertEquals(4,playerManager2P.getCoins(0),"The player has four coins");
+            //Second player
+            for (int i = 0; i < 10; i++)
+                playerManager2P.setStudentEntrance(1, studentsMarco[i], 1);
+            playerManager2P.transferStudent(1,0,true,false);
+            playerManager2P.transferStudent(1,0,true,false);
+            playerManager2P.transferStudent(1,0,true,false);
+            playerManager2P.transferStudent(1,0,true,false);
+            playerManager2P.transferStudent(1,0,true,false);
+            playerManager2P.transferStudent(1,0,true,false);
+            playerManager2P.transferStudent(1,2,true,false);
+            playerManager2P.transferStudent(1,2,true,false);
+            playerManager2P.transferStudent(1,3,true,false);
+            playerManager2P.transferStudent(1,3,true,false);
+            assertEquals(3,playerManager2P.getCoins(1),"The player has three coins");
 
-        playerManager2P.removeCoin(0,3);
-        playerManager2P.removeCoin(1,1);
-        assertEquals(1,playerManager2P.getCoins(0),"The player has one coin");
-        assertEquals(2,playerManager2P.getCoins(1),"The player has two coins");
+            playerManager2P.removeCoin(0,3);
+            playerManager2P.removeCoin(1,1);
+            assertEquals(1,playerManager2P.getCoins(0),"The player has one coin");
+            assertEquals(2,playerManager2P.getCoins(1),"The player has two coins");
+        }catch (NotAllowedException notAllowedException){ notAllowedException.printStackTrace(); }
+
     }
 
+    /**
+     * Restore hand and coins.
+     */
     @Test
     @DisplayName("Third test: restore hand and coins")
     void restoreHandAndCoins(){
