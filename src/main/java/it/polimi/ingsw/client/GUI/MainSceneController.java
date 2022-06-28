@@ -121,7 +121,8 @@ public class MainSceneController implements SceneController {
         this.blueTables = new ArrayList<>();
         this.fromEntranceToTable = new ArrayList<>();
         this.fromTableToEntrance = new ArrayList<>();
-        this.
+        this.fromEntranceToCard = new ArrayList<>();
+        this.fromCardToEntrance = new ArrayList<>();
 
         oldStudentsValue = 0;
         actionAllowed = -1;
