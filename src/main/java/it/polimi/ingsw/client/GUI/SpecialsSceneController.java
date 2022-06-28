@@ -96,7 +96,7 @@ public class SpecialsSceneController implements SceneController{
     }
 
     public void resetScene(){
-        confirmButton.setVisible(true);
+        confirmButton.setVisible(false);
         special1Cost.setVisible(true);
         special1View.setVisible(true);
         special1Button.setVisible(true);
@@ -125,6 +125,10 @@ public class SpecialsSceneController implements SceneController{
         }
         Stage stage = (Stage) confirmButton.getScene().getWindow();
         stage.close();
+    }
+
+    public void setConfirmButton(){
+        confirmButton.setVisible(true);
     }
 
     private Image specialFactory(int name){

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.message.GenericMessage;
 import it.polimi.ingsw.listeners.DisconnectedListener;
 import it.polimi.ingsw.listeners.ServerOfflineListener;
 import it.polimi.ingsw.listeners.SoldOutListener;
@@ -42,9 +43,10 @@ public class Receiver {
     }
 
     public void setViewInitialized(){
-        initializedView = true;
-        lock2.notifyAll();
-        System.out.println("lock2 notify");
+        synchronized (lock2) {
+            initializedView = true;
+            lock2.notifyAll();
+        }
     }
 
     public void setDisconnectedListener(DisconnectedListener disconnectedListener){
@@ -134,7 +136,11 @@ public class Receiver {
                         view.setCoins(((CoinsAnswer) tmpMsg).getPlayerRef(), ((CoinsAnswer) tmpMsg).getCoin());
                     }
                 }); thread.start();
-            } else view.setCoins(((CoinsAnswer) tmp).getPlayerRef(), ((CoinsAnswer) tmp).getCoin());
+            } else {
+                System.out.println("else");
+                view.setCoins(((CoinsAnswer) tmp).getPlayerRef(), ((CoinsAnswer) tmp).getCoin());
+                System.out.println("fine else");
+            }
         }
 
     }
@@ -402,7 +408,6 @@ public class Receiver {
                 setTimeout();
                 while (!disconnected) {
                     tmp = (Answer) inputStream.readObject();
-                    if(!(tmp instanceof PongAnswer)) System.out.println(tmp);
                     if (tmp instanceof PongAnswer) {
                         socket.setSoTimeout(15000);
                     } else if (tmp instanceof GameInfoAnswer) gameMessage(tmp);
@@ -437,8 +442,7 @@ public class Receiver {
                     }  else if(tmp instanceof SoldOutAnswer){
                         disconnected = true;
                         soldOutListener.notifySoldOut();
-                    }
-                    else {
+                    } else {
                         answersTmpList.add(tmp);
                     }
                     synchronized (lock1){

@@ -251,6 +251,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
             case "ActionPhase" -> {
                 //planningPhaseService.cancel();
+                if(view.getExpertMode()) {
+                    SpecialsSceneController controller1 = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
+                    controller1.setConfirmButton();
+                }
                 ActionPhaseService actionPhaseService= new ActionPhaseService();
                 actionPhaseService.start();
             }
