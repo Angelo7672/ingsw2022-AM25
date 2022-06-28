@@ -253,12 +253,16 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 //planningPhaseService.cancel();
                 ActionPhaseService actionPhaseService= new ActionPhaseService();
                 actionPhaseService.start();
+                //if(isExpertMode){
+                    //specialSceneController.enableConfirm();
+               // }
             }
             case "StartTurnAnswer" -> {
                 controller.setCurrentPlayer();
                 setConstants("ActionPhase");
             }
             case "ChooseCloud" -> {
+                //specialSceneController.disableConfirm();
                 cloudsSceneController.enableConfirm();
                 loadScene(CLOUDS);
             }
@@ -279,22 +283,22 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         if(special == 3 ){
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setActionAllowed(4);
-            setConstants("SpecialUsed");
+            //setConstants("SpecialUsed");
         }
         else if(special == 4){
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setActionAllowed(8);
-            setConstants("SpecialUsed");
+            //setConstants("SpecialUsed");
         }
         else if(special == 5){
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setActionAllowed(5);
-            setConstants("SpecialUsed");
+            //setConstants("SpecialUsed");
         }
         else if(special == 10){
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setActionAllowed(7);
-            setConstants("SpecialUsed");
+            //setConstants("SpecialUsed");
         }
         else if(special == 9||special == 12){
             Special9or12SceneController controller = (Special9or12SceneController) sceneControllersMap.get(SPECIALS9OR12);
@@ -305,17 +309,29 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     //special 7
     public void useSpecial(int special, ArrayList<Integer> cardStudents){
+        System.out.println("using special 7");
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
         controller.setFromCardToEntrance(cardStudents);
         controller.setActionAllowed(6);
-        setConstants("SpecialUsed");
+        //setConstants("SpecialUsed");
     }
     //special 1
     public void useSpecial(int special, int color){
+        System.out.println("using special 1 ");
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-        controller.setActionAllowed(3);
         controller.setCardStudent(color);
-        setConstants("SpecialUsed");
+        controller.setActionAllowed(3);
+        //setConstants("SpecialUsed");
+    }
+
+    public void specialNotAllowed(){
+        SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
+        controller.resetScene();
+        System.out.println(constants.lastPhase());
+        MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
+        if(constants.lastPhase().equals("ChooseCloud")) phaseHandler("ChooseCloud");
+        else if(constants.lastPhase().equals("MoveStudent")) mainSceneController.setActionAllowed(0);
+        else if(constants.lastPhase().equals("MoveMother")) mainSceneController.setActionAllowed(1);
     }
 
 
@@ -574,7 +590,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 constants.setSpecialUsed(true);
                 SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
                 controller.resetScene();
-
+                System.out.println(constants.lastPhase());
                 MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
                 if(constants.lastPhase().equals("ChooseCloud")) phaseHandler("ChooseCloud");
                 else if(constants.lastPhase().equals("MoveStudent")) mainSceneController.setActionAllowed(0);

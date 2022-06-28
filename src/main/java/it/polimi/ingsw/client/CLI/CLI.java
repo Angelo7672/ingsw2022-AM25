@@ -231,32 +231,33 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     }
 
     private void useSpecial() throws IOException, ClassNotFoundException {
-        synchronized (lock) {
-            System.out.println();
-            System.out.print(SPACE + "Do you want to use a special card? [y/n] ");
-            String answer = readNext();
-            if (answer.equalsIgnoreCase("n")) return;
-            else if (answer.equalsIgnoreCase("y")) {
-                int special = -1;
-                printable.printSpecialList();
-                do {
-                    try {
-                        System.out.println();
-                        System.out.print(SPACE + "Which special do you want to use? Insert the number ");
-                        String intString = readNext();
-                        special = Integer.parseInt(intString);
-                    } catch (NumberFormatException e) {
-                        System.out.println();
-                        System.out.println(ANSI_RED + SPACE + "Error, insert a number" + ANSI_RESET);
-                        turn();
-                        return;
-                    }
-                } while (special == -1);
-                if (!proxy.checkSpecial(special)) {
+        String answer;
+        System.out.println();
+        System.out.print(SPACE + "Do you want to use a special card? [y/n] ");
+        answer = readNext();
+        if (answer.equalsIgnoreCase("n")) return;
+        else if (answer.equalsIgnoreCase("y")) {
+            int special = -1;
+            printable.printSpecialList();
+            do {
+                try {
                     System.out.println();
-                    System.out.println(ANSI_RED + SPACE + "Move not allowed" + ANSI_RESET);
+                    System.out.print(SPACE + "Which special do you want to use? Insert the number ");
+                    String intString = readNext();
+                    special = Integer.parseInt(intString);
+                } catch (NumberFormatException e) {
+                    System.out.println();
+                    System.out.println(ANSI_RED + SPACE + "Error, insert a number" + ANSI_RESET);
                     turn();
-                } else System.out.println();
+                    return;
+                }
+            } while (special == -1);
+            if (!proxy.checkSpecial(special)) {
+                System.out.println();
+                System.out.println(ANSI_RED + SPACE + "Move not allowed" + ANSI_RESET);
+                turn();
+            } else {
+                System.out.println();
                 System.out.println("special accettato");
                 if (special == 2 || special == 4 || special == 6 || special == 8) {
                     constants.setSpecialUsed(true);
@@ -275,7 +276,6 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     }
 
     private boolean special(int special) throws IOException, ClassNotFoundException {
-        synchronized (lock) {
             while (true) {
                 try {
                     if (special == 1) {
@@ -304,7 +304,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                         } while (island == -1);
                         island = island - 1;
                         System.out.println();
-                        if (proxy.useSpecial(special, island, color)) return true;
+                        if (proxy.useSpecial(special, color, island)) return true;
                         else System.out.println(ANSI_RED + SPACE + "Move not allowed, try again." + ANSI_RESET);
                         return false;
                     } else if (special == 3 || special == 5) {
@@ -447,7 +447,6 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                     System.out.println(ANSI_RED + SPACE + "Error, insert a number" + ANSI_RESET);
                 }
             }
-        }
     }
 
     private void playCard() throws IOException, ClassNotFoundException {

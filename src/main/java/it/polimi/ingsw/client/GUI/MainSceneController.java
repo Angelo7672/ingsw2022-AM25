@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -216,6 +217,7 @@ public class MainSceneController implements SceneController {
                             System.out.println("movement successful");
                             errorLabel.setVisible(false);
                         } else if (result.equalsIgnoreCase("transfer complete")) {
+                            gui.setConstants("StudentsMoved");
                             System.out.println("movement successful, fine");
                             setActionAllowed(1);
                         } else {
@@ -236,23 +238,25 @@ public class MainSceneController implements SceneController {
     private class StudentTableClickHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent mouseEvent) {
+            System.out.println("studentTable clicked");
             if (actionAllowed == 7) { //special 10
                 if (lastThingClicked.equals("studentEntrance")) {
-                    if (studentsToSwap > 0) {
+                    //if (studentsToSwap > 0) {
                         lastThingClicked = "studentTable";
                         ImageView student = (ImageView) mouseEvent.getSource();
-                        if (student.getImage().getUrl().equals(GREENSTUDENT)) {
+                        if (student.getImage().getUrl().contains(GREENSTUDENT)){
                             fromTableToEntrance.add(0);
-                        } else if (student.getImage().getUrl().equals(REDSTUDENT)) {
+                        } else if (student.getImage().getUrl().contains(REDSTUDENT)) {
                             fromTableToEntrance.add(1);
-                        } else if (student.getImage().getUrl().equals(YELLOWSTUDENT)) {
+                        } else if (student.getImage().getUrl().contains(YELLOWSTUDENT)) {
                             fromTableToEntrance.add(2);
-                        } else if (student.getImage().getUrl().equals(PINKSTUDENT)) {
+                        } else if (student.getImage().getUrl().contains(PINKSTUDENT)) {
                             fromTableToEntrance.add(3);
-                        } else if (student.getImage().getUrl().equals(BLUESTUDENT)) {
+                        } else if (student.getImage().getUrl().contains(BLUESTUDENT)) {
                             fromTableToEntrance.add(4);
                         }
-                    }
+                        System.out.println("list to send: "+fromTableToEntrance);
+                    //}
                 }
             }
         }
@@ -278,6 +282,7 @@ public class MainSceneController implements SceneController {
                                 System.out.println("movement successful");
                                 errorLabel.setVisible(false);
                             } else if (result.equalsIgnoreCase("transfer complete")) {
+                                gui.setConstants("StudentsMoved");
                                 System.out.println("movement successful, fine");
                                 setActionAllowed(1);
                             } else {
@@ -313,6 +318,7 @@ public class MainSceneController implements SceneController {
                     try {
                         String result = proxy.moveMotherNature(motherMovement);
                         if (result.equalsIgnoreCase("ok")) {
+                            gui.setConstants("MovedMother");
                             errorLabel.setVisible(false);
                             setActionAllowed(2);
                         } else {
@@ -325,16 +331,21 @@ public class MainSceneController implements SceneController {
                         e.printStackTrace();
                     }
                 } else if (actionAllowed == 3) { //special 1
+                    System.out.println("island click handler per action 3");
                     for (int i = 0; i < 12; i++) {
                         if ((mouseEvent.getSource() == islandsList.get(i))) {
                             islandRef = i;
                         }
                     }
+                    System.out.println("isola scelta dallo special 1: "+islandRef);
                     try {
-                        if (proxy.useSpecial(1, islandRef, cardStudent)) {
+                        System.out.println("chiamata al proxy con: special 1, isola: "+islandRef+" student dalla carta: "+cardStudent);
+                        if (proxy.useSpecial(1, cardStudent, islandRef)) {
+                            System.out.println("special 1 finito");
                             gui.setConstants("SpecialUsed");
                         } else {
                             showMoveNotAllowed();
+                            gui.specialNotAllowed();
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -352,6 +363,7 @@ public class MainSceneController implements SceneController {
                         } else {
                             errorLabel.setText("Error, move not allowed!");
                             errorLabel.setVisible(true);
+                            gui.specialNotAllowed();
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -368,6 +380,7 @@ public class MainSceneController implements SceneController {
                             gui.setConstants("SpecialUsed");
                         } else {
                             showMoveNotAllowed();
+                            gui.specialNotAllowed();
                         }
                     } catch (IOException e) {
                     }
@@ -385,6 +398,7 @@ public class MainSceneController implements SceneController {
                             gui.setConstants("SpecialUsed");
                         } else
                             showMoveNotAllowed();
+                        gui.specialNotAllowed();
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
@@ -400,6 +414,7 @@ public class MainSceneController implements SceneController {
                                 gui.setConstants("SpecialUsed");
                             } else {
                                 showMoveNotAllowed();
+                                gui.specialNotAllowed();
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -664,25 +679,41 @@ public class MainSceneController implements SceneController {
         }
 
         public void setStudentsEntrance(int playerRef, int color, int newStudentsValue) {
-            Label studentLabel;
+            Label studentLabel = null;
             ImageView studentImage;
             String text = String.valueOf(newStudentsValue);
 
-            studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5); //Labels are located 5 position after images
             studentImage = (ImageView) entrancesMap.get(playerRef).getChildren().get(color);
+            //studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(5); //Labels are located 5 position after images
 
+            if(color == 0){
+                studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(5);
+                System.out.println(studentLabel);
+            } else if (color == 1){
+                studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(6);
+            } else if (color == 2){
+                studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(7);
+            } else if (color == 3){
+                studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(8);
+            } else if (color == 4){
+                studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(9);
+            }
+
+            studentLabel.setText(text);
+            System.out.println("student label text: "+text);
             if (newStudentsValue != 0) {
                 studentLabel.setVisible(true);
                 studentImage.setVisible(true);
             } else {
-                //studentLabel.setVisible(false);
+                studentLabel.setVisible(false);
                 studentImage.setVisible(false);
-                entrancesMap.get(playerRef).getChildren().get(color + 5).setVisible(false);
+               // entrancesMap.get(playerRef).getChildren().get(color + 5).setVisible(false);
             }
         }
 
         public void setStudentsTable(int playerRef, int color, int newStudentsValue) {
             AnchorPane tablePane = tablesMap.get(playerRef);
+            StudentTableClickHandler studentTableClickHandler = new StudentTableClickHandler();
             Table table = null;
             ImageView student;
             int oldStudentsValue;
@@ -711,6 +742,7 @@ public class MainSceneController implements SceneController {
                 table.setNewY(playerRef);
                 table.setStudentsNumber();
                 student.setVisible(true);
+                student.setOnMouseClicked(studentTableClickHandler);
 
             } else {
 
@@ -853,7 +885,10 @@ public class MainSceneController implements SceneController {
                 turnLabel.setText("It's your opponent's turn. Wait...");
                 actionLabel.setVisible(false);
             } else if (actionAllowed == 3) { //special 1
+                System.out.println("actionAllowed = "+actionAllowed);
                 actionLabel.setText("Choose an island!");
+                System.out.println(actionLabel.getText());
+                System.out.println("aaaaaa");
                 actionLabel.setVisible(true);
             } else if (actionAllowed == 4) { //special 3
                 actionLabel.setText("Choose an island!");

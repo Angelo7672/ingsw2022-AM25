@@ -100,7 +100,7 @@ public class SpecialsSceneController implements SceneController{
         special1Cost.setVisible(true);
         special1View.setVisible(true);
         special1Button.setVisible(true);
-        if(!special2Cost.toString().equals("0")) {
+        if(!special1Cost.toString().equals("0")) {
             special1Cost.setVisible(true);
             coinSpecial1.setVisible(true);
         }
@@ -219,9 +219,7 @@ public class SpecialsSceneController implements SceneController{
         if(specialChosen != -1 && gui.constants.isCardPlayed()){
             boolean result = false;
             try {
-                System.out.println("chiamo proxy");
                 result = proxy.checkSpecial(specialChosen);
-                System.out.println(result);
             }catch (IOException | ClassNotFoundException e ){}
             if(result) {
                 if(specialChosen!=2 && specialChosen!=4 && specialChosen!=6 && specialChosen!=8) {
@@ -233,6 +231,7 @@ public class SpecialsSceneController implements SceneController{
             }
             else showErrorMessage();
         }
+        else showErrorMessage();
     }
 
     @FXML
@@ -287,7 +286,7 @@ public class SpecialsSceneController implements SceneController{
         }
         else if(special == 10){
             //sposta studenti da entrata a tavolo
-            useSpecial(special);
+            gui.useSpecial(special);
         }
         else if(special == 11){
             //da carta a sala

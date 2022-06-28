@@ -142,10 +142,7 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
     }
 
     public void setView(){
-        synchronized (lock2){
-            receiver.setViewInitialized();
-        }
-
+        receiver.setViewInitialized();
     }
 
     public boolean startPlanningPhase() throws IOException {
@@ -216,6 +213,7 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
     public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
         send(new UseSpecial(special));
         tempObj = receiver.receive();
+        System.out.println(tempObj);
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer) tempObj).getMessage().equals("ok");
         return false;
     }
@@ -238,8 +236,8 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
         return false;
     }
 
-    public boolean useSpecial(int special, int playerRef, int ref) throws IOException {
-        send(new Special1Message(playerRef, ref));
+    public boolean useSpecial(int special, int color, int islandRef) throws IOException {
+        send(new Special1Message(color, islandRef));
         tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
         return false;
