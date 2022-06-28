@@ -50,6 +50,7 @@ public class CloudsSceneController implements SceneController  {
 
             if(result.equalsIgnoreCase("ok")){
                 errorMessage.setVisible(false);
+                gui.setConstants("Reset");
                 gui.setNotYourTurn();
                 disableConfirm();
                 Stage stage = (Stage) confirmButton.getScene().getWindow();

@@ -218,9 +218,6 @@ public class View {
         }
         return Assistant.NONE;
     }
-    public void setNumberOfCards(int playerRef, int numberOfCards){
-        hands.get(playerRef).setNumberOfCards(numberOfCards);
-    }
     public void setCards(String card){
         cards.remove(card.toUpperCase());
     }
@@ -233,7 +230,6 @@ public class View {
 
     public String getLastCard(int playerRef){return hands.get(playerRef).getLastCard();}
     public ArrayList<String> getCards(){ return cards; }
-    public int getNumberOfCards(int playerRef){return hands.get(playerRef).getNumberOfCards();}
 
     //Special
     public void setSpecialUsed(int specialIndex, int playerRef){
@@ -453,12 +449,10 @@ public class View {
         }
     }
     private class Hand{
-        private int numberOfCards;
         private int coins;
         private String lastPlayedCard;
 
         public Hand(){
-            numberOfCards=10;
             coins=1;
         }
 
@@ -468,13 +462,9 @@ public class View {
         public void setLastCard(String lastPlayedCard) {
             this.lastPlayedCard=lastPlayedCard;
         }
-        public void setNumberOfCards(int numberOfCards) {
-            this.numberOfCards=numberOfCards;
-        }
 
         public String getLastCard(){ return lastPlayedCard;}
         public int getCoins(){ return coins;}
-        public int getNumberOfCards(){ return numberOfCards; }
     }
 
     private class Special{
