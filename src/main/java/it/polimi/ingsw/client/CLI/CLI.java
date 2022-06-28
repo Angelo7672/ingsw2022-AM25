@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class CLI implements Runnable, UserInfoListener, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, WinnerListener, DisconnectedListener,
-        NoEntryClientListener, ServerOfflineListener, SpecialStudentsListener, SoldOutListener{
+        NoEntryClientListener, ServerOfflineListener, SpecialStudentsListener, SoldOutListener, RestoreCardsListener{
 
     private final Exit proxy;
     private final Scanner scanner;
@@ -85,6 +85,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         view.setWinnerListener(this);
         view.setNoEntryListener(this);
         view.setSpecialStudentsListener(this);
+        view.setRestoreCardsListener(this);
         proxy.setView();
         printable = new Printable(view);
         System.out.println();
@@ -642,7 +643,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             switch (phase) {
                 case ("MoveStudent") -> moveStudents();
                 case ("MoveMother") -> moveMotherNature();
-                case ("ChoseCloud") -> chooseCloud();
+                case ("ChooseCloud") -> chooseCloud();
             }
         }
     }
@@ -845,5 +846,10 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         scanner.close();
         setActive(false);
         System.exit(-1);
+    }
+
+    @Override
+    public void restoreCardsNotify(ArrayList<String> hand) {
+
     }
 }

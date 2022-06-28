@@ -86,7 +86,7 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
         if(!isCardPlayed()) return "PlayCardAnswer";
         if(!isStudentMoved()) return "MoveStudent";
         if(!isMotherMoved()) return "MoveMother";
-        if(!isCloudChosen()) return "ChoseCloud";
+        if(!isCloudChosen()) return "ChooseCloud";
         return "EndTurn";
     }
 

@@ -237,12 +237,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 initializeMainService.start();
             }
             case "PlanningPhase" -> {
+
                 initializeMainService.cancel();
                 PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
                 planningPhaseService.start();
                 switchScene(MAIN);
             }
             case "PlayCardAnswer" -> {
+                setConstants("PlanningPhase");
                 cardsSceneController.enableConfirm();
                 loadScene(CARDS);
             }
@@ -252,7 +254,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 ActionPhaseService actionPhaseService= new ActionPhaseService();
                 actionPhaseService.start();
             }
-            case "StartTurnAnswer" -> controller.setCurrentPlayer();
+            case "StartTurnAnswer" -> {
+                controller.setCurrentPlayer();
+                setConstants("ActionPhase");
+            }
             case "ChooseCloud" -> {
                 cloudsSceneController.enableConfirm();
                 loadScene(CLOUDS);
@@ -312,6 +317,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         controller.setCardStudent(color);
         setConstants("SpecialUsed");
     }
+
 
     public void setGameRestored(){
         gameRestored = true;
@@ -557,15 +563,22 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     public void setConstants(String phase){
         switch(phase){
+            case "PlanningPhase"  -> constants.setPlanningPhaseStarted(true);
             case "CardPlayed" -> {
                 constants.setCardPlayed(true);
             }
+            case "ActionPhase" -> constants.setActionPhaseStarted(true);
             case "StudentsMoved" -> constants.setStudentMoved(true);
             case "MotherNatureMoved" -> constants.setMotherMoved(true);
             case "SpecialUsed" -> {
                 constants.setSpecialUsed(true);
                 SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
                 controller.resetScene();
+
+                MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
+                if(constants.lastPhase().equals("ChooseCloud")) phaseHandler("ChooseCloud");
+                else if(constants.lastPhase().equals("MoveStudent")) mainSceneController.setActionAllowed(0);
+                else if(constants.lastPhase().equals("MoveMother")) mainSceneController.setActionAllowed(1);
             }
             case "Reset" -> constants.resetAll();
         }

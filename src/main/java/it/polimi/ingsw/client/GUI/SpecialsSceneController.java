@@ -100,20 +100,22 @@ public class SpecialsSceneController implements SceneController{
         special1Cost.setVisible(true);
         special1View.setVisible(true);
         special1Button.setVisible(true);
-        coinSpecial1.setVisible(true);
-        paneSpecial1.setVisible(true);
-        confirmButton.setVisible(true);
-        special2Cost.setVisible(true);
+        if(!special2Cost.toString().equals("0")) {
+            special1Cost.setVisible(true);
+            coinSpecial1.setVisible(true);
+        }
+        if(!special2Cost.toString().equals("0")) {
+            special2Cost.setVisible(true);
+            coinSpecial2.setVisible(true);
+        }
+        if(!special3Cost.toString().equals("0")) {
+            special3Cost.setVisible(true);
+            coinSpecial3.setVisible(true);
+        }
         special2View.setVisible(true);
         special2Button.setVisible(true);
-        coinSpecial2.setVisible(true);
-        paneSpecial2.setVisible(true);
-        confirmButton.setVisible(true);
-        special3Cost.setVisible(true);
         special3View.setVisible(true);
         special3Button.setVisible(true);
-        coinSpecial3.setVisible(true);
-        paneSpecial3.setVisible(true);
         addButton.setVisible(false);
         confirmSpecialButton.setVisible(false);
         specialChosen = -1;
@@ -121,6 +123,8 @@ public class SpecialsSceneController implements SceneController{
         for (int i = 0; i < 3; i++) {
             if(specialsName.get(i)==1 || specialsName.get(i)==7 || specialsName.get(i)==11) showStudents(i);
         }
+        Stage stage = (Stage) confirmButton.getScene().getWindow();
+        stage.close();
     }
 
     private Image specialFactory(int name){
@@ -225,9 +229,6 @@ public class SpecialsSceneController implements SceneController{
                 }
                 else {
                     gui.setConstants("SpecialUsed");
-                    resetScene();
-                    Stage stage = (Stage) confirmButton.getScene().getWindow();
-                    stage.close();
                 }
             }
             else showErrorMessage();

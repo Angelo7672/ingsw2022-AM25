@@ -377,7 +377,7 @@ public class MainSceneController implements SceneController {
             }
         }
 
-        public void confirmSpecial() {
+        public void confirmSpecial() { //special 7
             if (actionAllowed == 6) {
                 if (lastThingClicked.equalsIgnoreCase("studentToExchange")) {
                     try {
@@ -393,7 +393,7 @@ public class MainSceneController implements SceneController {
                     fromCardToEntrance.clear();
                     fromEntranceToCard.clear();
                 }
-                } else if (actionAllowed == 7) {
+                } else if (actionAllowed == 7) { //special 10
                     if (lastThingClicked.equalsIgnoreCase("studentTable")) {
                         try {
                             if (proxy.useSpecial(10, fromEntranceToTable, fromTableToEntrance)) {
