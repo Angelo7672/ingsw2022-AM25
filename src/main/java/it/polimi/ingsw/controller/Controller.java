@@ -143,7 +143,6 @@ public class Controller implements ServerController, Match, Restore{
     public ArrayList<Integer> getExtractedSpecials(){ return gameManager.getExtractedSpecials(); }
 
     //Planning Phase
-
     /**
      * @see VirtualView
      */
@@ -167,7 +166,6 @@ public class Controller implements ServerController, Match, Restore{
     }
 
     //Action Phase
-
     /**
      * @see Game
      */

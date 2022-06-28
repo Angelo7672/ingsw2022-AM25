@@ -69,9 +69,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
 
     /**
      * Create VirtualClient and initialize its locker and its mutex.
-     * @param socket
-     * @param server
-     * @param proxy
+     * @param socket socket reference;
+     * @param server server reference;
+     * @param proxy proxy reference;
      */
     public VirtualClient(Socket socket, Entrance server, Proxy_s proxy){
         this.socket = socket;
@@ -126,12 +126,13 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             this.socket.setSoTimeout(15000);
             while (!victory || !connectionExpired){
                 tmp = (Message) input.readObject();
-
+                //Ping msg
                 if (tmp instanceof PingMessage) {
                     this.socket.setSoTimeout(15000);    //reset timeout
                     send(new PongAnswer());
-
-                }else if(readyPlanningPhase) { //Planning Phase msg
+                }
+                //Planning Phase msg
+                else if(readyPlanningPhase) {
                     readyPlanningPhase = false;
                     if (tmp instanceof GenericMessage) {
                         roundPartOne.setPlanningMsg(tmp);
@@ -141,8 +142,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             synchronized(errorLocker){ errorLocker.notify(); }
                         }
                     }
-
-                } else if(oneCard) { //Planning Phase msg
+                } else if(oneCard) {
                     oneCard = false;
                     if (tmp instanceof CardMessage) {
                         roundPartOne.setPlanningMsg(tmp);
@@ -152,8 +152,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             synchronized(errorLocker){ errorLocker.notify(); }
                         }
                     }
-
-                } else if(readyActionPhase) {    //Action Phase msg
+                }
+                //Action Phase msg
+                else if(readyActionPhase) {
                     readyActionPhase = false;
                     roundPartTwo.setActionMsg(tmp);
                     if (!error) synchronized (actionLocker) { actionLocker.notify(); }
@@ -161,7 +162,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         error = false;
                         synchronized (errorLocker) { errorLocker.notify(); }
                     }
-
+                //Special msg
                 }else if(special1) {
                     special1 = false;
                     if (tmp instanceof Special1Message) {
@@ -210,8 +211,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         expertGame.setSpecialMsg(12, tmp);
                         expertGame.wakeUp(12);
                     } else send(new GenericAnswer("error"));
-
-                } else if (clientInitialization) {  //login msg
+                }
+                //login msg
+                else if (clientInitialization) {
                     clientInitialization = false;
                     if (tmp instanceof GenericMessage) {
                         gameSetup.setSetupMsg(tmp);
@@ -234,7 +236,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             synchronized(errorLocker){ errorLocker.notify(); }
                         }
                     }
-                }else if (gameSetupInitialization){ //game setup msg
+                }
+                //game setup msg
+                else if (gameSetupInitialization){
                     gameSetupInitialization = false;
                     if(tmp instanceof SetupGame){
                         gameSetup.setSetupMsg(tmp);
@@ -244,7 +248,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             synchronized(errorLocker){ errorLocker.notify(); }
                         }
                     }
-                }else System.out.println("errore! "+playerRef); //ovviamente da cambiare
+                }else System.out.println("errore! "+playerRef); //TODO: ovviamente da cambiare
             }
         }catch (SocketException socketException){ clientConnectionExpired();
         }catch (IOException | ClassNotFoundException e){
@@ -254,29 +258,64 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         }
     }
 
+    /**
+     * Unlock mutex for receiving card message.
+     */
     public void unlockPlanningPhase(){ oneCard = true; }
+
+    /**
+     * Unlock mutex for receiving action message.
+     */
     public void unlockActionPhase(){ readyActionPhase = true; }
 
     //Message to client
+    /**
+     * Send answer to invite client to play a card.
+     */
     public void sendPlayCard(){ send(new PlayCardAnswer()); }
+
+    /**
+     * Send answer to invite client to start planning phase.
+     */
     public void sendStartTurn(){ send(new StartTurnAnswer()); }
+
+    /**
+     * Send max movement of mother nature for this action phase.
+     * @param maxMovement max movement;
+     */
     public void sendMaxMovementMotherNature(int maxMovement){ send(new MaxMovementMotherNatureAnswer(maxMovement)); }
+
+    /**
+     * Send team winner
+     * @param winner team winner;
+     */
     public void sendWinner(String winner){ send(new GameOverAnswer(winner)); }
 
+    /**
+     * Send answer.
+     * @param serverAnswer answer to send;
+     */
     public synchronized void send(Answer serverAnswer){
         try {
             output.reset();
             output.writeObject(serverAnswer);
             output.flush();
         }catch (IOException e){ clientConnectionExpired(); }
-
     }
+
+    /**
+     * Notify server that client connection is expired, notify all other client and shut down it.
+     */
     private void clientConnectionExpired(){
         System.err.println("Client disconnected!");
         connectionExpired = true;
         proxy.clientDisconnected(playerRef);
         server.exitError();
     }
+
+    /**
+     * Send DisconnectedAnswer and close socket.
+     */
     public void closeSocket(){
         try {
             send(new DisconnectedAnswer());
@@ -284,48 +323,173 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         }catch (IOException e){ clientConnectionExpired(); }
     }
 
+    /**
+     * @see Proxy_s
+     */
     public void sendGameInfo(int numberOfPlayers, boolean expertMode){ send(new GameInfoAnswer(numberOfPlayers,expertMode)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void sendUserInfo(int playerRef, String nickname, String character){ send(new UserInfoAnswer(playerRef,nickname,character)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void studentsChangeInSchool(int color, String place, int componentRef, int newStudentsValue){ send(new SchoolStudentAnswer(color,place,componentRef,newStudentsValue)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void studentChangeOnIsland(int islandRef, int color, int newStudentsValue){ send(new IslandStudentAnswer(islandRef,color,newStudentsValue)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void studentChangeOnCloud(int cloudRef, int color, int newStudentsValue){ send(new CloudStudentAnswer(cloudRef,color,newStudentsValue)); }
-    public void professorChangePropriety(int playerRef, int color, boolean newProfessorValue){ send(new ProfessorAnswer(playerRef,newProfessorValue,color));}
+
+    /**
+     * @see Proxy_s
+     */
+    public void professorChangePropriety(int playerRef, int color, boolean newProfessorValue){ send(new ProfessorAnswer(playerRef,newProfessorValue,color)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void motherChangePosition(int newMotherPosition){ send(new MotherPositionAnswer(newMotherPosition)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void lastCardPlayedFromAPlayer(int playerRef, String assistantCard){ send(new LastCardAnswer(playerRef,assistantCard)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void numberOfCoinsChangeForAPlayer(int playerRef, int newCoinsValue){ send(new CoinsAnswer(newCoinsValue,playerRef)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void dimensionOfAnIslandIsChange(int islandToDelete){ send(new UnifiedIslandAnswer(islandToDelete)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void towersChangeInSchool(int playerRef, int towersNumber){ send(new SchoolTowersAnswer(playerRef,towersNumber)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void towersChangeOnIsland(int islandRef, int towersNumber){ send(new IslandTowersNumberAnswer(islandRef,towersNumber)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void towerChangeColorOnIsland(int islandRef, int newColor){ send(new IslandTowersColorAnswer(islandRef,newColor)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void islandInhibited(int islandRef, int isInhibited){ send(new InhibitedIslandAnswer(islandRef,isInhibited)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void setSpecial(int specialRef, int cost){ send(new SetSpecialAnswer(specialRef,cost)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void sendUsedSpecial(int playerRef, int indexSpecial){ send(new UseSpecialAnswer(playerRef,indexSpecial)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void sendHandAfterRestore(ArrayList<String> hand){ send(new HandAfterRestoreAnswer(hand)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void sendInfoSpecial1or7or11(int specialIndex, int studentColor, int value){ send(new InfoSpecial1or7or11Answer(specialIndex,studentColor,value)); }
+
+    /**
+     * @see Proxy_s
+     */
     public void sendInfoSpecial5(int cards){ send(new InfoSpecial5Answer(cards)); }
 
+    /**
+     * Set playerRef according to its reference in players list of PlayerManager and VirtualView.
+     * @param playerRef player reference in PlayerManager and VirtualView.
+     */
     public void setPlayerRef(int playerRef) { this.playerRef = playerRef; }
     public int getPlayerRef() { return playerRef; }
 
     public void setExpertGame(ExpertGame expertGame){ this.expertGame = expertGame; }
+
+    /**
+     * Set special1Mutex true.
+     */
     public void setSpecial1() { this.special1 = true; }
+
+    /**
+     * Set special3Mutex true.
+     */
     public void setSpecial3() { this.special3 = true; }
+
+    /**
+     * Set special5Mutex true.
+     */
     public void setSpecial5() { this.special5 = true; }
+
+    /**
+     * Set special7Mutex true.
+     */
     public void setSpecial7() { this.special7 = true; }
+
+    /**
+     * Set special9Mutex true.
+     */
     public void setSpecial9() { this.special9 = true; }
+
+    /**
+     * Set special10Mutex true.
+     */
     public void setSpecial10() { this.special10 = true; }
+
+    /**
+     * Set special11Mutex true.
+     */
     public void setSpecial11() { this.special11 = true; }
+
+    /**
+     * Set special12Mutex true.
+     */
     public void setSpecial12() { this.special12 = true; }
 
+    /**
+     * Used to reorder VirtualClient by playerRef after login/restore.
+     * @param v another VirtualClient to compare with.
+     * @return position.
+     */
     @Override
     public int compareTo(VirtualClient v){ return playerRef.compareTo(v.getPlayerRef()); }
 
+    /**
+     * GameSetup manage the exchange of messages about game settings, login and restore.
+     */
     private class GameSetup extends Thread{
         private final VirtualClient virtualClient;
         private Message setupMsg;
 
+        /**
+         * @param virtualClient needed for RoundPartTwo;
+         */
         public GameSetup(VirtualClient virtualClient){ this.virtualClient = virtualClient; }
 
+        /**
+         * If is first client proceed with game setting, then go with login. If not proceed only with login.
+         */
         @Override
         public void run(){
             try{
@@ -342,6 +506,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             }catch (InterruptedException e) { e.printStackTrace(); }
         }
 
+        /**
+         * Check file save, if is not empty send game setting about last saved game, else proceed with game setup.
+         */
         private void gameSetting(){
             GenericMessage msg = (GenericMessage) setupMsg;
 
@@ -375,6 +542,12 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
+
+        /**
+         * Check user decision about restore game. If "y" restore, if "n" create a new game.
+         * @param numberOfPlayers number of players of last saved game;
+         * @param expertMode game mode of last saved game;
+         */
         private void userDecision(int numberOfPlayers, Boolean expertMode){
             GenericMessage msg = (GenericMessage) setupMsg;
 
@@ -409,6 +582,10 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }
             } catch (InterruptedException ex) { ex.printStackTrace(); }
         }
+
+        /**
+         * Setup a new game.
+         */
         private void setupGame() {
             SetupGame msg = (SetupGame) setupMsg;
 
@@ -432,6 +609,12 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }
             }catch(InterruptedException ex){ ex.printStackTrace(); }
         }
+
+        /**
+         * Procede with login: in case of restore send LoginRestoreAnswer, else send LoginAnswer with already chosen characters.
+         * @see LoginRestoreAnswer
+         * @see LoginAnswer
+         */
         private void loginClient(){
             GenericMessage msg = (GenericMessage) setupMsg;
 
@@ -463,6 +646,10 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
+
+        /**
+         * Check on server if nickname is one used in last saved game.
+         */
         private void readyRestore(){
             SetupConnection msg = (SetupConnection) setupMsg;
             int checker;
@@ -489,6 +676,11 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }
         }
+
+        /**
+         * Check nickname and characters on server, if them are not available send again LoginAnswer.
+         * @see LoginAnswer
+         */
         private void setupConnection() {
             SetupConnection msg = (SetupConnection) setupMsg;
             int checker;
@@ -514,6 +706,11 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
+
+        /**
+         * Check on message received if client is ready to start a new game.
+         * If so, comunicate to proxy that this client is ready.
+         */
         private void readyStart(){
             GenericMessage msg = (GenericMessage) setupMsg;
 
@@ -529,7 +726,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }else{
                     proxy.thisClientIsReady();
                     synchronized (setupLocker) {
-                        clientInitialization = true;  //controlla bene, questo fa ricevere il ready for play card
+                        clientInitialization = true;
                         setupLocker.wait();
                         if(proxy.isRestoreGame()) readyToPlay();
                         else readyPlanningPhase();
@@ -537,6 +734,11 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
+
+        /**
+         * In case of restore, check on message received if client is ready to play.
+         * If so, comunicate to proxy that this client is ready.
+         */
         private void readyToPlay(){
             GenericMessage msg = (GenericMessage) setupMsg;
 
@@ -553,6 +755,11 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 proxy.startGame();
             } catch (InterruptedException ex) { ex.printStackTrace(); }
         }
+
+        /**
+         * Check on message received if client is ready to play a card.
+         * If so, comunicate to proxy that this client is ready.
+         */
         private void readyPlanningPhase(){
             GenericMessage msg = (GenericMessage) setupMsg;
 
@@ -570,12 +777,22 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
+        /**
+         * Set setup message.
+         * @param msg of GameSetup;
+         */
         public void setSetupMsg(Message msg) { this.setupMsg = msg; }
     }
 
+    /**
+     * RoundPart one manage the exchange of message about planning phase.
+     */
     private class RoundPartOne extends Thread{
         Message planningMsg;
 
+        /**
+         * Read planning message then check if client is ready for action phase.
+         */
         @Override
         public void run(){
             try {
@@ -589,6 +806,10 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }
             } catch (InterruptedException e) { e.printStackTrace(); }
         }
+
+        /**
+         * Check on server if card played in allowed.
+         */
         private void planningPhase() {
             CardMessage cardMessage = (CardMessage) planningMsg;
             boolean checker;
@@ -597,7 +818,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 checker = server.userPlayCard(playerRef, cardMessage.getCard());
                 if(checker){
                     send(new GenericAnswer("ok"));
-                    readyPlanningPhase = true;  //dai un nome migliore
+                    readyPlanningPhase = true;
                     synchronized (planLocker){ planLocker.wait(); }  //wait ready for action phase msg
                 }
                 else{
@@ -611,6 +832,10 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
+
+        /**
+         * Check if client is ready for action phase.
+         */
         private void readyForAction(){
             GenericMessage readyMsg = (GenericMessage) planningMsg;
 
