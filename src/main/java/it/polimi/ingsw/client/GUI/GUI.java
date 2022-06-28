@@ -577,7 +577,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
-        //controller.setNewCoinsValue(playerRef, newCoinsValue);
+        Platform.runLater(()->{
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.setNewCoinsValue(playerRef, newCoinsValue);
+        });
+
     }
 
     @Override

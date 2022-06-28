@@ -67,70 +67,38 @@ public class MainSceneController implements SceneController {
     private final String YELLOWSTUDENT = "/graphics/wooden_pieces/yellowStudent3D.png";
     private final String PINKSTUDENT = "/graphics/wooden_pieces/pinkStudent3D.png";
     private final String BLUESTUDENT = "/graphics/wooden_pieces/blueStudent3D.png";
-
     private final String BLACKTOWER = "/graphics/wooden_pieces/black_tower.png";
     private final String WHITETOWER = "/graphics/wooden_pieces/white_tower.png";
     private final String GREYTOWER = "/graphics/wooden_pieces/grey_tower.png";
 
-    @FXML
-    private Button useSpecialButton;
-    @FXML
-    private AnchorPane islandsPane;
-    @FXML
-    private AnchorPane school1;
-    @FXML
-    private AnchorPane school2;
-    @FXML
-    private AnchorPane school3;
-    @FXML
-    private AnchorPane school4;
-    @FXML
-    private AnchorPane userInfo1;
-    @FXML
-    private AnchorPane userInfo2;
-    @FXML
-    private AnchorPane userInfo3;
-    @FXML
-    private AnchorPane userInfo4;
-    @FXML
-    private ImageView character1;
-    @FXML
-    private ImageView character2;
-    @FXML
-    private ImageView character3;
-    @FXML
-    private ImageView character4;
-    @FXML
-    private HBox player1Box;
-    @FXML
-    private HBox player2Box;
-    @FXML
-    private VBox player3Box;
-    @FXML
-    private VBox player4Box;
-    @FXML
-    private AnchorPane cardPane1;
-    @FXML
-    private AnchorPane cardPane2;
-    @FXML
-    private AnchorPane cardPane3;
-    @FXML
-    private AnchorPane cardPane4;
-
-    @FXML
-    private Label actionLabel;
-    @FXML
-    private Label turnLabel;
-    @FXML
-    private Label errorLabel;
-
-    @FXML
-    private Button showCardsButton;
-    @FXML
-    private Button showCloudsButton;
-    @FXML
-    private Button confirmSpecialButton;
-
+    @FXML private Button useSpecialButton;
+    @FXML private AnchorPane islandsPane;
+    @FXML private AnchorPane school1;
+    @FXML private AnchorPane school2;
+    @FXML private AnchorPane school3;
+    @FXML private AnchorPane school4;
+    @FXML private AnchorPane userInfo1;
+    @FXML private AnchorPane userInfo2;
+    @FXML private AnchorPane userInfo3;
+    @FXML private AnchorPane userInfo4;
+    @FXML private ImageView character1;
+    @FXML private ImageView character2;
+    @FXML private ImageView character3;
+    @FXML private ImageView character4;
+    @FXML private HBox player1Box;
+    @FXML private HBox player2Box;
+    @FXML private VBox player3Box;
+    @FXML private VBox player4Box;
+    @FXML private AnchorPane cardPane1;
+    @FXML private AnchorPane cardPane2;
+    @FXML private AnchorPane cardPane3;
+    @FXML private AnchorPane cardPane4;
+    @FXML private Label actionLabel;
+    @FXML private Label turnLabel;
+    @FXML private Label errorLabel;
+    @FXML private Button showCardsButton;
+    @FXML private Button showCloudsButton;
+    @FXML private Button confirmSpecialButton;
 
     public MainSceneController() {
         this.nicknamesMap = new HashMap<>();
@@ -938,6 +906,18 @@ public class MainSceneController implements SceneController {
 
     public void setFromCardToEntrance(ArrayList<Integer> cardsStudents) {
         this.fromCardToEntrance = cardsStudents;
+    }
+
+
+    public void setNewCoinsValue(int playerRef, int newCoinsValue) {
+        Label coinsLabel = null;
+        switch (playerRef){
+            case 0 -> coinsLabel = (Label) userInfo1.getChildren().get(3);
+            case 1 -> coinsLabel = (Label) userInfo2.getChildren().get(3);
+            case 2 -> coinsLabel = (Label) userInfo3.getChildren().get(3);
+            case 3 -> coinsLabel = (Label) userInfo4.getChildren().get(3);
+        }
+        coinsLabel.setText("coins: "+newCoinsValue);
     }
 
 
