@@ -396,9 +396,11 @@ public class MainSceneController implements SceneController {
                     try {
                         if (proxy.useSpecial(7, fromCardToEntrance, fromCardToEntrance)) {
                             gui.setConstants("SpecialUsed");
-                        } else
+                        } else {
                             showMoveNotAllowed();
-                        gui.specialNotAllowed();
+                            gui.specialNotAllowed();
+                        }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
@@ -749,15 +751,15 @@ public class MainSceneController implements SceneController {
                 for (int i = tablePane.getChildren().size() - 1; i >= 0; i--) {
                     student = (ImageView) tablePane.getChildren().get(i);
                     String imageName = student.getImage().getUrl();
-                    if (imageName.equals(GREENSTUDENT) && color == 0) {
+                    if (imageName.contains(GREENSTUDENT) && color == 0) {
                         tablePane.getChildren().remove(i);
-                    } else if (imageName.equals(REDSTUDENT) && color == 1) {
+                    } else if (imageName.contains(REDSTUDENT) && color == 1) {
                         tablePane.getChildren().remove(i);
-                    } else if (imageName.equals(YELLOWSTUDENT) && color == 2) {
+                    } else if (imageName.contains(YELLOWSTUDENT) && color == 2) {
                         tablePane.getChildren().remove(i);
-                    } else if (imageName.equals(PINKSTUDENT) && color == 3) {
+                    } else if (imageName.contains(PINKSTUDENT) && color == 3) {
                         tablePane.getChildren().remove(i);
-                    } else if (imageName.equals(BLUESTUDENT) && color == 4) {
+                    } else if (imageName.contains(BLUESTUDENT) && color == 4) {
                         tablePane.getChildren().remove(i);
                     }
                 }
@@ -905,6 +907,8 @@ public class MainSceneController implements SceneController {
                 confirmSpecialButton.setVisible(true);
                 studentsToSwap = 2; //puoi scambiare max 2 studenti
                 actionLabel.setText("Select a student from the entrance, and then a student at the table: " + studentsToSwap + " more left");
+            } else if (actionAllowed == 8){
+                actionLabel.setText("Move Mother Nature on a Island! (Max movement is: " + view.getMaxStepsMotherNature() + ")");
             }
         }
 
