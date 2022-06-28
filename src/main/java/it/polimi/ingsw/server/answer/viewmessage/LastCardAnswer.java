@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
+/**
+ * LastCardAnswer contains info about the last card played from a player.
+ */
 public class LastCardAnswer implements Answer {
     private final int playerRef;
     private String card;

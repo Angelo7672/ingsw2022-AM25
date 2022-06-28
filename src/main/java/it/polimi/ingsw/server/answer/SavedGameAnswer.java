@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.answer;
 
 import java.util.List;
 
+/**
+ * SavedGameAnswer contains info about the number of players and the game mode of the last saved game.
+ */
 public class SavedGameAnswer implements Answer{
     private int numberOfPlayers;
     private boolean expertMode;

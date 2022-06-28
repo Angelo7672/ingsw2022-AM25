@@ -249,6 +249,12 @@ public class Server implements Entrance,ControllerServer{
      * @see Controller
      */
     @Override
+    public boolean useStrategySimple(int indexSpecial, int playerRef, int ref){ return controller.useStrategySimple(indexSpecial,playerRef,ref); }
+
+    /**
+     * @see Controller
+     */
+    @Override
     public boolean useSpecialLite(int indexSpecial, int playerRef){ return controller.useSpecialLite(indexSpecial, playerRef); }
 
     /**

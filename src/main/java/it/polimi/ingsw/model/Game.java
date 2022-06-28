@@ -98,12 +98,12 @@ public class Game implements GameManager{
             }*/
 
         //INSERISCI GLI SPECIAL CHE VUOI FARE USCIRE
-        roundStrategies.add( roundStrategyFactor.getRoundStrategy(1));
-        roundStrategies.add( roundStrategyFactor.getRoundStrategy(2));
-        roundStrategies.add( roundStrategyFactor.getRoundStrategy(7));
-        this.extractedSpecials.add(1);
-        this.extractedSpecials.add(2);
-        this.extractedSpecials.add(7);
+        roundStrategies.add( roundStrategyFactor.getRoundStrategy(4));
+        roundStrategies.add( roundStrategyFactor.getRoundStrategy(5));
+        roundStrategies.add( roundStrategyFactor.getRoundStrategy(6));
+        this.extractedSpecials.add(4);
+        this.extractedSpecials.add(5);
+        this.extractedSpecials.add(6);
     }
 
     /**
@@ -342,7 +342,15 @@ public class Game implements GameManager{
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, -1);
             findSpecial(indexSpecial, playerRef);
+        } else return false;
+        return true;
+    }
 
+    @Override
+    public boolean useStrategySimple(int indexSpecial, int playerRef, int ref){
+        if(affordSpecial(indexSpecial, playerRef)) {
+            setSpecial(indexSpecial, ref);
+            findSpecial(indexSpecial, playerRef);
         } else return false;
         return true;
     }

@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
+/**
+ * UserInfoAnswer contains info about a player.
+ */
 public class UserInfoAnswer implements Answer {
     private final int playerRef;
     private final String nickname;
@@ -12,9 +15,7 @@ public class UserInfoAnswer implements Answer {
         this.nickname = nickname;
         this.character = character;
     }
-    public int getPlayerRef() {
-        return playerRef;
-    }
+    public int getPlayerRef() { return playerRef; }
     public String getNickname() { return nickname; }
     public String getCharacter() { return character; }
 }

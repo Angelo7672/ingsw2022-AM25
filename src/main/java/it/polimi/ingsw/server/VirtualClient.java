@@ -15,6 +15,10 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * VirtualClient manage all exchanges of information between Server and Client.
+ * It is dived in 3 inner classes: GameSetup for setup game, RoundPartOne for planningPhase, RoundPartTwo for actionPhase.
+ */
 public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     private final Socket socket;
     private final Entrance server;
@@ -23,21 +27,33 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     private ObjectOutputStream output;
     private boolean connectionExpired;
     private Integer playerRef;
-    private boolean expertMode;
+
+    //GameSetup
+    private final GameSetup gameSetup;
+    //GameSetup locker
+    private final Object setupLocker;
+    //GameSetup mutex
     private boolean clientInitialization;
     private boolean gameSetupInitialization;
     private boolean loginInitialization;
-    private GameSetup gameSetup;
-    private Object setupLocker;
-    private Object objGame ;
-    private boolean oneCardAtaTime;
+
+    //RoundPartOne
+    private RoundPartOne roundPartOne;
+    //RoundPartOne locker
+    private final Object planLocker;
+    //RoundPartOne mutex
+    private boolean oneCard;
     private boolean readyPlanningPhase;
     private boolean readyActionPhase;
-    private boolean victory;
-    private Object planLocker;
-    private RoundPartOne roundPartOne;
+
+    //RoundPartTwo
     private RoundPartTwo roundPartTwo;
+    //RoundPartOne locker
+    private final Object actionLocker;
+
+    //ExpertGame
     private ExpertGame expertGame;
+    //ExpertGame mutex
     private boolean special1;
     private boolean special3;
     private boolean special5;
@@ -46,25 +62,41 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     private boolean special10;
     private boolean special11;
     private boolean special12;
-    private Object actionLocker;
-    private Object errorLocker;
+
+    private boolean victory;
+    private final Object errorLocker;   //error locker
     private boolean error;
 
+    /**
+     * Create VirtualClient and initialize its locker and its mutex.
+     * @param socket
+     * @param server
+     * @param proxy
+     */
     public VirtualClient(Socket socket, Entrance server, Proxy_s proxy){
         this.socket = socket;
         this.server = server;
         this.proxy = proxy;
+        try {
+            this.input = new ObjectInputStream(socket.getInputStream());
+            this.output = new ObjectOutputStream(socket.getOutputStream());
+        }catch (IOException e) { clientConnectionExpired(); }
+
         this.connectionExpired = false;
         this.victory = false;
-        this.clientInitialization = true;
+
+        this.gameSetup = new GameSetup(this);
+        this.setupLocker = new Object();
+        this.clientInitialization = true;   //Ready for login / Setup
         this.gameSetupInitialization = false;
         this.loginInitialization = false;
-        this.setupLocker = new Object();
-        this.gameSetup = new GameSetup(this);
-        this.objGame = new Object();
         gameSetup.start();
+
+        this.planLocker = new Object();
         this.readyPlanningPhase = false;
-        this.oneCardAtaTime = false;
+        this.oneCard = false;
+
+        this.actionLocker = new Object();
         this.readyActionPhase = false;
         this.special1 = false;
         this.special3 = false;
@@ -74,17 +106,17 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         this.special10 = false;
         this.special11 = false;
         this.special12 = false;
-        this.planLocker = new Object();
-        this.actionLocker = new Object();
+
         this.errorLocker = new Object();
         this.error = false;
-        try {
-            this.input = new ObjectInputStream(socket.getInputStream());
-            this.output = new ObjectOutputStream(socket.getOutputStream());
-        }catch (IOException e) { clientConnectionExpired(e); }
+
         proxy.incrLimiter();
     }
 
+    /**
+     * This method is a 'concierge', it is used to filtering with mutex entering message.
+     * If a message arrives that the server does not expect, it rejects it and sends a GenericAnswer("error").
+     */
     @Override
     public void run() {
         Message tmp;
@@ -110,8 +142,8 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         }
                     }
 
-                } else if(oneCardAtaTime) { //Planning Phase msg
-                    oneCardAtaTime = false;
+                } else if(oneCard) { //Planning Phase msg
+                    oneCard = false;
                     if (tmp instanceof CardMessage) {
                         roundPartOne.setPlanningMsg(tmp);
                         if (!error) synchronized(planLocker){ planLocker.notify(); }
@@ -185,7 +217,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         gameSetup.setSetupMsg(tmp);
                         if (first) {
                             first = false;
-                            synchronized (objGame) { objGame.notify(); }
+                            synchronized (gameSetup) { gameSetup.notify(); }
                         } else if (!error) synchronized (setupLocker) { setupLocker.notify(); }
                         else {
                             error = false;
@@ -214,7 +246,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     }
                 }else System.out.println("errore! "+playerRef); //ovviamente da cambiare
             }
-        }catch (SocketException socketException){ clientConnectionExpired(socketException);
+        }catch (SocketException socketException){ clientConnectionExpired();
         }catch (IOException | ClassNotFoundException e){
             System.err.println("Client disconnected!");
             connectionExpired = true;
@@ -222,7 +254,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         }
     }
 
-    public void unlockPlanningPhase(){ oneCardAtaTime = true; }
+    public void unlockPlanningPhase(){ oneCard = true; }
     public void unlockActionPhase(){ readyActionPhase = true; }
 
     //Message to client
@@ -236,11 +268,11 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             output.reset();
             output.writeObject(serverAnswer);
             output.flush();
-        }catch (IOException e){ clientConnectionExpired(e); }
+        }catch (IOException e){ clientConnectionExpired(); }
 
     }
-    private void clientConnectionExpired(IOException e){
-        System.err.println("Client " + playerRef + " disconnected!");
+    private void clientConnectionExpired(){
+        System.err.println("Client disconnected!");
         connectionExpired = true;
         proxy.clientDisconnected(playerRef);
         server.exitError();
@@ -249,7 +281,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         try {
             send(new DisconnectedAnswer());
             this.socket.close();
-        }catch (IOException e){ clientConnectionExpired(e); }
+        }catch (IOException e){ clientConnectionExpired(); }
     }
 
     public void sendGameInfo(int numberOfPlayers, boolean expertMode){ send(new GameInfoAnswer(numberOfPlayers,expertMode)); }
@@ -290,19 +322,19 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
 
     private class GameSetup extends Thread{
         private final VirtualClient virtualClient;
-        Message setupMsg;
+        private Message setupMsg;
 
         public GameSetup(VirtualClient virtualClient){ this.virtualClient = virtualClient; }
 
         @Override
         public void run(){
             try{
-                synchronized (objGame){
-                    objGame.wait();
+                synchronized (this){
+                    this.wait();
                     if (proxy.isFirst()) gameSetting();
                     loginClient();
                 }
-                expertMode = server.isExpertMode();
+                boolean expertMode = server.isExpertMode();
                 roundPartOne = new RoundPartOne();
                 roundPartTwo = new RoundPartTwo(expertMode,virtualClient);
                 roundPartOne.start();
@@ -571,7 +603,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 else{
                     send(new MoveNotAllowedAnswer());
                     synchronized (errorLocker) {
-                        oneCardAtaTime = true;
+                        oneCard = true;
                         error = true;
                         errorLocker.wait();
                         planningPhase();
@@ -586,7 +618,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 if (!readyMsg.getMessage().equals("Ready for Action Phase")) {
                     send(new GenericAnswer("error"));
                     synchronized (errorLocker) {
-                        oneCardAtaTime = true;
+                        oneCard = true;
                         error = true;
                         errorLocker.wait();
                         readyForAction();
@@ -793,7 +825,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     }
                 }
             } catch (InterruptedException ex) { ex.printStackTrace();
-            } catch (EndGameException endGameException) { proxy.gameOver(); }
+            } catch (EndGameException endGameException) { server.gameOver(); }
         }
         private void chooseCloud(){
             ChosenCloud cloud = (ChosenCloud) actionMsg;

@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
+/**
+ * MotherPositionAnswer contains info about the mother nature position.
+ */
 public class MotherPositionAnswer implements Answer {
     private final int motherPosition;
 
@@ -10,5 +13,4 @@ public class MotherPositionAnswer implements Answer {
     }
 
     public int getMotherPosition() { return motherPosition; }
-
 }

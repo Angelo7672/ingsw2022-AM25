@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
+/**
+ * UseSpecialAnswer contains info about who played a special character.
+ */
 public class UseSpecialAnswer implements Answer {
     private final int specialIndex;
     private final int playerRef;

@@ -61,6 +61,11 @@ public interface GameManager {
     void inOrderForActionPhase();
 
     /**
+     * @see
+     */
+    boolean useStrategySimple(int indexSpecial, int playerRef, int ref);
+
+    /**
      * @see Game
      */
     boolean useSpecialLite(int indexSpecial, int playerRef);

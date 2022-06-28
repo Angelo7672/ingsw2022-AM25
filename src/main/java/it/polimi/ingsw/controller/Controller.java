@@ -142,12 +142,6 @@ public class Controller implements ServerController, Match, Restore{
     @Override
     public ArrayList<Integer> getExtractedSpecials(){ return gameManager.getExtractedSpecials(); }
 
-    /**
-     * @see Game
-     */
-    @Override
-    public ArrayList<Integer> getSpecialCost(){ return gameManager.getSpecialCost(); }
-
     //Planning Phase
 
     /**
@@ -199,6 +193,12 @@ public class Controller implements ServerController, Match, Restore{
      */
     @Override
     public void chooseCloud(int playerRef, int cloudRef) throws NotAllowedException { gameManager.chooseCloud(playerRef,cloudRef); }
+
+    /**
+     * @see Game
+     */
+    @Override
+    public boolean useStrategySimple(int indexSpecial, int playerRef, int ref){ return gameManager.useStrategySimple(indexSpecial,playerRef,ref); }
 
     /**
      * @see Game

@@ -30,7 +30,7 @@ public class Special9 implements Special{
             user.send(new GenericAnswer("ok"));
             this.wait();
 
-            checker = server.useSpecialSimple(9, playerRef, special9Msg.getColor());
+            checker = server.useStrategySimple(9, playerRef, special9Msg.getColor());
 
         }catch (InterruptedException e) { e.printStackTrace(); }
         return checker;

@@ -231,6 +231,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     }
 
     private void useSpecial() throws IOException, ClassNotFoundException {
+        printable.cli();
         String answer;
         System.out.println();
         System.out.print(SPACE + "Do you want to use a special card? [y/n] ");
@@ -261,17 +262,11 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                 System.out.println("special accettato");
                 if (special == 2 || special == 4 || special == 6 || special == 8) {
                     constants.setSpecialUsed(true);
-                    return;
                 }
-                if (special(special)) {
+                else if (special(special)) {
                     constants.setSpecialUsed(true);
-                    return;
                 } else turn();
-                return;
             }
-            System.out.println();
-            System.out.println(ANSI_RED + SPACE + "Error, try again" + ANSI_RESET);
-            turn();
         }
     }
 

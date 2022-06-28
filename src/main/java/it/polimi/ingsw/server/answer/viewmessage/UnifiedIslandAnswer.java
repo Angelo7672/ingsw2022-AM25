@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
+/**
+ * UnifiedIslandAnswer contains info about the island that joined with another.
+ */
 public class UnifiedIslandAnswer implements Answer{
     private final int unifiedIsland;
 
@@ -12,5 +15,4 @@ public class UnifiedIslandAnswer implements Answer{
     public int getUnifiedIsland() {
         return unifiedIsland;
     }
-
 }

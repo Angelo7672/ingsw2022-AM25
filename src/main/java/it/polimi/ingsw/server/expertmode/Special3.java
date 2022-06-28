@@ -30,7 +30,7 @@ public class Special3 implements Special{
             user.send(new GenericAnswer("ok"));
             this.wait();
 
-            checker = server.useSpecialSimple(3, playerRef, special3Msg.getIslandRef());
+            checker = server.useStrategySimple(3, playerRef, special3Msg.getIslandRef());
 
         }catch (InterruptedException e) { e.printStackTrace(); }
         return checker;
