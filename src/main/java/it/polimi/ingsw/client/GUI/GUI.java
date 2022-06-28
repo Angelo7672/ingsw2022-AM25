@@ -260,19 +260,30 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
     }
 
+    /* action allowed specials:
+    special 1 -> 3
+    special 3 -> 4
+    special 5 -> 5
+    special 7 -> 6
+    special 10 -> 7
+
+     */
+
     public void useSpecial(int special){
         if(special == 3 ){
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            controller.setActionAllowed(3);
-            setConstants("SpecialUsed");
-        }
-        else if(special == 5){
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setActionAllowed(4);
             setConstants("SpecialUsed");
         }
+        else if(special == 5){
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.setActionAllowed(5);
+            setConstants("SpecialUsed");
+        }
         else if(special == 10){
-
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.setActionAllowed(7);
+            setConstants("SpecialUsed");
         }
         else if(special == 9||special == 12){
             Special9or12SceneController controller = (Special9or12SceneController) sceneControllersMap.get(SPECIALS9OR12);
@@ -283,12 +294,15 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     //special 7
     public void useSpecial(int special, ArrayList<Integer> cardStudents){
-
+        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+        controller.setFromCardToEntrance(cardStudents);
+        controller.setActionAllowed(6);
     }
     //special 1
     public void useSpecial(int special, int color){
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-
+        controller.setActionAllowed(3);
+        controller.setCardStudent(color);
         setConstants("SpecialUsed");
     }
 
@@ -545,7 +559,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             case "Reset" -> constants.resetAll();
         }
     }
-
 
     @Override
     public void userInfoNotify(String nickname, String character, int playerRef) {
