@@ -320,7 +320,13 @@ public class Receiver {
         } else if (tmp instanceof InfoSpecial1or7or11Answer) {
             if (!initializedView) {
                 final Answer tmpMsg = tmp;
+                System.out.println("Special receive "+((InfoSpecial1or7or11Answer) tmp).getSpecialIndex());
                 Thread thread = new Thread(() -> {
+                    synchronized (lock2) {
+                        try {
+                            lock2.wait();
+                        } catch (InterruptedException e) {}
+                    }
                     if (!view.specialSet()) {
                         synchronized (specialLock) {
                             try {
@@ -328,12 +334,7 @@ public class Receiver {
                             } catch (InterruptedException e) {}
                         }
                     }
-                    synchronized (lock2) {
-                        try {
-                            lock2.wait();
-                        } catch (InterruptedException e) {}
-                        view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmpMsg).getStudentColor(), ((InfoSpecial1or7or11Answer) tmpMsg).getValue(), ((InfoSpecial1or7or11Answer) tmpMsg).getSpecialIndex());
-                    }
+                    view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmpMsg).getStudentColor(), ((InfoSpecial1or7or11Answer) tmpMsg).getValue(), ((InfoSpecial1or7or11Answer) tmpMsg).getSpecialIndex());
                 }); thread.start();
             } else {
                 if (!view.specialSet()) {
@@ -349,18 +350,18 @@ public class Receiver {
             if (!initializedView) {
                 final Answer tmpMsg = tmp;
                 Thread thread = new Thread(() -> {
+                    synchronized (lock2) {
+                        try {
+                            lock2.wait();
+                        } catch (InterruptedException e) {}
+                        view.setNoEntry(((InfoSpecial5Answer) tmpMsg).getCards());
+                    }
                     if (!view.specialSet()) {
                         synchronized (specialLock) {
                             try {
                                 specialLock.wait();
                             } catch (InterruptedException e) {}
                         }
-                    }
-                    synchronized (lock2) {
-                        try {
-                            lock2.wait();
-                        } catch (InterruptedException e) {}
-                        view.setNoEntry(((InfoSpecial5Answer) tmpMsg).getCards());
                     }
                 }); thread.start();
             } else {

@@ -33,25 +33,34 @@
             <Font size="13.0" />
          </font>
       </Label>
-      <ImageView fx:id="coinSpecial1" fitHeight="64.0" fitWidth="56.0" layoutX="111.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="coinSpecial1" fitHeight="64.0" fitWidth="56.0" layoutX="122.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/specials/Moneta_base.png" />
          </image>
       </ImageView>
       <Button fx:id="confirmSpecialButton" layoutX="395.0" layoutY="344.0" mnemonicParsing="false" onAction="#confirmSpecialButtonPressed" prefHeight="25.0" prefWidth="65.0" text="Confirm" visible="false" />
-      <ImageView fx:id="coinSpecial2" fitHeight="64.0" fitWidth="59.0" layoutX="272.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="coinSpecial2" fitHeight="64.0" fitWidth="59.0" layoutX="282.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/specials/Moneta_base.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="coinSpecial3" fitHeight="64.0" fitWidth="56.0" layoutX="434.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="coinSpecial3" fitHeight="64.0" fitWidth="58.0" layoutX="446.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/specials/Moneta_base.png" />
          </image>
       </ImageView>
-      <Label fx:id="special2Cost" layoutX="286.0" layoutY="100.0" prefHeight="17.0" prefWidth="28.0" visible="false" />
-      <Label fx:id="special1Cost" layoutX="125.0" layoutY="100.0" prefHeight="17.0" prefWidth="28.0" visible="false" />
-      <Label fx:id="special3Cost" layoutX="448.0" layoutY="100.0" prefHeight="17.0" prefWidth="28.0" visible="false" />
+      <Label fx:id="special2Cost" layoutX="305.0" layoutY="92.0" prefHeight="30.0" prefWidth="29.0" text="0">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="special1Cost" layoutX="145.0" layoutY="93.0" prefHeight="30.0" prefWidth="34.0" text="0">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="special3Cost" layoutX="470.0" layoutY="94.0" prefHeight="30.0" prefWidth="22.0" text="0" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
       <AnchorPane fx:id="paneSpecial1" layoutX="92.0" layoutY="276.0" prefHeight="28.0" prefWidth="123.0" visible="false">
          <children>
             <Button fx:id="greenButton1" layoutX="-2.0" layoutY="4.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setStudentColor" prefHeight="20.0" prefWidth="22.0">
@@ -102,6 +111,11 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Label fx:id="greenLabel1" layoutX="4.0" layoutY="19.0" text="0">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
             <Label fx:id="redLabel1" layoutX="29.0" layoutY="19.0" text="0">
                <font>
                   <Font name="System Bold" size="19.0" />
@@ -118,11 +132,6 @@
                </font>
             </Label>
             <Label fx:id="blueLabel1" layoutX="104.0" layoutY="19.0" text="0">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Label>
-            <Label fx:id="greenLabel1" layoutX="4.0" layoutY="19.0" text="0">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
@@ -176,6 +185,11 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Label fx:id="greenLabel11" layoutX="4.0" layoutY="19.0" text="0">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
             <Label fx:id="redLabel11" layoutX="29.0" layoutY="19.0" text="0">
                <font>
                   <Font name="System Bold" size="19.0" />
@@ -192,11 +206,6 @@
                </font>
             </Label>
             <Label fx:id="blueLabel11" layoutX="104.0" layoutY="19.0" text="0">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Label>
-            <Label fx:id="greenLabel11" layoutX="4.0" layoutY="19.0" text="0">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
@@ -250,6 +259,11 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Label fx:id="greenLabel12" layoutX="4.0" layoutY="19.0" text="0">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
             <Label fx:id="redLabel12" layoutX="29.0" layoutY="19.0" text="0">
                <font>
                   <Font name="System Bold" size="19.0" />
@@ -270,13 +284,9 @@
                   <Font name="System Bold" size="19.0" />
                </font>
             </Label>
-            <Label fx:id="greenLabel12" layoutX="4.0" layoutY="19.0" text="0">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Label>
          </children>
       </AnchorPane>
       <Button fx:id="addButton" layoutX="161.0" layoutY="344.0" mnemonicParsing="false" onAction="#addButtonPressed" text="Add" visible="false" />
+      <Label layoutX="67.0" layoutY="21.0" prefHeight="17.0" prefWidth="479.0" textAlignment="CENTER" visible="false" />
    </children>
 </AnchorPane>

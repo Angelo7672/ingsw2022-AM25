@@ -261,7 +261,6 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
             try {
                 Thread.sleep(5000);
                 send(new PingMessage());
-                System.out.println("ping");
             } catch (IOException e) {
                 System.err.println("io");
             } catch (InterruptedException e){

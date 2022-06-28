@@ -121,11 +121,12 @@ public class Special5Test implements NoEntryListener {
     @Override
     public void notifyNoEntry(int newValue) {}
 
-    /*@Test
+    @Test
     @DisplayName("Test if roundSpecial5's effect is correct")
     void effectRoundSpecial5Test() throws NotAllowedException {
         RoundStrategy round = new RoundSpecial5(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         round.setNoEntryListener(this);
+        round.initializeSpecial();
         queueManager.queueForPlanificationPhase();
         queueManager.playCard(0, 0, LION, alreadyPlayedAssistant);
         queueManager.playCard(1, 1, GOOSE, alreadyPlayedAssistant);
@@ -133,5 +134,5 @@ public class Special5Test implements NoEntryListener {
         round.moveMotherNature(0, 1, -1);
         round.effect(0);
         assertEquals(1, islandsManager.getInhibited(0));
-    }*/
+    }
 }

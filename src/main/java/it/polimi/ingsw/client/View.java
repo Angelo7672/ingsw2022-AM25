@@ -273,6 +273,7 @@ public class View {
     }
     public void setSpecialStudents(int color, int newValue, int special){
         int specialIndex = getSpecialIndex(special);
+        System.out.println("set student"+specialIndex);
         specials.get(specialIndex).setStudents(color, newValue);
         specialStudentsListener.specialStudentsNotify(getSpecialName(specialIndex),color,newValue);
     }
@@ -293,6 +294,8 @@ public class View {
     public int[] getSpecialStudents(int special){return specials.get(special).getStudents();}
     public int getNoEntry(int special){return specials.get(special).getNoEntry();}
     public int getSpecialIndex(int special){
+        System.out.println("special index"+special);
+        System.out.println(specials.get(0).getName()+" "+specials.get(1).getName()+" "+specials.get(2).getName());
         int specialIndex=-1;
         for(int i=0; i<specials.size(); i++){
             if(specials.get(i).getName() == special){

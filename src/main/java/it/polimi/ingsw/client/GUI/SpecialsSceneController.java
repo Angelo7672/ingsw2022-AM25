@@ -86,6 +86,13 @@ public class SpecialsSceneController implements SceneController{
         for (int i = 0; i < 3; i++) {
             if(specialsName.get(i)==1 || specialsName.get(i)==7 || specialsName.get(i)==11) showStudents(i);
         }
+        studentsChosen = new ArrayList<>();
+        coinSpecial1.setVisible(false);
+        coinSpecial2.setVisible(false);
+        coinSpecial3.setVisible(false);
+        special1Cost.setVisible(false);
+        special2Cost.setVisible(false);
+        special3Cost.setVisible(false);
     }
 
     public void resetScene(){
@@ -159,12 +166,19 @@ public class SpecialsSceneController implements SceneController{
     }
 
     protected void setStudent(int specialIndex, int color, int value){
-        if(specialIndex==0)
-            ((Label)paneSpecial1.getChildren().get(color)).setText(Integer.toString(value));
-        else if(specialIndex==1)
-            ((Label)paneSpecial2.getChildren().get(color)).setText(Integer.toString(value));
-        else if(specialIndex==2)
-            ((Label)paneSpecial3.getChildren().get(color)).setText(Integer.toString(value));
+        System.out.println(specialIndex+" "+color+" "+value);
+        if(specialsName.indexOf(specialIndex)==0){
+            Label student = (Label) paneSpecial1.getChildren().get(color+5);
+            student.setText(String.valueOf(value));
+        }
+        else if(specialsName.indexOf(specialIndex)==1){
+            Label student = (Label) paneSpecial2.getChildren().get(color+5);
+            student.setText(String.valueOf(value));
+        }
+        else if(specialsName.indexOf(specialIndex)==2){
+            Label student = (Label) paneSpecial3.getChildren().get(color+5);
+            student.setText(String.valueOf(value));
+        }
     }
 
     public void setNoEntry(int special, int value){
@@ -198,9 +212,10 @@ public class SpecialsSceneController implements SceneController{
 
     @FXML
     public void confirmPressed(ActionEvent event) {
-        if(specialChosen != -1){
+        if(specialChosen != -1 && gui.constants.isCardPlayed()){
             boolean result = false;
             try {
+                System.out.println("chiamo proxy");
                 result = proxy.checkSpecial(specialChosen);
                 System.out.println(result);
             }catch (IOException | ClassNotFoundException e ){}
@@ -222,6 +237,9 @@ public class SpecialsSceneController implements SceneController{
     @FXML
     public void confirmSpecialButtonPressed(ActionEvent event) {
         if(specialChosen==7 && !studentsChosen.isEmpty()){
+            System.out.println(studentsChosen);
+            Stage stage = (Stage) confirmButton.getScene().getWindow();
+            stage.close();
             gui.useSpecial(specialChosen, studentsChosen);
         }
         else if(specialChosen==11 && studentChosen != -1){
@@ -246,6 +264,7 @@ public class SpecialsSceneController implements SceneController{
     public void addButtonPressed(ActionEvent event){
         if(studentChosen!=-1 && studentsChosen.size()<3)
             studentsChosen.add(studentChosen);
+        System.out.println("add "+studentChosen);
     }
 
     private void useSpecial(int special){
@@ -255,7 +274,7 @@ public class SpecialsSceneController implements SceneController{
             confirmSpecialButton.setVisible(true);
             questionLabel.setText("Which student do you want to move?");
         }
-        else if(special == 3 || special == 5 || special == 9 || special == 12){
+        else if(special == 3 || special == 4 || special == 5 || special == 9 || special == 12){
             gui.useSpecial(special);
         }
         else if(special == 7){

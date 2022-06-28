@@ -263,6 +263,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     /* action allowed specials:
     special 1 -> 3
     special 3 -> 4
+    special 4 -> 8
     special 5 -> 5
     special 7 -> 6
     special 10 -> 7
@@ -273,6 +274,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         if(special == 3 ){
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setActionAllowed(4);
+            setConstants("SpecialUsed");
+        }
+        else if(special == 4){
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.setActionAllowed(8);
             setConstants("SpecialUsed");
         }
         else if(special == 5){
@@ -297,6 +303,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
         controller.setFromCardToEntrance(cardStudents);
         controller.setActionAllowed(6);
+        setConstants("SpecialUsed");
     }
     //special 1
     public void useSpecial(int special, int color){

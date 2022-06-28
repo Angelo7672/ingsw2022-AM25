@@ -132,7 +132,7 @@ public class MainSceneController implements SceneController {
     }
 
     public void useSpecialButtonPressed() {
-        if (!gui.constants.isSpecialUsed() && gui.constants.isCardPlayed()) {
+        if (!gui.constants.isSpecialUsed()) {
             gui.loadScene(SPECIALS);
         } else {
             errorLabel.setText("Error, move not allowed!");
