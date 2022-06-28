@@ -14,7 +14,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +52,7 @@ public class MainSceneController implements SceneController {
     private HashMap<Integer, AnchorPane> tablesMap;
     private HashMap<Integer, AnchorPane> professorsMap;
     private HashMap<Integer, Integer> towersNumber;
+    private HashMap<Integer, Integer> noEntryTilesMap;
 
     private String lastThingClicked;
     private int currentStudentColor;
@@ -71,6 +71,7 @@ public class MainSceneController implements SceneController {
     private final String BLACKTOWER = "/graphics/wooden_pieces/black_tower.png";
     private final String WHITETOWER = "/graphics/wooden_pieces/white_tower.png";
     private final String GREYTOWER = "/graphics/wooden_pieces/grey_tower.png";
+    private final String NOENTRY = "/graphics/deny_island_icon.png";
 
     @FXML private Button useSpecialButton;
     @FXML private AnchorPane islandsPane;
@@ -124,6 +125,7 @@ public class MainSceneController implements SceneController {
         this.fromTableToEntrance = new ArrayList<>();
         this.fromEntranceToCard = new ArrayList<>();
         this.fromCardToEntrance = new ArrayList<>();
+        this.noEntryTilesMap = new HashMap<>();
 
         oldStudentsValue = 0;
         actionAllowed = -1;
@@ -305,7 +307,6 @@ public class MainSceneController implements SceneController {
                     int motherMovement = 0;
                     int currentMotherPos = view.getMotherPosition();
                     for (int i = 0; i < islandsList.size(); i++) {
-                        //if ((mouseEvent.getSource() == islandsMap.get(i))) {
                         if ((mouseEvent.getSource() == islandsList.get(i))) {
                             islandRef = i; // non sono sicura
                         }
@@ -332,7 +333,7 @@ public class MainSceneController implements SceneController {
                     }
                 } else if (actionAllowed == 3) { //special 1
                     System.out.println("island click handler per action 3");
-                    for (int i = 0; i < 12; i++) {
+                    for (int i = 0; i < islandsList.size(); i++) {
                         if ((mouseEvent.getSource() == islandsList.get(i))) {
                             islandRef = i;
                         }
@@ -352,7 +353,7 @@ public class MainSceneController implements SceneController {
                     }
 
                 } else if (actionAllowed == 4) { //Special 3
-                    for (int i = 0; i < 12; i++) {
+                    for (int i = 0; i < islandsList.size(); i++) {
                         if ((mouseEvent.getSource() == islandsList.get(i))) {
                             islandRef = i;
                         }
@@ -370,7 +371,7 @@ public class MainSceneController implements SceneController {
                     }
 
                 } else if (actionAllowed == 5) { //special 5
-                    for (int i = 0; i < 12; i++) {
+                    for (int i = 0; i < islandsList.size(); i++) {
                         if ((mouseEvent.getSource() == islandsList.get(i))) {
                             islandRef = i;
                         }
@@ -499,6 +500,8 @@ public class MainSceneController implements SceneController {
             for (int i = 0; i < 12; i++) {
                 island = islandsList.get(i);
                 island.setOnMouseClicked(islandClickHandler);
+
+                noEntryTilesMap.put(i, 0);
 
                 for (int j = 1; j <= 13; j++) {
                     island.getChildren().get(j).setVisible(false);
@@ -959,6 +962,58 @@ public class MainSceneController implements SceneController {
         }
         coinsLabel.setText("coins: "+newCoinsValue);
     }
+
+
+    public void setInhibitedIsland(int islandRef, int isInhibited){
+        AnchorPane island = islandsList.get(islandRef);
+        ImageView noEntryTile;
+        int oldValue = noEntryTilesMap.get(islandRef);
+        noEntryTilesMap.put(islandRef, isInhibited);
+
+        if(isInhibited>oldValue){
+            if(isInhibited == 1){
+                noEntryTile = new ImageView(new Image(NOENTRY));
+                noEntryTile.setFitHeight(40);
+                noEntryTile.setFitWidth(40);
+                island.getChildren().add(island.getChildren().size(), noEntryTile);
+                island.getChildren().get(island.getChildren().size()-1).setLayoutX(50.0);
+                island.getChildren().get(island.getChildren().size()-1).setLayoutY(30.0);
+                noEntryTile.setVisible(true);
+            } else if(isInhibited == 2){
+                noEntryTile = new ImageView(new Image(NOENTRY));
+                noEntryTile.setFitHeight(40);
+                noEntryTile.setFitWidth(40);
+                island.getChildren().add(island.getChildren().size(), noEntryTile);
+                island.getChildren().get(island.getChildren().size()-1).setLayoutX(100.0);
+                island.getChildren().get(island.getChildren().size()-1).setLayoutY(30.0);
+                noEntryTile.setVisible(true);
+            } else if(isInhibited == 3){
+                noEntryTile = new ImageView(new Image(NOENTRY));
+                noEntryTile.setFitHeight(40);
+                noEntryTile.setFitWidth(40);
+                island.getChildren().add(island.getChildren().size(), noEntryTile);
+                island.getChildren().get(island.getChildren().size()-1).setLayoutX(50.0);
+                island.getChildren().get(island.getChildren().size()-1).setLayoutY(80.0);
+                noEntryTile.setVisible(true);
+            } else if(isInhibited == 4) {
+                noEntryTile = new ImageView(new Image(NOENTRY));
+                noEntryTile.setFitHeight(40);
+                noEntryTile.setFitWidth(40);
+                island.getChildren().add(island.getChildren().size(), noEntryTile);
+                island.getChildren().get(island.getChildren().size() - 1).setLayoutX(100.0);
+                island.getChildren().get(island.getChildren().size() - 1).setLayoutY(80.0);
+                noEntryTile.setVisible(true);
+            }
+        } else {
+            int toRemove = oldValue - isInhibited;
+            for(int i=island.getChildren().size()-1; i>=island.getChildren().size()-1-toRemove; i--){
+                island.getChildren().remove(i);
+            }
+
+        }
+
+    }
+
 
 
 

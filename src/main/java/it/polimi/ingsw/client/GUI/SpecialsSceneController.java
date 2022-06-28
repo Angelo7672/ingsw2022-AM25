@@ -188,7 +188,6 @@ public class SpecialsSceneController implements SceneController{
     public void setNoEntry(int special, int value){
 
     }
-
     @FXML
     public void setSpecialChosen(ActionEvent event){
         if(event.getSource()==special1Button){

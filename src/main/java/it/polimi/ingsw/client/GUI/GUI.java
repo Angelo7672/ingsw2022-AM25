@@ -491,6 +491,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     view.setSpecialStudentsListener(gui);
                     view.setSpecialListener(gui);
                     view.setWinnerListener(gui);
+                    view.setNoEntryListener(gui);
                     proxy.setServerOfflineListener(gui);
                     proxy.setDisconnectedListener(gui);
 
@@ -645,7 +646,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     @Override
     public void notifyInhibited(int islandRef, int isInhibited) {
-        //controller.setInhibitedIsland(islandRef, isInhibited);
+        Platform.runLater(() -> {
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.setInhibitedIsland(islandRef, isInhibited);
+        });
     }
 
     @Override
