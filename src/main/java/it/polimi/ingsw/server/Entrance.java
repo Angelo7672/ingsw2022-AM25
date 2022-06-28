@@ -37,4 +37,9 @@ public interface Entrance {
     String endGame();
 
     void exitError();
+
+    /**
+     * @see Server
+     */
+    void gameOver();
 }

@@ -1,27 +1,30 @@
 package it.polimi.ingsw.server.expertmode;
 
 import it.polimi.ingsw.client.message.Message;
-import it.polimi.ingsw.server.answer.GenericAnswer;
 import it.polimi.ingsw.server.Entrance;
 import it.polimi.ingsw.server.VirtualClient;
-import it.polimi.ingsw.server.answer.MoveNotAllowedAnswer;
 
+/**
+ * Special6 server class.
+ */
 public class Special6 implements Special{
-    private Entrance server;
+    private final Entrance server;
 
     public Special6(Entrance server) { this.server = server; }
 
+    /**
+     * Effect of special6.
+     * @param playerRef player who use special.
+     * @param user VirtualClient reference.
+     * @return if the operation was successful.
+     */
     @Override
     public boolean effect(int playerRef, VirtualClient user){
-        VirtualClient virtualClient = user;
         boolean checker;
 
         checker = server.useSpecialLite(6, playerRef);
 
         return checker;
-
-        /*if(checker) virtualClient.send(new GenericAnswer("ok"));
-        else virtualClient.send(new MoveNotAllowedAnswer());*/
     }
 
     @Override

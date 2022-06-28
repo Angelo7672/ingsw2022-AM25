@@ -5,34 +5,47 @@ import it.polimi.ingsw.client.message.special.Special3Message;
 import it.polimi.ingsw.server.answer.GenericAnswer;
 import it.polimi.ingsw.server.Entrance;
 import it.polimi.ingsw.server.VirtualClient;
-import it.polimi.ingsw.server.answer.MoveNotAllowedAnswer;
 
+/**
+ * Special3 server class.
+ */
 public class Special3 implements Special{
     private Special3Message special3Msg;
-    private Entrance server;
+    private final Entrance server;
 
     public Special3(Entrance server) { this.server = server; }
 
+    /**
+     * Effect of Special3, wait Special3 message then proceed with effect on server.
+     * @param playerRef player who use special.
+     * @param user VirtualClient reference.
+     * @return if the operation was successful.
+     */
     @Override
     public synchronized boolean effect(int playerRef, VirtualClient user){
-        VirtualClient virtualClient = user;
         boolean checker = false;
 
         try {
-            virtualClient.setSpecial3();
-            virtualClient.send(new GenericAnswer("ok"));
+            user.setSpecial3();
+            user.send(new GenericAnswer("ok"));
             this.wait();
 
             checker = server.useSpecialSimple(3, playerRef, special3Msg.getIslandRef());
 
-            /*if (checker) virtualClient.send(new GenericAnswer("ok"));
-            else virtualClient.send(new MoveNotAllowedAnswer());*/
         }catch (InterruptedException e) { e.printStackTrace(); }
         return checker;
     }
 
+    /**
+     * Set special3 message.
+     * @param msg special3 message;
+     */
     @Override
     public void setSpecialMessage(Message msg) { special3Msg = (Special3Message) msg; }
+
+    /**
+     * Wake up Special3 when special3 message arrived.
+     */
     @Override
     public synchronized void wakeUp() { this.notify(); }
 }
