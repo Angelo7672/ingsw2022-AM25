@@ -286,7 +286,7 @@ public class SpecialsSceneController implements SceneController{
         }
         else if(special == 10){
             //sposta studenti da entrata a tavolo
-            useSpecial(special);
+            gui.useSpecial(special);
         }
         else if(special == 11){
             //da carta a sala
