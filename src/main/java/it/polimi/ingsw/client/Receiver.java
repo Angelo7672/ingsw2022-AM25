@@ -11,9 +11,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
-public class Receiver {
+public class Receiver extends Thread {
 
     private Thread receive;
     private final Object lock1;
@@ -31,15 +32,15 @@ public class Receiver {
 
     public Receiver(Object lock2, Socket socket, View view) throws IOException {
         this.socket = socket;
-        //socket.setSoTimeout(15000);
-        this.inputStream = new ObjectInputStream(socket.getInputStream());
+        this.inputStream = new ObjectInputStream(this.socket.getInputStream());
+        //this.socket.setSoTimeout(15000);
         this.view = view;
         answersList = new ArrayList<>();
         lock1 = new Object();
         this.lock2 = lock2;
         specialLock = new Object();
         disconnected = false;
-        startReceive();
+
     }
 
     public void setViewInitialized(){
@@ -73,16 +74,6 @@ public class Receiver {
             answersList.remove(0);
         }
         return tmp;
-    }
-
-    public void  setTimeout() throws IOException {
-        System.out.println("set time");
-        try {
-            socket.setSoTimeout(15000);
-        }catch (SocketException e){
-            disconnected =true;
-            serverOfflineListener.notifyServerOffline();
-        }
     }
 
     private void viewSchoolMessage(Answer tmp){
@@ -159,6 +150,7 @@ public class Receiver {
                 }); thread.start();
             } else view.setMotherPosition(((MotherPositionAnswer) tmp).getMotherPosition());
         } else if (tmp instanceof MaxMovementMotherNatureAnswer) {
+            System.out.println("Max movement");
             if (!initializedView) {
                 final Answer tmpMsg = tmp;
                 Thread thread = new Thread(() -> {
@@ -400,16 +392,24 @@ public class Receiver {
         }
     }
 
-    private void startReceive(){
-        receive = new Thread(() -> {
+    @Override
+    public void run(){
+        //receive = new Thread(() -> {
+        try {
             ArrayList<Answer> answersTmpList = new ArrayList<>();
             Answer tmp;
-            try {
-                setTimeout();
+
+                socket.setSoTimeout(15000);
                 while (!disconnected) {
                     tmp = (Answer) inputStream.readObject();
+                    //socket.setSoTimeout(15000);
                     if (tmp instanceof PongAnswer) {
                         socket.setSoTimeout(15000);
+                        /*try {
+                            socket.setSoTimeout(15000);
+                        }catch (SocketException e) {
+                            System.out.println("time out");
+                        }*/
                     } else if (tmp instanceof GameInfoAnswer) gameMessage(tmp);
                     else if (tmp instanceof UserInfoAnswer) gameMessage(tmp);
                     else if (tmp instanceof LastCardAnswer) viewCardsMessage(tmp);
@@ -435,46 +435,37 @@ public class Receiver {
                         answersTmpList.clear();
                         disconnectedListener.notifyDisconnected();
                     } else if (tmp instanceof GameOverAnswer) {
-                        synchronized (lock2) {
-                            if (!initializedView) lock2.wait();
-                            view.setWinner(((GameOverAnswer) tmp).getWinner());
-                        }
-                    }  else if(tmp instanceof SoldOutAnswer){
+                        view.setWinner(((GameOverAnswer) tmp).getWinner());
+                    } else if (tmp instanceof SoldOutAnswer) {
                         disconnected = true;
                         soldOutListener.notifySoldOut();
                     } else {
                         answersTmpList.add(tmp);
                     }
-                    synchronized (lock1){
-                        for(int i=0; i<answersTmpList.size(); i++) {
+                    synchronized (lock1) {
+                        for (int i = 0; i < answersTmpList.size(); i++) {
                             answersList.add(answersTmpList.get(i));
                             answersTmpList.remove(i);
                         }
-                        if(answersList.size()!=0) lock1.notify();
+                        if (answersList.size() != 0) lock1.notify();
                     }
                 }
-            } catch (SocketException e){
-                try {
-                    serverOfflineListener.notifyServerOffline();
+            } catch (SocketException e) {
+            System.out.println("time out");
+                /*try {
+                    //serverOfflineListener.notifyServerOffline();
                 } catch (IOException ex) {
                     ex.printStackTrace();
-                }
+                }*/
             } catch (IOException | ClassNotFoundException e) {
-                try {
+                /*try {
                     socket.close();
                     return;
                 } catch (IOException ex) {
                     ex.printStackTrace();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                }*/
             }
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        receive.start();
-    }
+        }
+       /* });
+        receive.start();*/
 }

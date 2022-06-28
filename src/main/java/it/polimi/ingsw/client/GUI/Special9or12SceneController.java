@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -36,8 +37,9 @@ public class Special9or12SceneController implements SceneController{
         try {
             if (proxy.useSpecial(special, 4)) {
                 gui.setConstants("SpecialUsed");
-
-            } else showErrorMessage();
+            } else {
+                specialNotAllowed();
+            }
         }catch (IOException e){}
     }
 
@@ -47,7 +49,9 @@ public class Special9or12SceneController implements SceneController{
             if (proxy.useSpecial(special, 0)) {
                 gui.setConstants("SpecialUsed");
 
-            } else showErrorMessage();
+            } else {
+                specialNotAllowed();
+            }
         }catch (IOException e){}
     }
 
@@ -57,7 +61,9 @@ public class Special9or12SceneController implements SceneController{
             if (proxy.useSpecial(special, 3)) {
                 gui.setConstants("SpecialUsed");
 
-            } else showErrorMessage();
+            } else {
+                specialNotAllowed();
+            }
         }catch (IOException e){}
     }
 
@@ -67,7 +73,9 @@ public class Special9or12SceneController implements SceneController{
             if (proxy.useSpecial(special, 1)) {
                 gui.setConstants("SpecialUsed");
 
-            } else showErrorMessage();
+            } else {
+                specialNotAllowed();
+            }
         }catch (IOException e){}
     }
 
@@ -75,12 +83,21 @@ public class Special9or12SceneController implements SceneController{
     void yellowButtonPressed(ActionEvent event) {
         try {
             if (proxy.useSpecial(special, 2)) {
+                System.out.println("true");
                 gui.setConstants("SpecialUsed");
 
-            } else showErrorMessage();
+            } else {
+                specialNotAllowed();
+            }
         }catch (IOException e){}
     }
 
+    private void specialNotAllowed(){
+        showErrorMessage();
+        Stage stage = (Stage) greenButton.getScene().getWindow();
+        stage.close();
+        gui.specialNotAllowed();
+    }
 
     @Override
     public void setGUI(GUI gui) {

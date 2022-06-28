@@ -252,7 +252,10 @@ public class SpecialsSceneController implements SceneController{
                 Stage stage = (Stage) confirmButton.getScene().getWindow();
                 stage.close();
             }
-            else showErrorMessage();
+            else {
+                gui.specialNotAllowed();
+                showErrorMessage();
+            }
         }
         else if(specialChosen == 1 && studentChosen != -1){
             gui.useSpecial(specialChosen, studentChosen);

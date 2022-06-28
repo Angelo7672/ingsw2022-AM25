@@ -30,6 +30,7 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
         lock2 = new Object();
         view = new View();
         receiver = new Receiver(lock2, socket, view);
+        receiver.start();
         setDisconnectedListener(this);
         setServerOfflineListener(this);
         setSoldOutListener(this);
