@@ -216,6 +216,7 @@ public class MainSceneController implements SceneController {
                             System.out.println("movement successful");
                             errorLabel.setVisible(false);
                         } else if (result.equalsIgnoreCase("transfer complete")) {
+                            gui.setConstants("StudentsMoved");
                             System.out.println("movement successful, fine");
                             setActionAllowed(1);
                         } else {
@@ -278,6 +279,7 @@ public class MainSceneController implements SceneController {
                                 System.out.println("movement successful");
                                 errorLabel.setVisible(false);
                             } else if (result.equalsIgnoreCase("transfer complete")) {
+                                gui.setConstants("StudentsMoved");
                                 System.out.println("movement successful, fine");
                                 setActionAllowed(1);
                             } else {
@@ -313,6 +315,7 @@ public class MainSceneController implements SceneController {
                     try {
                         String result = proxy.moveMotherNature(motherMovement);
                         if (result.equalsIgnoreCase("ok")) {
+                            gui.setConstants("MovedMother");
                             errorLabel.setVisible(false);
                             setActionAllowed(2);
                         } else {

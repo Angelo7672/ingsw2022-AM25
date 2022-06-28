@@ -96,11 +96,11 @@ public class SpecialsSceneController implements SceneController{
     }
 
     public void resetScene(){
-        confirmButton.setVisible(false);
+        confirmButton.setVisible(true);
         special1Cost.setVisible(true);
         special1View.setVisible(true);
         special1Button.setVisible(true);
-        if(!special2Cost.toString().equals("0")) {
+        if(!special1Cost.toString().equals("0")) {
             special1Cost.setVisible(true);
             coinSpecial1.setVisible(true);
         }
@@ -125,10 +125,6 @@ public class SpecialsSceneController implements SceneController{
         }
         Stage stage = (Stage) confirmButton.getScene().getWindow();
         stage.close();
-    }
-
-    public void setConfirmButton(){
-        confirmButton.setVisible(true);
     }
 
     private Image specialFactory(int name){
@@ -223,9 +219,7 @@ public class SpecialsSceneController implements SceneController{
         if(specialChosen != -1 && gui.constants.isCardPlayed()){
             boolean result = false;
             try {
-                System.out.println("chiamo proxy");
                 result = proxy.checkSpecial(specialChosen);
-                System.out.println(result);
             }catch (IOException | ClassNotFoundException e ){}
             if(result) {
                 if(specialChosen!=2 && specialChosen!=4 && specialChosen!=6 && specialChosen!=8) {
@@ -237,6 +231,7 @@ public class SpecialsSceneController implements SceneController{
             }
             else showErrorMessage();
         }
+        else showErrorMessage();
     }
 
     @FXML

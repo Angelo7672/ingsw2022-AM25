@@ -251,10 +251,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
             case "ActionPhase" -> {
                 //planningPhaseService.cancel();
-                if(view.getExpertMode()) {
-                    SpecialsSceneController controller1 = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
-                    controller1.setConfirmButton();
-                }
                 ActionPhaseService actionPhaseService= new ActionPhaseService();
                 actionPhaseService.start();
             }
@@ -320,6 +316,16 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         controller.setActionAllowed(3);
         controller.setCardStudent(color);
         setConstants("SpecialUsed");
+    }
+
+    public void specialNotAllowed(){
+        SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
+        controller.resetScene();
+        System.out.println(constants.lastPhase());
+        MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
+        if(constants.lastPhase().equals("ChooseCloud")) phaseHandler("ChooseCloud");
+        else if(constants.lastPhase().equals("MoveStudent")) mainSceneController.setActionAllowed(0);
+        else if(constants.lastPhase().equals("MoveMother")) mainSceneController.setActionAllowed(1);
     }
 
 
@@ -578,7 +584,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 constants.setSpecialUsed(true);
                 SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
                 controller.resetScene();
-
+                System.out.println(constants.lastPhase());
                 MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
                 if(constants.lastPhase().equals("ChooseCloud")) phaseHandler("ChooseCloud");
                 else if(constants.lastPhase().equals("MoveStudent")) mainSceneController.setActionAllowed(0);
