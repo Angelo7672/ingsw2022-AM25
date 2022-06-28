@@ -300,27 +300,23 @@ public class Receiver {
                     synchronized (lock2) {
                         try {
                             lock2.wait();
-                        } catch (InterruptedException e) {}
-                        view.setSpecial(((SetSpecialAnswer) tmpMsg).getSpecialRef(), ((SetSpecialAnswer) tmpMsg).getCost());
-                        synchronized (specialLock) {
-                            if(view.specialSet()) specialLock.notifyAll();
+                        } catch (InterruptedException e) {
                         }
+                        view.setSpecial(((SetSpecialAnswer) tmpMsg).getSpecialRef(), ((SetSpecialAnswer) tmpMsg).getCost());
+                    }
+                    synchronized (specialLock) {
+                        if(view.specialSet()) specialLock.notifyAll();
                     }
                 }); thread.start();
             } else {
-                synchronized (specialLock) {
-                    if (!view.specialSet()) {
-                        try {
-                            specialLock.wait();
-                        } catch (InterruptedException e) {}
-                    }
-                }
                 view.setSpecial(((SetSpecialAnswer) tmp).getSpecialRef(), ((SetSpecialAnswer) tmp).getCost());
+                synchronized (specialLock) {
+                    if(view.specialSet()) specialLock.notifyAll();
+                }
             }
         } else if (tmp instanceof InfoSpecial1or7or11Answer) {
-            if (!initializedView) {
+            if (!initializedView || !view.specialSet()) {
                 final Answer tmpMsg = tmp;
-                System.out.println("Special receive "+((InfoSpecial1or7or11Answer) tmp).getSpecialIndex());
                 Thread thread = new Thread(() -> {
                     synchronized (lock2) {
                         try {
@@ -347,7 +343,7 @@ public class Receiver {
                 view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmp).getStudentColor(), ((InfoSpecial1or7or11Answer) tmp).getValue(), ((InfoSpecial1or7or11Answer) tmp).getSpecialIndex());
             }
         } else if (tmp instanceof InfoSpecial5Answer) {
-            if (!initializedView) {
+            if (!initializedView || !view.specialSet()) {
                 final Answer tmpMsg = tmp;
                 Thread thread = new Thread(() -> {
                     synchronized (lock2) {
@@ -402,11 +398,11 @@ public class Receiver {
         receive = new Thread(() -> {
             ArrayList<Answer> answersTmpList = new ArrayList<>();
             Answer tmp;
-            System.out.println("thread started");
             try {
                 setTimeout();
                 while (!disconnected) {
                     tmp = (Answer) inputStream.readObject();
+                    if(!(tmp instanceof PongAnswer)) System.out.println(tmp);
                     if (tmp instanceof PongAnswer) {
                         socket.setSoTimeout(15000);
                     } else if (tmp instanceof GameInfoAnswer) gameMessage(tmp);
@@ -442,7 +438,9 @@ public class Receiver {
                         disconnected = true;
                         soldOutListener.notifySoldOut();
                     }
-                    else answersTmpList.add(tmp);
+                    else {
+                        answersTmpList.add(tmp);
+                    }
                     synchronized (lock1){
                         for(int i=0; i<answersTmpList.size(); i++) {
                             answersList.add(answersTmpList.get(i));
