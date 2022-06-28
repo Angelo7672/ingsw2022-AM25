@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.answer;
 
+/**
+ * MaxMovementMotherNatureAnswer contains info about the max movement of mother nature for recipient player.
+ */
 public class MaxMovementMotherNatureAnswer implements Answer{
     private final int maxMovement;
 

@@ -164,83 +164,201 @@ public class Proxy_s implements Exit {
         for (VirtualClient client:user)
             client.studentsChangeInSchool(color, place, componentRef, newStudentsValue);
     }
+
+    /**
+     * Send at every client the number of students of a color on an island.
+     * @see VirtualClient
+     * @param islandRef island reference;
+     * @param color color reference;
+     * @param newStudentsValue number of student of this color;
+     */
     @Override
     public void studentChangeOnIsland(int islandRef, int color, int newStudentsValue){
         for (VirtualClient client:user)
             client.studentChangeOnIsland(islandRef, color, newStudentsValue);
     }
+
+    /**
+     * Send at every client the number of students of a color on a cloud.
+     * @see VirtualClient
+     * @param cloudRef cloud reference;
+     * @param color color reference;
+     * @param newStudentsValue number of student of this color;
+     */
     @Override
     public void studentChangeOnCloud(int cloudRef, int color, int newStudentsValue){
         for (VirtualClient client:user)
             client.studentChangeOnCloud(cloudRef, color, newStudentsValue);
     }
+
+    /**
+     * Send at every client the professor's new owner.
+     * @see VirtualClient
+     * @param playerRef player reference;
+     * @param color color reference;
+     * @param newProfessorValue professor presence;
+     */
     @Override
     public void professorChangePropriety(int playerRef, int color, boolean newProfessorValue){
         for (VirtualClient client:user)
             client.professorChangePropriety(playerRef, color, newProfessorValue);
     }
+
+    /**
+     * Send at every client the new mother pose.
+     * @see VirtualClient
+     * @param newMotherPosition mother pose;
+     */
     @Override
     public void motherChangePosition(int newMotherPosition){
         for (VirtualClient client:user)
             client.motherChangePosition(newMotherPosition);
     }
+
+    /**
+     * Send at every client the last card played from a player.
+     * @see VirtualClient
+     * @param playerRef player reference;
+     * @param assistantCard played;
+     */
     @Override
     public void lastCardPlayedFromAPlayer(int playerRef, String assistantCard){
         for (VirtualClient client:user)
             client.lastCardPlayedFromAPlayer(playerRef, assistantCard);
     }
+
+    /**
+     * Send at every client the new number of coins of a player.
+     * @see VirtualClient
+     * @param playerRef player reference;
+     * @param newCoinsValue new player's coins value;
+     */
     @Override
     public void numberOfCoinsChangeForAPlayer(int playerRef, int newCoinsValue){
         for (VirtualClient client:user)
             client.numberOfCoinsChangeForAPlayer(playerRef, newCoinsValue);
     }
+
+    /**
+     * Send at every client the new dimension of an island.
+     * @see VirtualClient
+     * @param islandToDelete island to delete because joined;
+     */
     @Override
     public void dimensionOfAnIslandIsChange(int islandToDelete){
         for (VirtualClient client:user)
             client.dimensionOfAnIslandIsChange(islandToDelete);
     }
+
+    /**
+     * Send at every client the new towers' number in a school.
+     * @see VirtualClient
+     * @param playerRef player owner of the school;
+     * @param towersNumber the new towers' number;
+     */
     @Override
     public void towersChangeInSchool(int playerRef, int towersNumber){
         for (VirtualClient client:user)
             client.towersChangeInSchool(playerRef,towersNumber);
     }
+
+    /**
+     * Send at every client the new towers' number on an island.
+     * @see VirtualClient
+     * @param islandRef island reference;
+     * @param towersNumber the new towers' number;
+     */
     @Override
     public void towersChangeOnIsland(int islandRef, int towersNumber){
         for (VirtualClient client:user)
             client.towersChangeOnIsland(islandRef, towersNumber);
     }
+
+    /**
+     * Send at every client the new towers' color on an island.
+     * @see VirtualClient
+     * @param islandRef island reference;
+     * @param newColor new color reference;
+     */
     @Override
     public void towerChangeColorOnIsland(int islandRef, int newColor){
         for (VirtualClient client:user)
             client.towerChangeColorOnIsland(islandRef, newColor);
     }
+
+    /**
+     * Send at every client the new noEntryCards number on an island.
+     * @param islandRef island reference;
+     * @param isInhibited noEntryCards number;
+     */
     @Override
     public void islandInhibited(int islandRef, int isInhibited){
         for (VirtualClient client:user)
             client.islandInhibited(islandRef, isInhibited);
     }
+
+    /**
+     * Send at every client a special with its cost of this game.
+     * @see VirtualClient
+     * @param specialRef special index;
+     * @param cost of the special;
+     */
     @Override
     public void setSpecial(int specialRef, int cost){
         for (VirtualClient client:user)
             client.setSpecial(specialRef,cost);
     }
+
+    /**
+     * Send at every VirtualClient the class expert game with special characters of this game.
+     * @see VirtualClient
+     * @param expertGame exepert class;
+     */
     @Override
     public void setExpertGame(ExpertGame expertGame){
         for (VirtualClient client:user)
             client.setExpertGame(expertGame);
     }
+
+    /**
+     * Comunicate at every client that a player used a special.
+     * @see VirtualClient
+     * @param playerRef player reference;
+     * @param indexSpecial special index;
+     */
     @Override
     public void sendUsedSpecial(int playerRef, int indexSpecial){
         for (VirtualClient client:user)
             client.sendUsedSpecial(playerRef,indexSpecial);
     }
+
+    /**
+     * Send to a client cards of his player of last saved game.
+     * @see VirtualClient
+     * @param playerRef player reference;
+     * @param hand ArrayList of player's assistant;
+     */
     @Override
     public void sendHandAfterRestore(int playerRef, ArrayList<String> hand){ user.get(playerRef).sendHandAfterRestore(hand); }
+
+    /**
+     * Send at every client students on special1, special7 or special11.
+     * @see VirtualClient
+     * @param specialIndex special index, special1, special7 or special11;
+     * @param studentColor student reference;
+     * @param value students of this color;
+     */
     @Override
     public void sendInfoSpecial1or7or11(int specialIndex, int studentColor, int value){
         for (VirtualClient client:user)
             client.sendInfoSpecial1or7or11(specialIndex, studentColor, value);
     }
+
+    /**
+     * Send at every client the number of noEntryCards on special5.
+     * @see VirtualClient
+     * @param cards number of noEntryCards;
+     */
     @Override
     public void sendInfoSpecial5(int cards) {
         for (VirtualClient client : user)
@@ -249,6 +367,7 @@ public class Proxy_s implements Exit {
 
     /**
      * Send at every client the team winner.
+     * @see VirtualClient
      */
     @Override
     public void gameOver(){
@@ -260,6 +379,7 @@ public class Proxy_s implements Exit {
 
     /**
      * Notify all clients (except the disconnected one) that a client has disconnected.
+     * @see VirtualClient
      * @param clientLost client reference to which not to send the message;
      */
     public void clientDisconnected(int clientLost){

@@ -346,7 +346,7 @@ public class Game implements GameManager{
         return true;
     }
 
-    //@Override
+    @Override
     public boolean useStrategySimple(int indexSpecial, int playerRef, int ref){
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, ref);

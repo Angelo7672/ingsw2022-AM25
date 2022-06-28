@@ -49,12 +49,12 @@ public class SoldOut extends Thread{
                 output.reset();
                 output.writeObject(new SoldOutAnswer());
                 output.flush();
-                this.socket.setSoTimeout(4000); //in any case, close the socket after 4 seconds
-                input.readObject(); //when receives reply from client close socket
+                this.socket.setSoTimeout(5000); //in any case, close the socket after 4 seconds
+                //input.readObject(); //when receives reply from client close socket
                 socket.close();
                 System.err.println("A client tried to connect, but there were no connections available!");
             } catch (SocketException socketException){ System.err.println("A client tried to connect, but there were no connections available!");
-            } catch (IOException | ClassNotFoundException e) { e.printStackTrace(); }
+            } catch (IOException /*| ClassNotFoundException*/ e) { e.printStackTrace(); }
         }
     }
 }

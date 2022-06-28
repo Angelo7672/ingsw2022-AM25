@@ -2,8 +2,9 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
-import java.util.ArrayList;
-
+/**
+ * InfoSpecial1or7or11Answer contains info about a color's number of students on special1, special7 or special11.
+ */
 public class InfoSpecial1or7or11Answer implements Answer {
     private final int studentColor;
     private final int value;

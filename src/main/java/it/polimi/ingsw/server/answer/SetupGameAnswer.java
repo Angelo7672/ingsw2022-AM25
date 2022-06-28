@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.answer;
 
-public class SetupGameAnswer implements Answer{
-    public SetupGameAnswer(){}
-}
+/**
+ * SetupGameAnswer is sent to the first client connected after its "Ready for login". This answer invites the client to procede with game setup.
+ */
+public class SetupGameAnswer implements Answer{}

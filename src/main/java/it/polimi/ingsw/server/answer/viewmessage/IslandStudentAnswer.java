@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
+/**
+ * IslandStudentAnswer contains info about the number of student of a color on an island.
+ */
 public class IslandStudentAnswer implements Answer {
     private final int islandRef;
     private final int color;

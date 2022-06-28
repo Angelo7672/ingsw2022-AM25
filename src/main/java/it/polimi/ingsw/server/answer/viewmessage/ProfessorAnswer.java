@@ -2,6 +2,9 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
+/**
+ * ProfessorAnswer contains info about holding or not a professor of a color by a player.
+ */
 public class ProfessorAnswer implements Answer {
     private final int playerRef;
     private final boolean professor;

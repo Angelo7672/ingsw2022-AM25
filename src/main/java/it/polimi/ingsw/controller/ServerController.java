@@ -12,7 +12,6 @@ public interface ServerController {
     void restoreGame();
     void startGame();
     ArrayList<Integer> getExtractedSpecials();
-    ArrayList<Integer> getSpecialCost();
 
     int checkRestoreNickname(String nickname);
     boolean userLoginNickname(String nickname);
@@ -24,6 +23,7 @@ public interface ServerController {
     void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException;
     void moveMotherNature(int desiredMovement) throws NotAllowedException, EndGameException;
     void chooseCloud(int playerRef, int cloudRef) throws NotAllowedException;
+    boolean useStrategySimple(int indexSpecial, int playerRef, int ref);
     boolean useSpecialLite(int indexSpecial, int playerRef);
     boolean useSpecialSimple(int indexSpecial, int playerRef, int ref);
     boolean useSpecialMedium(int indexSpecial, int playerRef, int ref, int color);

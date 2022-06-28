@@ -2,16 +2,19 @@ package it.polimi.ingsw.server.answer.viewmessage;
 
 import it.polimi.ingsw.server.answer.Answer;
 
+/**
+ * SchoolStudentAnswer contains info about a color's students number in a school.
+ */
 public class SchoolStudentAnswer implements Answer {
     String place; //entrance or table
     private final int color;
-    private final int componentRef;
+    private final int playerRef;
     private final int newValue;
 
-    public SchoolStudentAnswer(int color, String place, int componentRef, int newValue){
+    public SchoolStudentAnswer(int color, String place, int playerRef, int newValue){
         this.color = color;
         this.place = place;
-        this.componentRef = componentRef;
+        this.playerRef = playerRef;
         this.newValue = newValue;
     }
 
@@ -22,7 +25,7 @@ public class SchoolStudentAnswer implements Answer {
         return color;
     }
     public int getComponentRef() {
-        return componentRef;
+        return playerRef;
     }
     public int getNewValue() {
         return newValue;
