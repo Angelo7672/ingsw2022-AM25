@@ -213,6 +213,19 @@ public class Receiver {
                     }
                 }); thread.start();
             } else view.setInhibited(((InhibitedIslandAnswer) tmp).getIslandRef(), ((InhibitedIslandAnswer) tmp).getInhibited());
+        } else if (tmp instanceof IslandStudentAnswer) {
+            if (!initializedView) {
+                final Answer tmpMsg = tmp;
+                Thread thread = new Thread(() -> {
+                    synchronized (lock2) {
+                        try {
+                            lock2.wait();
+                        } catch (InterruptedException e) {}
+                        view.setStudentsIsland(((IslandStudentAnswer) tmpMsg).getIslandRef(), ((IslandStudentAnswer) tmpMsg).getColor(), ((IslandStudentAnswer) tmpMsg).getNewValue());
+                    }
+                }); thread.start();
+            }
+            else view.setStudentsIsland(((IslandStudentAnswer) tmp).getIslandRef(), ((IslandStudentAnswer) tmp).getColor(), ((IslandStudentAnswer) tmp).getNewValue());
         }
     }
 
