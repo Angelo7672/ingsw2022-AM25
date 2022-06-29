@@ -34,7 +34,7 @@ public class MainSceneController implements SceneController {
     private int cardStudent; //special 1 - studente che prendo dalla carta, lo setta la gui
     private int colorToSwap; //special 10, colore studente da scambiare
     private int studentsfromEntrance; //special 10, numero studenti scambiabili tra ingresso e tavolo
-    private  int studentFromTable;
+    private  int studentFromTable; // special 10, numero studenti scambiabili tra tavolo e ingresso
     private String selectedStudentsEntrance;
     private String selectedStudentsTable;
     private String selectedStudentSpecial7;
@@ -45,9 +45,9 @@ public class MainSceneController implements SceneController {
     private ArrayList<Integer> fromCardToEntrance; //special 7, studenti sulla carta
 
     private HashMap<Integer, String> nicknamesMap;
-    private HashMap<Integer, String> charactersMap;
+    //private HashMap<Integer, String> charactersMap;
     private HashMap<Integer, ImageView> charactersImageMap;
-    private HashMap<Integer, String> playedCards;
+    //private HashMap<Integer, String> playedCards;
 
     private ArrayList<AnchorPane> islandsList;
     private HashMap<Integer, AnchorPane> schoolMap;
@@ -110,7 +110,7 @@ public class MainSceneController implements SceneController {
 
     public MainSceneController() {
         this.nicknamesMap = new HashMap<>();
-        this.charactersMap = new HashMap<>();
+        //this.charactersMap = new HashMap<>();
         this.charactersImageMap = new HashMap<>();
         this.numberOfPlayers = 4;
         this.expertMode = false;
@@ -120,7 +120,7 @@ public class MainSceneController implements SceneController {
         this.tablesMap = new HashMap<>();
         this.professorsMap = new HashMap<>();
         this.schoolMap = new HashMap<>();
-        this.playedCards = new HashMap<>();
+        //this.playedCards = new HashMap<>();
         this.towersNumber = new HashMap<>();
         this.greenTables = new ArrayList<>();
         this.redTables = new ArrayList<>();
@@ -428,28 +428,9 @@ public class MainSceneController implements SceneController {
         public void confirmSpecial() { //special 7
             if (actionAllowed == 6) {
                 if (lastThingClicked.equalsIgnoreCase("studentToExchange")) {
-                    try {
-                        if (proxy.useSpecial(7, fromEntranceToCard, fromCardToEntrance)) {
-                            gui.setConstants("SpecialUsed");
-                            specialLabel.setVisible(false);
-                        } else {
-                            showMoveNotAllowed();
-                            gui.specialNotAllowed();
-                        }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    fromCardToEntrance.clear();
-                    fromEntranceToCard.clear();
-                    selectedStudents ="";
-                    selectedStudentSpecial7="";
-                }
-                } else if (actionAllowed == 7) { //special 10
+                    if(fromEntranceToCard.size()!=0 && fromCardToEntrance.size()!=0){
                         try {
-                            if (proxy.useSpecial(10, fromEntranceToTable, fromTableToEntrance)) {
+                            if (proxy.useSpecial(7, fromEntranceToCard, fromCardToEntrance)) {
                                 gui.setConstants("SpecialUsed");
                                 specialLabel.setVisible(false);
                             } else {
@@ -462,16 +443,39 @@ public class MainSceneController implements SceneController {
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }
-                fromEntranceToTable.clear();
-                fromTableToEntrance.clear();
-                selectedStudents = "";
-                selectedStudentsTable = "";
-                selectedStudentsEntrance = "";
+                        fromCardToEntrance.clear();
+                        fromEntranceToCard.clear();
+                        selectedStudents ="";
+                        selectedStudentSpecial7="";
+                    }
+                    else
+                        showMoveNotAllowed();
+                }
+            } else if (actionAllowed == 7) { //special 10
+                if(fromEntranceToTable.size()!=0 && fromTableToEntrance.size()!=0){
+                    try {
+                        if (proxy.useSpecial(10, fromEntranceToTable, fromTableToEntrance)) {
+                            gui.setConstants("SpecialUsed");
+                            specialLabel.setVisible(false);
+                        } else {
+                            showMoveNotAllowed();
+                            gui.specialNotAllowed();
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    fromEntranceToTable.clear();
+                    fromTableToEntrance.clear();
+                    selectedStudents = "";
+                    selectedStudentsTable = "";
+                    selectedStudentsEntrance = "";
                 } else{
                     showMoveNotAllowed();
+                }
             }
-
-
         }
 
         public void showMoveNotAllowed() {

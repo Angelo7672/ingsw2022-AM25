@@ -53,6 +53,9 @@ public class Client {
                 System.out.println(SPACE + "Connection established, waiting for server...");
                 Exit proxy = new Proxy_c(socket);
                 GUI gui = new GUI();
+                proxy.setSoldOutListener(gui);
+                proxy.setServerOfflineListener(gui);
+                proxy.setDisconnectedListener(gui);
                 gui.setSocket(socket);
                 gui.setProxy(proxy);
                 System.out.println(SPACE + "GUI is starting...");
