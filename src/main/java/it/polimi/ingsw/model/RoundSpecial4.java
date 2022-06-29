@@ -12,7 +12,8 @@ public class RoundSpecial4 extends RoundStrategy{
 
     @Override
     public boolean effect(int playerRef) {
-        queueManager.increaseMaxMoveMotherNature(playerRef);
+        for(int i = 0; i < numberOfPlayer; i++)
+            if(queueManager.readQueue(i) == playerRef) queueManager.increaseMaxMoveMotherNature(i);
         return true;
     }
 
