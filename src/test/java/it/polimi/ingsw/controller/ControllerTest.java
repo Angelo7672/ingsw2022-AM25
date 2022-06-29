@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
     Controller controller;
@@ -78,6 +77,9 @@ class ControllerTest {
         controller.createGame();
     }
 
+    /**
+     * Test method of planning phase
+     */
     @Test
     @DisplayName("First test: method of planning phase")
     void planningPhase(){
@@ -89,12 +91,15 @@ class ControllerTest {
             synchronized (this){ wait(1000); }
             controller.playCard(0,"LION");
             controller.playCard(1,"EAGLE");
-        }catch (NotAllowedException notAllowedException){ checker = false;
+        } catch (NotAllowedException notAllowedException){ checker = false;
         } catch (InterruptedException e) { e.printStackTrace(); }
 
-        assertEquals(true,checker);
+        assertTrue(checker);
     }
 
+    /**
+     * Test method of action phase
+     */
     @Test
     @DisplayName("Second test: method of action phase")
     void actionPhase() {
@@ -135,8 +140,11 @@ class ControllerTest {
         assertTrue(checker);
     }
 
+    /**
+     * Test method special lite (special2, special6 and special8)
+     */
     @Test
-    @DisplayName("test if special lite work correctly")
+    @DisplayName("Third test: test if special lite work correctly")
     public void useSpecialLiteTest(){
         //Always false because we haven't enough money.
         assertFalse(controller.useSpecialLite(2,0));
@@ -144,8 +152,11 @@ class ControllerTest {
         assertFalse(controller.useSpecialLite(8,0));
     }
 
+    /**
+     * Test method special simple (special5, special11 and special12)
+     */
     @Test
-    @DisplayName("test if special simple work correctly")
+    @DisplayName("Fourth test: test if special simple work correctly")
     public void useSpecialSimpleTest(){
         //Always false because we haven't enough money.
         assertFalse(controller.useSpecialSimple(5,0, 1));
@@ -153,8 +164,11 @@ class ControllerTest {
         assertFalse(controller.useSpecialSimple(12,0, 1));
     }
 
+    /**
+     * Test method of special3
+     */
     @Test
-    @DisplayName("Test if special3 work correctly")
+    @DisplayName("Fifth test: test if special3 work correctly")
     public void useSpecial3Test() {
         //Always false because we haven't enough money.
         try {
@@ -162,34 +176,14 @@ class ControllerTest {
             assertFalse(controller.useSpecial3(0, 15));
         }catch (EndGameException endGameException){ endGameException.printStackTrace(); }
     }
-    /*
-    @Test
-    @DisplayName("test if special medium work correctly")
-    public void useSpecialMediumTest(){
-        assertFalse(controller.useStrategySimple(1,0,2));
 
-        assertTrue(controller.useStrategySimple(1, 0, 1));
-    }*/
-
+    /**
+     * Test method useStrategySimple (special9)
+     */
     @Test
-    @DisplayName("test if special strategy work correctly")
+    @DisplayName("Sixth test: test if special strategy work correctly")
     public void useStrategySimple(){
-        assertFalse(controller.useSpecialSimple(5,0, 1));
-        assertFalse(controller.useSpecialSimple(11,0, 1));
-        assertFalse(controller.useSpecialSimple(12,0, 1));
+        //Always false because we haven't enough money.
+        assertFalse(controller.useStrategySimple(9,0, 1));
     }
-/*
-    @Test
-    @DisplayName("test if special hard work correcly")
-    public void useSpecialHardTest(){
-        ArrayList<Integer> color1 = new ArrayList<>();
-        ArrayList<Integer> color2 = new ArrayList<>();
-        color2.add(0); color2.add(2);
-        color1.add(1); color1.add(3);
-
-        assertFalse(controller.useSpecialHard(7,0,color1, color2));
-        assertTrue(controller.useSpecialHard(7, 0, color1, color2));
-    }*/
-
-
 }

@@ -141,6 +141,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             error = false;
                             synchronized(errorLocker){ errorLocker.notify(); }
                         }
+                    }else {
+                        readyPlanningPhase = true;
+                        send(new GenericAnswer("error"));
                     }
                 } else if(oneCard) {
                     oneCard = false;
@@ -151,6 +154,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             error = false;
                             synchronized(errorLocker){ errorLocker.notify(); }
                         }
+                    }else {
+                        oneCard = true;
+                        send(new GenericAnswer("error"));
                     }
                 }
                 //Action Phase msg
@@ -168,49 +174,73 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     if (tmp instanceof Special1Message) {
                         expertGame.setSpecialMsg(1, tmp);
                         expertGame.wakeUp(1);
-                    } else send(new GenericAnswer("error"));
+                    } else {
+                        special1 = true;
+                        send(new GenericAnswer("error"));
+                    }
                 }else if(special3) {
                     special3 = false;
                     if (tmp instanceof Special3Message) {
                         expertGame.setSpecialMsg(3, tmp);
                         expertGame.wakeUp(3);
-                    } else send(new GenericAnswer("error"));
+                    } else {
+                        special3 = true;
+                        send(new GenericAnswer("error"));
+                    }
                 }else if(special5) {
                     special5 = false;
                     if (tmp instanceof Special5Message) {
                         expertGame.setSpecialMsg(5, tmp);
                         expertGame.wakeUp(5);
-                    } else send(new GenericAnswer("error"));
+                    } else {
+                        special5 = true;
+                        send(new GenericAnswer("error"));
+                    }
                 }else if(special7){
                     special7 = false;
                     if(tmp instanceof Special7Message){
                         expertGame.setSpecialMsg(7, tmp);
                         expertGame.wakeUp(7);
-                    } else send(new GenericAnswer("error"));
+                    } else {
+                        special7 = true;
+                        send(new GenericAnswer("error"));
+                    }
                 }else if(special9){
                     special9 = false;
                     if(tmp instanceof Special9Message){
                         expertGame.setSpecialMsg(9, tmp);
                         expertGame.wakeUp(9);
-                    } else send(new GenericAnswer("error"));
+                    } else {
+                        special9 = true;
+                        send(new GenericAnswer("error"));
+                    }
                 }else if(special10){
                     special10 = false;
                     if(tmp instanceof Special10Message){
                         expertGame.setSpecialMsg(10, tmp);
                         expertGame.wakeUp(10);
-                    } else send(new GenericAnswer("error"));
+                    } else {
+                        special10 = true;
+                        send(new GenericAnswer("error"));
+                    }
                 }else if(special11) {
                     special11 = false;
                     if (tmp instanceof Special11Message) {
                         expertGame.setSpecialMsg(11, tmp);
                         expertGame.wakeUp(11);
-                    } else send(new GenericAnswer("error"));
+                    } else {
+                        special11 = true;
+                        send(new GenericAnswer("error"));
+                    }
                 }else if(special12){
                     special12 = false;
                     if(tmp instanceof Special12Message){
                         expertGame.setSpecialMsg(12, tmp);
                         expertGame.wakeUp(12);
-                    } else send(new GenericAnswer("error"));
+                    } else {
+                        special12 = true;
+                        send(new GenericAnswer("error"));
+                    }
                 }
                 //login msg
                 else if (clientInitialization) {
@@ -225,6 +255,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             error = false;
                             synchronized (errorLocker) { errorLocker.notify(); }
                         }
+                    } else {
+                        clientInitialization = true;
+                        send(new GenericAnswer("error"));
                     }
                 }else if(loginInitialization){  //nickname and character msg
                     loginInitialization = false;
@@ -235,6 +268,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             error = false;
                             synchronized(errorLocker){ errorLocker.notify(); }
                         }
+                    } else {
+                        loginInitialization = true;
+                        send(new GenericAnswer("error"));
                     }
                 }
                 //game setup msg
@@ -247,6 +283,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             error = false;
                             synchronized(errorLocker){ errorLocker.notify(); }
                         }
+                    } else {
+                        gameSetupInitialization = true;
+                        send(new GenericAnswer("error"));
                     }
                 }else System.out.println("errore! "+playerRef); //TODO: ovviamente da cambiare
             }
@@ -785,7 +824,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     }
 
     /**
-     * RoundPart one manage the exchange of message about planning phase.
+     * RoundPartOne manage the exchange of message about planning phase.
      */
     private class RoundPartOne extends Thread{
         Message planningMsg;
@@ -855,17 +894,28 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
         public void setPlanningMsg(Message msg) { this.planningMsg = msg; }
     }
 
+    /**
+     * RoundPartTwo manage the exchange of message about action phase.
+     */
     private class RoundPartTwo extends Thread{
         private final VirtualClient virtualClient;
         private Message actionMsg;
         private int numberOfPlayer;
+
         private boolean studentLocker;
         private int studentCounter;
         private boolean motherLocker;
+
         private boolean cloudLocker;
+
         private final boolean expertMode;
         private boolean specialAlreadyReceived;
 
+        /**
+         * Create RoundPartTwo
+         * @param expertMode game mode;
+         * @param virtualClient reference to VirtualClient;
+         */
         public RoundPartTwo(Boolean expertMode, VirtualClient virtualClient){
             this.virtualClient = virtualClient;
             this.expertMode = expertMode;
@@ -876,6 +926,9 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             this.cloudLocker = false;
         }
 
+        /**
+         * Start thread and loop while game is over. Call resumeTurn on server when actionPhase is over.
+         */
         @Override
         public void run(){
             try {
@@ -892,10 +945,14 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             } catch (InterruptedException e) { e.printStackTrace(); }
         }
 
+        /**
+         * Action phase 'concierge'
+         */
         private void actionPhase() {
             boolean go;
 
             try {
+                //Student
                 if (studentLocker) {
                     studentLocker = false;
                     go = true;
@@ -913,7 +970,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                                 } else if (studentCounter < 3) {
                                     readyActionPhase = true;
                                     send(new GenericAnswer("ok"));
-                                    synchronized (actionLocker) { actionLocker.wait(); } //attenzione potrebbe arrivare lo special
+                                    synchronized (actionLocker) { actionLocker.wait(); }
                                 }
                             } else if (numberOfPlayer == 3) {
                                 moveStudent();
@@ -927,30 +984,13 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                                 } else if (studentCounter < 4) {
                                     readyActionPhase = true;
                                     send(new GenericAnswer("ok"));
-                                    synchronized (actionLocker) { actionLocker.wait(); } //attenzione potrebbe arrivare lo special
+                                    synchronized (actionLocker) { actionLocker.wait(); }
                                 }
                             }
-                        }else if(!specialAlreadyReceived){
-                            if(actionMsg instanceof UseSpecial){
-                                if (!expertGame.effect(
-                                        ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
-                                ) {
-                                    readyActionPhase = true;
-                                    send(new MoveNotAllowedAnswer());
-                                } else{
-                                    specialAlreadyReceived = true;
-                                    send(new GenericAnswer("ok"));
-                                }
-                                readyActionPhase = true;
-                                synchronized (actionLocker) { actionLocker.wait(); }
-                            }
-                        } else{
-                            readyActionPhase = true;
-                            send(new GenericAnswer("error"));
-                            synchronized (actionLocker) { actionLocker.wait(); }
-                        }
+                        }else special();
                     }
                 }
+                //Mother Nature
                 if (motherLocker) {
                     motherLocker = false;
                     go = true;
@@ -958,27 +998,10 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         if (actionMsg instanceof MoveMotherNature) {
                             moveMotherNature();
                             go = false;
-                        } else if (!specialAlreadyReceived) {
-                            if (actionMsg instanceof UseSpecial) {
-                                if (!expertGame.effect(
-                                        ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
-                                ) {
-                                    readyActionPhase = true;
-                                    send(new MoveNotAllowedAnswer());
-                                }else {
-                                    specialAlreadyReceived = true;
-                                    send(new GenericAnswer("ok"));
-                                }
-                                readyActionPhase = true;
-                                synchronized (actionLocker) { actionLocker.wait(); }
-                            }
-                        } else {
-                            readyActionPhase = true;
-                            send(new GenericAnswer("error"));
-                            synchronized (actionLocker) { actionLocker.wait(); }
-                        }
+                        } else special();
                     }
                 }
+                //Clouds
                 if (cloudLocker) {
                     cloudLocker = false;
                     go = true;
@@ -987,30 +1010,41 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                             chooseCloud();
                             go = false;
                         }
-                        else if (!specialAlreadyReceived) {
-                            if (actionMsg instanceof UseSpecial) {
-                                if (!expertGame.effect(
-                                        ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
-                                ) {
-                                    readyActionPhase = true;
-                                    send(new MoveNotAllowedAnswer());
-                                } else {
-                                    specialAlreadyReceived = true;
-                                    send(new GenericAnswer("ok"));
-                                }
-                                readyActionPhase = true;
-                                synchronized (actionLocker) { actionLocker.wait(); }
-                            }
-                        } else {
-                            readyActionPhase = true;
-                            send(new GenericAnswer("error"));
-                            synchronized (actionLocker) { actionLocker.wait(); }
-                        }
+                        else special();
                     }
                 }
             }catch (InterruptedException e) { e.printStackTrace(); }
         }
 
+        /**
+         * Manage special message, otherwise send 'error'.
+         * @throws InterruptedException when wait() fails;
+         */
+        private void special() throws InterruptedException {
+            if(!specialAlreadyReceived){
+                if(actionMsg instanceof UseSpecial){
+                    if (!expertGame.effect(
+                            ((UseSpecial) actionMsg).getIndexSpecial(), playerRef, virtualClient)
+                    ) {
+                        readyActionPhase = true;
+                        send(new MoveNotAllowedAnswer());
+                    } else{
+                        specialAlreadyReceived = true;
+                        send(new GenericAnswer("ok"));
+                    }
+                    readyActionPhase = true;
+                    synchronized (actionLocker) { actionLocker.wait(); }
+                }
+            } else{
+                readyActionPhase = true;
+                send(new GenericAnswer("error"));
+                synchronized (actionLocker) { actionLocker.wait(); }
+            }
+        }
+
+        /**
+         * Check on server movement of students and increments the studentCounter.
+         */
         private void moveStudent(){
             MoveStudent studentMovement = (MoveStudent) actionMsg;
             boolean checker;
@@ -1029,6 +1063,10 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
+
+        /**
+         * Check on server movement of mother nature. Can catch EndGameException and call gameOver() on server.
+         */
         private void moveMotherNature(){
             MoveMotherNature motherMovement = (MoveMotherNature) actionMsg;
             boolean checker;
@@ -1052,6 +1090,10 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             } catch (InterruptedException ex) { ex.printStackTrace();
             } catch (EndGameException endGameException) { server.gameOver(); }
         }
+
+        /**
+         * Check on server cloud chosen.
+         */
         private void chooseCloud(){
             ChosenCloud cloud = (ChosenCloud) actionMsg;
             boolean checker;
@@ -1074,6 +1116,10 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }
             } catch (InterruptedException ex) { ex.printStackTrace(); }
         }
+
+        /**
+         * Check if client is ready for action phase.
+         */
         private void readyPlanningPhase(){
             GenericMessage readyMsg = (GenericMessage) actionMsg;
 
@@ -1090,6 +1136,10 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             }catch (InterruptedException ex) { ex.printStackTrace(); }
         }
 
+        /**
+         * Set action phase message.
+         * @param actionMsg action message.
+         */
         public void setActionMsg(Message actionMsg) { this.actionMsg = actionMsg; }
     }
 }

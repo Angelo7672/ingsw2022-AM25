@@ -45,16 +45,17 @@ public class SoldOut extends Thread{
         public void run() {
             try {
                 ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-                ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
+                //ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
                 output.reset();
                 output.writeObject(new SoldOutAnswer());
                 output.flush();
-                this.socket.setSoTimeout(5000); //in any case, close the socket after 4 seconds
+                //this.socket.setSoTimeout(5000); //in any case, close the socket after 4 seconds
+                this.wait(5000);
                 //input.readObject(); //when receives reply from client close socket
                 socket.close();
                 System.err.println("A client tried to connect, but there were no connections available!");
             } catch (SocketException socketException){ System.err.println("A client tried to connect, but there were no connections available!");
-            } catch (IOException /*| ClassNotFoundException*/ e) { e.printStackTrace(); }
+            } catch (IOException | InterruptedException /*| ClassNotFoundException*/ e) { e.printStackTrace(); }
         }
     }
 }
