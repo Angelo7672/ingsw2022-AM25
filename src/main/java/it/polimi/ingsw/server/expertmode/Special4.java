@@ -22,7 +22,7 @@ public class Special4 implements Special{
     public boolean effect(int playerRef, VirtualClient user){
         boolean checker;
 
-        checker = server.useSpecialLite(4, playerRef);
+        checker = server.useSpecialSimple(4, playerRef, playerRef);
 
         return checker;
     }
