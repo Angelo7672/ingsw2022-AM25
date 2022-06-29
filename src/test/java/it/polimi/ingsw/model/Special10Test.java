@@ -117,8 +117,6 @@ public class Special10Test {
             public void notifyHand(int playerRef, ArrayList<String> hand) {}
         };
 
-        playerManager.initializeSchool();
-
     }
 
     @Test
