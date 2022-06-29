@@ -789,44 +789,69 @@ public class MainSceneController implements SceneController {
             oldStudentsValue = table.getStudentsNumber();
 
             if (newStudentsValue > oldStudentsValue) {
+                System.out.println("Old student value: "+oldStudentsValue);
+                //oldStudentsValue = table.getStudentsNumber();
                 tablePane.getChildren().add(new ImageView(table.getStudentImage()));
                 student = (ImageView) tablePane.getChildren().get(tablePane.getChildren().size() - 1);
                 student.setFitHeight(16.0);
                 student.setFitWidth(16.0);
                 student.setX(table.getX());
                 student.setY(table.getY());
-                table.setNewX(playerRef);
-                table.setNewY(playerRef);
-                table.setStudentsNumber();
+                table.setNewX(playerRef,true);
+                table.setNewY(playerRef, true );
+                table.addStudent();
+                System.out.println("New student number is: "+table.getStudentsNumber());
                 student.setVisible(true);
                 student.setOnMouseClicked(studentTableClickHandler);
 
-            } else {
+            } else if (newStudentsValue<oldStudentsValue){
+                oldStudentsValue = table.getStudentsNumber();
                 Boolean ok = false;
+                System.out.println("Removing a student");
                 for (int i = tablePane.getChildren().size() - 1; i >= 0 && !ok; i--) {
                     student = (ImageView) tablePane.getChildren().get(i);
                     String imageName = student.getImage().getUrl();
+                    System.out.println("student: "+student+" "+imageName);
+                    System.out.println("Old students value: "+oldStudentsValue);
+                    System.out.println("Old x value: "+table.getX());
+                    System.out.println("Old y value: "+table.getY());
                     if (imageName.contains(GREENSTUDENT) && color == 0) {
                         tablePane.getChildren().remove(i);
-                        table.studentsNumber--;
+                        table.removeStudent();
                         ok = true;
+                        table.setNewX(playerRef,false);
+                        table.setNewY(playerRef, false );
+                        System.out.println("Green student remove, new x: "+table.getX()+ " new y: "+table.getY());
                     } else if (imageName.contains(REDSTUDENT) && color == 1) {
                         tablePane.getChildren().remove(i);
-                        table.studentsNumber--;
+                        table.removeStudent();
                         ok = true;
+                        table.setNewX(playerRef,false);
+                        table.setNewY(playerRef, false );
+                        System.out.println("Red student remove, new x: "+table.getX()+ " new y: "+table.getY());
                     } else if (imageName.contains(YELLOWSTUDENT) && color == 2) {
                         tablePane.getChildren().remove(i);
-                        table.studentsNumber--;
+                        table.removeStudent();
                         ok = true;
+                        table.setNewX(playerRef,false);
+                        table.setNewY(playerRef, false );
+                        System.out.println("Yellow student remove, new x: "+table.getX()+ " new y: "+table.getY());
                     } else if (imageName.contains(PINKSTUDENT) && color == 3) {
                         tablePane.getChildren().remove(i);
-                        table.studentsNumber--;
+                        table.removeStudent();
                         ok = true;
+                        table.setNewX(playerRef,false);
+                        table.setNewY(playerRef, false );
+                        System.out.println("Pink student remove, new x: "+table.getX()+ " new y: "+table.getY());
                     } else if (imageName.contains(BLUESTUDENT) && color == 4) {
                         tablePane.getChildren().remove(i);
-                        table.studentsNumber--;
+                        table.removeStudent();
                         ok = true;
+                        table.setNewX(playerRef,false);
+                        table.setNewY(playerRef, false );
+                        System.out.println("Blue student remove, new x: "+table.getX()+ " new y: "+table.getY());
                     }
+                    System.out.println("New student number is: "+table.getStudentsNumber());
                 }
             }
         }
@@ -1069,7 +1094,6 @@ public class MainSceneController implements SceneController {
             }
         } else {
             island.getChildren().remove(island.getChildren().size()-1);
-
         }
 
     }

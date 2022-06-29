@@ -38,28 +38,49 @@ public class Table {
     public int getX() {
         return x;
     }
-    public void setNewX(int schoolRef) {
-        if(schoolRef==0)
-            this.x = x+SPACE;
-        else if(schoolRef==1){
-            this.x=x-SPACE;
+    public void setNewX(int schoolRef, boolean isAdded) {
+        if(isAdded){
+            if(schoolRef==0)
+                this.x = x+SPACE;
+            else if(schoolRef==1){
+                this.x=x-SPACE;
+            }
+        } else {
+            if(schoolRef==0)
+                this.x = x-SPACE;
+            else if(schoolRef==1){
+                this.x=x+SPACE;
+            }
         }
     }
     public int getY() {
         return y;
     }
-    public void setNewY(int schoolRef) {
-        if(schoolRef==2){
-            this.y=y+SPACE;
-        } else if(schoolRef==3){
-            this.y=y-SPACE;
+    public void setNewY(int schoolRef, boolean isAdded) {
+        if(isAdded){
+            if(schoolRef==2){
+                this.y=y+SPACE;
+            } else if(schoolRef==3){
+                this.y=y-SPACE;
+            }
+        } else {
+            if(schoolRef==2){
+                this.y=y-SPACE;
+            } else if(schoolRef==3){
+                this.y=y+SPACE;
+            }
         }
+
     }
     public int getStudentsNumber() {
         return studentsNumber;
     }
-    public void setStudentsNumber() {
+    public void addStudent() {
         this.studentsNumber++;
+    }
+
+    public void removeStudent(){
+        this.studentsNumber--;
     }
     public Image getStudentImage() {
         return studentImage;
