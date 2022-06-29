@@ -273,9 +273,10 @@ public class MainSceneController implements SceneController {
                         e.printStackTrace();
                     }
                 }
-            } else {
+            } else if (actionAllowed == 7){
+                errorLabel.setText("");
+            } else
                 showMoveNotAllowed();
-            }
         }
     }
 
@@ -463,6 +464,8 @@ public class MainSceneController implements SceneController {
                     }
                     fromCardToEntrance.clear();
                     fromEntranceToCard.clear();
+                    selectedStudents ="";
+                    selectedStudentSpecial7="";
                 }
                 } else if (actionAllowed == 7) { //special 10
                     //if (lastThingClicked.equalsIgnoreCase("studentTable")) {
@@ -475,6 +478,7 @@ public class MainSceneController implements SceneController {
                                 showMoveNotAllowed();
                                 gui.specialNotAllowed();
                             }
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (ClassNotFoundException e) {
@@ -484,6 +488,9 @@ public class MainSceneController implements SceneController {
                 System.out.println("Liste: "+fromEntranceToTable+","+fromTableToEntrance);
                 fromEntranceToTable.clear();
                 fromTableToEntrance.clear();
+                selectedStudents = "";
+                selectedStudentsTable = "";
+                selectedStudentsEntrance = "";
                 } else
                     showMoveNotAllowed();
 
