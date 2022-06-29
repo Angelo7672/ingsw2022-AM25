@@ -29,6 +29,13 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Set;
 
+/**
+ * GUI class starts the graphical user interface. It loads all the scenes, receives the updates from the View class
+ * and calls the correct methods, and it allows the user to make specific action in each phase of the turn.
+ * In order to receive updates, it implements Listeners interfaces
+ * @see it.polimi.ingsw.listeners
+ * @see Application
+ */
 public class GUI extends Application implements TowersListener, ProfessorsListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, RestoreCardsListener, InhibitedListener, UserInfoListener,
         SpecialStudentsListener, NoEntryClientListener, SpecialListener, DisconnectedListener, ServerOfflineListener, WinnerListener, SoldOutListener{
@@ -44,12 +51,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private Service<Boolean> initializeMainService;
     private Service<String> getPhaseService;
 
-    protected boolean active;
+    //protected boolean active;
     protected boolean isMainSceneInitialized;
     protected boolean areListenerSet;
     private boolean gameRestored;
     private int actionAllowed;
-
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String SAVED = "SavedScene.fxml";
     protected static final String LOGINRESTORE = "LoginRestoreScene.fxml";
@@ -62,22 +68,31 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected static final String SPECIALS9OR12 = "Special9or12Scene.fxml";
     protected static final String GAMEOVER = "GameOverScene.fxml";
     protected PlayerConstants constants;
-    protected boolean isMainScene;
+    //protected boolean isMainScene;
 
-    private ArrayList<int[]> initialStudentsIsland;
-    private ArrayList<int []> initialStudentsEntrance;
-    private ArrayList<int []> initialStudentsCloud;
-    private HashMap<Integer, Integer> initialTowersSchool;
-
+    private ArrayList<int[]> initialStudentsIsland; //da togliere
+    private ArrayList<int []> initialStudentsEntrance; //da togliere
+    private ArrayList<int []> initialStudentsCloud; //da togliere
+    private HashMap<Integer, Integer> initialTowersSchool; //da togliere
+    /**
+     * Maps the name of the fxml file with the scene itself
+     */
     private HashMap<String, Scene> scenesMap; //maps the scene name with the scene itself
+
+    /**
+     * Maps the name of the fxml file with its controller
+     */
     private HashMap<String, SceneController> sceneControllersMap; // maps the scene name with the scene controller
 
     public static void main(String[] args) {
         launch();
     }
 
+    /**
+     * Constructor creates a new GUI instance
+     */
     public GUI() {
-        active = true;
+        //active = true;
         scenesMap = new HashMap<>();
         sceneControllersMap = new HashMap<>();
         constants = new PlayerConstants();
@@ -97,11 +112,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
 
         planningPhaseService= new PlanningPhaseService(this);
-
         actionPhaseService= new ActionPhaseService();
 
-
         setViewService = new SetViewService(this);
+        /**
+         * Sets what happens when the service succeeds: the view is set and the phaseHandler is called with the next phase
+         */
         setViewService.setOnSucceeded(workerStateEvent -> {
             View view = setViewService.getValue();
             this.view = view;
@@ -109,20 +125,20 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setView(view);
             phaseHandler("InitializeMain");
         });
-
+        /**
+         * Sets what happens when the service succeeds: the view is set and the phaseHandler is called with the next phase
+         */
         initializeMainService = new InitializeMainService();
         initializeMainService.setOnSucceeded(workerStateEvent -> {
-            Boolean ok = initializeMainService.getValue();
-            if (ok) {
-                proxy.setView();
-                if(!gameRestored){
-                    //switchScene(MAIN);
-                    phaseHandler("PlanningPhase");
-                }
-                else {
-                    switchScene(MAIN);
-                    getPhaseService.start();
-                }
+            switchScene(MAIN);
+            proxy.setView();
+            if(!gameRestored){
+                //switchScene(MAIN);
+                phaseHandler("PlanningPhase");
+            }
+            else {
+                switchScene(MAIN);
+                getPhaseService.start();
             }
 
         });
@@ -241,7 +257,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 initializeMainService.cancel();
                 PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
                 planningPhaseService.start();
-                switchScene(MAIN);
+                //switchScene(MAIN);
             }
             case "PlayCardAnswer" -> {
                 setConstants("PlanningPhase");
@@ -339,7 +355,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         gameRestored = true;
     }
 
-
     private class GetPhaseService extends Service<String>{
 
         @Override
@@ -353,57 +368,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             };
         }
     }
-
-
-    /*private class FirstClientService extends Service<String>{
-
-        @Override
-        protected Task<String> createTask() {
-            return new Task<String>() {
-                @Override
-                protected String call() throws Exception {
-                    scenesSetup();
-                    String result = null;
-                    try {
-                        result = proxy.first();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    return result;
-                }
-            };
-        }
-
-        @Override
-        protected void succeeded(){
-            String result = this.getValue();
-            if (result.equals("SavedGame")) {
-                SavedGameAnswer savedGame = (SavedGameAnswer) proxy.getMessage();
-                initializedSavedScene(savedGame.getNumberOfPlayers(), savedGame.isExpertMode());
-                primaryStage.setScene(scenesMap.get(SAVED));
-                primaryStage.centerOnScreen();
-            } else if (result.equals("SetupGame")) {
-                primaryStage.setScene(scenesMap.get(SETUP));
-                primaryStage.centerOnScreen();
-
-            } else if (result.equals("Server Sold Out")) {
-                try {
-                    notifyServerOffline();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (result.equals("Not first")) {
-                primaryStage.setScene(scenesMap.get(LOGIN));
-                primaryStage.centerOnScreen();
-            } else if (result.equals("LoginRestore")) {
-                setGameRestored();
-                primaryStage.setScene(scenesMap.get(LOGINRESTORE));
-                primaryStage.centerOnScreen();
-            }
-        }
-    }*/
 
     private class PlanningPhaseService extends Service<Boolean> {
         Boolean result;
@@ -430,7 +394,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             System.out.println("Planning phase service on succeded");
             //isMainSceneInitialized=true;
             //sendInitialInformation();
-            switchScene(MAIN);
+            //switchScene(MAIN);
             phaseHandler("PlayCardAnswer");
         }
 
