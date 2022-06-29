@@ -30,7 +30,7 @@ public class RoundStrategyTest {
     private ArrayList<Assistant> alreadyPlayedAssistant = new ArrayList<>();
     private ArrayList<Integer> schoolTowers;
 
-    /*@BeforeEach
+    @BeforeEach
     void initialization(){
         schoolTowers=new ArrayList<>();
         for (int i = 0; i < numberOfPlayer; i++) schoolTowers.add(6);
@@ -265,22 +265,14 @@ public class RoundStrategyTest {
     void moveMotherNatureSpecial3Test() throws NotAllowedException {
         RoundStrategy round = new RoundSpecial3(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
         queueManager.queueForPlanificationPhase();
-        int motherPos = islandsManager.getMotherPos();
-        islandsManager.increaseInhibited(islandsManager.circularArray(islandsManager.getMotherPos(), 1));
-        islandsManager.increaseInhibited(islandsManager.circularArray(motherPos, -5));
         queueManager.playCard(0, 0, LION, alreadyPlayedAssistant);
         queueManager.playCard(1, 1, GOOSE, alreadyPlayedAssistant);
         queueManager.playCard(2, 2, CAT, alreadyPlayedAssistant);
-        round.moveMotherNature(0, 1, islandsManager.circularArray(motherPos, -5));
-        assertEquals(0, islandsManager.getInhibited(islandsManager.circularArray(islandsManager.getMotherPos(), 1)));
-        assertEquals(0, islandsManager.getInhibited(islandsManager.circularArray(motherPos, -5)));
-        //if island is not inhibited
-        queueManager.queueForPlanificationPhase();
-        queueManager.playCard(0, 1, GOOSE, alreadyPlayedAssistant);
-        queueManager.playCard(1, 0, LION, alreadyPlayedAssistant);
-        queueManager.playCard(2, 2, DOG, alreadyPlayedAssistant);
-        boolean victory = round.moveMotherNature(0, 1, 0);
-        assertEquals(false, victory);
+        fastSetConqueror(0,0,0);
+        fastSetConqueror(0,0,0);
+        fastSetConqueror(0,0,0);
+        round.effect(0);
+        assertEquals(islandsManager.getTowerTeam(0), WHITE );
     }
 
     @Test
@@ -291,10 +283,10 @@ public class RoundStrategyTest {
         queueManager.playCard(0, 0, LION, alreadyPlayedAssistant);
         queueManager.playCard(1, 1, GOOSE, alreadyPlayedAssistant);
         queueManager.playCard(2, 2, CAT, alreadyPlayedAssistant);
-        int motherPos = islandsManager.getMotherPos();
-        round.moveMotherNature(0, 3, islandsManager.circularArray(motherPos, -5));
-        motherPos = islandsManager.circularArray(motherPos, 3);
-        assertEquals(motherPos, islandsManager.getMotherPos());
+        int maxMovement = queueManager.readMaxMotherNatureMovement(0);
+        int playerRef = queueManager.readQueue(0);
+        round.effect(playerRef);
+        assertEquals(maxMovement+2, queueManager.readMaxMotherNatureMovement(0));
     }
 
 
@@ -353,12 +345,20 @@ public class RoundStrategyTest {
     @DisplayName("Test if RoundSpecial12's effect is correct")
     void effectRoundSpecial12Test() throws NotAllowedException {
         RoundStrategy round = new RoundSpecial12(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-        playerManager.setStudentTable(0, 0, 1);
-        playerManager.setStudentTable(0, 0, 1);
-        playerManager.setStudentTable(1, 0, 1);
-        playerManager.setStudentTable(1, 0, 1);
-        playerManager.setStudentTable(1, 0, 1);
-        playerManager.setStudentTable(1, 0, 1);
+        playerManager.setStudentEntrance(0,0,1);
+        playerManager.transferStudent(0, 0, true, false);
+        playerManager.setStudentEntrance(0,0,1);
+        playerManager.transferStudent(0, 0, true, false);
+        playerManager.setStudentEntrance(1,0,1);
+        playerManager.transferStudent(1, 0, true, false);
+        playerManager.setStudentEntrance(1,0,1);
+        playerManager.transferStudent(1, 0, true, false);
+        playerManager.setStudentEntrance(1,0,1);
+        playerManager.transferStudent(1, 0, true, false);
+        playerManager.setStudentEntrance(1,0,1);
+        playerManager.transferStudent(1, 0, true, false);
+        playerManager.setStudentEntrance(1,0,1);
+        playerManager.transferStudent(1, 0, true, false);
         ArrayList<Integer> studentsTable = new ArrayList<>();
         for (int i = 0; i < numberOfPlayer; i++) {
             studentsTable.add(playerManager.getStudentTable(i,0));
@@ -374,7 +374,6 @@ public class RoundStrategyTest {
 
     }
 
-*/
 
 }
 

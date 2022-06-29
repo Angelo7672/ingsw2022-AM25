@@ -75,15 +75,15 @@ public class IslandManagerTest {
         assertEquals(false, islandsManager.checkVictory());
         islandsManager.towerChange(0,WHITE);
         islandsManager.towerChange(2, WHITE);
-        islandsManager.towerChange(1,WHITE); //si uniscono queste 3 in 0
-        islandsManager.towerChange(1, WHITE); // si unisce in 0
+        islandsManager.towerChange(1,WHITE); //0,1,2 are unified in position 0
+        islandsManager.towerChange(1, WHITE); // 1 is unified in position 0
         islandsManager.towerChange(1,BLACK);
         islandsManager.towerChange(3, BLACK);
-        islandsManager.towerChange(2,BLACK);// si uniscono queste 3 in 1
+        islandsManager.towerChange(2,BLACK);// 1,2,3 are unified in position 1
         islandsManager.towerChange(2, GREY);
         islandsManager.towerChange(4, GREY);
-        islandsManager.towerChange(3, GREY);// si uniscono queste 3 in 2
-        islandsManager.towerChange(3, GREY);// si unisce in 2
+        islandsManager.towerChange(3, GREY);// 2,3,4 are unified in position 2
+        islandsManager.towerChange(3, GREY);// 3 is unified in position 2
         islandsManager.towerChange(3, WHITE);//si unisce in 0
 
         assertTrue(islandsManager.checkVictory());
