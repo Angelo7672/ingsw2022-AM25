@@ -23,7 +23,7 @@
             <ImageView fx:id="special1View" fitHeight="135.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true" />
          </graphic></Button>
       <Button fx:id="confirmButton" layoutX="277.0" layoutY="344.0" mnemonicParsing="false" onAction="#confirmPressed" text="Confirm" />
-      <Label fx:id="questionLabel" layoutX="99.0" layoutY="34.0" prefHeight="31.0" prefWidth="426.0" text="Do you want to use a special card?" textAlignment="CENTER">
+      <Label fx:id="questionLabel" alignment="CENTER" layoutY="34.0" prefHeight="31.0" prefWidth="600.0" text="Do you want to use a special card?" textAlignment="CENTER">
          <font>
             <Font size="21.0" />
          </font>
@@ -318,5 +318,6 @@
             <Font size="20.0" />
          </font>
       </Label>
+      <Label fx:id="label2" alignment="CENTER" layoutX="1.0" layoutY="67.0" prefHeight="17.0" prefWidth="600.0" textAlignment="CENTER" />
    </children>
 </AnchorPane>
