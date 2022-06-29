@@ -261,6 +261,12 @@ public class Server implements Entrance,ControllerServer{
      * @see Controller
      */
     @Override
+    public boolean useSpecial3(int playerRef, int islandRef) throws EndGameException{ return controller.useSpecial3(playerRef,islandRef); }
+
+    /**
+     * @see Controller
+     */
+    @Override
     public boolean useSpecialSimple(int indexSpecial, int playerRef, int ref){ return controller.useSpecialSimple(indexSpecial,playerRef,ref); }
 
     /**

@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.expertmode;
 
 import it.polimi.ingsw.client.message.Message;
 import it.polimi.ingsw.client.message.special.Special3Message;
+import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.server.answer.GenericAnswer;
 import it.polimi.ingsw.server.Entrance;
 import it.polimi.ingsw.server.VirtualClient;
@@ -30,9 +31,10 @@ public class Special3 implements Special{
             user.send(new GenericAnswer("ok"));
             this.wait();
 
-            checker = server.useStrategySimple(3, playerRef, special3Msg.getIslandRef());
+            checker = server.useSpecial3(playerRef, special3Msg.getIslandRef());
 
-        }catch (InterruptedException e) { e.printStackTrace(); }
+        }catch (InterruptedException e) { e.printStackTrace();
+        }catch (EndGameException endGameException){ server.gameOver(); }
         return checker;
     }
 

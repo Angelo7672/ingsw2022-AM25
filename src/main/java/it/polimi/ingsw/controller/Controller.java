@@ -202,6 +202,11 @@ public class Controller implements ServerController, Match, Restore{
      * @see Game
      */
     @Override
+    public boolean useSpecial3(int playerRef, int islandRef) throws EndGameException{ return gameManager.useSpecial3(playerRef,islandRef); }
+    /**
+     * @see Game
+     */
+    @Override
     public boolean useSpecialLite(int indexSpecial, int playerRef){ return gameManager.useSpecialLite(indexSpecial, playerRef); }
 
     /**

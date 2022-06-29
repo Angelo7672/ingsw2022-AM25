@@ -97,6 +97,11 @@ public interface ServerController {
     /**
      * @see Controller
      */
+    boolean useSpecial3(int playerRef, int islandRef) throws EndGameException;
+
+    /**
+     * @see Controller
+     */
     boolean useSpecialSimple(int indexSpecial, int playerRef, int ref);
 
     /**

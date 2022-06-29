@@ -103,6 +103,11 @@ public interface Entrance {
     /**
      * @see Server
      */
+    boolean useSpecial3(int playerRef, int islandRef) throws EndGameException;
+
+    /**
+     * @see Server
+     */
     boolean useSpecialLite(int indexSpecial, int playerRef);
 
     /**
