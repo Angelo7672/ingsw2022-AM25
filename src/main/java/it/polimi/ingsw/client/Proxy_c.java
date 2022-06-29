@@ -20,16 +20,16 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
     private Answer tempObj;
     private View view;
     private Thread ping;
-    private final Object lock2;
+    private final Object initializedViewLock;
     private boolean disconnected;
 
     public Proxy_c(Socket socket) throws IOException{
         this.socket = socket;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         startPing();
-        lock2 = new Object();
+        initializedViewLock = new Object();
         view = new View();
-        receiver = new Receiver(lock2, socket, view);
+        receiver = new Receiver(initializedViewLock, socket, view);
         receiver.start();
         setDisconnectedListener(this);
         setServerOfflineListener(this);
@@ -136,8 +136,8 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
 
     public View startView() throws IOException, InterruptedException {
         send(new GenericMessage("Ready to start"));
-        synchronized (lock2){
-            if(!view.isInitializedView()) lock2.wait();
+        synchronized (initializedViewLock){
+            if(!view.isInitializedView()) initializedViewLock.wait();
         }
         return view;
     }

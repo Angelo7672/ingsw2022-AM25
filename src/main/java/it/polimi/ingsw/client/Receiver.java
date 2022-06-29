@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.message.GenericMessage;
 import it.polimi.ingsw.listeners.DisconnectedListener;
 import it.polimi.ingsw.listeners.ServerOfflineListener;
 import it.polimi.ingsw.listeners.SoldOutListener;
@@ -11,17 +10,17 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 public class Receiver extends Thread {
 
     private Thread receive;
     private Thread viewThread;
-    private final Object lock1;
-    private final Object lock2;
-    private final Object lock3;
+    private final Object AnswerTmpLock;
+    private final Object initializedViewLock;
+    private final Object AnswerViewLock;
     private final Object specialLock;
+    private final Object setViewLock;
     private final ObjectInputStream inputStream;
     private ArrayList<Answer> answersList;
     private final Socket socket;
@@ -33,34 +32,36 @@ public class Receiver extends Thread {
     private boolean initializedView;
     private ArrayList<Answer> viewAnswer;
 
-    public Receiver(Object lock2, Socket socket, View view) throws IOException {
+    public Receiver(Object initializedViewLock, Socket socket, View view) throws IOException {
         this.socket = socket;
         this.inputStream = new ObjectInputStream(this.socket.getInputStream());
         //this.socket.setSoTimeout(15000);
         this.view = view;
         answersList = new ArrayList<>();
         viewAnswer = new ArrayList<>();
-        lock1 = new Object();
-        this.lock2 = lock2;
-        lock3 = new Object();
+        AnswerTmpLock = new Object();
+        setViewLock = new Object();
+        this.initializedViewLock = initializedViewLock;
+        AnswerViewLock = new Object();
         specialLock = new Object();
         disconnected = false;
 
     }
 
     public void setViewInitialized(){
-        synchronized (lock2) {
+        synchronized (setViewLock) {
             initializedView = true;
-            lock2.notifyAll();
+            System.out.println("view set");
+            setViewLock.notifyAll();
         }
     }
 
     public Answer receive() {
         Answer tmp;
-        synchronized (lock1){
+        synchronized (AnswerTmpLock){
             try {
                 if (answersList.size() == 0){
-                    lock1.wait();
+                    AnswerTmpLock.wait();
                 }
             }catch (InterruptedException e){
             }
@@ -145,11 +146,12 @@ public class Receiver extends Thread {
 
     private void gameMessage(Answer tmp){
         if (tmp instanceof GameInfoAnswer) {
-            synchronized (lock2) {
-            view.initializedView(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());
-                lock2.notifyAll();
+            synchronized (initializedViewLock) {
+                view.initializedView(((GameInfoAnswer) tmp).getNumberOfPlayers(), ((GameInfoAnswer) tmp).isExpertMode());
+                initializedViewLock.notifyAll();
             }
-        } else if (tmp instanceof UserInfoAnswer) {
+        }
+        else if (tmp instanceof UserInfoAnswer) {
             view.setUserInfo(((UserInfoAnswer) tmp).getPlayerRef(), ((UserInfoAnswer) tmp).getCharacter(), ((UserInfoAnswer) tmp).getNickname());
         }
     }
@@ -159,12 +161,12 @@ public class Receiver extends Thread {
             Answer tmp;
             while(!disconnected) {
                 try {
-                    synchronized (lock2) {
-                        if (!initializedView) lock2.wait();
+                    synchronized (setViewLock) {
+                        if (!initializedView) setViewLock.wait();
                     }
-                    synchronized (lock3) {
+                    synchronized (AnswerViewLock) {
                         if (viewAnswer.size() == 0) {
-                            lock3.wait();
+                            AnswerViewLock.wait();
                         }
                         tmp = viewAnswer.get(0);
                         if (tmp instanceof UserInfoAnswer) gameMessage(tmp);
@@ -195,9 +197,9 @@ public class Receiver extends Thread {
     }
 
     private void viewNotInitialized(Answer tmp){
-        synchronized (lock3) {
+        synchronized (AnswerViewLock) {
             viewAnswer.add(tmp);
-            lock3.notify();
+            AnswerViewLock.notify();
         }
     }
 
@@ -300,12 +302,12 @@ public class Receiver extends Thread {
                     disconnected = true;
                     soldOutListener.notifySoldOut();
                 } else answersTmpList.add(tmp);
-                synchronized (lock1) {
+                synchronized (AnswerTmpLock) {
                     for (int i = 0; i < answersTmpList.size(); i++) {
                         answersList.add(answersTmpList.get(i));
                         answersTmpList.remove(i);
                     }
-                    if (answersList.size() != 0) lock1.notify();
+                    if (answersList.size() != 0) AnswerTmpLock.notify();
                 }
                 if(initializedView && viewAnswer.isEmpty()) viewThread.interrupt();
             }

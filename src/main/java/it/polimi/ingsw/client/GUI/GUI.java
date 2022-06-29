@@ -411,6 +411,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 protected View call() throws Exception {
                     View view = proxy.startView();
 
+                    view.setUserInfoListener(gui);
                     view.setCoinsListener(gui);
                     view.setInhibitedListener(gui);
                     view.setIslandListener(gui);
@@ -419,15 +420,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     view.setProfessorsListener(gui);
                     view.setStudentsListener(gui);
                     view.setTowersListener(gui);
-                    view.setUserInfoListener(gui);
                     view.setSpecialStudentsListener(gui);
                     view.setSpecialListener(gui);
                     view.setWinnerListener(gui);
                     view.setNoEntryListener(gui);
                     proxy.setServerOfflineListener(gui);
                     proxy.setDisconnectedListener(gui);
-
                     view.setRestoreCardsListener(gui);
+
                     return view;
                 }
             };
