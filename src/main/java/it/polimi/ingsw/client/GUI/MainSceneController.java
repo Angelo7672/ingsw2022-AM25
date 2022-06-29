@@ -195,11 +195,11 @@ public class MainSceneController implements SceneController {
                                 color = "yellow";
                             else if (currentStudentColor == 3)
                                 color = "pink";
-                            else if (currentStudentColor == 3)
+                            else if (currentStudentColor == 4)
                                 color = "blue";
-                            selectedStudentsEntrance = selectedStudentsEntrance+" "+color;
+                            selectedStudentSpecial7 = selectedStudentSpecial7+" "+color;
                             fromEntranceToCard.add(currentStudentColor);
-                            actionLabel.setText("Selected students: "+selectedStudentsEntrance);
+                            actionLabel.setText("Selected students: "+selectedStudentSpecial7);
                         }
                 }
 
@@ -221,15 +221,15 @@ public class MainSceneController implements SceneController {
                             fromEntranceToTable.add(colorToSwap);
                             studentsfromEntrance--;
                             if(colorToSwap == 0)
-                                color = "green";
+                                color = "Green";
                             else if(colorToSwap == 1 )
-                                color = "red";
+                                color = "Red";
                             else if(colorToSwap == 2)
-                                color = "yellow";
+                                color = "Yellow";
                             else if(colorToSwap == 3)
-                                color = "pink";
+                                color = "Pink";
                             else if(colorToSwap == 4)
-                                color = "blue";
+                                color = "Blue";
 
                             selectedStudentsEntrance = selectedStudentsEntrance+" "+color;
                             selectedStudents = "Selected students entrance: "+selectedStudentsEntrance+", selected students table: "+selectedStudentsTable;
@@ -294,19 +294,19 @@ public class MainSceneController implements SceneController {
                         String selectedStudents;
                         if (student.getImage().getUrl().contains(GREENSTUDENT)){
                                 fromTableToEntrance.add(0);
-                                color = "green";
+                                color = "Green";
                             } else if (student.getImage().getUrl().contains(REDSTUDENT)) {
                                 fromTableToEntrance.add(1);
-                                color = "red";
+                                color = "Red";
                             } else if (student.getImage().getUrl().contains(YELLOWSTUDENT)) {
                                 fromTableToEntrance.add(2);
-                                color = "yellow";
+                                color = "Yellow";
                             } else if (student.getImage().getUrl().contains(PINKSTUDENT)) {
                                 fromTableToEntrance.add(3);
-                                color = "pink";
+                                color = "Pink";
                             } else if (student.getImage().getUrl().contains(BLUESTUDENT)) {
                                 fromTableToEntrance.add(4);
-                                color = "blue";
+                                color = "Blue";
                             }
                             selectedStudentsTable = selectedStudentsTable+" "+color;
                             System.out.println("list to send: "+fromTableToEntrance);
@@ -448,11 +448,16 @@ public class MainSceneController implements SceneController {
 
         public void confirmSpecial() { //special 7
             if (actionAllowed == 6) {
+                System.out.println("action allowed 6");
                 if (lastThingClicked.equalsIgnoreCase("studentToExchange")) {
                     try {
-                        if (proxy.useSpecial(7, fromCardToEntrance, fromCardToEntrance)) {
+                        System.out.println("calling proxy special 7");
+                        System.out.println(fromCardToEntrance+" "+fromEntranceToCard);
+                        if (proxy.useSpecial(7, fromEntranceToCard, fromCardToEntrance)) {
+                            System.out.println("ok!");
                             gui.setConstants("SpecialUsed");
                         } else {
+                            System.out.println("move not allowed dal proxy");
                             showMoveNotAllowed();
                             gui.specialNotAllowed();
                         }
@@ -471,7 +476,6 @@ public class MainSceneController implements SceneController {
                     //if (lastThingClicked.equalsIgnoreCase("studentTable")) {
                         try {
                             if (proxy.useSpecial(10, fromEntranceToTable, fromTableToEntrance)) {
-                                System.out.println("Scambiati: "+fromEntranceToTable+ "con "+fromTableToEntrance);
                                 gui.setConstants("SpecialUsed");
                             } else {
                                 System.out.println("errore special 10");
@@ -491,8 +495,11 @@ public class MainSceneController implements SceneController {
                 selectedStudents = "";
                 selectedStudentsTable = "";
                 selectedStudentsEntrance = "";
-                } else
-                    showMoveNotAllowed();
+                } else{
+                showMoveNotAllowed();
+                System.out.println("move not allowed dalla gui");
+            }
+
 
         }
 
