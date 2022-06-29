@@ -368,8 +368,13 @@ public class PlayerManager  {
      * @return if the operation was successful;
      */
     public boolean checkStudentsEntranceForSpecial(ArrayList<Integer> students, int playerRef){
-        for (int i = 0; i < students.size(); i++)
-            if(students.get(i)>getStudentEntrance(playerRef, i)) return false;
+        int[] tempStudent = {0,0,0,0,0};
+        for (int i = 0; i < students.size(); i++) {
+            tempStudent[students.get(i)]++;
+        }
+        for (int i = 0; i < students.size(); i++) {
+            if (tempStudent[i] > getStudentEntrance(playerRef, i)) return false;
+        }
         return true;
     }
 
@@ -380,8 +385,13 @@ public class PlayerManager  {
      * @return if the operation was successful;
      */
     public boolean checkStudentsTableForSpecial(ArrayList<Integer> students, int playerRef){
-        for (int i = 0; i < students.size(); i++)
-            if(students.get(i)>getStudentTable(playerRef, i)) return false;
+        int[] tempStudent = {0,0,0,0,0};
+        for (int i = 0; i < students.size(); i++) {
+            tempStudent[students.get(i)]++;
+        }
+        for (int i = 0; i < students.size(); i++){
+            if(tempStudent[i]>getStudentTable(playerRef, i)) return false;
+        }
         return true;
     }
 

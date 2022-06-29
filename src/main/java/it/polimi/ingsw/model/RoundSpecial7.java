@@ -37,12 +37,12 @@ public class RoundSpecial7 extends RoundStrategy{
         if(playerManager.checkStudentsEntranceForSpecial(entranceStudent, playerRef) && special.checkStudents(cardStudent)
             && entranceStudent.size()==cardStudent.size()) {
             for (int i = 0; i < entranceStudent.size(); i++) {
+                try { playerManager.removeStudentEntrance(playerRef, entranceStudent.get(i));
+                } catch (NotAllowedException notAllowedException){ return false; }
                 special.effect(cardStudent.get(i), entranceStudent.get(i)); //cardStudent.get(i) is the student I remove, entranceStudent.get(i) is the which one I add
                 specialStudentsListener.specialStudentsNotify(7, cardStudent.get(i), getStudents(cardStudent.get(i)));
                 specialStudentsListener.specialStudentsNotify(7, entranceStudent.get(i), getStudents(entranceStudent.get(i)));
                 playerManager.setStudentEntrance(playerRef, cardStudent.get(i), 1);
-                try { playerManager.removeStudentEntrance(playerRef, entranceStudent.get(i));
-                }catch (NotAllowedException notAllowedException){ return false; }
             }
             return true;
         }
@@ -86,8 +86,12 @@ public class RoundSpecial7 extends RoundStrategy{
         }
 
         public boolean checkStudents(ArrayList<Integer> cardStudents){
-            for(int i=0; i<cardStudents.size(); i++)
-                if(cardStudents.get(i)>students[i]) return false;
+            int[] tempStudent = {0,0,0,0,0};
+            for (int i = 0; i < cardStudents.size(); i++) {
+                tempStudent[cardStudents.get(i)]++;
+            }
+            for(int i=0; i<5; i++)
+                if(tempStudent[i]>students[i]) return false;
             return true;
         }
     }

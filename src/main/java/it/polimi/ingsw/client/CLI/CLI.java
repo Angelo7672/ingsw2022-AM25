@@ -325,10 +325,6 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                     } else if (special == 7) {
                         ArrayList<Integer> entranceStudents = new ArrayList<>();
                         ArrayList<Integer> cardStudents = new ArrayList<>();
-                        for (int i = 0; i < 5; i++) {
-                            entranceStudents.add(0);
-                            cardStudents.add(0);
-                        }
                         String color;
                         for (int i = 0; i < 3; i++) {
                             int colorNum;
@@ -342,7 +338,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                                     System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
                                 } else break;
                             }
-                            cardStudents.set(colorNum, (cardStudents.get(colorNum)+1));
+                            cardStudents.add(colorNum);
                             while (true) {
                                 System.out.println();
                                 System.out.print(SPACE + "Which student in the entrance? ");
@@ -353,12 +349,16 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                                     System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
                                 } else break;
                             }
-                            entranceStudents.set(colorNum, (entranceStudents.get(colorNum)+1));
+                            entranceStudents.add(colorNum);
                             if (i < 2) {
-                                System.out.println();
-                                System.out.print(SPACE + "Do you want to move student again? [Y/N] ");
-                                String answer = readNext();
-                                if (answer.equalsIgnoreCase("n")) break;
+                                String answer=null;
+                                while (answer==null) {
+                                    System.out.println();
+                                    System.out.print(SPACE + "Do you want to move student again? [Y/N] ");
+                                    answer = readNext();
+                                    if (!answer.equalsIgnoreCase("n") && !answer.equalsIgnoreCase("y")) answer=null;
+                                }
+                                if(answer.equalsIgnoreCase("n")) break;
                             }
                         }
                         System.out.println();
@@ -383,10 +383,6 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                     } else if (special == 10) {
                         ArrayList<Integer> entranceStudents = new ArrayList<>();
                         ArrayList<Integer> tableStudents = new ArrayList<>();
-                        for (int i = 0; i < 5; i++) {
-                            entranceStudents.add(0);
-                            tableStudents.add(0);
-                        }
                         String color;
                         for (int i = 0; i < 2; i++) {
                             int colorNum;
@@ -400,7 +396,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                                     System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
                                 } else break;
                             }
-                            tableStudents.set(colorNum, (tableStudents.get(colorNum)+1));
+                            tableStudents.add(colorNum);
                             while (true) {
                                 System.out.println();
                                 System.out.print(SPACE + "Which student in the entrance? ");
@@ -411,12 +407,16 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                                     System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
                                 } else break;
                             }
-                            entranceStudents.set(colorNum, (entranceStudents.get(colorNum)+1));
+                            entranceStudents.add(colorNum);
                             if (i < 1) {
-                                System.out.println();
-                                System.out.print(SPACE + "Do you want to move student again? [Y/N] ");
-                                String answer = readNext();
-                                if (answer.equalsIgnoreCase("n")) break;
+                                String answer=null;
+                                while(answer == null) {
+                                    System.out.println();
+                                    System.out.print(SPACE + "Do you want to move student again? [Y/N] ");
+                                    answer = readNext();
+                                    if (!answer.equalsIgnoreCase("n") && !answer.equalsIgnoreCase("y")) answer=null;
+                                }
+                                if(answer.equalsIgnoreCase("n")) break;
                             }
                         }
                         System.out.println();
@@ -645,6 +645,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     private void turn() throws IOException, ClassNotFoundException {
         if(!constants.isStartGame()) constants.setStartGame(true);
         System.out.println(constants.isSpecialUsed());
+        System.out.println("");
         if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) {
             useSpecial();
         }
