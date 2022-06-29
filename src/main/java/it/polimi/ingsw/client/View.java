@@ -320,6 +320,8 @@ public class View {
         return initializedView;
     }
 
+
+
     //Listeners
     public void setUserInfoListener(UserInfoListener userInfoListener){this.userInfoListener = userInfoListener;}
     public void setTowersListener(TowersListener towersListener) {
