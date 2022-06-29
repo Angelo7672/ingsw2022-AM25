@@ -77,6 +77,7 @@ public abstract class RoundStrategy {
         System.out.println("Influence Team White "+influenceTeamWHITE);
         System.out.println("Influence Team Black "+influenceTeamBLACK);
         System.out.println("Influence Team Grey "+influenceTeamGREY);
+        System.out.println("---");
 
         if(numberOfPlayer == 2 || numberOfPlayer == 4)
             highInfluenceTeam = compareInfluenceTeam(Team.WHITE, influenceTeamWHITE, Team.BLACK, influenceTeamBLACK);

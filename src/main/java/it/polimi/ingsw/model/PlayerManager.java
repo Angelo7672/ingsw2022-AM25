@@ -292,7 +292,7 @@ public class PlayerManager  {
      * @param studentsOfThisColor is the number of students to set in the entrance;
      * @throws NotAllowedException throw in case of player's table is full of that student's colour;
      */
-    public void setStudentTable(int playerRef, int colour, int studentsOfThisColor) throws NotAllowedException{
+    private void setStudentTable(int playerRef, int colour, int studentsOfThisColor) throws NotAllowedException{
         for(int i = 0; i < studentsOfThisColor; i++) {
             players.get(playerRef).school.setStudentTable(colour);
         }
@@ -406,7 +406,7 @@ public class PlayerManager  {
 
         private Player(Team team) {
             this.team = team;
-            this.coins = 1;
+            this.coins = 100;
             this.hand = new ArrayList<>();
             this.school = new School();
         }
