@@ -265,10 +265,9 @@ public class PlayerManager  {
      * @param studentsOfThisColor is the number of students to set in the entrance;
      */
     public void setStudentEntrance(int playerRef, int colour, int studentsOfThisColor){
-        for(int i = 0; i < studentsOfThisColor; i++) {
+        for(int i = 0; i < studentsOfThisColor; i++)
             players.get(playerRef).school.setStudentEntrance(colour);
-            this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
-        }
+        this.studentsListener.notifyStudentsChange(0, playerRef, colour, getStudentEntrance(playerRef, colour));
     }
     private int getStudentEntrance(int playerRef, int colour){ return players.get(playerRef).school.getStudentEntrance(colour); }
 
@@ -293,9 +292,8 @@ public class PlayerManager  {
      * @throws NotAllowedException throw in case of player's table is full of that student's colour;
      */
     private void setStudentTable(int playerRef, int colour, int studentsOfThisColor) throws NotAllowedException{
-        for(int i = 0; i < studentsOfThisColor; i++) {
+        for(int i = 0; i < studentsOfThisColor; i++)
             players.get(playerRef).school.setStudentTable(colour);
-        }
         this.studentsListener.notifyStudentsChange(1, playerRef, colour, getStudentTable(playerRef, colour));
     }
 
