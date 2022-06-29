@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.VirtualView;
+import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.listeners.*;
 import it.polimi.ingsw.server.VirtualClient;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,10 +52,23 @@ public class GameTest {
     @DisplayName("test if special simple work correcly")
     public void useSpecialSimpleTest(){
         game.initializeGame();
-        boolean result = game.useSpecialSimple(3,0, 1);
+        boolean result = game.useSpecialSimple(5,0, 1);
         assertFalse(result);
         setMaxCoins();
-        result = game.useSpecialSimple(3, 0, 1);
+        result = game.useSpecialSimple(5, 0, 1);
+        assertTrue(result);
+    }
+
+    @Test
+    @DisplayName("Test if special3 work correctly")
+    public void useSpecial3Test() throws EndGameException {
+        game.initializeGame();
+        boolean result = game.useSpecial3(0, 1);
+        assertFalse(result);
+        setMaxCoins();
+        result = game.useSpecial3(0, 15);
+        assertFalse(result);
+        result = game.useSpecial3(0, 1);
         assertTrue(result);
     }
 
@@ -62,11 +76,23 @@ public class GameTest {
     @DisplayName("test if special medium work correcly")
     public void useSpecialMediumTest(){
         game.initializeGame();
-        boolean result = game.useSpecialMedium(1,0, 1, 1);
+        boolean result = game.useStrategySimple(1,0,2);
         assertFalse(result);
         setMaxCoins();
         setSchool();
-        result = game.useSpecialMedium(1, 0, 1, 1);
+        result = game.useStrategySimple(1, 0, 1);
+        assertTrue(result);
+    }
+
+    @Test
+    @DisplayName("test if special strategy work correcly")
+    public void useStrategySimple(){
+        game.initializeGame();
+        boolean result = game.useSpecialMedium(9,0, 1, 1);
+        assertFalse(result);
+        setMaxCoins();
+        setSchool();
+        result = game.useSpecialMedium(9, 0, 1, 1);
         assertTrue(result);
     }
 
@@ -80,11 +106,11 @@ public class GameTest {
         color2.add(2);
         color1.add(1);
         color1.add(3);
-        boolean result = game.useSpecialHard(3,0,color1, color2);
+        boolean result = game.useSpecialHard(7,0,color1, color2);
         assertFalse(result);
         setMaxCoins();
         setSchool();
-        result = game.useSpecialHard(3, 0, color1, color2);
+        result = game.useSpecialHard(7, 0, color1, color2);
         assertTrue(result);
     }
 

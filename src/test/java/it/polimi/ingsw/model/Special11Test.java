@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/*public class Special11Test implements SpecialStudentsListener {
+public class Special11Test implements SpecialStudentsListener {
     int numberOfPlayer=3;
     boolean expertMode = true;
     private Bag bag = new Bag();
@@ -132,7 +132,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         round.initializeSpecial();
         int color1 = 0;
         boolean done = false;
-        playerManager.setStudentTable(0,0,1);
+        playerManager.setStudentEntrance(0,0,1);
+        playerManager.transferStudent(0,0,true, false);
         if (cardStudent > 0) {
             int tempTableStudent = studentTable;
             done = round.effect(0, color1);
@@ -143,4 +144,4 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
             assertEquals(false, done);
         }
     }
-}*/
+}

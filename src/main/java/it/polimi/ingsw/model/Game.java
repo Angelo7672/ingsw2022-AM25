@@ -374,12 +374,12 @@ public class Game implements GameManager{
     public boolean useSpecial3(int playerRef, int islandRef) throws EndGameException {
         boolean checker = false;
 
-        if(affordSpecial(indexSpecial, playerRef) && islandsManager.getIslandsSize()>islandRef&&islandRef>=0) {
+        if(affordSpecial(3, playerRef) && islandsManager.getIslandsSize()>islandRef && islandRef>=0) {
             for(int i = 0; i < 3; i++)
-                if (indexSpecial == extractedSpecials.get(i)) {
+                if (3 == extractedSpecials.get(i)) {
                     checker = roundStrategies.get(i + 1).effect(islandRef);
                 }
-            findSpecial(indexSpecial, playerRef);
+            findSpecial(3, playerRef);
             if(checker) throw new EndGameException();
         } else return false;
         return true;

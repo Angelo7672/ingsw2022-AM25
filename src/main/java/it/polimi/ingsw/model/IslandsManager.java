@@ -165,12 +165,13 @@ public class IslandsManager {
 
         posTemp = circularArray(pos,-1);    //left tower
         if(checkAdjacent(pos, posTemp)) {
-            pos = circularArray(pos,-1);
+            if(pos>posTemp) pos = circularArray(pos,-1);
             towerValue = islands.get(pos).towerValue;
         };
 
         posTemp = circularArray(pos,1);     //right tower
         if(checkAdjacent(pos, posTemp)) {
+            if(pos>posTemp) pos = circularArray(pos,-1);
             towerValue = islands.get(pos).towerValue;
         }
         return towerValue;
@@ -194,16 +195,10 @@ public class IslandsManager {
             islands.get(pos).incTowerValue(islands.get(posTemp).getTowerValue()); //tower value increase
             this.towersListener.notifyTowersChange(1,pos, islands.get(pos).getTowerValue());
             islands.remove(posTemp); //island delete
+
             this.islandListener.notifyIslandChange(posTemp);
-            if(getMotherPos() >= pos){ //Move mother
-                if(motherPos==posTemp && posTemp>pos) {
-                    motherPos = pos;
-                    this.motherPositionListener.notifyMotherPosition(motherPos);
-                }
-                else {
-                    motherPos = circularArray(pos, -1);
-                    this.motherPositionListener.notifyMotherPosition(motherPos);
-                }
+            if(motherPos>=posTemp){
+                motherPos = circularArray(pos, -1);
             }
             return true;
         }

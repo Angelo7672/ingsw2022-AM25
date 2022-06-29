@@ -189,7 +189,6 @@ public class SpecialsSceneController implements SceneController{
     }
 
     protected void setStudent(int specialIndex, int color, int value){
-        System.out.println(specialIndex+" "+color+" "+value);
         if(specialsName.indexOf(specialIndex)==0){
             Label student = (Label) paneSpecial1.getChildren().get(color+5);
             student.setText(String.valueOf(value));

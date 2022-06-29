@@ -487,11 +487,12 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             printable.cli();
         }
         String accepted;
+        try{
+        do{
         String color=null;
         String where=null;
         int colorInt=-1;
         int islandRef = -1;
-        try {
             while (color == null) {
                 synchronized (lock) {
                     System.out.println();
@@ -539,6 +540,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             else if (accepted.equals("move not allowed")) {
                 System.out.println(ANSI_RED + SPACE + "Move not allowed" + ANSI_RESET);
             }
+        }while(accepted.equals("move not allowed"));
         } catch (IOException | ClassNotFoundException e) {
             System.out.println();
             System.out.println(ANSI_RED + SPACE + "Error, try again" + ANSI_RESET);

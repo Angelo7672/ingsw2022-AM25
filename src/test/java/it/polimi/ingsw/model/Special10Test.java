@@ -23,7 +23,7 @@ public class Special10Test {
     int entranceStudent0;
     int entranceStudent1;
 
-   /* @BeforeEach
+   @BeforeEach
     void initialization(){
         islandsManager = new IslandsManager();
         islandsManager.islandListener = new IslandListener() {
@@ -132,7 +132,8 @@ public class Special10Test {
         boolean done = round.effect(0, color1,color2);
         assertEquals(false, done);
         playerManager.setStudentEntrance(0,0, 1);
-        playerManager.setStudentTable(0,1, 1);
+        playerManager.setStudentEntrance(0,1, 1);
+        playerManager.transferStudent(0,1,true,false);
         int tempEntranceStudent0 = entranceStudent0;
         int tempEntranceStudent1 = entranceStudent1;
         int tableStudent0 = playerManager.getStudentTable(0,0);
@@ -143,5 +144,5 @@ public class Special10Test {
         assertEquals(tempEntranceStudent0-1,entranceStudent0);
         assertEquals(tempEntranceStudent1+1,entranceStudent1);
         assertEquals(true,done);
-    }*/
+    }
 }
