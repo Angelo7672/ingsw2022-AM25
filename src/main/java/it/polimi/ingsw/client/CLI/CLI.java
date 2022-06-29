@@ -40,6 +40,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         proxy.setServerOfflineListener(this);
         proxy.setSoldOutListener(this);
         lock = new Object();
+        playCount=4;
     }
 
     private void setup() throws IOException, ClassNotFoundException, InterruptedException {
