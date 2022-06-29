@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.listeners.*;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
@@ -69,6 +70,11 @@ public interface GameManager {
      * @see Game
      */
     boolean useSpecialLite(int indexSpecial, int playerRef);
+
+    /**
+     * @see Game
+     */
+    boolean useSpecial3(int playerRef, int islandRef) throws EndGameException;
 
     /**
      * @see Game

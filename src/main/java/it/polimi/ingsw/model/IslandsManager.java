@@ -248,7 +248,6 @@ public class IslandsManager {
         islands.get(islandRef).decreaseInhibited();
         this.inhibitedListener.notifyInhibited(islandRef, getInhibited(islandRef));
     }
-    public int size(){ return islands.size(); }
 
     private class Island {
         private int[] students;

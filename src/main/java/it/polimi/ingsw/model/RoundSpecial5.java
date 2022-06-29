@@ -13,8 +13,7 @@ public class RoundSpecial5 extends RoundStrategy{
 
     @Override
     public boolean effect(int islandRef){
-        System.err.println(islandRef);
-        if(special.getNoEntry() > 0){
+        if(special.getNoEntry() > 0 && islandRef>=0 && islandsManager.getIslandsSize()>islandRef){
             islandsManager.increaseInhibited(islandRef);
             special.decreaseNoEntry();
             noEntryListener.notifyNoEntry(special.getNoEntry());
@@ -49,7 +48,7 @@ public class RoundSpecial5 extends RoundStrategy{
     @Override
     public void effect(){
         int inhibitedIsland = 0;
-        for (int i = 0; i<islandsManager.size(); i++)
+        for (int i = 0; i<islandsManager.getIslandsSize(); i++)
             if(islandsManager.getInhibited(i)>0) inhibitedIsland+=islandsManager.getInhibited(i);
 
         if(inhibitedIsland<(4-special.getNoEntry())){

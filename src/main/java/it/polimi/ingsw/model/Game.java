@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.listeners.*;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
@@ -98,12 +99,12 @@ public class Game implements GameManager{
             }*/
 
         //INSERISCI GLI SPECIAL CHE VUOI FARE USCIRE
-        roundStrategies.add( roundStrategyFactor.getRoundStrategy(5));
+        roundStrategies.add( roundStrategyFactor.getRoundStrategy(3));
+        roundStrategies.add( roundStrategyFactor.getRoundStrategy(4));
         roundStrategies.add( roundStrategyFactor.getRoundStrategy(7));
-        roundStrategies.add( roundStrategyFactor.getRoundStrategy(10));
-        this.extractedSpecials.add(5);
+        this.extractedSpecials.add(3);
+        this.extractedSpecials.add(4);
         this.extractedSpecials.add(7);
-        this.extractedSpecials.add(10);
     }
 
     /**
@@ -347,7 +348,7 @@ public class Game implements GameManager{
     }
 
     /**
-     * Method for specials that require an argument. Used by special3, special9.
+     * Method for specials that require an argument. Used by special9.
      * @param indexSpecial special reference;
      * @param playerRef player reference;
      * @param ref argument of the special;
@@ -358,6 +359,28 @@ public class Game implements GameManager{
         if(affordSpecial(indexSpecial, playerRef)) {
             setSpecial(indexSpecial, ref);
             findSpecial(indexSpecial, playerRef);
+        } else return false;
+        return true;
+    }
+
+    /**
+     * Method for specials that require an argument. Used by Special3.
+     * @param playerRef player reference;
+     * @param islandRef argument of the special;
+     * @return if the operation was successful;
+     * @throws EndGameException if game is over
+     */
+    @Override
+    public boolean useSpecial3(int playerRef, int islandRef) throws EndGameException {
+        boolean checker = false;
+
+        if(affordSpecial(indexSpecial, playerRef) && islandsManager.getIslandsSize()>islandRef&&islandRef>=0) {
+            for(int i = 0; i < 3; i++)
+                if (indexSpecial == extractedSpecials.get(i)) {
+                    checker = roundStrategies.get(i + 1).effect(islandRef);
+                }
+            findSpecial(indexSpecial, playerRef);
+            if(checker) throw new EndGameException();
         } else return false;
         return true;
     }
@@ -374,11 +397,9 @@ public class Game implements GameManager{
         boolean checker = false;
 
         if(affordSpecial(indexSpecial, playerRef)) {
-            setSpecial(indexSpecial, ref);
             for(int i = 0; i < 3; i++)
                 if(indexSpecial == extractedSpecials.get(i)) {
                     checker = roundStrategies.get(i+1).effect(ref);
-                    System.out.println(checker);
                 }
             if(checker) findSpecial(indexSpecial, playerRef);
         }
@@ -399,7 +420,6 @@ public class Game implements GameManager{
         boolean checker = false;
 
         if (affordSpecial(indexSpecial, playerRef)) {
-            setSpecial(indexSpecial, ref);
             for(int i = 0; i < 3; i++)
                 if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(ref, color);
             if(checker) findSpecial(indexSpecial, playerRef);
@@ -421,7 +441,6 @@ public class Game implements GameManager{
         boolean checker = false;
 
         if(affordSpecial(indexSpecial, playerRef)) {
-            setSpecial(indexSpecial, playerRef);
             for(int i = 0; i < 3; i++)
                 if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(playerRef, color1, color2);
             if(checker) findSpecial(indexSpecial, playerRef);

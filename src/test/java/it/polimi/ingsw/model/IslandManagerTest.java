@@ -129,7 +129,7 @@ public class IslandManagerTest {
         //size methods
         islandsManager.towerChange(1, WHITE);
         assertEquals(2, islandsManager.getTowerValue(0));
-        assertEquals(11, islandsManager.size());
+        assertEquals(11, islandsManager.getIslandsSize());
 
         //inhibition methods
         assertEquals(0, islandsManager.getInhibited(0));
