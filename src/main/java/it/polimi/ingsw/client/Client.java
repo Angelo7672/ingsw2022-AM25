@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.GUI.GUI;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Scanner;
 
@@ -18,7 +17,7 @@ public class Client {
     private static String  UNDERLINE = "\u001B[4m";
 
 
-    public static void main(String[] args) { //non si mette il lancio di eccezioni nel main! Falle catturare dai catch, printa qualcosa a schermo e poi fai System.exit
+    public static void main(String[] args) {
         System.out.println(SPACE+ANSI_GREEN+UNDERLINE+"ERIANTYS"+ANSI_RESET);
         System.out.println();
         Scanner scanner = new Scanner(System.in);
