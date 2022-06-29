@@ -158,8 +158,8 @@ public class Printable {
             else if(view.getTowersColor(i)==1) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + ANSI_BLACK+ "BLACK" + ANSI_RESET);
             else if(view.getTowersColor(i)==2) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + ANSI_WHITE+ "GREY" + ANSI_RESET);
             else if(view.getTowersColor(i)==-1) System.out.print("\t"+"\t"+"\t"+"  Towers Team: " + "NO ONE" + ANSI_RESET);
-            System.out.println(" . Island size: " + view.getIslandTowers(i));
-            if (view.getInhibited(i) != 0) System.out.print(" No Entry tiles: " + view.getInhibited(i) );
+            System.out.print(" . Island size: " + view.getIslandTowers(i));
+            if (view.getInhibited(i) != 0) System.out.println(" No Entry tiles: " + view.getInhibited(i) );
         }
         System.out.println();
         System.out.println(UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));//aggiungere
