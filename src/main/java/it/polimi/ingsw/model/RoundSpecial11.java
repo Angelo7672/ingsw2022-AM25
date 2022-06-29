@@ -31,7 +31,8 @@ public class RoundSpecial11 extends RoundStrategy{
     public boolean effect(int playerRef, int color){
         int extracted = -1;
         if(getStudents(color) > 0) {
-            try { playerManager.setStudentTable(playerRef, color, 1);
+            playerManager.setStudentEntrance(playerRef, color, 1);
+            try { playerManager.transferStudent(playerRef, color, true, false);
             } catch (NotAllowedException notAllowedException){ return false; }
             if(!bag.checkVictory()) extracted = bag.extraction();
             special.effect(color, extracted);   //color is the student I remove, extracted is the which one I add

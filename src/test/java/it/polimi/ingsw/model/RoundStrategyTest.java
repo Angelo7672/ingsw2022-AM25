@@ -30,7 +30,7 @@ public class RoundStrategyTest {
     private ArrayList<Assistant> alreadyPlayedAssistant = new ArrayList<>();
     private ArrayList<Integer> schoolTowers;
 
-    @BeforeEach
+    /*@BeforeEach
     void initialization(){
         schoolTowers=new ArrayList<>();
         for (int i = 0; i < numberOfPlayer; i++) schoolTowers.add(6);
@@ -374,7 +374,7 @@ public class RoundStrategyTest {
 
     }
 
-
+*/
 
 }
 

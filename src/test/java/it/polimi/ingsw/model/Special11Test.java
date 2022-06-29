@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Special11Test implements SpecialStudentsListener {
+/*public class Special11Test implements SpecialStudentsListener {
     int numberOfPlayer=3;
     boolean expertMode = true;
     private Bag bag = new Bag();
@@ -143,4 +143,4 @@ public class Special11Test implements SpecialStudentsListener {
             assertEquals(false, done);
         }
     }
-}
+}*/

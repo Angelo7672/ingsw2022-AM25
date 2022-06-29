@@ -99,11 +99,11 @@ public class Game implements GameManager{
 
         //INSERISCI GLI SPECIAL CHE VUOI FARE USCIRE
         roundStrategies.add( roundStrategyFactor.getRoundStrategy(5));
-        roundStrategies.add( roundStrategyFactor.getRoundStrategy(6));
-        roundStrategies.add( roundStrategyFactor.getRoundStrategy(7));
+        roundStrategies.add( roundStrategyFactor.getRoundStrategy(11));
+        roundStrategies.add( roundStrategyFactor.getRoundStrategy(12));
         this.extractedSpecials.add(5);
-        this.extractedSpecials.add(6);
-        this.extractedSpecials.add(7);
+        this.extractedSpecials.add(11);
+        this.extractedSpecials.add(12);
     }
 
     /**
