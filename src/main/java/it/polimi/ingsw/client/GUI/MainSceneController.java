@@ -106,6 +106,7 @@ public class MainSceneController implements SceneController {
     @FXML private Button showCardsButton;
     @FXML private Button showCloudsButton;
     @FXML private Button confirmSpecialButton;
+    @FXML private Label specialLabel;
 
     public MainSceneController() {
         this.nicknamesMap = new HashMap<>();
@@ -156,8 +157,6 @@ public class MainSceneController implements SceneController {
         @Override
         public void handle(MouseEvent mouseEvent) {
             if (actionAllowed == 0) {
-                System.out.println("student clicked");
-
                 if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(0) ||
                         mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(1) ||
                         mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(2) ||
@@ -210,10 +209,8 @@ public class MainSceneController implements SceneController {
                         mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(3) ||
                         mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(4)) {
                     //if(lastThingClicked.equals("studentEntrance") ||lastThingClicked.equals("studentTable")){
-                        int oldValue;
                         String color = null;
                         if(studentsfromEntrance > 0){
-                            //lastThingClicked = "studentEntrance";
                             for (int i = 0; i < 5; i++) {
                                 if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(i))
                                     colorToSwap = i;
@@ -230,13 +227,10 @@ public class MainSceneController implements SceneController {
                                 color = "Pink";
                             else if(colorToSwap == 4)
                                 color = "Blue";
-
                             selectedStudentsEntrance = selectedStudentsEntrance+" "+color;
                             selectedStudents = "Selected students entrance: "+selectedStudentsEntrance+", selected students table: "+selectedStudentsTable;
                             actionLabel.setText(selectedStudents);
-
                         }
-                    //}
                 }
 
             } else {
@@ -249,20 +243,16 @@ public class MainSceneController implements SceneController {
     private class TableClickHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent mouseEvent) {
-            AnchorPane table = tablesMap.get(currentPlayer);
             if (actionAllowed == 0) { //move student
                 if (lastThingClicked.equals("student"))
                     lastThingClicked = "table";
-                System.out.println("table clicked");
                 if ((mouseEvent.getSource() == tablesMap.get(currentPlayer))) {
                     try {
                         String result = proxy.moveStudent(currentStudentColor, "school", -1);
                         if (result.equalsIgnoreCase("ok")) {
-                            System.out.println("movement successful");
                             errorLabel.setVisible(false);
                         } else if (result.equalsIgnoreCase("transfer complete")) {
                             gui.setConstants("StudentsMoved");
-                            System.out.println("movement successful, fine");
                             setActionAllowed(1);
                         } else {
                             showMoveNotAllowed();
@@ -285,35 +275,31 @@ public class MainSceneController implements SceneController {
         public void handle(MouseEvent mouseEvent) {
             System.out.println("studentTable clicked");
             if (actionAllowed == 7) { //special 10
-                //if (lastThingClicked.equals("studentEntrance") || lastThingClicked.equals("studentTable")) {
-                    if (studentFromTable > 0) {
-                        lastThingClicked = "studentTable";
-                        ImageView student = (ImageView) mouseEvent.getSource();
-                        int oldValue;
-                        String color = null;
-                        String selectedStudents;
-                        if (student.getImage().getUrl().contains(GREENSTUDENT)){
-                                fromTableToEntrance.add(0);
-                                color = "Green";
-                            } else if (student.getImage().getUrl().contains(REDSTUDENT)) {
-                                fromTableToEntrance.add(1);
-                                color = "Red";
-                            } else if (student.getImage().getUrl().contains(YELLOWSTUDENT)) {
-                                fromTableToEntrance.add(2);
-                                color = "Yellow";
-                            } else if (student.getImage().getUrl().contains(PINKSTUDENT)) {
-                                fromTableToEntrance.add(3);
-                                color = "Pink";
-                            } else if (student.getImage().getUrl().contains(BLUESTUDENT)) {
-                                fromTableToEntrance.add(4);
-                                color = "Blue";
-                            }
-                            selectedStudentsTable = selectedStudentsTable+" "+color;
-                            System.out.println("list to send: "+fromTableToEntrance);
-                            selectedStudents = "Selected students entrance: "+selectedStudentsEntrance+", selected students table: "+selectedStudentsTable;
-                            actionLabel.setText(selectedStudents);
-                    }
-                //}
+                if (studentFromTable > 0) {
+                    lastThingClicked = "studentTable";
+                    ImageView student = (ImageView) mouseEvent.getSource();
+                    String color = null;
+                    String selectedStudents;
+                    if (student.getImage().getUrl().contains(GREENSTUDENT)){
+                            fromTableToEntrance.add(0);
+                            color = "Green";
+                        } else if (student.getImage().getUrl().contains(REDSTUDENT)) {
+                            fromTableToEntrance.add(1);
+                            color = "Red";
+                        } else if (student.getImage().getUrl().contains(YELLOWSTUDENT)) {
+                            fromTableToEntrance.add(2);
+                            color = "Yellow";
+                        } else if (student.getImage().getUrl().contains(PINKSTUDENT)) {
+                            fromTableToEntrance.add(3);
+                            color = "Pink";
+                        } else if (student.getImage().getUrl().contains(BLUESTUDENT)) {
+                            fromTableToEntrance.add(4);
+                            color = "Blue";
+                        }
+                        selectedStudentsTable = selectedStudentsTable+" "+color;
+                        selectedStudents = "Selected students entrance: "+selectedStudentsEntrance+", selected students table: "+selectedStudentsTable;
+                        actionLabel.setText(selectedStudents);
+                }
             }
         }
     }
@@ -325,8 +311,6 @@ public class MainSceneController implements SceneController {
                 if (actionAllowed == 0) {
                     if (lastThingClicked.equals("student")) {
                         lastThingClicked = "island";
-                        System.out.println("island clicked");
-                        System.out.println("mouseEvent source: " + mouseEvent.getSource());
                         for (int i = 0; i < islandsList.size(); i++) {
                             if ((mouseEvent.getSource() == islandsList.get(i))) {
                                 islandRef = i;
@@ -335,14 +319,11 @@ public class MainSceneController implements SceneController {
                         try {
                             String result = proxy.moveStudent(currentStudentColor, "island", islandRef);
                             if (result.equalsIgnoreCase("ok")) {
-                                System.out.println("movement successful");
                                 errorLabel.setVisible(false);
                             } else if (result.equalsIgnoreCase("transfer complete")) {
                                 gui.setConstants("StudentsMoved");
-                                System.out.println("movement successful, fine");
                                 setActionAllowed(1);
                             } else {
-                                System.out.println("mossa non consentita");
                                 errorLabel.setText("Error, move not allowed!");
                                 errorLabel.setVisible(true);
                             }
@@ -387,18 +368,15 @@ public class MainSceneController implements SceneController {
                         e.printStackTrace();
                     }
                 } else if (actionAllowed == 3) { //special 1
-                    System.out.println("island click handler per action 3");
                     for (int i = 0; i < islandsList.size(); i++) {
                         if ((mouseEvent.getSource() == islandsList.get(i))) {
                             islandRef = i;
                         }
                     }
-                    System.out.println("isola scelta dallo special 1: "+islandRef);
                     try {
-                        System.out.println("chiamata al proxy con: special 1, isola: "+islandRef+" student dalla carta: "+cardStudent);
                         if (proxy.useSpecial(1, cardStudent, islandRef)) {
-                            System.out.println("special 1 finito");
                             gui.setConstants("SpecialUsed");
+                            specialLabel.setVisible(false);
                         } else {
                             showMoveNotAllowed();
                             gui.specialNotAllowed();
@@ -416,6 +394,7 @@ public class MainSceneController implements SceneController {
                     try {
                         if (proxy.useSpecial(3, islandRef)) {
                             gui.setConstants("SpecialUsed");
+                            specialLabel.setVisible(false);
                         } else {
                             errorLabel.setText("Error, move not allowed!");
                             errorLabel.setVisible(true);
@@ -448,16 +427,12 @@ public class MainSceneController implements SceneController {
 
         public void confirmSpecial() { //special 7
             if (actionAllowed == 6) {
-                System.out.println("action allowed 6");
                 if (lastThingClicked.equalsIgnoreCase("studentToExchange")) {
                     try {
-                        System.out.println("calling proxy special 7");
-                        System.out.println(fromCardToEntrance+" "+fromEntranceToCard);
                         if (proxy.useSpecial(7, fromEntranceToCard, fromCardToEntrance)) {
-                            System.out.println("ok!");
                             gui.setConstants("SpecialUsed");
+                            specialLabel.setVisible(false);
                         } else {
-                            System.out.println("move not allowed dal proxy");
                             showMoveNotAllowed();
                             gui.specialNotAllowed();
                         }
@@ -473,12 +448,11 @@ public class MainSceneController implements SceneController {
                     selectedStudentSpecial7="";
                 }
                 } else if (actionAllowed == 7) { //special 10
-                    //if (lastThingClicked.equalsIgnoreCase("studentTable")) {
                         try {
                             if (proxy.useSpecial(10, fromEntranceToTable, fromTableToEntrance)) {
                                 gui.setConstants("SpecialUsed");
+                                specialLabel.setVisible(false);
                             } else {
-                                System.out.println("errore special 10");
                                 showMoveNotAllowed();
                                 gui.specialNotAllowed();
                             }
@@ -488,23 +462,19 @@ public class MainSceneController implements SceneController {
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }
-                    //}
-                System.out.println("Liste: "+fromEntranceToTable+","+fromTableToEntrance);
                 fromEntranceToTable.clear();
                 fromTableToEntrance.clear();
                 selectedStudents = "";
                 selectedStudentsTable = "";
                 selectedStudentsEntrance = "";
                 } else{
-                showMoveNotAllowed();
-                System.out.println("move not allowed dalla gui");
+                    showMoveNotAllowed();
             }
 
 
         }
 
         public void showMoveNotAllowed() {
-            errorLabel.setText("Error, move not allowed!");
             errorLabel.setVisible(true);
         }
 
@@ -571,12 +541,7 @@ public class MainSceneController implements SceneController {
             for (int i = 0; i < 12; i++) {
                 island = islandsList.get(i);
                 island.setOnMouseClicked(islandClickHandler);
-
                 noEntryTilesMap.put(i, 0);
-
-                for (int j = 1; j <= 13; j++) {
-                    island.getChildren().get(j).setVisible(false);
-                }
             }
         }
 
@@ -732,11 +697,6 @@ public class MainSceneController implements SceneController {
             this.expertMode = expertMode;
         }
 
-        /*public void setUserInfo(String nickname, String character, int playerRef) {
-            nicknamesMap.put(playerRef, nickname);
-            charactersMap.put(playerRef, character);
-        }*/
-
         public void setMotherPosition(int islandRef) {
             ImageView motherNature;
             for (int i = 0; i < islandsList.size(); i++) {
@@ -750,28 +710,16 @@ public class MainSceneController implements SceneController {
         }
 
         public void setStudentsEntrance(int playerRef, int color, int newStudentsValue) {
-            Label studentLabel = null;
+            AnchorPane entrance = entrancesMap.get(playerRef);
             ImageView studentImage;
             String text = String.valueOf(newStudentsValue);
 
-            studentImage = (ImageView) entrancesMap.get(playerRef).getChildren().get(color);
-            //studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5); //Labels are located 5 position after images
-
-            if(color == 0){
-                studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(5);
-                System.out.println(studentLabel);
-            } else if (color == 1){
-                studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(6);
-            } else if (color == 2){
-                studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(7);
-            } else if (color == 3){
-                studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(8);
-            } else if (color == 4){
-                studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(9);
-            }
+            studentImage = (ImageView) entrance.getChildren().get(color);
+            Label studentLabel = (Label) entrance.getChildren().get(color + 5); //Labels are located 5 position after images
 
             studentLabel.setText(text);
-            System.out.println("student label text: "+text);
+           //System.out.println("Color"+color);
+            //System.out.println("student label text: "+text);
             if (newStudentsValue != 0) {
                 studentLabel.setVisible(true);
                 studentImage.setVisible(true);
@@ -779,6 +727,9 @@ public class MainSceneController implements SceneController {
                 studentLabel.setVisible(false);
                 studentImage.setVisible(false);
             }
+            /*for(int i=5; i<entrance.getChildren().size(); i++){
+                System.out.println("Child "+(i-5)+" is "+entrance.getChildren().get(i)+" player "+playerRef);
+            }*/
         }
 
         public void setStudentsTable(int playerRef, int color, int newStudentsValue) {
@@ -802,8 +753,6 @@ public class MainSceneController implements SceneController {
             oldStudentsValue = table.getStudentsNumber();
 
             if (newStudentsValue > oldStudentsValue) {
-                System.out.println("Old student value: "+oldStudentsValue);
-                //oldStudentsValue = table.getStudentsNumber();
                 tablePane.getChildren().add(new ImageView(table.getStudentImage()));
                 student = (ImageView) tablePane.getChildren().get(tablePane.getChildren().size() - 1);
                 student.setFitHeight(16.0);
@@ -813,58 +762,46 @@ public class MainSceneController implements SceneController {
                 table.setNewX(playerRef,true);
                 table.setNewY(playerRef, true );
                 table.addStudent();
-                System.out.println("New student number is: "+table.getStudentsNumber());
                 student.setVisible(true);
                 student.setOnMouseClicked(studentTableClickHandler);
 
             } else if (newStudentsValue<oldStudentsValue){
                 oldStudentsValue = table.getStudentsNumber();
                 Boolean ok = false;
-                System.out.println("Removing a student");
                 for (int i = tablePane.getChildren().size() - 1; i >= 0 && !ok; i--) {
                     student = (ImageView) tablePane.getChildren().get(i);
                     String imageName = student.getImage().getUrl();
-                    System.out.println("student: "+student+" "+imageName);
-                    System.out.println("Old students value: "+oldStudentsValue);
-                    System.out.println("Old x value: "+table.getX());
-                    System.out.println("Old y value: "+table.getY());
                     if (imageName.contains(GREENSTUDENT) && color == 0) {
                         tablePane.getChildren().remove(i);
                         table.removeStudent();
                         ok = true;
                         table.setNewX(playerRef,false);
                         table.setNewY(playerRef, false );
-                        System.out.println("Green student remove, new x: "+table.getX()+ " new y: "+table.getY());
                     } else if (imageName.contains(REDSTUDENT) && color == 1) {
                         tablePane.getChildren().remove(i);
                         table.removeStudent();
                         ok = true;
                         table.setNewX(playerRef,false);
                         table.setNewY(playerRef, false );
-                        System.out.println("Red student remove, new x: "+table.getX()+ " new y: "+table.getY());
                     } else if (imageName.contains(YELLOWSTUDENT) && color == 2) {
                         tablePane.getChildren().remove(i);
                         table.removeStudent();
                         ok = true;
                         table.setNewX(playerRef,false);
                         table.setNewY(playerRef, false );
-                        System.out.println("Yellow student remove, new x: "+table.getX()+ " new y: "+table.getY());
                     } else if (imageName.contains(PINKSTUDENT) && color == 3) {
                         tablePane.getChildren().remove(i);
                         table.removeStudent();
                         ok = true;
                         table.setNewX(playerRef,false);
                         table.setNewY(playerRef, false );
-                        System.out.println("Pink student remove, new x: "+table.getX()+ " new y: "+table.getY());
                     } else if (imageName.contains(BLUESTUDENT) && color == 4) {
                         tablePane.getChildren().remove(i);
                         table.removeStudent();
                         ok = true;
                         table.setNewX(playerRef,false);
                         table.setNewY(playerRef, false );
-                        System.out.println("Blue student remove, new x: "+table.getX()+ " new y: "+table.getY());
                     }
-                    System.out.println("New student number is: "+table.getStudentsNumber());
                 }
             }
         }
@@ -877,8 +814,14 @@ public class MainSceneController implements SceneController {
             studentImage = (ImageView) island.getChildren().get(color + 3);
             studentLabel = (Label) island.getChildren().get(color + 8);
             studentLabel.setText(String.valueOf(newStudentsValue));
-            studentImage.setVisible(true);
-            studentLabel.setVisible(true);
+            if(newStudentsValue!=0){
+                studentImage.setVisible(true);
+                studentLabel.setVisible(true);
+            } else {
+                studentImage.setVisible(false);
+                studentLabel.setVisible(false);
+            }
+
         }
 
         public void setProfessor(int schoolRef, int color, boolean newProfessorValue) {
@@ -943,13 +886,14 @@ public class MainSceneController implements SceneController {
         double currentW = islandImage.getFitWidth();*/
 
             towerLabel.setText(String.valueOf(towersNumber));
-            if (towersNumber != 0) {
+            /*if (towersNumber != 0 && towerImage!=null) {
                 towerLabel.setVisible(true);
                 towerImage.setVisible(true);
             } else {
                 towerLabel.setVisible(false);
                 towerImage.setVisible(false);
-            }
+                towerLabel.setVisible(false);
+            }*/
         /*islandImage.setFitWidth(currentW+2);
         islandImage.setFitHeight(currentH+2);*/
         }
@@ -981,19 +925,19 @@ public class MainSceneController implements SceneController {
                 actionLabel.setText("Move a student in your school or on an island!");
                 actionLabel.setVisible(true);
                 errorLabel.setVisible(false);
+                specialLabel.setVisible(false);
             } else if (actionAllowed == 1) {
                 actionLabel.setText("Move Mother Nature on a Island! (Max movement is: " + view.getMaxStepsMotherNature() + ")");
                 actionLabel.setVisible(true);
+                specialLabel.setVisible(false);
             } else if (actionAllowed == 2) {
                 gui.phaseHandler("ChooseCloud");
+                specialLabel.setVisible(false);
             } else if (actionAllowed == -1) {
                 turnLabel.setText("It's your opponent's turn. Wait...");
                 actionLabel.setVisible(false);
             } else if (actionAllowed == 3) { //special 1
-                System.out.println("actionAllowed = "+actionAllowed);
                 actionLabel.setText("Choose an island!");
-                System.out.println(actionLabel.getText());
-                System.out.println("aaaaaa");
                 actionLabel.setVisible(true);
             } else if (actionAllowed == 4) { //special 3
                 actionLabel.setText("Choose an island!");
@@ -1039,6 +983,7 @@ public class MainSceneController implements SceneController {
                 tower.setVisible(true);
                 towerLabel.setVisible(true);
             } else if (newColor == -1) {
+                tower.setImage(null);
                 tower.setVisible(false);
                 towerLabel.setVisible(false);
             }
@@ -1109,6 +1054,12 @@ public class MainSceneController implements SceneController {
             island.getChildren().remove(island.getChildren().size()-1);
         }
 
+    }
+
+    public void setSpecialPlayed(int specialRef, int playerRef){
+        String playerName = nicknamesMap.get(playerRef);
+        specialLabel.setText(playerName+" played special card "+specialRef+"!");
+        specialLabel.setVisible(true);
     }
 
 
