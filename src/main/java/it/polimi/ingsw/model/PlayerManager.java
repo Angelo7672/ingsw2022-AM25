@@ -396,7 +396,7 @@ public class PlayerManager  {
 
         private Player(Team team) {
             this.team = team;
-            this.coins = 100;
+            this.coins = 1;
             this.hand = new ArrayList<>();
             this.school = new School();
         }
