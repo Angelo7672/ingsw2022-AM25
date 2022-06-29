@@ -33,7 +33,10 @@ public class MainSceneController implements SceneController {
 
     private int cardStudent; //special 1 - studente che prendo dalla carta, lo setta la gui
     private int colorToSwap; //special 10, colore studente da scambiare
-    private int studentsToSwap; //special 10, numero studenti scambiabili tra ingresso e tavolo
+    private int studentsfromEntrance; //special 10, numero studenti scambiabili tra ingresso e tavolo
+    private  int studentFromTable;
+    private String selectedStudentsEntrance;
+    private String selectedStudentsTable;
     private int studentsToExchange; //special 7,numero studenti scambiabili con la carta
     private ArrayList<Integer> fromEntranceToTable; //special 10, studenti da mettere nella sala
     private ArrayList<Integer> fromTableToEntrance; //special 10, studenti da mettere nell'ingresso
@@ -127,6 +130,15 @@ public class MainSceneController implements SceneController {
         this.fromCardToEntrance = new ArrayList<>();
         this.noEntryTilesMap = new HashMap<>();
 
+        selectedStudentsEntrance = "";
+        selectedStudentsTable = "";
+
+        for(int i=0; i<5; i++){
+            fromEntranceToTable.add(i, 0);
+            fromTableToEntrance.add(i, 0);
+            fromEntranceToCard.add(i, 0);
+        }
+
         oldStudentsValue = 0;
         actionAllowed = -1;
         currentStudentColor = -1;
@@ -177,7 +189,8 @@ public class MainSceneController implements SceneController {
                                 if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(i))
                                     currentStudentColor = i;
                             }
-                            fromEntranceToCard.add(currentStudentColor);
+                            int oldValue = fromEntranceToCard.get(currentStudentColor);
+                            fromTableToEntrance.set(currentStudentColor, oldValue+1);
                         }
                 }
 
@@ -187,16 +200,38 @@ public class MainSceneController implements SceneController {
                         mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(2) ||
                         mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(3) ||
                         mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(4)) {
+                    //if(lastThingClicked.equals("studentEntrance") ||lastThingClicked.equals("studentTable")){
+                        int oldValue;
+                        String selectedStudents;
+                        String color = null;
+                        if(studentsfromEntrance > 0){
+                            //lastThingClicked = "studentEntrance";
+                            for (int i = 0; i < 5; i++) {
+                                if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(i))
+                                    colorToSwap = i;
+                            }
+                            oldValue = fromEntranceToTable.get(colorToSwap);
+                            fromEntranceToTable.set(colorToSwap, oldValue+1);
+                            studentsfromEntrance--;
+                            if(colorToSwap == 0)
+                                color = "green";
+                            else if(colorToSwap == 1 )
+                                color = "red";
+                            else if(colorToSwap == 2)
+                                color = "yellow";
+                            else if(colorToSwap == 3)
+                                color = "pink";
+                            else if(colorToSwap == 4)
+                                color = "blue";
 
-                    lastThingClicked = "studentEntrance";
-                    for (int i = 0; i < 5; i++) {
-                        if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(i))
-                            colorToSwap = i;
-                    }
-                    fromEntranceToTable.add(colorToSwap);
-                    studentsToSwap--;
-                    actionLabel.setText("Select a student from the entrance, and then a student at the table: " + studentsToSwap + " more left");
+                            selectedStudentsEntrance = selectedStudentsEntrance+" "+color;
+                            selectedStudents = "Selected students entrance: "+selectedStudentsEntrance+", selected students table: "+selectedStudentsTable;
+                            actionLabel.setText(selectedStudents);
+
+                        }
+                    //}
                 }
+
             } else {
                 errorLabel.setText("Error, move not allowed!");
                 errorLabel.setVisible(true);
@@ -242,24 +277,40 @@ public class MainSceneController implements SceneController {
         public void handle(MouseEvent mouseEvent) {
             System.out.println("studentTable clicked");
             if (actionAllowed == 7) { //special 10
-                if (lastThingClicked.equals("studentEntrance")) {
-                    //if (studentsToSwap > 0) {
+                //if (lastThingClicked.equals("studentEntrance") || lastThingClicked.equals("studentTable")) {
+                    if (studentFromTable > 0) {
                         lastThingClicked = "studentTable";
                         ImageView student = (ImageView) mouseEvent.getSource();
+                        int oldValue;
+                        String color = null;
+                        String selectedStudents;
                         if (student.getImage().getUrl().contains(GREENSTUDENT)){
-                            fromTableToEntrance.add(0);
-                        } else if (student.getImage().getUrl().contains(REDSTUDENT)) {
-                            fromTableToEntrance.add(1);
-                        } else if (student.getImage().getUrl().contains(YELLOWSTUDENT)) {
-                            fromTableToEntrance.add(2);
-                        } else if (student.getImage().getUrl().contains(PINKSTUDENT)) {
-                            fromTableToEntrance.add(3);
-                        } else if (student.getImage().getUrl().contains(BLUESTUDENT)) {
-                            fromTableToEntrance.add(4);
-                        }
-                        System.out.println("list to send: "+fromTableToEntrance);
-                    //}
-                }
+                                oldValue = fromTableToEntrance.get(0) +1;
+                                fromTableToEntrance.set(0, oldValue+1);
+                                color = "green";
+                            } else if (student.getImage().getUrl().contains(REDSTUDENT)) {
+                                oldValue = fromTableToEntrance.get(1);
+                                fromTableToEntrance.set(1, oldValue+1);
+                                color = "red";
+                            } else if (student.getImage().getUrl().contains(YELLOWSTUDENT)) {
+                                oldValue = fromTableToEntrance.get(2);
+                                fromTableToEntrance.set(2, oldValue+1);
+                                color = "yellow";
+                            } else if (student.getImage().getUrl().contains(PINKSTUDENT)) {
+                                oldValue = fromTableToEntrance.get(3);
+                                fromTableToEntrance.set(3, oldValue+1);
+                                color = "pink";
+                            } else if (student.getImage().getUrl().contains(BLUESTUDENT)) {
+                                oldValue = fromTableToEntrance.get(4);
+                                fromTableToEntrance.set(4, oldValue+1);
+                                color = "blue";
+                            }
+                            selectedStudentsTable = selectedStudentsTable+" "+color;
+                            System.out.println("list to send: "+fromTableToEntrance);
+                            selectedStudents = "Selected students entrance: "+selectedStudentsEntrance+", selected students table: "+selectedStudentsTable;
+                            actionLabel.setText(selectedStudents);
+                    }
+                //}
             }
         }
     }
@@ -408,14 +459,18 @@ public class MainSceneController implements SceneController {
                         e.printStackTrace();
                     }
                     fromCardToEntrance.clear();
-                    fromEntranceToCard.clear();
+                    for(int i=0; i<fromEntranceToCard.size(); i++){
+                        fromEntranceToCard.set(i ,0);
+                    }
                 }
                 } else if (actionAllowed == 7) { //special 10
                     if (lastThingClicked.equalsIgnoreCase("studentTable")) {
                         try {
                             if (proxy.useSpecial(10, fromEntranceToTable, fromTableToEntrance)) {
+                                System.out.println("Scambiati: "+fromEntranceToTable+ "con "+fromTableToEntrance);
                                 gui.setConstants("SpecialUsed");
                             } else {
+                                System.out.println("errore special 10");
                                 showMoveNotAllowed();
                                 gui.specialNotAllowed();
                             }
@@ -425,8 +480,11 @@ public class MainSceneController implements SceneController {
                             e.printStackTrace();
                         }
                     }
-                    fromEntranceToTable.clear();
-                    fromTableToEntrance.clear();
+                for(int i=0; i<fromEntranceToTable.size(); i++){
+                    fromEntranceToTable.set(i, 0);
+                    fromTableToEntrance.set(i ,0);
+                }
+                System.out.println("Liste: "+fromEntranceToTable+","+fromTableToEntrance);
                 } else
                     showMoveNotAllowed();
 
@@ -639,11 +697,6 @@ public class MainSceneController implements SceneController {
                 case 3 -> character4.setImage(characterImage);
             }
         }
-
-        public void moveStudent() {
-
-        }
-
         @Override
         public void setGUI(GUI gui) {
             this.gui = gui;
@@ -666,10 +719,10 @@ public class MainSceneController implements SceneController {
             this.expertMode = expertMode;
         }
 
-        public void setUserInfo(String nickname, String character, int playerRef) {
+        /*public void setUserInfo(String nickname, String character, int playerRef) {
             nicknamesMap.put(playerRef, nickname);
             charactersMap.put(playerRef, character);
-        }
+        }*/
 
         public void setMotherPosition(int islandRef) {
             ImageView motherNature;
@@ -689,7 +742,7 @@ public class MainSceneController implements SceneController {
             String text = String.valueOf(newStudentsValue);
 
             studentImage = (ImageView) entrancesMap.get(playerRef).getChildren().get(color);
-            //studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(5); //Labels are located 5 position after images
+            //studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(color + 5); //Labels are located 5 position after images
 
             if(color == 0){
                 studentLabel = (Label) entrancesMap.get(playerRef).getChildren().get(5);
@@ -712,7 +765,6 @@ public class MainSceneController implements SceneController {
             } else {
                 studentLabel.setVisible(false);
                 studentImage.setVisible(false);
-               // entrancesMap.get(playerRef).getChildren().get(color + 5).setVisible(false);
             }
         }
 
@@ -750,20 +802,30 @@ public class MainSceneController implements SceneController {
                 student.setOnMouseClicked(studentTableClickHandler);
 
             } else {
-
-                for (int i = tablePane.getChildren().size() - 1; i >= 0; i--) {
+                Boolean ok = false;
+                for (int i = tablePane.getChildren().size() - 1; i >= 0 && !ok; i--) {
                     student = (ImageView) tablePane.getChildren().get(i);
                     String imageName = student.getImage().getUrl();
                     if (imageName.contains(GREENSTUDENT) && color == 0) {
                         tablePane.getChildren().remove(i);
+                        table.studentsNumber--;
+                        ok = true;
                     } else if (imageName.contains(REDSTUDENT) && color == 1) {
                         tablePane.getChildren().remove(i);
+                        table.studentsNumber--;
+                        ok = true;
                     } else if (imageName.contains(YELLOWSTUDENT) && color == 2) {
                         tablePane.getChildren().remove(i);
+                        table.studentsNumber--;
+                        ok = true;
                     } else if (imageName.contains(PINKSTUDENT) && color == 3) {
                         tablePane.getChildren().remove(i);
+                        table.studentsNumber--;
+                        ok = true;
                     } else if (imageName.contains(BLUESTUDENT) && color == 4) {
                         tablePane.getChildren().remove(i);
+                        table.studentsNumber--;
+                        ok = true;
                     }
                 }
             }
@@ -908,8 +970,9 @@ public class MainSceneController implements SceneController {
                 actionLabel.setVisible(true);
             } else if (actionAllowed == 7) { //special 10
                 confirmSpecialButton.setVisible(true);
-                studentsToSwap = 2; //puoi scambiare max 2 studenti
-                actionLabel.setText("Select a student from the entrance, and then a student at the table: " + studentsToSwap + " more left");
+                studentsfromEntrance = 2; //puoi scambiare max 2 studenti
+                studentFromTable = 2;
+                actionLabel.setText("Select students from the entrance and table (2 max)");
             } else if (actionAllowed == 8){
                 actionLabel.setText("Move Mother Nature on a Island! (Max movement is: " + view.getMaxStepsMotherNature() + ")");
             }
@@ -1005,10 +1068,7 @@ public class MainSceneController implements SceneController {
                 noEntryTile.setVisible(true);
             }
         } else {
-            int toRemove = oldValue - isInhibited;
-            for(int i=island.getChildren().size()-1; i>=island.getChildren().size()-1-toRemove; i--){
-                island.getChildren().remove(i);
-            }
+            island.getChildren().remove(island.getChildren().size()-1);
 
         }
 
