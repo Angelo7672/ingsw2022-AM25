@@ -98,12 +98,12 @@ public class Game implements GameManager{
             }*/
 
         //INSERISCI GLI SPECIAL CHE VUOI FARE USCIRE
-        roundStrategies.add( roundStrategyFactor.getRoundStrategy(4));
         roundStrategies.add( roundStrategyFactor.getRoundStrategy(5));
         roundStrategies.add( roundStrategyFactor.getRoundStrategy(6));
-        this.extractedSpecials.add(4);
+        roundStrategies.add( roundStrategyFactor.getRoundStrategy(7));
         this.extractedSpecials.add(5);
         this.extractedSpecials.add(6);
+        this.extractedSpecials.add(7);
     }
 
     /**
@@ -346,6 +346,13 @@ public class Game implements GameManager{
         return true;
     }
 
+    /**
+     * Method for specials that require an argument. Used by special3, special9.
+     * @param indexSpecial special reference;
+     * @param playerRef player reference;
+     * @param ref argument of the special;
+     * @return if the operation was successful;
+     */
     @Override
     public boolean useStrategySimple(int indexSpecial, int playerRef, int ref){
         if(affordSpecial(indexSpecial, playerRef)) {
@@ -356,7 +363,7 @@ public class Game implements GameManager{
     }
 
     /**
-     * Method for specials that require an argument. Used by Special3, Special5, Special9, Special11, Special12.
+     * Method for specials that require an argument. Used by Special5, Special11, Special12.
      * @param indexSpecial special reference;
      * @param playerRef player reference;
      * @param ref argument of the special;

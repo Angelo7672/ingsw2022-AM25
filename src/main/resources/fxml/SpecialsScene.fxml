@@ -288,5 +288,35 @@
       </AnchorPane>
       <Button fx:id="addButton" layoutX="161.0" layoutY="344.0" mnemonicParsing="false" onAction="#addButtonPressed" text="Add" visible="false" />
       <Label layoutX="67.0" layoutY="21.0" prefHeight="17.0" prefWidth="479.0" textAlignment="CENTER" visible="false" />
+      <ImageView fx:id="noEntryView1" fitHeight="69.0" fitWidth="76.0" layoutX="117.0" layoutY="267.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../graphics/deny_island_icon.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="noEntryView2" fitHeight="69.0" fitWidth="76.0" layoutX="278.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../graphics/deny_island_icon.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="noEntryView3" fitHeight="69.0" fitWidth="76.0" layoutX="437.0" layoutY="271.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../graphics/deny_island_icon.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="noEntry1" layoutX="105.0" layoutY="291.0" text="4" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="noEntry3" layoutX="422.0" layoutY="291.0" text="4" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="noEntry2" layoutX="265.0" layoutY="291.0" text="4" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

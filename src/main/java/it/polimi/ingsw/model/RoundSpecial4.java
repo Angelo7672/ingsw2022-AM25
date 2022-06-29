@@ -11,20 +11,9 @@ public class RoundSpecial4 extends RoundStrategy{
     }
 
     @Override
-    public boolean moveMotherNature(int queueRef, int desiredMovement, int ref) throws NotAllowedException {
-        int maxMovement;
-        boolean victory = false;
-
-        queueManager.increaseMaxMoveMotherNature(queueRef);
-        maxMovement = queueManager.readMaxMotherNatureMovement(queueRef);
-
-        if(desiredMovement > 0 && desiredMovement <= maxMovement){
-            islandsManager.moveMotherNature(desiredMovement);
-            if(islandsManager.getInhibited(islandsManager.getMotherPos())>0) islandsManager.decreaseInhibited(islandsManager.getMotherPos());
-            else victory = conquestIsland(islandsManager.getMotherPos(), -1, -1);
-        }else throw new NotAllowedException();
-
-        return victory;
+    public boolean effect(int playerRef) {
+        queueManager.increaseMaxMoveMotherNature(playerRef);
+        return true;
     }
 
     @Override

@@ -28,6 +28,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     private final String ANSI_RED = "\u001B[31m";
     private final String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
     private final Object lock;
+    private int playCount;
 
     public CLI(Socket socket, Exit proxy) throws IOException{
         this.socket = socket;
@@ -231,7 +232,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     }
 
     private void useSpecial() throws IOException, ClassNotFoundException {
-        printable.cli();
+        cli();
         String answer;
         System.out.println();
         System.out.print(SPACE + "Do you want to use a special card? [y/n] ");
@@ -268,6 +269,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                 } else turn();
             }
         }
+        else turn();
     }
 
     private boolean special(int special) throws IOException, ClassNotFoundException {
@@ -322,28 +324,35 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                     } else if (special == 7) {
                         ArrayList<Integer> entranceStudents = new ArrayList<>();
                         ArrayList<Integer> cardStudents = new ArrayList<>();
+                        for (int i = 0; i < 5; i++) {
+                            entranceStudents.add(0);
+                            cardStudents.add(0);
+                        }
                         String color;
                         for (int i = 0; i < 3; i++) {
+                            int colorNum;
                             while (true) {
                                 System.out.println();
                                 System.out.print(SPACE + "Which student on the card? ");
                                 color = readNext();
-                                if (translateColor(color) == -1) {
+                                colorNum = translateColor(color);
+                                if (colorNum == -1) {
                                     System.out.println();
                                     System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
                                 } else break;
                             }
-                            cardStudents.add(translateColor(color));
+                            cardStudents.set(colorNum, (cardStudents.get(colorNum)+1));
                             while (true) {
                                 System.out.println();
                                 System.out.print(SPACE + "Which student in the entrance? ");
                                 color = readNext();
-                                if (translateColor(color) == -1) {
+                                colorNum = translateColor(color);
+                                if (colorNum == -1) {
                                     System.out.println();
                                     System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
                                 } else break;
                             }
-                            entranceStudents.add(translateColor(color));
+                            entranceStudents.set(colorNum, (entranceStudents.get(colorNum)+1));
                             if (i < 2) {
                                 System.out.println();
                                 System.out.print(SPACE + "Do you want to move student again? [Y/N] ");
@@ -373,28 +382,35 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                     } else if (special == 10) {
                         ArrayList<Integer> entranceStudents = new ArrayList<>();
                         ArrayList<Integer> tableStudents = new ArrayList<>();
+                        for (int i = 0; i < 5; i++) {
+                            entranceStudents.add(0);
+                            tableStudents.add(0);
+                        }
                         String color;
                         for (int i = 0; i < 2; i++) {
+                            int colorNum;
                             while (true) {
                                 System.out.println();
                                 System.out.print(SPACE + "Which student on the table? ");
                                 color = readNext();
-                                if (translateColor(color) == -1) {
+                                colorNum = translateColor(color);
+                                if (colorNum == -1) {
                                     System.out.println();
                                     System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
                                 } else break;
                             }
-                            tableStudents.add(translateColor(color));
+                            tableStudents.set(colorNum, (tableStudents.get(colorNum)+1));
                             while (true) {
                                 System.out.println();
                                 System.out.print(SPACE + "Which student in the entrance? ");
                                 color = readNext();
-                                if (translateColor(color) == -1) {
+                                colorNum = translateColor(color);
+                                if (colorNum == -1) {
                                     System.out.println();
                                     System.out.println(ANSI_RED + SPACE + "Error, insert an existing color." + ANSI_RESET);
                                 } else break;
                             }
-                            entranceStudents.add(translateColor(color));
+                            entranceStudents.set(colorNum, (entranceStudents.get(colorNum)+1));
                             if (i < 1) {
                                 System.out.println();
                                 System.out.print(SPACE + "Do you want to move student again? [Y/N] ");
@@ -592,6 +608,13 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             }
     }
 
+    private void cli(){
+        if(playCount==4){
+            printable.cli();
+            playCount=0;
+        } else playCount++;
+    }
+
     @Override
     public void run() {
         try {
@@ -620,6 +643,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
 
     private void turn() throws IOException, ClassNotFoundException {
         if(!constants.isStartGame()) constants.setStartGame(true);
+        System.out.println(constants.isSpecialUsed());
         if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) {
             useSpecial();
         }

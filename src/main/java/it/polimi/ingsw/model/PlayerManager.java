@@ -363,25 +363,25 @@ public class PlayerManager  {
 
     /**
      * Check if a player has the student chosen in his entrance. Used by special7 and special10.
-     * @param student a list of student's colour to check presence in school;
+     * @param students a list of student's colour to check presence in school;
      * @param playerRef the player reference;
      * @return if the operation was successful;
      */
-    public boolean checkStudentsEntranceForSpecial(ArrayList<Integer> student, int playerRef){
-        for (Integer integer : student)
-            if (getStudentEntrance(playerRef, integer) == 0) return false;
+    public boolean checkStudentsEntranceForSpecial(ArrayList<Integer> students, int playerRef){
+        for (int i = 0; i < students.size(); i++)
+            if(students.get(i)>getStudentEntrance(playerRef, i)) return false;
         return true;
     }
 
     /**
      * Check if a player has the student chosen in his table. Used by special10.
-     * @param student a list of student's colour
+     * @param students a list of student's colour
      * @param playerRef the player reference;
      * @return if the operation was successful;
      */
-    public boolean checkStudentsTableForSpecial(ArrayList<Integer> student, int playerRef){
-        for (Integer integer : student)
-            if(getStudentTable(playerRef, integer)==0) return false;
+    public boolean checkStudentsTableForSpecial(ArrayList<Integer> students, int playerRef){
+        for (int i = 0; i < students.size(); i++)
+            if(students.get(i)>getStudentTable(playerRef, i)) return false;
         return true;
     }
 
@@ -396,7 +396,7 @@ public class PlayerManager  {
 
         private Player(Team team) {
             this.team = team;
-            this.coins = 1;
+            this.coins = 100;
             this.hand = new ArrayList<>();
             this.school = new School();
         }

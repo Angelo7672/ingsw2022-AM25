@@ -733,7 +733,7 @@ public class VirtualView
         ArrayList<String> cards;
 
         public Hand(){
-            this.coins = 1;
+            this.coins = 100;
             this.cards = new ArrayList<>();
             cards.add("LION"); cards.add("GOOSE"); cards.add("CAT"); cards.add("EAGLE"); cards.add("FOX");
             cards.add("LIZARD"); cards.add("OCTOPUS"); cards.add("DOG"); cards.add("ELEPHANT"); cards.add("TURTLE");

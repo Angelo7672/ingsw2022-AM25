@@ -63,6 +63,12 @@ public class SpecialsSceneController implements SceneController{
     @FXML private Button special3Button;
     @FXML private Label special3Cost;
     @FXML private ImageView special3View;
+    @FXML private Label noEntry1;
+    @FXML private Label noEntry2;
+    @FXML private Label noEntry3;
+    @FXML private ImageView noEntryView1;
+    @FXML private ImageView noEntryView2;
+    @FXML private ImageView noEntryView3;
 
 
     public SpecialsSceneController(){
@@ -85,6 +91,18 @@ public class SpecialsSceneController implements SceneController{
         special3View.setImage(specials.get(2));
         for (int i = 0; i < 3; i++) {
             if(specialsName.get(i)==1 || specialsName.get(i)==7 || specialsName.get(i)==11) showStudents(i);
+            else if(specialsName.get(i)==5){
+                if(i==0) {
+                    noEntry1.setVisible(true);
+                    noEntryView1.setVisible(true);
+                } else if(i==1){
+                    noEntry2.setVisible(true);
+                    noEntryView2.setVisible(true);
+                } else if(i==2){
+                    noEntry3.setVisible(true);
+                    noEntryView3.setVisible(true);
+                }
+            }
         }
         studentsChosen = new ArrayList<>();
         coinSpecial1.setVisible(false);
@@ -96,8 +114,9 @@ public class SpecialsSceneController implements SceneController{
     }
 
     public void resetScene(){
+        Stage stage = (Stage) confirmButton.getScene().getWindow();
+        stage.close();
         confirmButton.setVisible(true);
-        special1Cost.setVisible(true);
         special1View.setVisible(true);
         special1Button.setVisible(true);
         if(!special1Cost.toString().equals("0")) {
@@ -123,8 +142,6 @@ public class SpecialsSceneController implements SceneController{
         for (int i = 0; i < 3; i++) {
             if(specialsName.get(i)==1 || specialsName.get(i)==7 || specialsName.get(i)==11) showStudents(i);
         }
-        Stage stage = (Stage) confirmButton.getScene().getWindow();
-        stage.close();
     }
 
     private Image specialFactory(int name){
@@ -186,7 +203,9 @@ public class SpecialsSceneController implements SceneController{
     }
 
     public void setNoEntry(int special, int value){
-
+        if(specialsName.indexOf(special)==0) noEntry1.setText(String.valueOf(value));
+        else if(specialsName.indexOf(special)==1) noEntry2.setText(String.valueOf(value));
+        else if(specialsName.indexOf(special)==2) noEntry3.setText(String.valueOf(value));
     }
     @FXML
     public void setSpecialChosen(ActionEvent event){
@@ -216,6 +235,7 @@ public class SpecialsSceneController implements SceneController{
     @FXML
     public void confirmPressed(ActionEvent event) {
         if(specialChosen != -1 && gui.constants.isCardPlayed()){
+            errorMessage.setVisible(false);
             boolean result = false;
             try {
                 result = proxy.checkSpecial(specialChosen);
@@ -225,6 +245,8 @@ public class SpecialsSceneController implements SceneController{
                     useSpecial(specialChosen);
                 }
                 else {
+                    Stage stage = (Stage) confirmButton.getScene().getWindow();
+                    stage.close();
                     gui.setConstants("SpecialUsed");
                 }
             }

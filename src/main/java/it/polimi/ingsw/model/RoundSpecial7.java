@@ -85,9 +85,9 @@ public class RoundSpecial7 extends RoundStrategy{
             students[extracted]++;
         }
 
-        public boolean checkStudents(ArrayList<Integer> students){
-            for(int i=0; i<students.size(); i++)
-                if(getStudent(students.get(i))==0) return false;
+        public boolean checkStudents(ArrayList<Integer> cardStudents){
+            for(int i=0; i<cardStudents.size(); i++)
+                if(cardStudents.get(i)>students[i]) return false;
             return true;
         }
     }
