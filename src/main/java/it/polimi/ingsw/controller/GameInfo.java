@@ -10,6 +10,11 @@ public class GameInfo implements Serializable {
     private final int numberOfPlayer;
     private final boolean expertMode;
 
+    /**
+     * Create a GameInfo.
+     * @param numberOfPlayer number of player of this game;
+     * @param expertMode game mode;
+     */
     public GameInfo(int numberOfPlayer, boolean expertMode){
         this.numberOfPlayer = numberOfPlayer;
         this.expertMode = expertMode;

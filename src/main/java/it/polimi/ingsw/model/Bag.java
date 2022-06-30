@@ -15,6 +15,9 @@ public class Bag {
     private List<Integer> bag;
     protected BagListener bagListener;
 
+    /**
+     * Create a new empty bag.
+     */
     public Bag() { this.bag = new ArrayList<>(); }
 
     public void bagInitialize(){
@@ -75,8 +78,7 @@ public class Bag {
      * @param bag list of integer;
      */
     private void listenMyBag(List<Integer> bag){
-        ArrayList<Integer> bagTmp = new ArrayList<>();
-        bagTmp.addAll(bag);
+        ArrayList<Integer> bagTmp = new ArrayList<>(bag);
         this.bagListener.notifyBag(bagTmp); //sends a copy
     }
 }

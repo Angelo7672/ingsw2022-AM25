@@ -373,8 +373,17 @@ public class Controller implements ServerController, Match, Restore{
     public boolean isExpertMode() { return expertMode; }
     @Override
     public int getCurrentUser() { return currentUser; }
+
+    /**
+     * Set the player to take the turn now.
+     * @param currentUser current user;
+     */
     @Override
     public void setCurrentUser(int currentUser) { this.currentUser = currentUser; }
+
+    /**
+     * Go to next user.
+     */
     @Override
     public void incrCurrentUser() { currentUser++; }
 }

@@ -133,7 +133,6 @@ public class Game implements GameManager{
 
         for (String card : cards)
             hand.add(stringToAssistant(card));
-
         playerManager.restoreHandAndCoins(playerRef, hand, coins);
     }
 
@@ -191,11 +190,10 @@ public class Game implements GameManager{
         extractedSpecials.add(specialIndex);
         for(int i = 0; i < extractedSpecials.size(); i++)
             if(specialIndex == extractedSpecials.get(i)) roundStrategies.get(i+1).setCost(cost);
-
     }
 
     /**
-     *
+     * Notify the list of special in this game and their cost.
      */
     @Override
     public void specialListRestore(){ specialListener.notifySpecialList(extractedSpecials, getSpecialCost()); }
@@ -374,9 +372,8 @@ public class Game implements GameManager{
 
         if(affordSpecial(3, playerRef) && islandsManager.getIslandsSize()>islandRef && islandRef>=0) {
             for(int i = 0; i < 3; i++)
-                if (3 == extractedSpecials.get(i)) {
+                if (3 == extractedSpecials.get(i))
                     checker = roundStrategies.get(i + 1).effect(islandRef);
-                }
             findSpecial(3, playerRef);
             if(checker) throw new EndGameException();
         } else return false;
@@ -396,9 +393,8 @@ public class Game implements GameManager{
 
         if(affordSpecial(indexSpecial, playerRef)) {
             for(int i = 0; i < 3; i++)
-                if(indexSpecial == extractedSpecials.get(i)) {
+                if(indexSpecial == extractedSpecials.get(i))
                     checker = roundStrategies.get(i+1).effect(ref);
-                }
             if(checker) findSpecial(indexSpecial, playerRef);
         }
 

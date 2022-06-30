@@ -10,6 +10,12 @@ public class IslandStudentAnswer implements Answer {
     private final int color;
     private final int newValue;
 
+    /**
+     * Number of students on an island.
+     * @param islandRef island reference;
+     * @param color color reference;
+     * @param newValue number of students;
+     */
     public IslandStudentAnswer(int islandRef, int color, int newValue) {
         this.islandRef = islandRef;
         this.color = color;

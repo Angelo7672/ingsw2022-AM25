@@ -12,7 +12,7 @@ public class RoundController extends Thread{
     private final int numberOfPlayers;
     private boolean endCard;
     private boolean endBag;
-    private boolean jumpToActionPhase;
+    private boolean jumpToActionPhase;  //indicates if is true, in a restored game, we start from action phase
     private boolean restoreGame;
     private final Match controller;
 

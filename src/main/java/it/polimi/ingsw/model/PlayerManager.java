@@ -307,15 +307,32 @@ public class PlayerManager  {
         this.studentsListener.notifyStudentsChange(1, playerRef,colour, getStudentTable(playerRef, colour));
     }
 
+    /**
+     * Set true a professor of a player.
+     * @param playerRef player reference;
+     * @param colour professor's colour;
+     */
     private void setProfessor(int playerRef, int colour){
         players.get(playerRef).school.setProfessor(colour);
         this.professorsListener.notifyProfessors(playerRef, colour,getProfessor(playerRef, colour));
     }
+
+    /**
+     * Set false a professor of a player.
+     * @param playerRef player reference;
+     * @param colour professor's colour;
+     */
     private void removeProfessor(int playerRef, int colour){
         players.get(playerRef).school.removeProfessor(colour);
         this.professorsListener.notifyProfessors(playerRef, colour,getProfessor(playerRef, colour));
     }
     private boolean getProfessor(int playerRef, int colour){ return players.get(playerRef).school.getProfessor(colour); }
+
+    /**
+     * Return the owner of a professor.
+     * @param color color reference;
+     * @return the owner of a professor.
+     */
     public int getProfessorPropriety(int color) { return professorPropriety[color]; }
 
     /**
@@ -353,6 +370,11 @@ public class PlayerManager  {
 
     public Team getTeam(int playerRef){ return players.get(playerRef).getTeam(); }
 
+    /**
+     * Remove a number of coins.
+     * @param playerRef player reference;
+     * @param cost to remove from coins;
+     */
     public void removeCoin(int playerRef, int cost){
         players.get(playerRef).removeCoin(cost);
         this.coinsListener.notifyNewCoinsValue(playerRef,getCoins(playerRef));
@@ -367,8 +389,8 @@ public class PlayerManager  {
      */
     public boolean checkStudentsEntranceForSpecial(ArrayList<Integer> students, int playerRef){
         int[] tempStudent = {0,0,0,0,0};
-        for (int i = 0; i < students.size(); i++)
-            tempStudent[students.get(i)]++;
+        for (Integer student : students)
+            tempStudent[student]++;
         for (int i = 0; i < students.size(); i++)
             if (tempStudent[i] > getStudentEntrance(playerRef, i)) return false;
         return true;
@@ -382,12 +404,10 @@ public class PlayerManager  {
      */
     public boolean checkStudentsTableForSpecial(ArrayList<Integer> students, int playerRef){
         int[] tempStudent = {0,0,0,0,0};
-        for (int i = 0; i < students.size(); i++) {
-            tempStudent[students.get(i)]++;
-        }
-        for (int i = 0; i < students.size(); i++){
+        for (Integer student : students)
+            tempStudent[student]++;
+        for (int i = 0; i < students.size(); i++)
             if(tempStudent[i]>getStudentTable(playerRef, i)) return false;
-        }
         return true;
     }
 
@@ -400,6 +420,10 @@ public class PlayerManager  {
         private List<Assistant> hand;
         private final School school;
 
+        /**
+         * Create a player of a Team.
+         * @param team of the player;
+         */
         private Player(Team team) {
             this.team = team;
             this.coins = 1;
@@ -407,6 +431,9 @@ public class PlayerManager  {
             this.school = new School();
         }
 
+        /**
+         * Initialize hand with 10 assistants
+         */
         private void initializeHand(){
             hand.add(Assistant.LION); hand.add(Assistant.GOOSE); hand.add(Assistant.CAT); hand.add(Assistant.EAGLE); hand.add(Assistant.FOX);
             hand.add(Assistant.LIZARD); hand.add(Assistant.OCTOPUS); hand.add(Assistant.DOG); hand.add(Assistant.ELEPHANT); hand.add(Assistant.TURTLE);
@@ -437,6 +464,11 @@ public class PlayerManager  {
             }
             return false;
         }
+
+        /**
+         * Remove a number of coins.
+         * @param cost to remove from coins;
+         */
         private void removeCoin(int cost) { coins-=cost; }
 
         /**
@@ -457,21 +489,50 @@ public class PlayerManager  {
                 this.studentsTable = new int[]{0, 0, 0, 0, 0};
             }
 
+            /**
+             * Set true a professor.
+             * @param colour professor's colour;
+             */
             private void setProfessor(int colour) { professors[colour] = true; }
+
+            /**
+             * Set false a professor.
+             * @param colour professor's colour;
+             */
             private void removeProfessor(int colour) { professors[colour] = false; }
             private boolean getProfessor(int colour){ return professors[colour]; }
 
+            /**
+             * Add a student to entrance.
+             * @param colour student's colour;
+             */
             private void setStudentEntrance(int colour) { studentEntrance[colour]++; }  //the exception is not needed because it is not the player who decides how many students to put
+
+            /**
+             * Remove a student from entrance.
+             * @param colour student's colour;
+             * @throws NotAllowedException if this student is not present in the entrance.
+             */
             private void removeStudentEntrance(int colour) throws NotAllowedException {
                 if (studentEntrance[colour] > 0) studentEntrance[colour]--;
                 else throw new NotAllowedException();
             }
             private int getStudentEntrance(int colour){ return studentEntrance[colour]; }
 
+            /**
+             * Add a student to the table.
+             * @param colour student's colour;
+             * @throws NotAllowedException if the table is full.
+             */
             private void setStudentTable(int colour) throws NotAllowedException{
                 if (checkStudentTablePlus(colour)) studentsTable[colour]++;
                 else throw new NotAllowedException();
             }
+
+            /**
+             * Remove a student from table.
+             * @param colour student's colour;
+             */
             private void removeStudentTable(int colour) { //for special character
                 if (checkStudentTableMinus(colour)) studentsTable[colour]--;
             }
@@ -491,7 +552,16 @@ public class PlayerManager  {
             private boolean checkStudentTableMinus(int colour) { return studentsTable[colour] != 0; }
             private int getStudentTable(int colour) { return studentsTable[colour]; }
 
+            /**
+             * Place a number of tower in school.
+             * @param number towers to place;
+             */
             private void placeTower(int number) { towers+=number; }
+
+            /**
+             * Remove a number of tower in school.
+             * @param number towers to remove;
+             */
             private void removeTower(int number) { towers-=number ; }
             private int getTowers() { return towers; }
 

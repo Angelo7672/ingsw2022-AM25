@@ -10,6 +10,12 @@ public class InfoSpecial1or7or11Answer implements Answer {
     private final int value;
     private final int specialIndex;
 
+    /**
+     * Info about students on special1, special7 and special11.
+     * @param specialIndex special index;
+     * @param studentColor color of students;
+     * @param value number of students;
+     */
     public InfoSpecial1or7or11Answer(int specialIndex, int studentColor, int value) {
         this.specialIndex = specialIndex;
         this.studentColor = studentColor;

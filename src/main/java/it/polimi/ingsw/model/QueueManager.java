@@ -121,7 +121,18 @@ public class QueueManager {
         }
     }
 
+    /**
+     * Read queue in planning phase or in action phase.
+     * @param queueRef queue reference;
+     * @return playerRef in this queue reference.
+     */
     public int readQueue(int queueRef){ return queue.get(queueRef).getPlayerRef(); }
+
+    /**
+     * Read max movement that mother nature can do in this turn.
+     * @param queueRef queue reference;
+     * @return max movement of mother nature.
+     */
     public int readMaxMotherNatureMovement(int queueRef){ return queue.get(queueRef).getMaxMoveMotherNature(); }
 
     /**
@@ -133,6 +144,12 @@ public class QueueManager {
         private Integer valueCard;
         private int maxMoveMotherNature;
 
+        /**
+         * Create an element of Queue.
+         * @param playerRef playerReference in this element of Queue
+         * @param valueCard played from this playerRef;
+         * @param maxMoveMotherNature that playerRef can do in this turn;
+         */
         private Queue(int playerRef, Integer valueCard, int maxMoveMotherNature) {
             this.playerRef = playerRef;
             this.valueCard = valueCard;
@@ -144,6 +161,10 @@ public class QueueManager {
         private int getMaxMoveMotherNature() { return maxMoveMotherNature; }
         private void setValueCard(Integer valueCard) { this.valueCard = valueCard; }
         private void setMaxMoveMotherNature(int maxMoveMotherNature) { this.maxMoveMotherNature = maxMoveMotherNature; }
+
+        /**
+         * Increase by 2 the max movement of mother nature. Used by special4.
+         */
         private void increaseMaxMoveMotherNature(){ this.maxMoveMotherNature += 2; }
 
         /**

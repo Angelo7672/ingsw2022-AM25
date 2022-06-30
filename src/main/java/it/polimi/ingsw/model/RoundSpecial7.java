@@ -61,7 +61,7 @@ public class RoundSpecial7 extends RoundStrategy{
     private class Special7 extends Special {
         int[] students = {0,0,0,0,0};
 
-        public Special7(){ super(1, "special7"); }
+        public Special7(){ super(1); }
 
         public void setup(int[] color){
             for(int i=0; i<5;i++){

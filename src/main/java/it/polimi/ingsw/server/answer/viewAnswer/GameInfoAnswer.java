@@ -9,6 +9,11 @@ public class GameInfoAnswer implements Answer {
     private final int numberOfPlayers;
     private final boolean isExpertMode;
 
+    /**
+     * Game settings.
+     * @param numberOfPlayers in this game;
+     * @param isExpertMode game mode;
+     */
     public GameInfoAnswer(int numberOfPlayers, boolean isExpertMode) {
         this.numberOfPlayers = numberOfPlayers;
         this.isExpertMode = isExpertMode;

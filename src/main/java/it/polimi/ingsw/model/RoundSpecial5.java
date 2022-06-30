@@ -61,7 +61,7 @@ public class RoundSpecial5 extends RoundStrategy{
         private int noEntry;
 
         public Special5(){
-            super(2, "special5");
+            super(2);
         }
 
         private void initializeSpecial(){ noEntry = 4; }

@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 public abstract class Special {
     private int cost;
 
-    public Special(int cost, String name){
+    public Special(int cost){
         this.cost = cost;
     }
 

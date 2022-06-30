@@ -29,7 +29,7 @@ public class RoundSpecial4 extends RoundStrategy{
 
     private class Special4 extends Special {
         public Special4(){
-            super(1, "special4");
+            super(1);
         }
     }
 }

@@ -37,7 +37,7 @@ public class RoundSpecial12 extends RoundStrategy{
     public void increaseCost(){ special.increaseCost(); }
     private class Special12 extends Special {
         public Special12(){
-            super(3, "special12");
+            super(3);
         }
     }
 }

@@ -68,7 +68,7 @@ public class RoundSpecial6 extends RoundStrategy{
 
     private class Special6 extends Special {
         public Special6(){
-            super(3, "special6");
+            super(3);
         }
     }
 }

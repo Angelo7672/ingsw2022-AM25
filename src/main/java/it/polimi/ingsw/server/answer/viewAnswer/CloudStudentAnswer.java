@@ -10,6 +10,12 @@ public class CloudStudentAnswer implements Answer {
     private final int color;
     private final int newValue;
 
+    /**
+     * Represent a cloud.
+     * @param cloudRef cloud reference;
+     * @param color color reference;
+     * @param newValue of students.
+     */
     public CloudStudentAnswer(int cloudRef, int color, int newValue) {
         this.cloudRef = cloudRef;
         this.color = color;

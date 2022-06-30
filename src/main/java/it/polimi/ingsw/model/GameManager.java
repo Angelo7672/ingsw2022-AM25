@@ -62,7 +62,7 @@ public interface GameManager {
     void inOrderForActionPhase();
 
     /**
-     * @see
+     * @see Game
      */
     boolean useStrategySimple(int indexSpecial, int playerRef, int ref);
 

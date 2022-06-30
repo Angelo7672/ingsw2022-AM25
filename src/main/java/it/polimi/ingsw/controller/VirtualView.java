@@ -631,6 +631,11 @@ public class VirtualView
         private final int[] colorForSpecial1or7or11;
         private int noEntryCards;
 
+        /**
+         * Create a Special.
+         * @param indexSpecial special index;
+         * @param cost cost of this special;
+         */
         public Special(int indexSpecial, int cost) {
             this.indexSpecial = indexSpecial;
             this.cost = cost;
@@ -638,11 +643,25 @@ public class VirtualView
             this.noEntryCards = 4;  //initialized at 4, but only special5 use it
         }
 
+        /**
+         * Increase by one the cost of the special.
+         */
         public void incSpecialCost(){ cost++; }
         public int getIndexSpecial() { return indexSpecial; }
         public int getCost() { return cost; }
+
+        /**
+         * Set students on special1, special7 and special11.
+         * @param color of the students;
+         * @param value number of the students;
+         */
         public void setColorForSpecial1or7or11(int color, int value){ colorForSpecial1or7or11[color] = value; }
         public int[] getColorForSpecial1or7or11() { return colorForSpecial1or7or11; }
+
+        /**
+         * Set noEntryCards on special5.
+         * @param numCards number of noEntryCards;
+         */
         public void setNoEntryCards(int numCards){ noEntryCards = numCards; }
         public int getNoEntryCards() { return noEntryCards; }
     }
@@ -652,7 +671,7 @@ public class VirtualView
      */
     private static class SchoolBoard implements Serializable{
         private final String nickname;
-        private boolean alreadyConnected;
+        private boolean alreadyConnected;   //needed for restore
         private final String character;
         private int team; //0: white, 1: black, 2:grey
         private final int[] studentsEntrance;
@@ -660,6 +679,11 @@ public class VirtualView
         private int towersNumber;
         private final boolean[] professors;
 
+        /**
+         * Create a player's school;
+         * @param nickname nickname of the player;
+         * @param character character of the player;
+         */
         public SchoolBoard(String nickname, String character){
             this.nickname = nickname;
             this.alreadyConnected = false;
@@ -668,12 +692,31 @@ public class VirtualView
             this.studentsTable  = new int[]{0, 0, 0, 0, 0};
             this.professors = new boolean[]{false, false, false, false, false};
         }
-        
+
+        /**
+         * @see it.polimi.ingsw.model.PlayerManager
+         */
         public void setStudentsEntrance(int color, int newValue){ this.studentsEntrance[color] = newValue; }
+
+        /**
+         * @see it.polimi.ingsw.model.PlayerManager
+         */
         public void setStudentsTable(int color, int newValue) { this.studentsTable[color] = newValue; }
+
+        /**
+         * @see it.polimi.ingsw.model.PlayerManager
+         */
         public void setTowersNumber(int towersNumber) { this.towersNumber = towersNumber; }
+
+        /**
+         * @see it.polimi.ingsw.model.PlayerManager
+         */
         public void setProfessors(int color, boolean newValue) { this.professors[color] = newValue; }
         public void setTeam(int team) { this.team = team; }
+
+        /**
+         * During restore, when this player connecting set true this attribute, so none can log in again with this nickname.
+         */
         public void setAlreadyConnected() { this.alreadyConnected = true; }
         public boolean getAlreadyConnected() { return alreadyConnected; }
         public String getNickname() { return nickname; }
@@ -700,6 +743,9 @@ public class VirtualView
         private int isInhibited;
         private boolean isMotherPosition;
 
+        /**
+         * Create an island.
+         */
         public Island() {
             this.studentsIsland = new int[]{0,0,0,0,0};
             this.towersNumber = 1;
@@ -708,11 +754,34 @@ public class VirtualView
             this.isMotherPosition = false;
         }
 
+        /**
+         * @see it.polimi.ingsw.model.IslandsManager
+         */
         public void setTowersNumber(int towersNumber) { this.towersNumber = towersNumber; }
+
+        /**
+         * @see it.polimi.ingsw.model.IslandsManager
+         */
         public void setStudentsIsland(int color, int newValue) { this.studentsIsland[color] = newValue; }
+
+        /**
+         * @see it.polimi.ingsw.model.IslandsManager
+         */
         public void setTowersColor(int newColor){ this.towersColor = newColor; }
+
+        /**
+         * @see it.polimi.ingsw.model.IslandsManager
+         */
         public void setInhibited(int isInhibited) { this.isInhibited = isInhibited; }
+
+        /**
+         * Set this attribute true if mother nature is on this island.
+         */
         public void setMotherPosition() { this.isMotherPosition = true; }
+
+        /**
+         * Remove mother nature from this island.
+         */
         public void removeMotherNature(){ this.isMotherPosition = false; }
         public boolean isMotherPosition() { return isMotherPosition; }
         public int[] getStudentsIsland() { return studentsIsland; }
@@ -746,6 +815,9 @@ public class VirtualView
         String lastPlayedCard;
         ArrayList<String> cards;
 
+        /**
+         * Create a new initialized Hand.
+         */
         public Hand(){
             this.coins = 1;
             this.cards = new ArrayList<>();
@@ -753,11 +825,25 @@ public class VirtualView
             cards.add("LIZARD"); cards.add("OCTOPUS"); cards.add("DOG"); cards.add("ELEPHANT"); cards.add("TURTLE");
         }
 
+        /**
+         * Set a new number of coins.
+         * @param coins coins value;
+         */
         public void setCoins(int coins) { this.coins = coins; }
+
+        /**
+         * Set last card played from player.
+         * @param lastPlayedCard last card played;
+         */
         public void setLastCard(String lastPlayedCard) { this.lastPlayedCard = lastPlayedCard; }
         public int getCoins() { return coins; }
         public String getLastPlayedCard() { return lastPlayedCard; }
         public ArrayList<String> getCards() { return cards; }
+
+        /**
+         * Set cards after restore.
+         * @param cards cards of the player.
+         */
         public void setCards(ArrayList<String> cards) { this.cards = cards;}
     }
 
@@ -770,8 +856,19 @@ public class VirtualView
         private int valueCard;
         private int maxMoveMotherNature;
 
+        /**
+         * @see it.polimi.ingsw.model.QueueManager
+         */
         public void setPlayerRef(int playerRef) { this.playerRef = playerRef; }
+
+        /**
+         * @see it.polimi.ingsw.model.QueueManager
+         */
         public void setValueCard(int valueCard) { this.valueCard = valueCard; }
+
+        /**
+         * @see it.polimi.ingsw.model.QueueManager
+         */
         public void setMaxMoveMotherNature(int maxMoveMotherNature) { this.maxMoveMotherNature = maxMoveMotherNature; }
         public int getPlayerRef() { return playerRef; }
         public int getValueCard() { return valueCard; }

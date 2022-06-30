@@ -60,7 +60,7 @@ public class RoundSpecial8 extends RoundStrategy{
     }
     private class Special8 extends Special {
         public Special8(){
-            super(2, "special8");
+            super(2);
         }
     }
 }
