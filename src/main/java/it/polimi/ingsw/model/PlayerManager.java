@@ -367,12 +367,10 @@ public class PlayerManager  {
      */
     public boolean checkStudentsEntranceForSpecial(ArrayList<Integer> students, int playerRef){
         int[] tempStudent = {0,0,0,0,0};
-        for (int i = 0; i < students.size(); i++) {
+        for (int i = 0; i < students.size(); i++)
             tempStudent[students.get(i)]++;
-        }
-        for (int i = 0; i < students.size(); i++) {
+        for (int i = 0; i < students.size(); i++)
             if (tempStudent[i] > getStudentEntrance(playerRef, i)) return false;
-        }
         return true;
     }
 

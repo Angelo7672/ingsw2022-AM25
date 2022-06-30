@@ -10,7 +10,9 @@ import it.polimi.ingsw.server.expertmode.ExpertGame;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Server creates the server, comunicate with controller and send to it data received from clients. It also comunicate with the proxy and send to it data elaborated by controller.
@@ -425,8 +427,18 @@ public class Server implements Entrance,ControllerServer{
      * Ask the port for server and then star server.
      */
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int port;
+
         System.out.println("Eriantys Server | Welcome!");
-        //todo: chiedere all'utente di inserire la porta
-        new Server(2525);
+        System.out.print("Insert server port: ");
+
+        try{
+            port = scanner.nextInt();
+            new Server(port);
+        }catch (InputMismatchException inputMismatchException){
+            System.err.println("Error, try inserting a valid port");
+            System.exit(-1);
+        }
     }
 }

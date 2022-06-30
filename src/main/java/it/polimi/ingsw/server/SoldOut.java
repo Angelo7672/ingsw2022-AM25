@@ -3,7 +3,6 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.server.answer.SoldOutAnswer;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -45,17 +44,16 @@ public class SoldOut extends Thread{
         public void run() {
             try {
                 ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-                //ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
                 output.reset();
                 output.writeObject(new SoldOutAnswer());
+                System.err.println("A client tried to connect, but there were no connections available!");
                 output.flush();
                 //this.socket.setSoTimeout(5000); //in any case, close the socket after 4 seconds
+                //TODO: final check
                 this.wait(5000);
-                //input.readObject(); //when receives reply from client close socket
                 socket.close();
-                System.err.println("A client tried to connect, but there were no connections available!");
             } catch (SocketException socketException){ System.err.println("A client tried to connect, but there were no connections available!");
-            } catch (IOException | InterruptedException /*| ClassNotFoundException*/ e) { e.printStackTrace(); }
+            } catch (IOException | InterruptedException e) { e.printStackTrace(); }
         }
     }
 }
