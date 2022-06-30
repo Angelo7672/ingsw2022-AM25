@@ -34,7 +34,7 @@ public class MainSceneController implements SceneController {
     private int cardStudent; //special 1 - studente che prendo dalla carta, lo setta la gui
     private int colorToSwap; //special 10, colore studente da scambiare
     private int studentsfromEntrance; //special 10, numero studenti scambiabili tra ingresso e tavolo
-    private  int studentFromTable; // special 10, numero studenti scambiabili tra tavolo e ingresso
+    private int studentFromTable; // special 10, numero studenti scambiabili tra tavolo e ingresso
     private String selectedStudentsEntrance;
     private String selectedStudentsTable;
     private String selectedStudentSpecial7;
@@ -78,35 +78,64 @@ public class MainSceneController implements SceneController {
     private final String GREYTOWER = "/graphics/wooden_pieces/grey_tower.png";
     private final String NOENTRY = "/graphics/deny_island_icon.png";
 
-    @FXML private Button useSpecialButton;
-    @FXML private AnchorPane islandsPane;
-    @FXML private AnchorPane school1;
-    @FXML private AnchorPane school2;
-    @FXML private AnchorPane school3;
-    @FXML private AnchorPane school4;
-    @FXML private AnchorPane userInfo1;
-    @FXML private AnchorPane userInfo2;
-    @FXML private AnchorPane userInfo3;
-    @FXML private AnchorPane userInfo4;
-    @FXML private ImageView character1;
-    @FXML private ImageView character2;
-    @FXML private ImageView character3;
-    @FXML private ImageView character4;
-    @FXML private HBox player1Box;
-    @FXML private HBox player2Box;
-    @FXML private VBox player3Box;
-    @FXML private VBox player4Box;
-    @FXML private AnchorPane cardPane1;
-    @FXML private AnchorPane cardPane2;
-    @FXML private AnchorPane cardPane3;
-    @FXML private AnchorPane cardPane4;
-    @FXML private Label actionLabel;
-    @FXML private Label turnLabel;
-    @FXML private Label errorLabel;
-    @FXML private Button showCardsButton;
-    @FXML private Button showCloudsButton;
-    @FXML private Button confirmSpecialButton;
-    @FXML private Label specialLabel;
+    @FXML
+    private Button useSpecialButton;
+    @FXML
+    private AnchorPane islandsPane;
+    @FXML
+    private AnchorPane school1;
+    @FXML
+    private AnchorPane school2;
+    @FXML
+    private AnchorPane school3;
+    @FXML
+    private AnchorPane school4;
+    @FXML
+    private AnchorPane userInfo1;
+    @FXML
+    private AnchorPane userInfo2;
+    @FXML
+    private AnchorPane userInfo3;
+    @FXML
+    private AnchorPane userInfo4;
+    @FXML
+    private ImageView character1;
+    @FXML
+    private ImageView character2;
+    @FXML
+    private ImageView character3;
+    @FXML
+    private ImageView character4;
+    @FXML
+    private HBox player1Box;
+    @FXML
+    private HBox player2Box;
+    @FXML
+    private VBox player3Box;
+    @FXML
+    private VBox player4Box;
+    @FXML
+    private AnchorPane cardPane1;
+    @FXML
+    private AnchorPane cardPane2;
+    @FXML
+    private AnchorPane cardPane3;
+    @FXML
+    private AnchorPane cardPane4;
+    @FXML
+    private Label actionLabel;
+    @FXML
+    private Label turnLabel;
+    @FXML
+    private Label errorLabel;
+    @FXML
+    private Button showCardsButton;
+    @FXML
+    private Button showCloudsButton;
+    @FXML
+    private Button confirmSpecialButton;
+    @FXML
+    private Label specialLabel;
 
     public MainSceneController() {
         this.nicknamesMap = new HashMap<>();
@@ -168,33 +197,33 @@ public class MainSceneController implements SceneController {
                     errorLabel.setText("Error, move not allowed!");
                     errorLabel.setVisible(true);
                 }
-            } else if(actionAllowed == 6) { //special 7
+            } else if (actionAllowed == 6) { //special 7
                 String color = "";
                 if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(0) ||
-                    mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(1) ||
-                    mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(2) ||
-                    mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(3) ||
-                    mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(4)) {
-                        if(studentsToExchange>0){
-                            lastThingClicked = "studentToExchange";
-                            for (int i = 0; i < 5; i++) {
-                                if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(i))
-                                    currentStudentColor = i;
-                            }
-                            if(currentStudentColor == 0)
-                                color = "green";
-                            else if(currentStudentColor == 1)
-                                color = "red";
-                            else if (currentStudentColor == 2)
-                                color = "yellow";
-                            else if (currentStudentColor == 3)
-                                color = "pink";
-                            else if (currentStudentColor == 4)
-                                color = "blue";
-                            selectedStudentSpecial7 = selectedStudentSpecial7+" "+color;
-                            fromEntranceToCard.add(currentStudentColor);
-                            actionLabel.setText("Selected students: "+selectedStudentSpecial7);
+                        mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(1) ||
+                        mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(2) ||
+                        mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(3) ||
+                        mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(4)) {
+                    if (studentsToExchange > 0) {
+                        //lastThingClicked = "studentToExchange";
+                        for (int i = 0; i < 5; i++) {
+                            if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(i))
+                                currentStudentColor = i;
                         }
+                        if (currentStudentColor == 0)
+                            color = "Green";
+                        else if (currentStudentColor == 1)
+                            color = "Red";
+                        else if (currentStudentColor == 2)
+                            color = "Yellow";
+                        else if (currentStudentColor == 3)
+                            color = "Pink";
+                        else if (currentStudentColor == 4)
+                            color = "Blue";
+                        selectedStudentSpecial7 = selectedStudentSpecial7 + " " + color;
+                        fromEntranceToCard.add(currentStudentColor);
+                        actionLabel.setText("Selected students: " + selectedStudentSpecial7);
+                    }
                 }
 
             } else if (actionAllowed == 7) { //special 10 che scambia ingresso e tavolo
@@ -204,28 +233,28 @@ public class MainSceneController implements SceneController {
                         mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(3) ||
                         mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(4)) {
                     //if(lastThingClicked.equals("studentEntrance") ||lastThingClicked.equals("studentTable")){
-                        String color = null;
-                        if(studentsfromEntrance > 0){
-                            for (int i = 0; i < 5; i++) {
-                                if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(i))
-                                    colorToSwap = i;
-                            }
-                            fromEntranceToTable.add(colorToSwap);
-                            studentsfromEntrance--;
-                            if(colorToSwap == 0)
-                                color = "Green";
-                            else if(colorToSwap == 1 )
-                                color = "Red";
-                            else if(colorToSwap == 2)
-                                color = "Yellow";
-                            else if(colorToSwap == 3)
-                                color = "Pink";
-                            else if(colorToSwap == 4)
-                                color = "Blue";
-                            selectedStudentsEntrance = selectedStudentsEntrance+" "+color;
-                            selectedStudents = "Selected students entrance: "+selectedStudentsEntrance+", selected students table: "+selectedStudentsTable;
-                            actionLabel.setText(selectedStudents);
+                    String color = null;
+                    if (studentsfromEntrance > 0) {
+                        for (int i = 0; i < 5; i++) {
+                            if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(i))
+                                colorToSwap = i;
                         }
+                        fromEntranceToTable.add(colorToSwap);
+                        studentsfromEntrance--;
+                        if (colorToSwap == 0)
+                            color = "Green";
+                        else if (colorToSwap == 1)
+                            color = "Red";
+                        else if (colorToSwap == 2)
+                            color = "Yellow";
+                        else if (colorToSwap == 3)
+                            color = "Pink";
+                        else if (colorToSwap == 4)
+                            color = "Blue";
+                        selectedStudentsEntrance = selectedStudentsEntrance + " " + color;
+                        selectedStudents = "Selected students entrance: " + selectedStudentsEntrance + ", selected students table: " + selectedStudentsTable;
+                        actionLabel.setText(selectedStudents);
+                    }
                 }
 
             } else {
@@ -258,7 +287,7 @@ public class MainSceneController implements SceneController {
                         e.printStackTrace();
                     }
                 }
-            } else if (actionAllowed == 7){
+            } else if (actionAllowed == 7) {
                 errorLabel.setText("");
             } else
                 showMoveNotAllowed();
@@ -268,210 +297,199 @@ public class MainSceneController implements SceneController {
     private class StudentTableClickHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent mouseEvent) {
-            System.out.println("studentTable clicked");
             if (actionAllowed == 7) { //special 10
                 if (studentFromTable > 0) {
-                    lastThingClicked = "studentTable";
+                    //lastThingClicked = "studentTable";
                     ImageView student = (ImageView) mouseEvent.getSource();
                     String color = null;
                     String selectedStudents;
-                    if (student.getImage().getUrl().contains(GREENSTUDENT)){
-                            fromTableToEntrance.add(0);
-                            color = "Green";
-                        } else if (student.getImage().getUrl().contains(REDSTUDENT)) {
-                            fromTableToEntrance.add(1);
-                            color = "Red";
-                        } else if (student.getImage().getUrl().contains(YELLOWSTUDENT)) {
-                            fromTableToEntrance.add(2);
-                            color = "Yellow";
-                        } else if (student.getImage().getUrl().contains(PINKSTUDENT)) {
-                            fromTableToEntrance.add(3);
-                            color = "Pink";
-                        } else if (student.getImage().getUrl().contains(BLUESTUDENT)) {
-                            fromTableToEntrance.add(4);
-                            color = "Blue";
-                        }
-                        selectedStudentsTable = selectedStudentsTable+" "+color;
-                        selectedStudents = "Selected students entrance: "+selectedStudentsEntrance+", selected students table: "+selectedStudentsTable;
-                        actionLabel.setText(selectedStudents);
+                    if (student.getImage().getUrl().contains(GREENSTUDENT)) {
+                        fromTableToEntrance.add(0);
+                        color = "Green";
+                    } else if (student.getImage().getUrl().contains(REDSTUDENT)) {
+                        fromTableToEntrance.add(1);
+                        color = "Red";
+                    } else if (student.getImage().getUrl().contains(YELLOWSTUDENT)) {
+                        fromTableToEntrance.add(2);
+                        color = "Yellow";
+                    } else if (student.getImage().getUrl().contains(PINKSTUDENT)) {
+                        fromTableToEntrance.add(3);
+                        color = "Pink";
+                    } else if (student.getImage().getUrl().contains(BLUESTUDENT)) {
+                        fromTableToEntrance.add(4);
+                        color = "Blue";
+                    }
+                    selectedStudentsTable = selectedStudentsTable + " " + color;
+                    selectedStudents = "Selected students entrance: " + selectedStudentsEntrance + ", selected students table: " + selectedStudentsTable;
+                    actionLabel.setText(selectedStudents);
                 }
             }
         }
     }
 
-        private class IslandClickHandler implements EventHandler<MouseEvent> {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                int islandRef = 0;
-                if (actionAllowed == 0) {
-                    if (lastThingClicked.equals("student")) {
-                        lastThingClicked = "island";
-                        for (int i = 0; i < islandsList.size(); i++) {
-                            if ((mouseEvent.getSource() == islandsList.get(i))) {
-                                islandRef = i;
-                            }
+    private class IslandClickHandler implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            int islandRef = 0;
+            if (actionAllowed == 0) {
+                if (lastThingClicked.equalsIgnoreCase("student")) {
+                    lastThingClicked = "island";
+                    for (int i = 0; i < islandsList.size(); i++) {
+                        if ((mouseEvent.getSource() == islandsList.get(i))) {
+                            islandRef = i;
                         }
-                        try {
-                            String result = proxy.moveStudent(currentStudentColor, "island", islandRef);
-                            if (result.equalsIgnoreCase("ok")) {
-                                errorLabel.setVisible(false);
-                            } else if (result.equalsIgnoreCase("transfer complete")) {
-                                gui.setConstants("StudentsMoved");
-                                setActionAllowed(1);
-                            } else {
-                                errorLabel.setText("Error, move not allowed!");
-                                errorLabel.setVisible(true);
-                            }
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
+                    }
+                    try {
+                        String result = proxy.moveStudent(currentStudentColor, "island", islandRef);
+                        if (result.equalsIgnoreCase("ok")) {
+                            errorLabel.setVisible(false);
+                        } else if (result.equalsIgnoreCase("transfer complete")) {
+                            gui.setConstants("StudentsMoved");
+                            setActionAllowed(1);
+                        } else {
+                            errorLabel.setText("Error, move not allowed!");
+                            errorLabel.setVisible(true);
                         }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    errorLabel.setText("Error, move not allowed!");
+                    errorLabel.setVisible(true);
+                }
+            } else if (actionAllowed == 1) {
+                int motherMovement = 0;
+                int currentMotherPos = view.getMotherPosition();
+                for (int i = 0; i < islandsList.size(); i++) {
+                    if ((mouseEvent.getSource() == islandsList.get(i))) {
+                        islandRef = i;
+                    }
+                    if (currentMotherPos < islandRef) {
+                        motherMovement = islandRef - currentMotherPos;
+                    } else {
+                        motherMovement = islandsList.size() - currentMotherPos + islandRef;
+                    }
+                }
+                try {
+                    String result = proxy.moveMotherNature(motherMovement);
+                    if (result.equalsIgnoreCase("ok")) {
+                        gui.setConstants("MovedMother");
+                        errorLabel.setVisible(false);
+                        actionLabel.setText("");
+                        setActionAllowed(2);
                     } else {
                         errorLabel.setText("Error, move not allowed!");
                         errorLabel.setVisible(true);
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else if (actionAllowed == 3) { //special 1
+                for (int i = 0; i < islandsList.size(); i++) {
+                    if ((mouseEvent.getSource() == islandsList.get(i))) {
+                        islandRef = i;
+                    }
+                }
+                try {
+                    if (proxy.useSpecial(1, cardStudent, islandRef)) {
+                        gui.setConstants("SpecialUsed");
+                        specialLabel.setVisible(false);
+                    } else {
+                        showMoveNotAllowed();
+                        gui.specialNotAllowed();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (actionAllowed == 4) { //Special 3
+                for (int i = 0; i < islandsList.size(); i++) {
+                    if ((mouseEvent.getSource() == islandsList.get(i))) {
+                        islandRef = i;
+                    }
+                }
+                try {
+                    if (proxy.useSpecial(3, islandRef)) {
+                        gui.setConstants("SpecialUsed");
+                        specialLabel.setVisible(false);
+                    } else {
+                        errorLabel.setText("Error, move not allowed!");
+                        errorLabel.setVisible(true);
+                        gui.specialNotAllowed();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (actionAllowed == 5) { //special 5
+                for (int i = 0; i < islandsList.size(); i++) {
+                    if ((mouseEvent.getSource() == islandsList.get(i))) {
+                        islandRef = i;
+                    }
+                }
+                try {
+                    if (proxy.useSpecial(5, islandRef)) {
+                        gui.setConstants("SpecialUsed");
+                    } else {
+                        showMoveNotAllowed();
+                        gui.specialNotAllowed();
+                    }
+                } catch (IOException e) {
+                }
+            } else {
+                showMoveNotAllowed();
+            }
+        }
+    }
 
-                } else if (actionAllowed == 1) {
-                    int motherMovement = 0;
-                    int currentMotherPos = view.getMotherPosition();
-                    for (int i = 0; i < islandsList.size(); i++) {
-                        if ((mouseEvent.getSource() == islandsList.get(i))) {
-                            islandRef = i; // non sono sicura
-                        }
-                        if (currentMotherPos < islandRef) {
-                            motherMovement = islandRef - currentMotherPos;
-                        } else {
-                            motherMovement = islandsList.size() - currentMotherPos + islandRef;
-                        }
-                    }
-                    try {
-                        String result = proxy.moveMotherNature(motherMovement);
-                        if (result.equalsIgnoreCase("ok")) {
-                            gui.setConstants("MovedMother");
-                            errorLabel.setVisible(false);
-                            actionLabel.setText("");
-                            setActionAllowed(2);
-                        } else {
-                            errorLabel.setText("Error, move not allowed!");
-                            errorLabel.setVisible(true);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                } else if (actionAllowed == 3) { //special 1
-                    for (int i = 0; i < islandsList.size(); i++) {
-                        if ((mouseEvent.getSource() == islandsList.get(i))) {
-                            islandRef = i;
-                        }
-                    }
-                    try {
-                        if (proxy.useSpecial(1, cardStudent, islandRef)) {
-                            gui.setConstants("SpecialUsed");
-                            specialLabel.setVisible(false);
-                        } else {
-                            showMoveNotAllowed();
-                            gui.specialNotAllowed();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                } else if (actionAllowed == 4) { //Special 3
-                    for (int i = 0; i < islandsList.size(); i++) {
-                        if ((mouseEvent.getSource() == islandsList.get(i))) {
-                            islandRef = i;
-                        }
-                    }
-                    try {
-                        if (proxy.useSpecial(3, islandRef)) {
-                            gui.setConstants("SpecialUsed");
-                            specialLabel.setVisible(false);
-                        } else {
-                            errorLabel.setText("Error, move not allowed!");
-                            errorLabel.setVisible(true);
-                            gui.specialNotAllowed();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                } else if (actionAllowed == 5) { //special 5
-                    for (int i = 0; i < islandsList.size(); i++) {
-                        if ((mouseEvent.getSource() == islandsList.get(i))) {
-                            islandRef = i;
-                        }
-                    }
-                    try {
-                        if (proxy.useSpecial(5, islandRef)) {
-                            gui.setConstants("SpecialUsed");
-                        } else {
-                            showMoveNotAllowed();
-                            gui.specialNotAllowed();
-                        }
-                    } catch (IOException e) {
-                    }
+    public void confirmSpecial() { //special 7
+        if (actionAllowed == 6) {
+            try {
+                if (proxy.useSpecial(7, fromEntranceToCard, fromCardToEntrance)) {
+                    gui.setConstants("SpecialUsed");
+                    specialLabel.setVisible(false);
                 } else {
                     showMoveNotAllowed();
+                    gui.specialNotAllowed();
                 }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
-        }
-
-        public void confirmSpecial() { //special 7
-            if (actionAllowed == 6) {
-                if (lastThingClicked.equalsIgnoreCase("studentToExchange")) {
-                    if(fromEntranceToCard.size()!=0 && fromCardToEntrance.size()!=0){
-                        try {
-                            if (proxy.useSpecial(7, fromEntranceToCard, fromCardToEntrance)) {
-                                gui.setConstants("SpecialUsed");
-                                specialLabel.setVisible(false);
-                            } else {
-                                showMoveNotAllowed();
-                                gui.specialNotAllowed();
-                            }
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                        fromCardToEntrance.clear();
-                        fromEntranceToCard.clear();
-                        selectedStudents ="";
-                        selectedStudentSpecial7="";
-                    }
-                    else
-                        showMoveNotAllowed();
-                }
-            } else if (actionAllowed == 7) { //special 10
-                if(fromEntranceToTable.size()!=0 && fromTableToEntrance.size()!=0){
-                    try {
-                        if (proxy.useSpecial(10, fromEntranceToTable, fromTableToEntrance)) {
-                            gui.setConstants("SpecialUsed");
-                            specialLabel.setVisible(false);
-                        } else {
-                            showMoveNotAllowed();
-                            gui.specialNotAllowed();
-                        }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    fromEntranceToTable.clear();
-                    fromTableToEntrance.clear();
-                    selectedStudents = "";
-                    selectedStudentsTable = "";
-                    selectedStudentsEntrance = "";
-                } else{
+            fromCardToEntrance.clear();
+            fromEntranceToCard.clear();
+            selectedStudents = "";
+            selectedStudentSpecial7 = "";
+        } else if (actionAllowed == 7) { //special 10
+            try {
+                if (proxy.useSpecial(10, fromEntranceToTable, fromTableToEntrance)) {
+                    gui.setConstants("SpecialUsed");
+                    specialLabel.setVisible(false);
+                } else {
                     showMoveNotAllowed();
+                    gui.specialNotAllowed();
                 }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
+            fromEntranceToTable.clear();
+            fromTableToEntrance.clear();
+            selectedStudents = "";
+            selectedStudentsTable = "";
+            selectedStudentsEntrance = "";
         }
+         else
+            showMoveNotAllowed();
+        }
+
+
 
         public void showMoveNotAllowed() {
             errorLabel.setVisible(true);

@@ -96,18 +96,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         sceneControllersMap = new HashMap<>();
         constants = new PlayerConstants();
         isMainSceneInitialized = false;
-        /*initialStudentsIsland = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            initialStudentsIsland.add(new int[]{0, 0, 0, 0, 0});
-        }
-        initialStudentsEntrance = new ArrayList<>();
-        initialStudentsCloud = new ArrayList<>();
-        initialTowersSchool = new HashMap<>();
-        for (int i = 0; i < 4; i++) {
-            initialStudentsEntrance.add(new int[]{0, 0, 0, 0, 0});
-            initialTowersSchool.put(i, 8);
-            initialStudentsCloud.add(new int[]{0, 0, 0, 0, 0});
-        }*/
         actionAllowed = -1;
 
         planningPhaseService= new PlanningPhaseService(this);
@@ -115,6 +103,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         setViewService = new SetViewService(this);
         /**
          * Sets what happens when the service succeeds: the view is set and the phaseHandler is called with the next phase
+         * @see SetViewService
          */
         setViewService.setOnSucceeded(workerStateEvent -> {
             View view = setViewService.getValue();
@@ -125,6 +114,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         });
         /**
          * Sets what happens when the service succeeds: the view is set and the phaseHandler is called with the next phase
+         * @see InitializeMainService
          */
         initializeMainService = new InitializeMainService();
         initializeMainService.setOnSucceeded(workerStateEvent -> {
@@ -141,7 +131,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
         /**
          * Sets what happens when the service succeeds: the last phase is recovered when restoring the game,
-         * and the right methods are called
+         * and the correct methods are called
          */
         getPhaseService = new GetPhaseService();
         getPhaseService.setOnSucceeded(workerStateEvent -> {
@@ -160,7 +150,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
      * @param stage
      */
     @Override
-    public void start(Stage stage){ //throws IOException, ClassNotFoundException, InterruptedException {
+    public void start(Stage stage){
         primaryStage = stage;
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
         primaryStage.setTitle("Eriantys");
@@ -216,8 +206,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         } else if (result.equals("SetupGame")) {
             primaryStage.setScene(scenesMap.get(SETUP));
             primaryStage.centerOnScreen();
-        /*} else if (result.equals("Server Sold Out")) {
-            System.out.println(result);*/
+        } else if (result.equals("Server Sold Out")) {
+            System.out.println(result);
+            GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
+            controller.setSoldOut();
+            primaryStage.setScene(scenesMap.get(GAMEOVER));
         } else if (result.equals("Not first")) {
             primaryStage.setScene(scenesMap.get(LOGIN));
             primaryStage.centerOnScreen();
@@ -246,10 +239,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             e.printStackTrace();
         }
     }
-
-    //switch the scene, keeps the same stage
-    //initialize the scene if necessary, passing parameters to the controller
-
     /**
      * Switches to the specified scene, keeping the same stage
      * @param sceneName of type String - the name of the scene
@@ -284,8 +273,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 //initializeMainService.cancel();
                 SpecialsSceneController specialsSceneController = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
                 specialsSceneController.setConfirmButton(false);
-                PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
-                planningPhaseService.start();
+                //PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
+                if(planningPhaseService.getState().equals(Worker.State.READY))
+                    planningPhaseService.start();
+                else
+                    planningPhaseService.restart();
             }
             case "PlayCardAnswer" -> {
                 setConstants("PlanningPhase");
@@ -294,8 +286,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
 
             case "ActionPhase" -> {
-                ActionPhaseService actionPhaseService= new ActionPhaseService();
-                actionPhaseService.start();
+                //ActionPhaseService actionPhaseService= new ActionPhaseService();
+                if(actionPhaseService.getState().equals(Worker.State.READY))
+                    actionPhaseService.start();
+                else
+                    actionPhaseService.restart();
             }
             case "StartTurnAnswer" -> {
                 SpecialsSceneController specialsSceneController = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
@@ -365,10 +360,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
 
     public void specialNotAllowed(){
-        SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
-        controller.resetScene();
-        System.out.println(constants.lastPhase());
+        SpecialsSceneController specialsSceneController = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
         MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
+        specialsSceneController.resetScene();
+        System.out.println(constants.lastPhase());
         if(constants.lastPhase().equals("ChooseCloud")) phaseHandler("ChooseCloud");
         else if(constants.lastPhase().equals("MoveStudent")) mainSceneController.setActionAllowed(0);
         else if(constants.lastPhase().equals("MoveMother")) mainSceneController.setActionAllowed(1);
@@ -762,13 +757,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
     @Override
     public void notifySoldOut() {
-        //Platform.runLater(()->{
+        Platform.runLater(()->{
             System.out.println("NOTIFY server sold out");
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
             controller.setSoldOut();
             loadScene(GAMEOVER);
             primaryStage.close();
-        //});
+        });
     }
 }
 
