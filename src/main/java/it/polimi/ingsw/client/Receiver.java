@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.listeners.DisconnectedListener;
+import it.polimi.ingsw.listeners.PongListener;
 import it.polimi.ingsw.listeners.ServerOfflineListener;
 import it.polimi.ingsw.server.answer.*;
 import it.polimi.ingsw.server.answer.viewAnswer.*;
@@ -11,26 +12,36 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+/**
+ * It reads every message in input from the server and sort it.
+ */
 public class Receiver extends Thread {
 
     private Thread receive;
     private Thread viewThread;
-    private final Object AnswerTmpLock;
+    private final Object answerTmpLock; //lock the ArrayList answerList when it is empty
     private final Object initializedViewLock;
-    private final Object AnswerViewLock;
-    private final Object specialLock;
+    private final Object answerViewLock; //lock the ArrayList answerView when it is empty
+    private final Object specialLock; //lock the update about specials when special list is not complete
     private final Object setViewLock;
     private final ObjectInputStream inputStream;
     private ArrayList<Answer> answersList;
     private final Socket socket;
     private DisconnectedListener disconnectedListener;
     private ServerOfflineListener serverOfflineListener;
+    private PongListener pongListener;
     private boolean disconnected;
     private final View view;
     private boolean initializedView;
-    private ArrayList<Answer> viewAnswer;
+    private ArrayList<Answer> answerView;
     private int pingCounter;
 
+    /**
+     * Constructor allocates every variable of the class.
+     * @param initializedViewLock Is the lock used to notify to proxy_c when view is initialized.
+     * @param pingCounter is the counter of the ping.
+     * @throws IOException
+     */
     public Receiver(Object initializedViewLock, Socket socket, View view, Integer pingCounter) throws IOException {
         this.socket = socket;
         this.inputStream = new ObjectInputStream(this.socket.getInputStream());
@@ -38,15 +49,18 @@ public class Receiver extends Thread {
         this.view = view;
         this.pingCounter = pingCounter;
         answersList = new ArrayList<>();
-        viewAnswer = new ArrayList<>();
-        AnswerTmpLock = new Object();
+        answerView = new ArrayList<>();
+        answerTmpLock = new Object();
         setViewLock = new Object();
         this.initializedViewLock = initializedViewLock;
-        AnswerViewLock = new Object();
+        answerViewLock = new Object();
         specialLock = new Object();
         disconnected = false;
     }
 
+    /**
+     * When view is initialized notify it to proxy_c.
+     */
     public void setViewInitialized(){
         synchronized (setViewLock) {
             initializedView = true;
@@ -55,12 +69,16 @@ public class Receiver extends Thread {
         }
     }
 
+    /**
+     * It conserves all the answer of the server until proxy_c need them.
+     * @return the first Answer of the ArrayList.
+     */
     public Answer receive() {
         Answer tmp;
-        synchronized (AnswerTmpLock){
+        synchronized (answerTmpLock){
             try {
                 if (answersList.size() == 0){
-                    AnswerTmpLock.wait();
+                    answerTmpLock.wait();
                 }
             }catch (InterruptedException e){
             }
@@ -70,6 +88,11 @@ public class Receiver extends Thread {
         return tmp;
     }
 
+
+    /**
+     * For each type of answer the method call view method to set schools.
+     * @param tmp is a view answer received from server
+     */
     private void viewSchoolMessage(Answer tmp){
         if (tmp instanceof SchoolStudentAnswer) {
             view.setSchoolStudents(((SchoolStudentAnswer) tmp).getPlace(), ((SchoolStudentAnswer) tmp).getComponentRef(), ((SchoolStudentAnswer) tmp).getColor(), ((SchoolStudentAnswer) tmp).getNewValue());
@@ -83,6 +106,10 @@ public class Receiver extends Thread {
         }
     }
 
+    /**
+     * For each type of answer the method call view method to set islands.
+     * @param tmp is a view answer received from server
+     */
     private void viewIslandMessage(Answer tmp){
         if (tmp instanceof MotherPositionAnswer) {
             view.setMotherPosition(((MotherPositionAnswer) tmp).getMotherPosition());
@@ -102,6 +129,10 @@ public class Receiver extends Thread {
         }
     }
 
+    /**
+     * For each type of answer the method call view method to set cards.
+     * @param tmp is a view answer received from server
+     */
     private void viewCardsMessage(Answer tmp) {
         if (tmp instanceof LastCardAnswer) {
             view.setLastCard(((LastCardAnswer) tmp).getPlayerRef(), ((LastCardAnswer) tmp).getCard());
@@ -110,10 +141,18 @@ public class Receiver extends Thread {
         }
     }
 
+    /**
+     * For each type of answer the method call view method to set clouds.
+     * @param tmp is a view answer received from server
+     */
     private void viewCloudMessage(Answer tmp){
         view.setClouds(((CloudStudentAnswer) tmp).getCloudRef(), ((CloudStudentAnswer) tmp).getColor(), ((CloudStudentAnswer) tmp).getNewValue());
     }
 
+    /**
+     * For each type of answer the method call view method to set specials.
+     * @param tmp is a view answer received from server
+     */
     private void viewSpecialMessage(Answer tmp){
         if (tmp instanceof UseSpecialAnswer) {
             view.setSpecialUsed(((UseSpecialAnswer) tmp).getSpecialIndex(), ((UseSpecialAnswer) tmp).getPlayerRef());
@@ -143,6 +182,10 @@ public class Receiver extends Thread {
         }
     }
 
+    /**
+     * For each type of answer the method call view method to set game info.
+     * @param tmp is a view answer received from server
+     */
     private void gameMessage(Answer tmp){
         if (tmp instanceof GameInfoAnswer) {
             synchronized (initializedViewLock) {
@@ -155,6 +198,10 @@ public class Receiver extends Thread {
         }
     }
 
+
+    /**
+     * it's used at the beginning of the game, when view could be not initialized yet. So thread wait till view is initialized and get answer from ArrayList answerView.
+     */
     private void viewMessage(){
         viewThread = new Thread(() -> {
             Answer tmp;
@@ -163,11 +210,11 @@ public class Receiver extends Thread {
                     synchronized (setViewLock) {
                         if (!initializedView) setViewLock.wait();
                     }
-                    synchronized (AnswerViewLock) {
-                        if (viewAnswer.size() == 0) {
-                            AnswerViewLock.wait();
+                    synchronized (answerViewLock) {
+                        if (answerView.size() == 0) {
+                            answerViewLock.wait();
                         }
-                        tmp = viewAnswer.get(0);
+                        tmp = answerView.get(0);
                         if (tmp instanceof UserInfoAnswer) gameMessage(tmp);
                         else if (tmp instanceof LastCardAnswer) viewCardsMessage(tmp);
                         else if (tmp instanceof HandAfterRestoreAnswer) viewCardsMessage(tmp);
@@ -187,7 +234,7 @@ public class Receiver extends Thread {
                         else if (tmp instanceof SetSpecialAnswer) viewSpecialMessage(tmp);
                         else if (tmp instanceof InfoSpecial1or7or11Answer) viewSpecialMessage(tmp);
                         else if (tmp instanceof InfoSpecial5Answer) viewSpecialMessage(tmp);
-                        viewAnswer.remove(0);
+                        answerView.remove(0);
                     }
                 } catch (InterruptedException e) {}
             }
@@ -195,13 +242,23 @@ public class Receiver extends Thread {
         viewThread.start();
     }
 
+    /**
+     * It put the answer in the ArrayList answerView
+     * @param tmp is the answer arrived
+     */
     private void viewNotInitialized(Answer tmp){
-        synchronized (AnswerViewLock) {
-            viewAnswer.add(tmp);
-            AnswerViewLock.notify();
+        synchronized (answerViewLock) {
+            answerView.add(tmp);
+            answerViewLock.notify();
         }
     }
 
+
+    /**
+     * It received every message and it sorts it. If view is not initialized call viewNotInitialized for each view message which arrives.
+     * If the answer is about the game the method add it in answersTmpList.
+     * If game is over or a client is disconnected, the method notify it.
+     */
     public void run(){
         //receive = new Thread(() -> {
         viewMessage();
@@ -214,8 +271,7 @@ public class Receiver extends Thread {
                 //socket.setSoTimeout(15000);
                 if (tmp instanceof PongAnswer) {
                     //socket.setSoTimeout(15000);
-                    System.out.println(pingCounter);
-                    pingCounter = 0;
+                    pongListener.notifyPong();
                 }
                 else if (tmp instanceof GameInfoAnswer) gameMessage(tmp);
                 else if (tmp instanceof UserInfoAnswer) {
@@ -299,14 +355,14 @@ public class Receiver extends Thread {
                     view.setWinner(((GameOverAnswer) tmp).getWinner());
                     disconnected = true;
                 } else answersTmpList.add(tmp);
-                synchronized (AnswerTmpLock) {
+                synchronized (answerTmpLock) {
                     for (int i = 0; i < answersTmpList.size(); i++) {
                         answersList.add(answersTmpList.get(i));
                         answersTmpList.remove(i);
                     }
-                    if (answersList.size() != 0) AnswerTmpLock.notify();
+                    if (answersList.size() != 0) answerTmpLock.notify();
                 }
-                if(initializedView && viewAnswer.isEmpty()) viewThread.interrupt();
+                if(initializedView && answerView.isEmpty()) viewThread.interrupt();
             }
         } catch (SocketException e) {
             System.out.println("time out");
@@ -330,6 +386,9 @@ public class Receiver extends Thread {
     }
     public void setServerOfflineListener(ServerOfflineListener serverOfflineListener){
         this.serverOfflineListener = serverOfflineListener;
+    }
+    public void setPongListeners(PongListener pongListener){
+        this.pongListener = pongListener;
     }
 
 }
