@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
+/**
+ * Command Line Interface
+ */
 public class CLI implements Runnable, UserInfoListener, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, WinnerListener, DisconnectedListener,
         NoEntryClientListener, ServerOfflineListener, SpecialStudentsListener, RestoreCardsListener{
@@ -30,6 +33,13 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     private final Object lock;
     private int playCount;
 
+
+    /**
+     * Constructor allocated the variable of the class and set the listener
+     * @param socket
+     * @param proxy
+     * @throws IOException
+     */
     public CLI(Socket socket, Exit proxy) throws IOException{
         this.socket = socket;
         scanner = new Scanner(System.in);
@@ -42,6 +52,15 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         playCount=4;
     }
 
+
+    /**
+     * Setup is the first method which starts the other method depending on the answer of the server. It could be setupGame if the player is the first, savedGame if there's a previous game and
+     * the player is the first, LoginRestore if there's a previous game and player is not the first and, setupConnection if the player is not the first. After the login listeners are set.
+     * If the game is restored then setup calls setPhase to know where the game was interrupted and set it.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws InterruptedException
+     */
     private void setup() throws IOException, ClassNotFoundException, InterruptedException {
         boolean savedGame=false;
         boolean gameRestored = false;
@@ -104,6 +123,10 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * It calls proxy.getPhase to know where the game was interrupted and then set the constant.
+     * @throws IOException
+     */
     private void setPhase() throws IOException {
         constants.setStartGame(true);
         String phase = proxy.getPhase();
@@ -117,6 +140,12 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+
+    /**
+     * it get form the server the already chosen characters, it asks to the player nickname and character and send it to the proxy.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void setupConnection() throws IOException, ClassNotFoundException {
         while (true) {
             ArrayList<String> chosenCharacters = proxy.getChosenCharacters();
@@ -154,6 +183,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * it asks to the player the number of players and expert mode. Then send it to the proxy.
+     */
     private void setupGame(){
         int numberOfPlayers;
         String expertMode;
@@ -193,6 +225,13 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+
+    /**
+     * it gets from the proxy the information about the game and asks to the player if it wants to restore the game.
+     * @return true if player want to restore the game, else return false.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private boolean savedGame() throws IOException, ClassNotFoundException {
         SavedGameAnswer savedGame = (SavedGameAnswer) proxy.getMessage();
         String decision;
@@ -226,6 +265,12 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+
+    /**
+     * it asks to the player the previous nickname chosen, then send it to the proxy.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void loginRestore() throws IOException, ClassNotFoundException {
         while (true){
             System.out.println();
@@ -239,6 +284,12 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * it asks to the player if it wants to use a special, if "n" the method return, else if it wants to use a special send the chosen one to the proxy.
+     * if proxy's method return true then useSpecial call the method special if special number is different from 2, 4, 6, 8.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void useSpecial() throws IOException, ClassNotFoundException {
         cli();
         String answer;
@@ -268,7 +319,6 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                 turn();
             } else {
                 System.out.println();
-                System.out.println("special accettato");
                 if (special == 2 || special == 4 || special == 6 || special == 8) {
                     constants.setSpecialUsed(true);
                 }
@@ -280,6 +330,13 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         else turn();
     }
 
+    /**
+     * For each special it asks what the player wants to move or use depending on the special effect. Then send it to proxy.
+     * @param special is the number of the special chosen.
+     * @return true if server accepts the special, else return false.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private boolean special(int special) throws IOException, ClassNotFoundException {
             while (true) {
                 try {
@@ -468,6 +525,11 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             }
     }
 
+    /**
+     * It asks to the player which card it wants to play and send it to the proxy. If server accepts it the constant about card played is set true.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void playCard() throws IOException, ClassNotFoundException {
         printable.cli();
         while (true) {
@@ -488,6 +550,10 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * It asks to the player which student it wants to move and where. Then send it to the proxy. If proxy return ok the loop is interrupted, if return transfer complete
+     * the loop is interrupted and the constant students moved is set true, else if proxy return move not allowed the loop continue.
+     */
     private void moveStudents() {
         String accepted;
         cli();
@@ -563,6 +629,12 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+
+    /**
+     * It asks to the player how many steps it wants to move mother nature, then send the number of steps to the proxy. If the server's answer is ok constant mother moved is set true.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void moveMotherNature() throws IOException, ClassNotFoundException {
         int steps = -1;
             try {
@@ -587,6 +659,12 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             else System.out.println(result);
     }
 
+
+    /**
+     * It asks to the player which cloud it wants, then send the cloud number to the proxy. If the server's answer is ok constant cloud chosen is set true.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void chooseCloud() throws IOException, ClassNotFoundException {
         int cloud = -1;
         constants.setEndTurn(true);
@@ -610,6 +688,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             cloud = cloud - 1;
             String result = proxy.chooseCloud(cloud);
             if (result.equalsIgnoreCase("ok")) {
+                playCount = 4;
                 constants.setCloudChosen(true);
                 System.out.println();
                 printable.cli();
@@ -624,6 +703,10 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             }
     }
 
+
+    /**
+     * Use the play counter to print the entire cli every 4 plays.
+     */
     private void cli(){
         if(playCount==4){
             printable.cli();
@@ -631,6 +714,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         } else playCount++;
     }
 
+    /**
+     * First set up the game. Then a loop is starting until the game is active. Loop starts the phase of the game at the right moment using constants.
+     */
     @Override
     public void run() {
         try {
@@ -641,7 +727,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                     constants.resetAll();
                     constants.setPlanningPhaseStarted(true);
                 }
-                while (!constants.isCloudChosen()&&active) {
+                while (!constants.isCloudChosen()) {
                     turn();
                 }
             }
@@ -657,12 +743,25 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         this.active = active;
     }
 
+    /**
+     * it starts the right phase which player have to do. First, set the game started so prints about initialization of the game aren't printed.
+     * Then, if in that action phase the special have not been used and the game is in expert mode, it asks to player if it wants to use a special.
+     * Finally call phase handler with the phase that have to be done.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void turn() throws IOException, ClassNotFoundException {
         if(!constants.isStartGame()) constants.setStartGame(true);
         if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) useSpecial();
         phaseHandler(constants.lastPhase());
     }
 
+    /**
+     * it calls the method of the last phase.
+     * @param phase is the phase that have to be done.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void phaseHandler(String phase) throws IOException, ClassNotFoundException {
         if(phase.equals("PlayCardAnswer")) playCard();
         else if(!constants.isActionPhaseStarted()) {
@@ -677,6 +776,12 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+
+    /**
+     * It converts the string in to the corresponding number.
+     * @param color is the color which have to be translated.
+     * @return the corresponding number.
+     */
     private int translateColor(String color) {
         return switch (color.toLowerCase()) {
             case ("green") -> 0;
@@ -688,12 +793,21 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         };
     }
 
+
+    /**
+     * Read from input the first word and skip the other.
+     * @return the input string.
+     */
     private String readNext(){
         String string = scanner.next();
         scanner.nextLine();
         return string;
     }
 
+    /**
+     * If server is offline close the socket, set active false and close the client.
+     * @throws IOException
+     */
     private void serverOffline() throws IOException {
         synchronized (lock) {
             System.out.println();
@@ -704,6 +818,10 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * If one of the player disconnects then close the socket, set active false and close the client.
+     * @throws IOException
+     */
     private void disconnectClient() throws IOException {
         synchronized (lock) {
             System.out.println();
@@ -714,6 +832,10 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * If game is over, return the winner, close the socket, set active false and close the client.
+     * @throws IOException
+     */
     private void winner() throws IOException {
         synchronized (lock) {
             printable.cli();
@@ -725,6 +847,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
         if(view.getExpertMode() && constants.isStartGame()) {
@@ -734,6 +859,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyInhibited(int islandRef, int isInhibited) {
         if(constants.isStartGame()) {
@@ -744,6 +872,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyIslandChange(int islandToDelete) {
         if(constants.isStartGame()) {
@@ -754,6 +885,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
         if(constants.isStartGame()) {
@@ -764,6 +898,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
         if(constants.isStartGame()) {
@@ -787,6 +924,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifySpecial(int specialRef, int playerRef) {
         if(constants.isStartGame()) {
@@ -798,12 +938,21 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifySpecialList(ArrayList<Integer> specialsList, ArrayList<Integer> cost) {}
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyIncreasedCost(int specialRef, int newCost) {}
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
         if(constants.isStartGame()&&!constants.isEndTurn()) {
@@ -813,6 +962,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
         if(constants.isStartGame()&&!constants.isEndTurn()) {
@@ -822,6 +974,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyTowerColor(int islandRef, int newColor) {
         if(constants.isStartGame()&&!constants.isEndTurn()) {
@@ -831,31 +986,49 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyDisconnected() throws IOException {
         disconnectClient();
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyWinner() throws IOException {
         winner();
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyServerOffline() throws IOException {
         serverOffline();
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void specialStudentsNotify(int special, int color, int value) {
 
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void userInfoNotify(String nickname, String Character, int playerRef) {
 
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
     public void notifyNoEntry(int special, int newValue) {
         if(constants.isStartGame()) {
@@ -867,8 +1040,10 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
-    @Override
-    public void restoreCardsNotify(ArrayList<String> hand) {
 
-    }
+    /**
+     * See Listeners package.
+     */
+    @Override
+    public void restoreCardsNotify(ArrayList<String> hand) {}
 }

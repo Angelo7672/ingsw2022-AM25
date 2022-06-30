@@ -8,6 +8,9 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.Scanner;
 
+/**
+ * Starts the connection with the server.
+ */
 public class Client {
     private static Socket socket;
     private static String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
@@ -17,16 +20,39 @@ public class Client {
     private static String  UNDERLINE = "\u001B[4m";
 
 
+    /**
+     * Asks ip and port of the server and then starts cli or gui.
+     */
     public static void main(String[] args) {
+        int port=0;
+        String ip=null;
         System.out.println(SPACE+ANSI_GREEN+UNDERLINE+"ERIANTYS"+ANSI_RESET);
         System.out.println();
         Scanner scanner = new Scanner(System.in);
+        while(ip==null){
+            System.out.print(SPACE+"Insert ip: ");
+            ip = scanner.next();
+            System.out.println();
+        }
+        try {
+            while (port == 0) {
+                System.out.print(SPACE + "Insert port: ");
+                String intString = scanner.next();
+                port = Integer.parseInt(intString);
+                System.out.println();
+            }
+        }catch (NumberFormatException e) {
+        System.out.println();
+        System.out.println(ANSI_RED + SPACE + "Error, insert a number." + ANSI_RESET);
+        return;
+        }
+        System.out.println();
         System.out.print(SPACE+"Do you want to use CLI or GUI? ");
         String graph = scanner.next();
         try {
             if (graph.equalsIgnoreCase("CLI")) {
                 try {
-                    socket = new Socket("127.0.0.1", 2525);
+                    socket = new Socket(ip, port);
                 } catch (IOException e) {
                     System.out.println(SPACE + ANSI_RED + "Some errors occurred, try again." + ANSI_RESET);
                     return;
@@ -45,7 +71,7 @@ public class Client {
                 cli.run();
             } else if (graph.equalsIgnoreCase("GUI")) {
                 try {
-                    socket = new Socket("127.0.0.1", 2525);
+                    socket = new Socket(ip, port);
                 } catch (IOException e) {
                     System.out.println(ANSI_RED + SPACE + "Some errors occurred, try again." + ANSI_RESET);
                     return;
