@@ -339,7 +339,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
             output.reset();
             output.writeObject(serverAnswer);
             output.flush();
-        }catch (IOException e){ clientConnectionExpired(); }
+        }catch (IOException e){ if(!connectionExpired) clientConnectionExpired(); }
     }
 
     /**
