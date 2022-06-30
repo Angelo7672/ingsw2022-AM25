@@ -4,7 +4,7 @@ import it.polimi.ingsw.listeners.DisconnectedListener;
 import it.polimi.ingsw.listeners.ServerOfflineListener;
 import it.polimi.ingsw.listeners.SoldOutListener;
 import it.polimi.ingsw.server.answer.*;
-import it.polimi.ingsw.server.answer.viewmessage.*;
+import it.polimi.ingsw.server.answer.viewAnswer.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

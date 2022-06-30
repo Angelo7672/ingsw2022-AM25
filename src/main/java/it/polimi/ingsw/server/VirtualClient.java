@@ -4,7 +4,7 @@ import it.polimi.ingsw.client.message.*;
 import it.polimi.ingsw.client.message.special.*;
 import it.polimi.ingsw.controller.exception.EndGameException;
 import it.polimi.ingsw.server.answer.*;
-import it.polimi.ingsw.server.answer.viewmessage.*;
+import it.polimi.ingsw.server.answer.viewAnswer.*;
 import it.polimi.ingsw.server.expertmode.ExpertGame;
 
 import java.io.IOException;

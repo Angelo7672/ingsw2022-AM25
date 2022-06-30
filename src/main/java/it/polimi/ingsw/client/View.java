@@ -2,13 +2,10 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.listeners.*;
 import it.polimi.ingsw.model.Assistant;
-import it.polimi.ingsw.server.answer.viewmessage.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
 
 public class View {
 

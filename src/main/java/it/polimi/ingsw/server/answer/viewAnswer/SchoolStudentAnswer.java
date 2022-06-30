@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.answer.viewmessage;
+package it.polimi.ingsw.server.answer.viewAnswer;
 
 import it.polimi.ingsw.server.answer.Answer;
 
