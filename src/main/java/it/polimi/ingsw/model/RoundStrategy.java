@@ -74,11 +74,6 @@ public abstract class RoundStrategy {
         else if(teamOwnerTower.equals(Team.BLACK)) influenceTeamBLACK += islandsManager.getTowerValue(islandRef);
         else if(teamOwnerTower.equals(Team.GREY)) influenceTeamGREY += islandsManager.getTowerValue(islandRef);
 
-        System.out.println("Influence Team White "+influenceTeamWHITE);
-        System.out.println("Influence Team Black "+influenceTeamBLACK);
-        System.out.println("Influence Team Grey "+influenceTeamGREY);
-        System.out.println("---");
-
         if(numberOfPlayer == 2 || numberOfPlayer == 4)
             highInfluenceTeam = compareInfluenceTeam(Team.WHITE, influenceTeamWHITE, Team.BLACK, influenceTeamBLACK);
         else {

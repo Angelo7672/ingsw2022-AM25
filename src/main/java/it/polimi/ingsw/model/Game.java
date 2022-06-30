@@ -87,24 +87,16 @@ public class Game implements GameManager{
         //now I have 3 random int
         Collections.sort(random);
 
-            /*for (int i = 0; i < 3; i++) {
-                roundStrategies.add(
-                        roundStrategyFactor.getRoundStrategy(
-                                random.get(i)
-                        )
-                );
-                this.extractedSpecials.add(
-                        random.get(i)
-                );
-            }*/
-
-        //INSERISCI GLI SPECIAL CHE VUOI FARE USCIRE
-        roundStrategies.add( roundStrategyFactor.getRoundStrategy(3));
-        roundStrategies.add( roundStrategyFactor.getRoundStrategy(4));
-        roundStrategies.add( roundStrategyFactor.getRoundStrategy(7));
-        this.extractedSpecials.add(3);
-        this.extractedSpecials.add(4);
-        this.extractedSpecials.add(7);
+        for (int i = 0; i < 3; i++) {
+            roundStrategies.add(
+                    roundStrategyFactor.getRoundStrategy(
+                            random.get(i)
+                    )
+            );
+            this.extractedSpecials.add(
+                    random.get(i)
+            );
+        }
     }
 
     /**
