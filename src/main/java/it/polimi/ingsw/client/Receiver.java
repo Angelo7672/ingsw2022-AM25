@@ -298,9 +298,9 @@ public class Receiver extends Thread {
                 } else if (tmp instanceof GameOverAnswer) {
                     disconnected = true;
                     view.setWinner(((GameOverAnswer) tmp).getWinner());
-                } else if (tmp instanceof SoldOutAnswer) {
+                /*} else if (tmp instanceof SoldOutAnswer) {
                     disconnected = true;
-                    soldOutListener.notifySoldOut();
+                    soldOutListener.notifySoldOut();*/
                 } else answersTmpList.add(tmp);
                 synchronized (AnswerTmpLock) {
                     for (int i = 0; i < answersTmpList.size(); i++) {

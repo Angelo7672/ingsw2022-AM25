@@ -70,6 +70,14 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             System.out.println();
             System.out.println(SPACE+"Setup Connection done, waiting for players...");
         }
+        else if(result.equals("Server Sold Out")) {
+            System.out.println();
+            System.out.print(ANSI_RED+SPACE+"Server Sold Out, game over."+ANSI_RESET);
+            socket.close();
+            scanner.close();
+            setActive(false);
+            System.exit(-1);
+        }
         if(!savedGame) {
             setupConnection();
         }
