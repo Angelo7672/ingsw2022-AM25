@@ -15,7 +15,7 @@ class VirtualViewTest {
     Controller controller1;
     String fileName = "saveGameTest.bin";
 
-    @BeforeEach
+   @BeforeEach
     void initialization(){
         ControllerServer controllerServer = new ControllerServer() {
             @Override
@@ -74,18 +74,21 @@ class VirtualViewTest {
         controller = new Controller(2, true, controllerServer, fileName);
         controller.addNewPlayer("Angelo","WIZARD");
         controller.addNewPlayer("Ginevra","WITCH");
-        controller.createGame();
+        controller.createGame(false);
         controller.initializeGame();
         controller1 = new Controller(2, true, controllerServer, fileName);
     }
 
+    /**
+     * Test persistence
+     */
     @Test
-    @DisplayName("Test save and restore game")
+    @DisplayName("First test: test save and restore game")
     void saveAndRestore(){
         controller.startGame();
         controller.resumeTurn(0);
         controller.saveGame();
-        controller1.createGame();
+        controller1.createGame(true);
         controller1.restoreVirtualView();
         controller1.restoreGame();
         assertEquals(0,controller1.checkRestoreNickname("Angelo"));
@@ -93,6 +96,9 @@ class VirtualViewTest {
         assertEquals(-1,controller1.checkRestoreNickname("Gigi"));
     }
 
+    /**
+     * Test if file is clear after game over method.
+     */
     @Test
     @DisplayName("Clear file")
     void clearFile(){

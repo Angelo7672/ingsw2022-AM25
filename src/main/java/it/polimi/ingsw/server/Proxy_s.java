@@ -79,7 +79,7 @@ public class Proxy_s implements Exit {
 
             if(restoreGame) server.restoreGame();   //If the first player decides to load the save
             else {  //otherwise, initialize a new game
-                server.createGame();
+                server.createGame(false);
                 server.initializeGame();
             }
             virtualClientInOrder(); //order VirtualClient, in the order they logged in

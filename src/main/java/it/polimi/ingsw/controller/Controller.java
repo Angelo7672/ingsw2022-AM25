@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Controller class control model and communicates with server.
+ * Controller class controls model and communicates with server.
  * It creates game and initialize it or restore it from a previous match.
  */
 public class Controller implements ServerController, Match, Restore{
@@ -66,16 +66,17 @@ public class Controller implements ServerController, Match, Restore{
 
     /**
      * Create a new empty game.
+     * @param restore indicates if there is a game to restore.
      */
     @Override
-    public void createGame(){
+    public void createGame(boolean restore){
         gameManager = new Game(expertMode, numberOfPlayers);
-        if(expertMode){
+
+        if(expertMode && !restore){ //if restore is true, don't create specials because restore special do it
             gameManager.createSpecial();
             gameManager.setSpecialStudentsListener(virtualView);
             gameManager.setNoEntryListener(virtualView);
         }
-
         gameManager.setStudentsListener(virtualView);
         gameManager.setTowerListener(virtualView);
         gameManager.setProfessorsListener(virtualView);
@@ -345,6 +346,16 @@ public class Controller implements ServerController, Match, Restore{
      */
     @Override
     public void specialRestore(int specialIndex, int cost){ gameManager.specialRestore(specialIndex, cost); }
+
+    /**
+     * @see Game
+     */
+    @Override
+    public void specialListRestore(){
+        gameManager.setSpecialStudentsListener(virtualView);
+        gameManager.setNoEntryListener(virtualView);
+        gameManager.specialListRestore();
+    }
 
     /**
      * @see Game

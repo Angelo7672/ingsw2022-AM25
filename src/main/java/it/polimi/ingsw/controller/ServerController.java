@@ -12,7 +12,7 @@ public interface ServerController {
     /**
      * @see Controller
      */
-    void createGame();
+    void createGame(boolean restore);
 
     /**
      * @see Controller

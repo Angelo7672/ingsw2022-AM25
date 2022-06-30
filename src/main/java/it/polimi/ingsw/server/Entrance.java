@@ -38,7 +38,7 @@ public interface Entrance {
     /**
      * @see Server
      */
-    void createGame();
+    void createGame(boolean restore);
 
     /**
      * @see Server
@@ -59,11 +59,6 @@ public interface Entrance {
      * @see Server
      */
     void startGame();
-
-    /**
-     * @see Server
-     */
-    ExpertGame getExpertGame();
 
     /**
      * @see Server
