@@ -18,13 +18,14 @@ public class Eriantys {
 
         try{
             userInput = scanner.nextInt();
-            switch (userInput){
-                case 0 -> Server.main(null);
-                case 1 -> Client.main(null);
-                //TODO: come si fa nel caso l'utente immetta una lettera?
+            if(userInput == 0) Server.main(null);
+            else if(userInput == 1) Client.main(null);
+            else{
+                System.err.println("Error, try inserting a valid number");
+                System.exit(-1);
             }
         }catch (InputMismatchException inputMismatchException){
-            System.out.println("Error, try inserting a valid number");
+            System.err.println("Error, try inserting a valid number");
             System.exit(-1);
         }
     }
