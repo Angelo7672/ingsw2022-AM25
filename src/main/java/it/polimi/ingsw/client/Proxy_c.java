@@ -24,7 +24,7 @@ public class Proxy_c implements Exit, DisconnectedListener {
     private Thread ping;
     private final Object initializedViewLock;
     private boolean disconnected;
-    private int pingCounter;
+    private Integer pingCounter;
     private ServerOfflineListener serverOfflineListener;
 
     /**
@@ -38,6 +38,7 @@ public class Proxy_c implements Exit, DisconnectedListener {
         startPing();
         initializedViewLock = new Object();
         view = new View();
+        pingCounter = 0;
         receiver = new Receiver(initializedViewLock, socket, view, pingCounter);
         receiver.start();
         setDisconnectedListener(this);
@@ -273,12 +274,14 @@ public class Proxy_c implements Exit, DisconnectedListener {
         while (!disconnected) {
             try {
                 Thread.sleep(5000);
-                pingCounter++;
+                /*pingCounter++;
+                System.out.println("ping on ping "+pingCounter);
+                System.out.println(ping);
                 if(pingCounter == 3) {
                     disconnected = true;
                     outputStream.close();
                     serverOfflineListener.notifyServerOffline();
-                }
+                }*/
                 send(new PingMessage());
             } catch (IOException | InterruptedException e) {
             }

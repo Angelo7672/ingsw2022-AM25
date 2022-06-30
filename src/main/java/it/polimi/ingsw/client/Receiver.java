@@ -31,7 +31,7 @@ public class Receiver extends Thread {
     private ArrayList<Answer> viewAnswer;
     private int pingCounter;
 
-    public Receiver(Object initializedViewLock, Socket socket, View view, int pingCounter) throws IOException {
+    public Receiver(Object initializedViewLock, Socket socket, View view, Integer pingCounter) throws IOException {
         this.socket = socket;
         this.inputStream = new ObjectInputStream(this.socket.getInputStream());
         //this.socket.setSoTimeout(15000);
@@ -213,8 +213,9 @@ public class Receiver extends Thread {
                 tmp = (Answer) inputStream.readObject();
                 //socket.setSoTimeout(15000);
                 if (tmp instanceof PongAnswer) {
-                    socket.setSoTimeout(15000);
-
+                    //socket.setSoTimeout(15000);
+                    System.out.println(pingCounter);
+                    pingCounter = 0;
                 }
                 else if (tmp instanceof GameInfoAnswer) gameMessage(tmp);
                 else if (tmp instanceof UserInfoAnswer) {
