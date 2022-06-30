@@ -39,7 +39,7 @@ public class CloudsSceneController implements SceneController  {
             chosenCloud=1;
         } else if(evt.getSource()==cloud3Button){
             chosenCloud=2;
-        } else if(evt.getSource()==cloud4){
+        } else if(evt.getSource()==cloud4Button){
             chosenCloud=3;
         }
     }

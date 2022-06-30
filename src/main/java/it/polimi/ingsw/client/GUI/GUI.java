@@ -92,12 +92,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
      * Constructor creates a new GUI instance
      */
     public GUI() {
-        //active = true;
         scenesMap = new HashMap<>();
         sceneControllersMap = new HashMap<>();
         constants = new PlayerConstants();
         isMainSceneInitialized = false;
-        initialStudentsIsland = new ArrayList<>();
+        /*initialStudentsIsland = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
             initialStudentsIsland.add(new int[]{0, 0, 0, 0, 0});
         }
@@ -108,8 +107,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             initialStudentsEntrance.add(new int[]{0, 0, 0, 0, 0});
             initialTowersSchool.put(i, 8);
             initialStudentsCloud.add(new int[]{0, 0, 0, 0, 0});
-        }
-
+        }*/
+        actionAllowed = -1;
 
         planningPhaseService= new PlanningPhaseService(this);
         actionPhaseService= new ActionPhaseService();
@@ -140,6 +139,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
         });
 
+        /**
+         * Sets what happens when the service succeeds: the last phase is recovered when restoring the game,
+         * and the right methods are called
+         */
         getPhaseService = new GetPhaseService();
         getPhaseService.setOnSucceeded(workerStateEvent -> {
             String phase = getPhaseService.getValue();
@@ -149,11 +152,15 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 phaseHandler("StartTurnAnswer");
             }
         });
-        actionAllowed = -1;
+
     }
 
+    /**
+     * @see Application#start(Stage)
+     * @param stage
+     */
     @Override
-    public void start(Stage stage) throws IOException, ClassNotFoundException, InterruptedException {
+    public void start(Stage stage){ //throws IOException, ClassNotFoundException, InterruptedException {
         primaryStage = stage;
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/graphics/cranio_logo.png")));
         primaryStage.setTitle("Eriantys");
@@ -171,6 +178,28 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         areListenerSet = false;
         scenesSetup();
 
+        /*try {
+            proxy.setDisconnectedListener(this);
+            proxy.setServerOfflineListener(this);
+            proxy.setSoldOutListener(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+
+        /**
+         * Calls the first method of the game: based on the answer returned by proxy.first() calls the correct phase
+         * -SavedGame : a file save of an old game is present and the client is the first to connect, sets the scene to SAVED
+         * -SetupGame: the current client was the first to connect, so it can choose the number of players and game mode,
+         * sets the scene to SETUP
+         * -Not first: the client was not the first to connect, it can only choose its nickname and character,
+         * sets the scene to LOGIN
+         * -LoginRestore: there is a game save, but the client was not the first to connect, sets the scene to LOGINRESTORE
+         * @see SavedSceneController
+         * @see LoginSceneController
+         * @see SetupSceneController
+         * @see LoginRestoreSceneController
+         */
         String result = null;
         try {
             result = proxy.first();
@@ -187,10 +216,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         } else if (result.equals("SetupGame")) {
             primaryStage.setScene(scenesMap.get(SETUP));
             primaryStage.centerOnScreen();
-
-        } else if (result.equals("Server Sold Out")) {
-            System.out.println(result);
-
+        /*} else if (result.equals("Server Sold Out")) {
+            System.out.println(result);*/
         } else if (result.equals("Not first")) {
             primaryStage.setScene(scenesMap.get(LOGIN));
             primaryStage.centerOnScreen();
@@ -200,8 +227,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             primaryStage.centerOnScreen();
         }
     }
-
-    //called when the GUI is launched, load all the scenes in advance, mapping them and setting the controllers
+    /**
+     * called when the GUI is laucnhed, loads all the scenes in advance and maps the name with the scene itself,
+     * and with its controller in two hashmaps. It also sets a reference to the GUI and Proxy in every controller
+     */
     public void scenesSetup() {
         String[] scenes = new String[]{SAVED, LOGINRESTORE, SETUP, LOGIN, MAIN, CARDS, WAITING, CLOUDS, SPECIALS, SPECIALS9OR12, GAMEOVER};
         try {
@@ -220,12 +249,26 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     //switch the scene, keeps the same stage
     //initialize the scene if necessary, passing parameters to the controller
+
+    /**
+     * Switches to the specified scene, keeping the same stage
+     * @param sceneName of type String - the name of the scene
+     */
     public void switchScene(String sceneName) {
         primaryStage.setScene(scenesMap.get(sceneName));
         primaryStage.show();
         primaryStage.centerOnScreen();
     }
 
+    /**
+     * phaseHandler receives the name of the current phase of the game, and calls the correct methods
+     * @param phase of type String - the name of the phase to start
+     * @see SetViewService
+     * @see InitializeMainService
+     * @see PlanningPhaseService
+     * @see ActionPhaseService
+     * @see GUI#loadScene(String)
+     */
     public void phaseHandler(String phase) {
         System.out.println("started phase handler!");
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
@@ -277,6 +320,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     special 10 -> 7
      */
 
+    /**
+     *
+     * @param special
+     */
     public void useSpecial(int special){
         if(special == 3 ){
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
@@ -414,8 +461,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 @Override
                 protected View call() throws Exception {
                     View view = proxy.startView();
-
-                    view.setUserInfoListener(gui);
+                    System.out.println("starting view");
                     view.setCoinsListener(gui);
                     view.setInhibitedListener(gui);
                     view.setIslandListener(gui);
@@ -424,14 +470,16 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     view.setProfessorsListener(gui);
                     view.setStudentsListener(gui);
                     view.setTowersListener(gui);
+                    view.setUserInfoListener(gui);
+                    System.out.println("userInfo listener is set");
                     view.setSpecialStudentsListener(gui);
                     view.setSpecialListener(gui);
                     view.setWinnerListener(gui);
                     view.setNoEntryListener(gui);
                     proxy.setServerOfflineListener(gui);
                     proxy.setDisconnectedListener(gui);
-                    view.setRestoreCardsListener(gui);
 
+                    view.setRestoreCardsListener(gui);
                     return view;
                 }
             };
@@ -702,6 +750,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     @Override
     public void notifyWinner() {
         Platform.runLater(()->{
+            System.out.println("NOTIFY WINNER");
             String winner = view.getWinner();
             System.out.println("winner is"+winner);
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
@@ -713,12 +762,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     }
     @Override
     public void notifySoldOut() {
-        Platform.runLater(()->{
+        //Platform.runLater(()->{
+            System.out.println("NOTIFY server sold out");
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
             controller.setSoldOut();
             loadScene(GAMEOVER);
             primaryStage.close();
-        });
+        //});
     }
 }
 
