@@ -330,8 +330,10 @@ public class MainSceneController implements SceneController {
     private class IslandClickHandler implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent mouseEvent) {
+            System.out.println("clicked on an island");
             int islandRef = 0;
             if (actionAllowed == 0) {
+                System.out.println("action allowed move student");
                 if (lastThingClicked.equalsIgnoreCase("student")) {
                     lastThingClicked = "island";
                     for (int i = 0; i < islandsList.size(); i++) {
@@ -339,6 +341,7 @@ public class MainSceneController implements SceneController {
                             islandRef = i;
                         }
                     }
+                    System.out.println("ISLAND CLICKED: "+islandRef);
                     try {
                         String result = proxy.moveStudent(currentStudentColor, "island", islandRef);
                         if (result.equalsIgnoreCase("ok")) {
@@ -360,26 +363,36 @@ public class MainSceneController implements SceneController {
                     errorLabel.setVisible(true);
                 }
             } else if (actionAllowed == 1) {
+                System.out.println("action allowed 1");
                 int motherMovement = 0;
                 int currentMotherPos = view.getMotherPosition();
                 for (int i = 0; i < islandsList.size(); i++) {
                     if ((mouseEvent.getSource() == islandsList.get(i))) {
                         islandRef = i;
                     }
-                    if (currentMotherPos < islandRef) {
-                        motherMovement = islandRef - currentMotherPos;
-                    } else {
-                        motherMovement = islandsList.size() - currentMotherPos + islandRef;
-                    }
                 }
+                System.out.println("ISLAND CLICKED: "+islandRef);
+                System.out.println("MOTHER POS: "+currentMotherPos);
+                if (currentMotherPos <= islandRef) {
+                    System.out.println("currentMotherPos <= islandRef");
+                    motherMovement = islandRef - currentMotherPos;
+                    System.out.println("mother movement: "+motherMovement);
+                } else {
+                    System.out.println("currentMotherPos > islandRef");
+                    motherMovement = islandsList.size() - currentMotherPos + islandRef;
+                    System.out.println("mother movement: "+motherMovement);
+                }
+                //}
                 try {
                     String result = proxy.moveMotherNature(motherMovement);
                     if (result.equalsIgnoreCase("ok")) {
+                        System.out.println("mother nature ok!");
                         gui.setConstants("MovedMother");
                         errorLabel.setVisible(false);
                         actionLabel.setText("");
                         setActionAllowed(2);
                     } else {
+                        System.out.println("Errore movimento dal proxy");
                         errorLabel.setText("Error, move not allowed!");
                         errorLabel.setVisible(true);
                     }
@@ -715,6 +728,7 @@ public class MainSceneController implements SceneController {
         }
 
         public void setMotherPosition(int islandRef) {
+            System.out.println("New mother position ");
             ImageView motherNature;
             for (int i = 0; i < islandsList.size(); i++) {
                 //children 1 is always MotherNature
@@ -768,20 +782,21 @@ public class MainSceneController implements SceneController {
                 table = blueTables.get(playerRef);
             }
             oldStudentsValue = table.getStudentsNumber();
-
             if (newStudentsValue > oldStudentsValue) {
-                tablePane.getChildren().add(new ImageView(table.getStudentImage()));
-                student = (ImageView) tablePane.getChildren().get(tablePane.getChildren().size() - 1);
-                student.setFitHeight(16.0);
-                student.setFitWidth(16.0);
-                student.setX(table.getX());
-                student.setY(table.getY());
-                table.setNewX(playerRef,true);
-                table.setNewY(playerRef, true );
-                table.addStudent();
-                student.setVisible(true);
-                student.setOnMouseClicked(studentTableClickHandler);
-
+                int studentsToAdd = newStudentsValue - oldStudentsValue;
+                for(int i=0; i<studentsToAdd; i++){
+                    tablePane.getChildren().add(new ImageView(table.getStudentImage()));
+                    student = (ImageView) tablePane.getChildren().get(tablePane.getChildren().size() - 1);
+                    student.setFitHeight(16.0);
+                    student.setFitWidth(16.0);
+                    student.setX(table.getX());
+                    student.setY(table.getY());
+                    table.setNewX(playerRef,true);
+                    table.setNewY(playerRef, true );
+                    table.addStudent();
+                    student.setVisible(true);
+                    student.setOnMouseClicked(studentTableClickHandler);
+                }
             } else if (newStudentsValue<oldStudentsValue){
                 oldStudentsValue = table.getStudentsNumber();
                 Boolean ok = false;
@@ -916,9 +931,12 @@ public class MainSceneController implements SceneController {
         }
 
         public void unifyIsland(int islandToDelete) {
+            System.out.println("Island to remove: "+islandToDelete);
             AnchorPane island = islandsList.get(islandToDelete);
             islandsPane.getChildren().remove(island);
+            System.out.println("Children list: "+islandsPane.getChildren());
             islandsList.remove(islandToDelete);
+            System.out.println("Island list: "+islandsList);
             System.out.println(islandsPane.getChildren());
         }
 

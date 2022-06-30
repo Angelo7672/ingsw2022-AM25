@@ -524,7 +524,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         stage.setResizable(false);
         stage.centerOnScreen();
         stage.show();
-
     }
 
     public void setSocket(Socket socket) {
@@ -661,7 +660,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
        Platform.runLater(() -> {
-            System.out.println("NOTIFY student change: place: "+place+ "ref: "+componentRef+" color: "+color+" newValue: "+newStudentsValue);
             MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
             CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
             switch (place) {
@@ -685,7 +683,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
         Platform.runLater(() -> {
-            System.out.println("NOTIFY tower change: place"+place+"ref "+componentRef+" towersNumber: "+towersNumber);
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             if (place == 0) {
                 controller.setTowersSchool(componentRef, towersNumber);
