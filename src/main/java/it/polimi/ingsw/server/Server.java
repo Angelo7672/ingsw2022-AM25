@@ -77,9 +77,10 @@ public class Server implements Entrance,ControllerServer{
 
     /**
      * Create a new empty game.
+     * @param restore indicates if we have to restore a saved game;
      */
     @Override
-    public void createGame(){ controller.createGame(); }
+    public void createGame(boolean restore){ controller.createGame(restore); }
 
     /**
      * Initialize a new game.
@@ -113,12 +114,6 @@ public class Server implements Entrance,ControllerServer{
         expertGame = new ExpertGame(this, controller.getExtractedSpecials());
         proxy.setExpertGame(expertGame);
     }
-
-    /**
-     * @return ExpertGame class.
-     */
-    @Override
-    public ExpertGame getExpertGame(){ return expertGame; }
 
     /**
      * Check if nickname entered is one of the last saved game.

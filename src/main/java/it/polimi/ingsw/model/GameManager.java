@@ -177,6 +177,11 @@ public interface GameManager {
     /**
      * @see Game
      */
+    void specialListRestore();
+
+    /**
+     * @see Game
+     */
     void specialStudentRestore(int indexSpecial, int[] students);
 
     /**

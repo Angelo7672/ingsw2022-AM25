@@ -192,8 +192,13 @@ public class Game implements GameManager{
         for(int i = 0; i < extractedSpecials.size(); i++)
             if(specialIndex == extractedSpecials.get(i)) roundStrategies.get(i+1).setCost(cost);
 
-        specialListener.notifySpecialList(extractedSpecials, getSpecialCost());
     }
+
+    /**
+     *
+     */
+    @Override
+    public void specialListRestore(){ specialListener.notifySpecialList(extractedSpecials, getSpecialCost()); }
 
     /**
      * Restore the student on the special. Used by special1, special7 and special11.
@@ -485,7 +490,7 @@ public class Game implements GameManager{
     @Override
     public ArrayList<Integer> getSpecialCost(){
         ArrayList<Integer> cost = new ArrayList<>();
-        for(int i = 1; i < 4; i++) {
+        for(int i = 1; i < roundStrategies.size(); i++) {
             cost.add(
                     roundStrategies.get(i)
                             .getCost()

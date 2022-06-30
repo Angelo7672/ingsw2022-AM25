@@ -241,9 +241,23 @@ public class VirtualView
         for (int i = 0; i < 3; i++) {
             int indexSpecial = specialsListTmp.get(i).getIndexSpecial();
             controller.specialRestore(indexSpecial, specialsListTmp.get(i).getCost());
-            if(indexSpecial == 1 || indexSpecial == 7 || indexSpecial == 11)
+        }
+        controller.specialListRestore();
+        specialStudentRestore(specialsListTmp);
+    }
+
+    /**
+     * Restore student or noEntryCards on special.
+     * If in the list of specials there are special1, special7 or special11, restore also students on them.
+     * If in the list of specials there is special5, restore noEntryCards on its.
+     * @param specialsListTmp object read from saveGame file;
+     */
+    private void specialStudentRestore(ArrayList<Special> specialsListTmp){
+        for (int i = 0; i < 3; i++) {
+            int indexSpecial = specialsListTmp.get(i).getIndexSpecial();
+            if (indexSpecial == 1 || indexSpecial == 7 || indexSpecial == 11)
                 controller.specialStudentRestore(indexSpecial, specialsListTmp.get(i).getColorForSpecial1or7or11());
-            else if(indexSpecial == 5)
+            else if (indexSpecial == 5)
                 controller.noEntryCardsRestore(specialsListTmp.get(i).getNoEntryCards());
         }
     }

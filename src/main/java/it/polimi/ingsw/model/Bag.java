@@ -25,7 +25,7 @@ public class Bag {
         for (int i = 0; i < 24; i++) bag.add(4);
 
         Collections.shuffle(bag);
-        this.bagListener.notifyBag(bag);
+        listenMyBag(bag);
     }
 
     /**
@@ -34,7 +34,7 @@ public class Bag {
      */
     public void bagRestore(List<Integer> bag){
         this.bag = bag;
-        this.bagListener.notifyBag(this.bag);
+        listenMyBag(this.bag);
     }
 
     /**
@@ -67,6 +67,16 @@ public class Bag {
             bag.add(color);
 
         Collections.shuffle(bag);
-        this.bagListener.notifyBag(bag);
+        listenMyBag(bag);
+    }
+
+    /**
+     * Notify a copy of bag to VirtualView
+     * @param bag list of integer;
+     */
+    private void listenMyBag(List<Integer> bag){
+        ArrayList<Integer> bagTmp = new ArrayList<>();
+        bagTmp.addAll(bag);
+        this.bagListener.notifyBag(bagTmp); //sends a copy
     }
 }

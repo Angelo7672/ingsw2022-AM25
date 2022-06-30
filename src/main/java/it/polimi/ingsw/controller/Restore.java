@@ -61,6 +61,11 @@ public interface Restore {
     /**
      * @see Controller
      */
+    void specialListRestore();
+
+    /**
+     * @see Controller
+     */
     void specialStudentRestore(int specialIndex, int[] students);
 
     /**

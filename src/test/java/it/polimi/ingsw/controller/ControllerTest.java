@@ -74,7 +74,7 @@ class ControllerTest {
         controller = new Controller(2, true , controllerServer, "saveGameTest.bin");
         controller.addNewPlayer("Angelo", "WIZARD");
         controller.addNewPlayer("Ginevra","WITCH");
-        controller.createGame();
+        controller.createGame(false);
     }
 
     /**
