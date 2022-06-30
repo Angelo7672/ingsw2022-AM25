@@ -19,18 +19,18 @@ import java.util.HashMap;
  */
 public class SpecialsSceneController implements SceneController{
 
-    private final String SPECIAL1 = "/graphics/specials/CarteTOT_front1.jpg";
-    private final String SPECIAL2 = "/graphics/specials/CarteTOT_front2.jpg";
-    private final String SPECIAL3 = "/graphics/specials/CarteTot_front3.jpg";
-    private final String SPECIAL4 = "/graphics/specials/CarteTot_front4.jpg";
-    private final String SPECIAL5 = "/graphics/specials/CarteTot_front5.jpg";
-    private final String SPECIAL6 = "/graphics/specials/CarteTot_front6.jpg";
-    private final String SPECIAL7 = "/graphics/specials/CarteTot_front7.jpg";
-    private final String SPECIAL8 = "/graphics/specials/CarteTot_front8.jpg";
-    private final String SPECIAL9 = "/graphics/specials/CarteTot_front9.jpg";
-    private final String SPECIAL10 = "/graphics/specials/CarteTot_front10.jpg";
-    private final String SPECIAL11 = "/graphics/specials/CarteTot_front11.jpg";
-    private final String SPECIAL12 = "/graphics/specials/CarteTot_front12.jpg";
+    private final String SPECIAL1 = "/graphics/CarteTOT_front1.png";
+    private final String SPECIAL2 = "/graphics/CarteTOT_front2.png";
+    private final String SPECIAL3 = "/graphics/CarteTOT_front3.png";
+    private final String SPECIAL4 = "/graphics/CarteTOT_front4.png";
+    private final String SPECIAL5 = "/graphics/CarteTOT_front5.png";
+    private final String SPECIAL6 = "/graphics/CarteTOT_front6.png";
+    private final String SPECIAL7 = "/graphics/CarteTOT_front7.png";
+    private final String SPECIAL8 = "/graphics/CarteTOT_front8.png";
+    private final String SPECIAL9 = "/graphics/CarteTOT_front9.png";
+    private final String SPECIAL10 = "/graphics/CarteTOT_front10.png";
+    private final String SPECIAL11 = "/graphics/CarteTOT_front11.png";
+    private final String SPECIAL12 = "/graphics/CarteTOT_front12.png";
     private final String GREENSTUDENT = "/graphics/wooden_pieces/greenStudent3D.png";
     private final String REDSTUDENT = "/graphics/wooden_pieces/redStudent3D.png";
     private final String YELLOWSTUDENT = "/graphics/wooden_pieces/yellowStudent3D.png";
@@ -98,6 +98,7 @@ public class SpecialsSceneController implements SceneController{
         special1View.setImage(specials.get(0));
         special2View.setImage(specials.get(1));
         special3View.setImage(specials.get(2));
+
         for (int i = 0; i < 3; i++) {
             if(specialsName.get(i)==1 || specialsName.get(i)==7 || specialsName.get(i)==11) showStudents(i);
             else if(specialsName.get(i)==5){
@@ -192,7 +193,7 @@ public class SpecialsSceneController implements SceneController{
             case 11 -> specialImage = new Image(SPECIAL11);
             case 12 -> specialImage = new Image(SPECIAL12);
         }
-        return null;
+        return specialImage;
     }
 
     /**
