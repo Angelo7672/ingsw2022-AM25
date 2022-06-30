@@ -127,10 +127,10 @@ public class SpecialsSceneController implements SceneController{
      * if the action phase of the player is started the confirm button is visible, else it's set as invisible.
      * @param actionPhase true if action phase is started.
      */
-    protected void setConfirmButton(boolean actionPhase){
+    /*protected void setConfirmButton(boolean actionPhase){
         if(actionPhase) confirmButton.setVisible(true);
         else confirmButton.setVisible(false);
-    }
+    }*/
 
     /**
      * After the use of some specials who change images they have to be reset with this method.
@@ -296,7 +296,7 @@ public class SpecialsSceneController implements SceneController{
      */
     @FXML
     public void confirmPressed(ActionEvent event) {
-        if(specialChosen != -1 && gui.constants.isCardPlayed()){
+        if(specialChosen != -1 && gui.constants.isActionPhaseStarted()){
             errorMessage.setVisible(false);
             boolean result = false;
             try {

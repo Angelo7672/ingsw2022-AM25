@@ -489,71 +489,77 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     }
 
     private void moveStudents() {
-        if(!constants.isMovingStudent()) {
-            constants.setMovingStudent(true);
-            printable.cli();
-        }
         String accepted;
+        cli();
         try{
-        do{
-        String color=null;
-        String where=null;
-        int colorInt=-1;
-        int islandRef = -1;
-            while (color == null) {
-                synchronized (lock) {
-                    System.out.println();
-                    System.out.print(SPACE + "Which student do you want to move? Insert color ");
-                    color = readNext();
-                    colorInt = translateColor(color);
-                    if (colorInt == -1) {
+            boolean moveNotAllowed;
+            do{
+                moveNotAllowed = false;
+                String color=null;
+                String where=null;
+                int colorInt=-1;
+                int islandRef = -1;
+                while (color == null) {
+                    synchronized (lock) {
                         System.out.println();
-                        System.out.println(ANSI_RED + SPACE + "Error, enter an existing color" + ANSI_RESET);
-                        color = null;
-                    }
-                }
-            }
-            while (where == null) {
-                synchronized (lock) {
-                    System.out.println();
-                    System.out.print(SPACE + "Where do you want to move the student? School or Island ");
-                    where = readNext();
-                    if (!where.equalsIgnoreCase("island") && !where.equalsIgnoreCase("school")) {
-                        System.out.println();
-                        System.out.println(ANSI_RED + SPACE + "Error, insert school or island" + ANSI_RESET);
-                        where = null;
-                    }
-                }
-            }
-            System.out.println();
-            if (where.equalsIgnoreCase("island")) {
-                synchronized (lock) {
-                    while (islandRef == -1) {
-                        System.out.print(SPACE + "Which island? insert the number ");
-                        String intString = readNext();
-                        islandRef = Integer.parseInt(intString);
-                        islandRef = islandRef - 1;
-                        System.out.println();
-                        if (islandRef < 0 || islandRef >= view.getIslandSize()) {
+                        System.out.print(SPACE + "Which student do you want to move? Insert color ");
+                        color = readNext();
+                        colorInt = translateColor(color);
+                        if (colorInt == -1) {
                             System.out.println();
-                            System.out.println(ANSI_RED + SPACE + "Error, insert an existing island" + ANSI_RESET);
-                            islandRef = -1;
+                            System.out.println(ANSI_RED + SPACE + "Error, enter an existing color" + ANSI_RESET);
+                            color = null;
                         }
                     }
                 }
-            }
-            accepted = proxy.moveStudent(colorInt, where, islandRef);
-            if (accepted.equals("transfer complete")) constants.setStudentMoved(true);
-            else if (accepted.equals("move not allowed")) {
-                System.out.println(ANSI_RED + SPACE + "Move not allowed" + ANSI_RESET);
-            }
-        }while(accepted.equals("move not allowed"));
+                while (where == null) {
+                    synchronized (lock) {
+                        System.out.println();
+                        System.out.print(SPACE + "Where do you want to move the student? School or Island ");
+                        where = readNext();
+                        if (!where.equalsIgnoreCase("island") && !where.equalsIgnoreCase("school")) {
+                            System.out.println();
+                            System.out.println(ANSI_RED + SPACE + "Error, insert school or island" + ANSI_RESET);
+                            where = null;
+                        }
+                    }
+                }
+                System.out.println();
+                if (where.equalsIgnoreCase("island")) {
+                    synchronized (lock) {
+                        while (islandRef == -1) {
+                            System.out.print(SPACE + "Which island? insert the number ");
+                            String intString = readNext();
+                            islandRef = Integer.parseInt(intString);
+                            islandRef = islandRef - 1;
+                            System.out.println();
+                            if (islandRef < 0 || islandRef >= view.getIslandSize()) {
+                                System.out.println();
+                                System.out.println(ANSI_RED + SPACE + "Error, insert an existing island" + ANSI_RESET);
+                                islandRef = -1;
+                            }
+                        }
+                    }
+                }
+                accepted = proxy.moveStudent(colorInt, where, islandRef);
+                if (accepted.equals("transfer complete")) constants.setStudentMoved(true);
+                else if (accepted.equals("move not allowed")) {
+                    System.out.println(ANSI_RED + SPACE + "Move not allowed" + ANSI_RESET);
+                    moveNotAllowed = true;
+                }
+            }while(moveNotAllowed);
         } catch (IOException | ClassNotFoundException e) {
             System.out.println();
             System.out.println(ANSI_RED + SPACE + "Error, try again" + ANSI_RESET);
+            try {
+                turn();
+            } catch (IOException | ClassNotFoundException ex) {}
         } catch (NumberFormatException e) {
             System.out.println();
             System.out.println(ANSI_RED + SPACE + "Error, insert a number" + ANSI_RESET);
+            try {
+                turn();
+            } catch (IOException | ClassNotFoundException ex) {}
         }
     }
 
@@ -653,18 +659,12 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
 
     private void turn() throws IOException, ClassNotFoundException {
         if(!constants.isStartGame()) constants.setStartGame(true);
-        System.out.println(constants.isSpecialUsed());
-        System.out.println("");
-        if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) {
-            useSpecial();
-        }
+        if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) useSpecial();
         phaseHandler(constants.lastPhase());
     }
 
     private void phaseHandler(String phase) throws IOException, ClassNotFoundException {
-        if(phase.equals("PlayCardAnswer")) {
-            playCard();
-        }
+        if(phase.equals("PlayCardAnswer")) playCard();
         else if(!constants.isActionPhaseStarted()) {
             constants.setActionPhaseStarted(proxy.startActionPhase());
         }

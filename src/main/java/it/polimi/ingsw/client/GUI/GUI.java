@@ -271,8 +271,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
             case "PlanningPhase" -> {
                 //initializeMainService.cancel();
-                SpecialsSceneController specialsSceneController = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
-                specialsSceneController.setConfirmButton(false);
                 //PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
                 if(planningPhaseService.getState().equals(Worker.State.READY))
                     planningPhaseService.start();
@@ -293,8 +291,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     actionPhaseService.restart();
             }
             case "StartTurnAnswer" -> {
-                SpecialsSceneController specialsSceneController = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
-                specialsSceneController.setConfirmButton(true);
                 controller.setCurrentPlayer();
                 setConstants("ActionPhase");
             }
