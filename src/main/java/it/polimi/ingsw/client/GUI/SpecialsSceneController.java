@@ -19,18 +19,18 @@ import java.util.HashMap;
  */
 public class SpecialsSceneController implements SceneController{
 
-    private final String special1 = "/graphics/specials/CarteTOT_front1.jpg";
-    private final String special2 = "/graphics/specials/CarteTOT_front2.jpg";
-    private final String special3 = "/graphics/specials/CarteTot_front3.jpg";
-    private final String special4 = "/graphics/specials/CarteTot_front4.jpg";
-    private final String special5 = "/graphics/specials/CarteTot_front5.jpg";
-    private final String special6 = "/graphics/specials/CarteTot_front6.jpg";
-    private final String special7 = "/graphics/specials/CarteTot_front7.jpg";
-    private final String special8 = "/graphics/specials/CarteTot_front8.jpg";
-    private final String special9 = "/graphics/specials/CarteTot_front9.jpg";
-    private final String special10 = "/graphics/specials/CarteTot_front10.jpg";
-    private final String special11 = "/graphics/specials/CarteTot_front11.jpg";
-    private final String special12 = "/graphics/specials/CarteTot_front12.jpg";
+    private final String SPECIAL1 = "/graphics/specials/CarteTOT_front1.jpg";
+    private final String SPECIAL2 = "/graphics/specials/CarteTOT_front2.jpg";
+    private final String SPECIAL3 = "/graphics/specials/CarteTot_front3.jpg";
+    private final String SPECIAL4 = "/graphics/specials/CarteTot_front4.jpg";
+    private final String SPECIAL5 = "/graphics/specials/CarteTot_front5.jpg";
+    private final String SPECIAL6 = "/graphics/specials/CarteTot_front6.jpg";
+    private final String SPECIAL7 = "/graphics/specials/CarteTot_front7.jpg";
+    private final String SPECIAL8 = "/graphics/specials/CarteTot_front8.jpg";
+    private final String SPECIAL9 = "/graphics/specials/CarteTot_front9.jpg";
+    private final String SPECIAL10 = "/graphics/specials/CarteTot_front10.jpg";
+    private final String SPECIAL11 = "/graphics/specials/CarteTot_front11.jpg";
+    private final String SPECIAL12 = "/graphics/specials/CarteTot_front12.jpg";
     private final String GREENSTUDENT = "/graphics/wooden_pieces/greenStudent3D.png";
     private final String REDSTUDENT = "/graphics/wooden_pieces/redStudent3D.png";
     private final String YELLOWSTUDENT = "/graphics/wooden_pieces/yellowStudent3D.png";
@@ -139,7 +139,7 @@ public class SpecialsSceneController implements SceneController{
         stage.close();
         questionLabel.setText("Do you want to use a special card?");
         questionLabel.setVisible(true);
-        confirmButton.setVisible(true);
+        confirmButton.setVisible(false);
         special1View.setVisible(true);
         special1Button.setVisible(true);
         label2.setVisible(false);
@@ -177,19 +177,20 @@ public class SpecialsSceneController implements SceneController{
      * @return return the image.
      */
     private Image specialFactory(int name){
+        Image specialImage = null;
         switch (name){
-            case 1 -> {return new Image(special1);}
-            case 2 -> {return new Image(special2);}
-            case 3 -> {return new Image(special3);}
-            case 4 -> {return new Image(special4);}
-            case 5 -> {return new Image(special5);}
-            case 6 -> {return new Image(special6);}
-            case 7 -> {return new Image(special7);}
-            case 8 -> {return new Image(special8);}
-            case 9 -> {return new Image(special9);}
-            case 10 -> {return new Image(special10);}
-            case 11 -> {return new Image(special11);}
-            case 12 -> {return new Image(special12);}
+            case 1 -> specialImage = new Image(SPECIAL1);
+            case 2 -> specialImage = new Image(SPECIAL2);
+            case 3 -> specialImage = new Image(SPECIAL3);
+            case 4 -> specialImage = new Image(SPECIAL4);
+            case 5 -> specialImage = new Image(SPECIAL5);
+            case 6 -> specialImage = new Image(SPECIAL6);
+            case 7 -> specialImage = new Image(SPECIAL7);
+            case 8 -> specialImage = new Image(SPECIAL8);
+            case 9 -> specialImage = new Image(SPECIAL9);
+            case 10 -> specialImage = new Image(SPECIAL10);
+            case 11 -> specialImage = new Image(SPECIAL11);
+            case 12 -> specialImage = new Image(SPECIAL12);
         }
         return null;
     }
@@ -294,7 +295,7 @@ public class SpecialsSceneController implements SceneController{
      */
     @FXML
     public void confirmPressed(ActionEvent event) {
-        if(specialChosen != -1 && gui.constants.isActionPhaseStarted() && !gui.constants.isSpecialUsed()){
+        if(specialChosen != -1 && gui.constants.isCardPlayed()){
             errorMessage.setVisible(false);
             boolean result = false;
             try {
@@ -322,7 +323,7 @@ public class SpecialsSceneController implements SceneController{
      */
     @FXML
     public void confirmSpecialButtonPressed(ActionEvent event) {
-        if(specialChosen==7){
+        if(specialChosen==7 && !studentsChosen.isEmpty()){
             addButton.setVisible(false);
             System.out.println(studentsChosen);
             Stage stage = (Stage) confirmButton.getScene().getWindow();

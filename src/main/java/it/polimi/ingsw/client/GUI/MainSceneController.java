@@ -276,6 +276,7 @@ public class MainSceneController implements SceneController {
                         if (result.equalsIgnoreCase("ok")) {
                             errorLabel.setVisible(false);
                         } else if (result.equalsIgnoreCase("transfer complete")) {
+                            currentStudentColor=-1;
                             gui.setConstants("StudentsMoved");
                             setActionAllowed(1);
                         } else {
@@ -342,11 +343,14 @@ public class MainSceneController implements SceneController {
                     try {
                         String result = proxy.moveStudent(currentStudentColor, "island", islandRef);
                         if (result.equalsIgnoreCase("ok")) {
+                            currentStudentColor=-1;
                             errorLabel.setVisible(false);
                         } else if (result.equalsIgnoreCase("transfer complete")) {
+                            currentStudentColor=-1;
                             gui.setConstants("StudentsMoved");
                             setActionAllowed(1);
                         } else {
+                            currentStudentColor=-1;
                             errorLabel.setText("Error, move not allowed!");
                             errorLabel.setVisible(true);
                         }
