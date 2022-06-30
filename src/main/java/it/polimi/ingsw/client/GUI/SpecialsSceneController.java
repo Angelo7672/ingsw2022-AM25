@@ -143,15 +143,15 @@ public class SpecialsSceneController implements SceneController{
         special1View.setVisible(true);
         special1Button.setVisible(true);
         label2.setVisible(false);
-        if(!special1Cost.toString().equals("0")) {
+        if(!special1Cost.getText().equals("0")) {
             special1Cost.setVisible(true);
             coinSpecial1.setVisible(true);
         }
-        if(!special2Cost.toString().equals("0")) {
+        if(!special2Cost.getText().equals("0")) {
             special2Cost.setVisible(true);
             coinSpecial2.setVisible(true);
         }
-        if(!special3Cost.toString().equals("0")) {
+        if(!special3Cost.getText().equals("0")) {
             special3Cost.setVisible(true);
             coinSpecial3.setVisible(true);
         }
