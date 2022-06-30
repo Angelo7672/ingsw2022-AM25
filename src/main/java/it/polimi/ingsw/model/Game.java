@@ -256,11 +256,13 @@ public class Game implements GameManager{
      * @see RoundStrategy
      * @see RoundSpecial2
      * with their moveStudent.
+     * @throws NotAllowedException when colour does not exist.
      */
     @Override
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{
         boolean stop = false;
 
+        if(colour < 0 || colour > 4) throw new NotAllowedException();
         if(!expertMode) roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
         else {
             for (int i = 0; i < 3 && !stop; i++)
@@ -270,7 +272,6 @@ public class Game implements GameManager{
                 }
             if (!stop) roundStrategies.get(indexSpecial).moveStudent(playerRef, colour, inSchool, islandRef);
         }
-        //setSpecial(0,-1);
     }
 
     /**
