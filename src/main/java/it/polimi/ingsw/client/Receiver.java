@@ -29,12 +29,14 @@ public class Receiver extends Thread {
     private final View view;
     private boolean initializedView;
     private ArrayList<Answer> viewAnswer;
+    private int pingCounter;
 
-    public Receiver(Object initializedViewLock, Socket socket, View view) throws IOException {
+    public Receiver(Object initializedViewLock, Socket socket, View view, int pingCounter) throws IOException {
         this.socket = socket;
         this.inputStream = new ObjectInputStream(this.socket.getInputStream());
         //this.socket.setSoTimeout(15000);
         this.view = view;
+        this.pingCounter = pingCounter;
         answersList = new ArrayList<>();
         viewAnswer = new ArrayList<>();
         AnswerTmpLock = new Object();
@@ -43,7 +45,6 @@ public class Receiver extends Thread {
         AnswerViewLock = new Object();
         specialLock = new Object();
         disconnected = false;
-
     }
 
     public void setViewInitialized(){

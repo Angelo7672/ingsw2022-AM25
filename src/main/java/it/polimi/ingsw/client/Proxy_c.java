@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListener {
+public class Proxy_c implements Exit, DisconnectedListener {
     private Receiver receiver;
 
     private final ObjectOutputStream outputStream;
@@ -24,6 +24,8 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
     private Thread ping;
     private final Object initializedViewLock;
     private boolean disconnected;
+    private int pingCounter;
+    private ServerOfflineListener serverOfflineListener;
 
     /**
      * Constructor initialized all the class variable and set some listener.
@@ -36,10 +38,10 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
         startPing();
         initializedViewLock = new Object();
         view = new View();
-        receiver = new Receiver(initializedViewLock, socket, view);
+        receiver = new Receiver(initializedViewLock, socket, view, pingCounter);
         receiver.start();
         setDisconnectedListener(this);
-        setServerOfflineListener(this);
+        //setServerOfflineListener(this);
 
     }
 
@@ -271,11 +273,14 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
         while (!disconnected) {
             try {
                 Thread.sleep(5000);
+                pingCounter++;
+                if(pingCounter == 3) {
+                    disconnected = true;
+                    outputStream.close();
+                    serverOfflineListener.notifyServerOffline();
+                }
                 send(new PingMessage());
-            } catch (IOException e) {
-                System.err.println("io");
-            } catch (InterruptedException e){
-
+            } catch (IOException | InterruptedException e) {
             }
         }
         });
@@ -289,17 +294,12 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
 
     @Override
     public void setServerOfflineListener(ServerOfflineListener serverOfflineListener) {
-        receiver.setServerOfflineListener(serverOfflineListener);
+        //receiver.setServerOfflineListener(serverOfflineListener);
+        this.serverOfflineListener =serverOfflineListener;
     }
 
     @Override
     public void notifyDisconnected() throws IOException {
-        disconnected = true;
-        outputStream.close();
-    }
-
-    @Override
-    public void notifyServerOffline() throws IOException {
         disconnected = true;
         outputStream.close();
     }
