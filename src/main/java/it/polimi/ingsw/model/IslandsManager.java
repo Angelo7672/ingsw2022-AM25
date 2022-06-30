@@ -195,10 +195,11 @@ public class IslandsManager {
             islands.get(pos).incTowerValue(islands.get(posTemp).getTowerValue()); //tower value increase
             this.towersListener.notifyTowersChange(1,pos, islands.get(pos).getTowerValue());
             islands.remove(posTemp); //island delete
-
             this.islandListener.notifyIslandChange(posTemp);
+
             if(motherPos>=posTemp){
                 motherPos = circularArray(pos, -1);
+                motherPositionListener.notifyMotherPosition(motherPos);
             }
             return true;
         }

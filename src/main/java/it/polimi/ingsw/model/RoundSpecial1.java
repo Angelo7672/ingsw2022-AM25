@@ -28,9 +28,9 @@ public class RoundSpecial1 extends RoundStrategy{
     @Override
     public boolean effect(int islandRef, int color){
         int extracted = -1;
-        if(getStudents(color) > 0){
+        if(color < 5 && color > -1 && getStudents(color) > 0 && getStudents(color) > 0){
             if(!bag.checkVictory()) extracted = bag.extraction();
-            special.effect(color, extracted);   //color is the student I remove, extracted is the which one I add
+            special.effect(color, extracted);   //color is the student I remove, extracted is the one I add
             specialStudentsListener.specialStudentsNotify(1, color, getStudents(color));
             if(!bag.checkVictory()) specialStudentsListener.specialStudentsNotify(1, extracted, getStudents(extracted));
             islandsManager.incStudent(islandRef, color, 1);
