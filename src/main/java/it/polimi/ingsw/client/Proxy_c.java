@@ -12,6 +12,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListener, SoldOutListener {
     private Receiver receiver;
 
@@ -23,6 +26,11 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
     private final Object initializedViewLock;
     private boolean disconnected;
 
+    /**
+     * Constructor initialized all the class variable and set some listener.
+     * @param socket is the socket create in Client.
+     * @throws IOException
+     */
     public Proxy_c(Socket socket) throws IOException{
         this.socket = socket;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -37,6 +45,11 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
 
     }
 
+    /**
+     * Send a message to server to comunicate that client is ready for login.
+     * @return true if server is ready for client to login.
+     * @throws IOException
+     */
     public boolean readyForLogin() throws IOException {
         send(new GenericMessage("Ready for login!"));
         tempObj = receiver.receive();
@@ -45,21 +58,13 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
 
     }
 
-    @Override
-    public void setDisconnectedListener(DisconnectedListener disconnectedListener) {
-        receiver.setDisconnectedListener(disconnectedListener);
-    }
-
-    @Override
-    public void setServerOfflineListener(ServerOfflineListener serverOfflineListener) {
-        receiver.setServerOfflineListener(serverOfflineListener);
-    }
-
-    @Override
-    public void setSoldOutListener(SoldOutListener soldOutListener) throws IOException {
-        receiver.setSoldOutListener(soldOutListener);
-    }
-
+    /**
+     * Send a message to server to comunicate that client is ready for login. Server answers with the action tha client have to do.
+     * It depends on what the player number is.
+     * @return String which corresponds to the actions.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public String first() throws IOException, ClassNotFoundException {
         send(new GenericMessage("Ready for login!"));
         tempObj = receiver.receive();
@@ -70,10 +75,19 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
         else return "Not first";
     }
 
+    /**
+     * @return last message that proxy_c received.
+     */
     public Answer getMessage(){
         return tempObj;
     }
 
+    /**
+     *
+     * @param decision
+     * @return
+     * @throws IOException
+     */
     public boolean savedGame(String decision) throws IOException {
         send(new GenericMessage(decision));
         tempObj = receiver.receive();
@@ -268,6 +282,21 @@ public class Proxy_c implements Exit, ServerOfflineListener, DisconnectedListene
         }
         });
         ping.start();
+    }
+
+    @Override
+    public void setDisconnectedListener(DisconnectedListener disconnectedListener) {
+        receiver.setDisconnectedListener(disconnectedListener);
+    }
+
+    @Override
+    public void setServerOfflineListener(ServerOfflineListener serverOfflineListener) {
+        receiver.setServerOfflineListener(serverOfflineListener);
+    }
+
+    @Override
+    public void setSoldOutListener(SoldOutListener soldOutListener) throws IOException {
+        receiver.setSoldOutListener(soldOutListener);
     }
 
     @Override

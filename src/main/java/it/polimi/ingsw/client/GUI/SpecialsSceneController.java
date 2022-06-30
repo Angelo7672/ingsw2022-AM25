@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * SpecialsSceneController is the controller of the specials scene.
+ */
 public class SpecialsSceneController implements SceneController{
 
     private final String special1 = "graphics/specials/CarteTOT_front1.jpg";
@@ -77,6 +80,11 @@ public class SpecialsSceneController implements SceneController{
         studentChosen=-1;
     }
 
+    /**
+     * Initialized scene with specials list and their cost.
+     * @param specialsList is an ArrayList with the 3 specials extracted.
+     * @param cost is an ArraList with the cost of each special.
+     */
     public void initializedSpecialsScene(ArrayList<Integer> specialsList, ArrayList<Integer> cost){
         this.specials = new HashMap<>();
         this.specialsName = new ArrayList<>();
@@ -114,10 +122,24 @@ public class SpecialsSceneController implements SceneController{
         special3Cost.setVisible(false);
     }
 
+    /**
+     * if the action phase of the player is started the confirm button is visible, else it's set as invisible.
+     * @param actionPhase true if action phase is started.
+     */
+    protected void setConfirmButton(boolean actionPhase){
+        if(actionPhase) confirmButton.setVisible(true);
+        else confirmButton.setVisible(false);
+    }
+
+    /**
+     * After the use of some specials who change images they have to be reset with this method.
+     */
     public void resetScene(){
         Stage stage = (Stage) confirmButton.getScene().getWindow();
         stage.close();
-        confirmButton.setVisible(true);
+        questionLabel.setText("Do you want to use a special card?");
+        questionLabel.setVisible(true);
+        confirmButton.setVisible(false);
         special1View.setVisible(true);
         special1Button.setVisible(true);
         label2.setVisible(false);
@@ -139,13 +161,21 @@ public class SpecialsSceneController implements SceneController{
         special3Button.setVisible(true);
         addButton.setVisible(false);
         confirmSpecialButton.setVisible(false);
+        errorMessage.setVisible(false);
         specialChosen = -1;
         studentChosen = -1;
         for (int i = 0; i < 3; i++) {
             if(specialsName.get(i)==1 || specialsName.get(i)==7 || specialsName.get(i)==11) showStudents(i);
+            else if(specialsName.get(i)==5) showNoEntry(i);
         }
+
     }
 
+    /**
+     * return the image of the special.
+     * @param name is the number of the special.
+     * @return return the image.
+     */
     private Image specialFactory(int name){
         switch (name){
             case 1 -> {return new Image(special1);}
@@ -164,6 +194,11 @@ public class SpecialsSceneController implements SceneController{
         return null;
     }
 
+    /**
+     * Set the new cost of a special.
+     * @param specialIndex is the index of the ArrayList of the special.
+     * @param newValue is the new cost.
+     */
     protected void setCoins(int specialIndex, int newValue){
         if(newValue-specialsCost.get(specialIndex)>0) {
             if (specialIndex == 0) {
@@ -188,6 +223,12 @@ public class SpecialsSceneController implements SceneController{
         }
     }
 
+    /**
+     * Set the new student of a special.
+     * @param specialIndex is the index of the ArrayList of the special.
+     * @param color is the color of the new students.
+     * @param value is the new number of students.
+     */
     protected void setStudent(int specialIndex, int color, int value){
         if(specialsName.indexOf(specialIndex)==0){
             Label student = (Label) paneSpecial1.getChildren().get(color+5);
@@ -203,11 +244,21 @@ public class SpecialsSceneController implements SceneController{
         }
     }
 
-    public void setNoEntry(int special, int value){
-        if(specialsName.indexOf(special)==0) noEntry1.setText(String.valueOf(value));
-        else if(specialsName.indexOf(special)==1) noEntry2.setText(String.valueOf(value));
-        else if(specialsName.indexOf(special)==2) noEntry3.setText(String.valueOf(value));
+    /**
+     * Set the new value of the No Entry tiles.
+     * @param special is the index of the ArrayList of the special.
+     * @param value is the new number of the No Entry tiles.
+     */
+    protected void setNoEntry(int special, int value){
+        if(special==0) noEntry1.setText(String.valueOf(value));
+        else if(special==1) noEntry2.setText(String.valueOf(value));
+        else if(special==2) noEntry3.setText(String.valueOf(value));
     }
+
+    /**
+     * After clicking a special this method set the specialChosen variable with his name.
+     * @param event is the click on a special.
+     */
     @FXML
     public void setSpecialChosen(ActionEvent event){
         if(event.getSource()==special1Button){
@@ -219,6 +270,10 @@ public class SpecialsSceneController implements SceneController{
         }
     }
 
+    /**
+     * After clicking a student this method set the studentChosen variable with his color.
+     * @param event is the click on a student.
+     */
     @FXML
     public void setStudentColor(ActionEvent event){
         if(event.getSource()==paneSpecial1.getChildren().get(0) || event.getSource()==paneSpecial2.getChildren().get(0) || event.getSource()==paneSpecial3.getChildren().get(0))
@@ -233,6 +288,10 @@ public class SpecialsSceneController implements SceneController{
             studentChosen = 4;
     }
 
+    /**
+     * When confirm button is clicked the method call the proxy to check if player can use that special.
+     * @param event is the click on confirm button.
+     */
     @FXML
     public void confirmPressed(ActionEvent event) {
         if(specialChosen != -1 && gui.constants.isCardPlayed()){
@@ -256,6 +315,11 @@ public class SpecialsSceneController implements SceneController{
         else showErrorMessage();
     }
 
+    /**
+     * When confirm special button is clicked the method call the proxy to check if move is allowed or call
+     * a gui method to continue to use the special in other scene.
+     * @param event is the click on confirm special button.
+     */
     @FXML
     public void confirmSpecialButtonPressed(ActionEvent event) {
         if(specialChosen==7 && !studentsChosen.isEmpty()){
@@ -287,6 +351,10 @@ public class SpecialsSceneController implements SceneController{
         else showErrorMessage();
     }
 
+    /**
+     * When add button is clicked the method add the student chosen to an ArrayList.
+     * @param event is the click on add button.
+     */
     @FXML
     public void addButtonPressed(ActionEvent event){
         if(studentChosen!=-1 && studentsChosen.size()<3) {
@@ -297,6 +365,11 @@ public class SpecialsSceneController implements SceneController{
 
     }
 
+    /**
+     * Used to create a String with chosen color.
+     * @param students ArrayList with students chosen.
+     * @return the string.
+     */
     private String printArrayColor(ArrayList<Integer> students){
         String string=" ";
         String color=" ";
@@ -312,18 +385,22 @@ public class SpecialsSceneController implements SceneController{
         return string;
     }
 
+    /**
+     * Call a gui method to continue to use a special on another scene or set SpecialsScene to use it here.
+     * @param special is the special chosen.
+     */
     private void useSpecial(int special){
         if(special == 1) {
-            //sposta studenti da carta a isola
             disableImage(specialsName.indexOf(1));
             confirmSpecialButton.setVisible(true);
             questionLabel.setText("Which student do you want to move?");
         }
         else if(special == 3 || special == 4 || special == 5 || special == 9 || special == 12){
+            Stage stage = (Stage) confirmButton.getScene().getWindow();
+            stage.close();
             gui.useSpecial(special);
         }
         else if(special == 7){
-            //scegli studenti da carta a entrata
             disableImage(specialsName.indexOf(7));
             confirmSpecialButton.setVisible(true);
             addButton.setVisible(true);
@@ -332,17 +409,21 @@ public class SpecialsSceneController implements SceneController{
             label2.setText("Students moved "+studentsChosen.size()+" of 3:");
         }
         else if(special == 10){
-            //sposta studenti da entrata a tavolo
+            Stage stage = (Stage) confirmButton.getScene().getWindow();
+            stage.close();
             gui.useSpecial(special);
         }
         else if(special == 11){
-            //da carta a sala
             disableImage(specialsName.indexOf(11));
             confirmSpecialButton.setVisible(true);
             questionLabel.setText("Which student do you want to move?");
         }
     }
 
+    /**
+     * Make students of specials visible.
+     * @param specialIndex is the index of the special in the ArrayList.
+     */
     private void showStudents(int specialIndex){
         if(specialIndex==0){
             paneSpecial1.setVisible(true);
@@ -354,6 +435,30 @@ public class SpecialsSceneController implements SceneController{
             paneSpecial3.setVisible(true);
         }
     }
+
+    /**
+     * Make No Entry tiles visible.
+     * @param specialIndex is the index of the special in the ArrayList.
+     */
+    private void showNoEntry(int specialIndex){
+        if(specialIndex==0){
+            noEntry1.setVisible(true);
+            noEntryView1.setVisible(true);
+        }
+        else if(specialIndex==1){
+            noEntry2.setVisible(true);
+            noEntryView2.setVisible(true);
+        }
+        else if(specialIndex==2){
+            noEntry3.setVisible(true);
+            noEntryView3.setVisible(true);
+        }
+    }
+
+    /**
+     * Disable images of specials not chosen.
+     * @param special is the index of the special in the ArrayList.
+     */
     private void disableImage(int special){
         if(special!=0){
             confirmButton.setVisible(false);
@@ -362,6 +467,8 @@ public class SpecialsSceneController implements SceneController{
             special1Button.setVisible(false);
             coinSpecial1.setVisible(false);
             paneSpecial1.setVisible(false);
+            noEntryView1.setVisible(false);
+            noEntry1.setVisible(false);
         }
         if(special!=1){
             confirmButton.setVisible(false);
@@ -370,6 +477,8 @@ public class SpecialsSceneController implements SceneController{
             special2Button.setVisible(false);
             coinSpecial2.setVisible(false);
             paneSpecial2.setVisible(false);
+            noEntryView2.setVisible(false);
+            noEntry2.setVisible(false);
         }
         if(special!=2){
             confirmButton.setVisible(false);
@@ -378,9 +487,14 @@ public class SpecialsSceneController implements SceneController{
             special3Button.setVisible(false);
             coinSpecial3.setVisible(false);
             paneSpecial3.setVisible(false);
+            noEntryView3.setVisible(false);
+            noEntry3.setVisible(false);
         }
     }
 
+    /**
+     * Make error message visible.
+     */
     private void showErrorMessage(){
         errorMessage.setVisible(true);
     }

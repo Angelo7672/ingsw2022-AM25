@@ -9,6 +9,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
+/**
+ * Special9or12Controller is the controller of the scene used by special 9 and special 12.
+ */
 public class Special9or12SceneController implements SceneController{
 
     @FXML private Button blueButton;
@@ -28,10 +32,19 @@ public class Special9or12SceneController implements SceneController{
         this.special = special;
     }
 
+    /**
+     * Make error message visible.
+     */
     private void showErrorMessage(){
         errorMessage.setVisible(true);
     }
 
+
+    /**
+     * Call proxy witch color chosen, if the effect of the special is used then it calls a method of gui to set special as used,
+     * else it calls specialNotAllowed.
+     * @param event is the click on the blue button.
+     */
     @FXML
     void blueButtonPressed(ActionEvent event) {
         try {
@@ -43,6 +56,11 @@ public class Special9or12SceneController implements SceneController{
         }catch (IOException e){}
     }
 
+    /**
+     * Call proxy witch color chosen, if the effect of the special is used then it calls a method of gui to set special as used,
+     * else it calls specialNotAllowed.
+     * @param event is the click on the green button.
+     */
     @FXML
     void greenButtonPressed(ActionEvent event) {
         try {
@@ -55,6 +73,11 @@ public class Special9or12SceneController implements SceneController{
         }catch (IOException e){}
     }
 
+    /**
+     * Call proxy witch color chosen, if the effect of the special is used then it calls a method of gui to set special as used,
+     * else it calls specialNotAllowed.
+     * @param event is the click on the pink button.
+     */
     @FXML
     void pinkButtonPressed(ActionEvent event) {
         try {
@@ -67,6 +90,11 @@ public class Special9or12SceneController implements SceneController{
         }catch (IOException e){}
     }
 
+    /**
+     * Call proxy witch color chosen, if the effect of the special is used then it calls a method of gui to set special as used,
+     * else it calls specialNotAllowed.
+     * @param event is the click on the red button.
+     */
     @FXML
     void redButtonPressed(ActionEvent event) {
         try {
@@ -79,6 +107,11 @@ public class Special9or12SceneController implements SceneController{
         }catch (IOException e){}
     }
 
+    /**
+     * Call proxy witch color chosen, if the effect of the special is used then it calls a method of gui to set special as used,
+     * else it calls specialNotAllowed.
+     * @param event is the click on the yellow button.
+     */
     @FXML
     void yellowButtonPressed(ActionEvent event) {
         try {
@@ -92,6 +125,10 @@ public class Special9or12SceneController implements SceneController{
         }catch (IOException e){}
     }
 
+
+    /**
+     * Show the error label, close the scene and call a gui's method.
+     */
     private void specialNotAllowed(){
         showErrorMessage();
         Stage stage = (Stage) greenButton.getScene().getWindow();

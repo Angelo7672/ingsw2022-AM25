@@ -145,12 +145,7 @@ public class MainSceneController implements SceneController {
     }
 
     public void useSpecialButtonPressed() {
-        if (!gui.constants.isSpecialUsed()) {
-            gui.loadScene(SPECIALS);
-        } else {
-            errorLabel.setText("Error, move not allowed!");
-            errorLabel.setVisible(true);
-        }
+        gui.loadScene(SPECIALS);
     }
 
     private class StudentsClickHandler implements EventHandler<MouseEvent> {
