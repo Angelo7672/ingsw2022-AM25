@@ -290,11 +290,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                 }else System.out.println("errore! "+playerRef); //TODO: ovviamente da cambiare
             }
         }catch (SocketException socketException){ clientConnectionExpired();
-        }catch (IOException | ClassNotFoundException e){
-            System.err.println("Client disconnected!");
-            connectionExpired = true;
-            server.exitError();
-        }
+        }catch (IOException | ClassNotFoundException e){ clientConnectionExpired(); }
     }
 
     /**
@@ -348,7 +344,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     private void clientConnectionExpired(){
         System.err.println("Client disconnected!");
         connectionExpired = true;
-        proxy.clientDisconnected(playerRef);
+        proxy.clientDisconnected();
         server.exitError();
     }
 

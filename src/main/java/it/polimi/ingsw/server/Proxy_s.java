@@ -87,6 +87,7 @@ public class Proxy_s implements Exit {
             server.startGame();
         } catch (IOException | InterruptedException e) {
             System.err.println("Connection lost with a client!");
+            clientDisconnected();
             server.exitError();
         }
     }
@@ -312,7 +313,7 @@ public class Proxy_s implements Exit {
     /**
      * Send at every VirtualClient the class expert game with special characters of this game.
      * @see VirtualClient
-     * @param expertGame exepert class;
+     * @param expertGame expert class;
      */
     @Override
     public void setExpertGame(ExpertGame expertGame){
@@ -380,11 +381,10 @@ public class Proxy_s implements Exit {
     /**
      * Notify all clients (except the disconnected one) that a client has disconnected.
      * @see VirtualClient
-     * @param clientLost client reference to which not to send the message;
      */
-    public void clientDisconnected(int clientLost){
-        for(int i = 0; i < user.size(); i++)
-            if(i != clientLost) user.get(i).closeSocket();
+    public void clientDisconnected(){
+        for (VirtualClient virtualClient : user)
+            virtualClient.closeSocket();
     }
 
     /**
