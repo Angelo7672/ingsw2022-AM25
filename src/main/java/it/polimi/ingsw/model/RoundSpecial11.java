@@ -30,7 +30,7 @@ public class RoundSpecial11 extends RoundStrategy{
     @Override
     public boolean effect(int playerRef, int color){
         int extracted = -1;
-        if(getStudents(color) > 0) {
+        if(color <5 && color > -1 && getStudents(color) > 0) {
             playerManager.setStudentEntrance(playerRef, color, 1);
             try { playerManager.transferStudent(playerRef, color, true, false);
             } catch (NotAllowedException notAllowedException){ return false; }

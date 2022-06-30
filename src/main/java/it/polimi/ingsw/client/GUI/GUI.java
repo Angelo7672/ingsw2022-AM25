@@ -363,7 +363,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         SpecialsSceneController specialsSceneController = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
         MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
         specialsSceneController.resetScene();
-        System.out.println(constants.lastPhase());
         if(constants.lastPhase().equals("ChooseCloud")) phaseHandler("ChooseCloud");
         else if(constants.lastPhase().equals("MoveStudent")) mainSceneController.setActionAllowed(0);
         else if(constants.lastPhase().equals("MoveMother")) mainSceneController.setActionAllowed(1);
@@ -456,7 +455,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 @Override
                 protected View call() throws Exception {
                     View view = proxy.startView();
-                    System.out.println("starting view");
                     view.setCoinsListener(gui);
                     view.setInhibitedListener(gui);
                     view.setIslandListener(gui);
@@ -466,7 +464,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     view.setStudentsListener(gui);
                     view.setTowersListener(gui);
                     view.setUserInfoListener(gui);
-                    System.out.println("userInfo listener is set");
                     view.setSpecialStudentsListener(gui);
                     view.setSpecialListener(gui);
                     view.setWinnerListener(gui);
@@ -558,7 +555,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 constants.setSpecialUsed(true);
                 SpecialsSceneController controller = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
                 controller.resetScene();
-                System.out.println(constants.lastPhase());
                 MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
                 if(constants.lastPhase().equals("ChooseCloud")) phaseHandler("ChooseCloud");
                 else if(constants.lastPhase().equals("MoveStudent")) mainSceneController.setActionAllowed(0);
@@ -646,7 +642,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     //restore
     @Override
     public void notifyHand(int playerRef, ArrayList<String> hand) {
-        CardsSceneController controller = (CardsSceneController) sceneControllersMap.get(MAIN);
     }
 
     @Override

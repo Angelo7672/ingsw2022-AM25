@@ -19,18 +19,18 @@ import java.util.HashMap;
  */
 public class SpecialsSceneController implements SceneController{
 
-    private final String special1 = "graphics/specials/CarteTOT_front1.jpg";
-    private final String special2 = "graphics/specials/CarteTOT_front2.jpg";
-    private final String special3 = "graphics/specials/CarteTot_front3.jpg";
-    private final String special4 = "graphics/specials/CarteTot_front4.jpg";
-    private final String special5 = "graphics/specials/CarteTot_front5.jpg";
-    private final String special6 = "graphics/specials/CarteTot_front6.jpg";
-    private final String special7 = "graphics/specials/CarteTot_front7.jpg";
-    private final String special8 = "graphics/specials/CarteTot_front8.jpg";
-    private final String special9 = "graphics/specials/CarteTot_front9.jpg";
-    private final String special10 = "graphics/specials/CarteTot_front10.jpg";
-    private final String special11 = "graphics/specials/CarteTot_front11.jpg";
-    private final String special12 = "graphics/specials/CarteTot_front12.jpg";
+    private final String special1 = "/graphics/specials/CarteTOT_front1.jpg";
+    private final String special2 = "/graphics/specials/CarteTOT_front2.jpg";
+    private final String special3 = "/graphics/specials/CarteTot_front3.jpg";
+    private final String special4 = "/graphics/specials/CarteTot_front4.jpg";
+    private final String special5 = "/graphics/specials/CarteTot_front5.jpg";
+    private final String special6 = "/graphics/specials/CarteTot_front6.jpg";
+    private final String special7 = "/graphics/specials/CarteTot_front7.jpg";
+    private final String special8 = "/graphics/specials/CarteTot_front8.jpg";
+    private final String special9 = "/graphics/specials/CarteTot_front9.jpg";
+    private final String special10 = "/graphics/specials/CarteTot_front10.jpg";
+    private final String special11 = "/graphics/specials/CarteTot_front11.jpg";
+    private final String special12 = "/graphics/specials/CarteTot_front12.jpg";
     private final String GREENSTUDENT = "/graphics/wooden_pieces/greenStudent3D.png";
     private final String REDSTUDENT = "/graphics/wooden_pieces/redStudent3D.png";
     private final String YELLOWSTUDENT = "/graphics/wooden_pieces/yellowStudent3D.png";
@@ -139,7 +139,7 @@ public class SpecialsSceneController implements SceneController{
         stage.close();
         questionLabel.setText("Do you want to use a special card?");
         questionLabel.setVisible(true);
-        confirmButton.setVisible(false);
+        confirmButton.setVisible(true);
         special1View.setVisible(true);
         special1Button.setVisible(true);
         label2.setVisible(false);
@@ -294,7 +294,7 @@ public class SpecialsSceneController implements SceneController{
      */
     @FXML
     public void confirmPressed(ActionEvent event) {
-        if(specialChosen != -1 && gui.constants.isCardPlayed()){
+        if(specialChosen != -1 && gui.constants.isActionPhaseStarted() && !gui.constants.isSpecialUsed()){
             errorMessage.setVisible(false);
             boolean result = false;
             try {
@@ -322,7 +322,7 @@ public class SpecialsSceneController implements SceneController{
      */
     @FXML
     public void confirmSpecialButtonPressed(ActionEvent event) {
-        if(specialChosen==7 && !studentsChosen.isEmpty()){
+        if(specialChosen==7){
             addButton.setVisible(false);
             System.out.println(studentsChosen);
             Stage stage = (Stage) confirmButton.getScene().getWindow();
