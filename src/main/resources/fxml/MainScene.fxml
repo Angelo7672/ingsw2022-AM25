@@ -951,6 +951,11 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
+                  <Label id="nickname3" fx:id="teamLabel2" contentDisplay="CENTER" layoutX="10.0" layoutY="163.0" prefHeight="22.0" prefWidth="85.0" text="BLACK" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="school2" prefHeight="200.0" prefWidth="200.0">
@@ -1252,6 +1257,11 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
+                  <Label id="nickname3" fx:id="teamLabel3" contentDisplay="CENTER" layoutX="10.0" layoutY="146.0" prefHeight="22.0" prefWidth="127.0" text="GREY" textAlignment="CENTER" textFill="#898989" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>
@@ -1396,12 +1406,12 @@
             </AnchorPane>
             <AnchorPane fx:id="userInfo1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="160.0" prefWidth="127.0">
                <children>
-                  <ImageView fx:id="character1" fitHeight="151.0" fitWidth="89.0" layoutX="18.0" layoutY="-11.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="36.05870056152344" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="-11.0">
+                  <ImageView fx:id="character1" fitHeight="151.0" fitWidth="89.0" layoutX="19.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="33.45870056152344" AnchorPane.leftAnchor="19.0" AnchorPane.topAnchor="14.0">
                      <image>
                         <Image url="@../graphics/character_wizard.png" />
                      </image>
                   </ImageView>
-                  <Label id="nickname1" layoutX="18.0" layoutY="124.0" text="nickname">
+                  <Label id="nickname1" layoutX="19.0" layoutY="149.0" text="nickname">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
@@ -1416,13 +1426,18 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
+                  <Label id="nickname3" fx:id="teamLabel1" contentDisplay="CENTER" layoutX="19.0" layoutY="165.0" prefHeight="22.0" prefWidth="127.0" text="WHITE" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>
       </HBox>
-      <VBox fx:id="player4Box" layoutX="1095.0" layoutY="97.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="170.0" AnchorPane.rightAnchor="5.0">
+      <VBox fx:id="player4Box" layoutX="1095.0" layoutY="79.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="538.0" prefWidth="170.0" AnchorPane.rightAnchor="5.0">
          <children>
-            <AnchorPane fx:id="userInfo4" prefHeight="157.0" prefWidth="240.0">
+            <AnchorPane fx:id="userInfo4" prefHeight="174.0" prefWidth="170.0">
                <children>
                   <ImageView fx:id="character4" fitHeight="151.0" fitWidth="89.0" layoutX="74.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="7.400000000000006">
                      <image>
@@ -1441,6 +1456,11 @@
                   <Label fx:id="coinLabel4" layoutY="45.0" text="coins: 1" visible="false">
                      <font>
                         <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label id="nickname3" fx:id="teamLabel4" contentDisplay="CENTER" layoutX="72.0" layoutY="141.0" prefHeight="22.0" prefWidth="85.0" text="BLACK" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
                </children>

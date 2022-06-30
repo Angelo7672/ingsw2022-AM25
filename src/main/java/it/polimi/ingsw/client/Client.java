@@ -80,7 +80,6 @@ public class Client {
                 Exit proxy = new Proxy_c(socket);
                 GUI gui = new GUI();
                 proxy.setDisconnectedListener(gui);
-                gui.setSocket(socket);
                 gui.setProxy(proxy);
                 System.out.println(SPACE + "GUI is starting...");
                 gui.main(null);

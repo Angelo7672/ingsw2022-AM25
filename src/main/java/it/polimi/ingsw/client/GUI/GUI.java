@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.PlayerConstants;
-import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.listeners.*;
 import it.polimi.ingsw.server.answer.SavedGameAnswer;
@@ -11,23 +10,16 @@ import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import org.iq80.snappy.Main;
-
-import javax.swing.*;
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.Set;
 
 /**
  * GUI class starts the graphical user interface. It loads all the scenes, receives the updates from the View class
@@ -42,20 +34,20 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     private static Exit proxy;
     private View view;
-    private Socket socket;
+    //private Socket socket;
     protected Stage primaryStage;
 
-    private Service<Boolean> planningPhaseService;
-    private Service<Boolean> actionPhaseService;
-    private Service<View> setViewService;
-    private Service<Boolean> initializeMainService;
-    private Service<String> getPhaseService;
+    private final Service<Boolean> planningPhaseService;
+    private final Service<Boolean> actionPhaseService;
+    private final Service<View> setViewService;
+    private final Service<Boolean> initializeMainService;
+    private final Service<String> getPhaseService;
 
     //protected boolean active;
-    protected boolean isMainSceneInitialized;
-    protected boolean areListenerSet;
+    //protected boolean isMainSceneInitialized;
+    //protected boolean areListenerSet;
     private boolean gameRestored;
-    private int actionAllowed;
+    //private int actionAllowed;
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String SAVED = "SavedScene.fxml";
     protected static final String LOGINRESTORE = "LoginRestoreScene.fxml";
@@ -68,22 +60,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected static final String SPECIALS9OR12 = "Special9or12Scene.fxml";
     protected static final String GAMEOVER = "GameOverScene.fxml";
     protected PlayerConstants constants;
-    //protected boolean isMainScene;
-
-    private ArrayList<int[]> initialStudentsIsland; //da togliere
-    private ArrayList<int []> initialStudentsEntrance;
-    private ArrayList<int []> initialStudentsCloud; //da togliere
-    private HashMap<Integer, Integer> initialTowersSchool; //da togliere
-    /**
-     * Maps the name of the fxml file with the scene itself
-     */
-    private HashMap<String, Scene> scenesMap;
-
-    /**
-     * Maps the name of the fxml file with its controller
-     */
+    private final HashMap<String, Scene> scenesMap;
     private HashMap<String, SceneController> sceneControllersMap;
-
+    /**
+     * Launches the GUI
+     * @param args of type String[]
+     */
     public static void main(String[] args) {
         launch();
     }
@@ -95,29 +77,23 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         scenesMap = new HashMap<>();
         sceneControllersMap = new HashMap<>();
         constants = new PlayerConstants();
-        isMainSceneInitialized = false;
-        actionAllowed = -1;
+        //isMainSceneInitialized = false;
+        //actionAllowed = -1;
 
         planningPhaseService= new PlanningPhaseService(this);
         actionPhaseService= new ActionPhaseService();
         setViewService = new SetViewService(this);
-        /**
-         * Sets what happens when the service succeeds: the view is set and the phaseHandler is called with the next phase
-         * @see SetViewService
-         */
-        setViewService.setOnSucceeded(workerStateEvent -> {
+
+        /*setViewService.setOnSucceeded(workerStateEvent -> {
             View view = setViewService.getValue();
             this.view = view;
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setView(view);
             phaseHandler("InitializeMain");
-        });
-        /**
-         * Sets what happens when the service succeeds: the view is set and the phaseHandler is called with the next phase
-         * @see InitializeMainService
-         */
+        });*/
+
         initializeMainService = new InitializeMainService();
-        initializeMainService.setOnSucceeded(workerStateEvent -> {
+       /* initializeMainService.setOnSucceeded(workerStateEvent -> {
             switchScene(MAIN);
             proxy.setView();
             if(!gameRestored){
@@ -127,27 +103,33 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 switchScene(MAIN);
                 getPhaseService.start();
             }
-        });
-
-        /**
-         * Sets what happens when the service succeeds: the last phase is recovered when restoring the game,
-         * and the correct methods are called
-         */
+        });*/
         getPhaseService = new GetPhaseService();
-        getPhaseService.setOnSucceeded(workerStateEvent -> {
+        /*getPhaseService.setOnSucceeded(workerStateEvent -> {
             String phase = getPhaseService.getValue();
             if(phase.equals("Play card!")) phaseHandler("PlayCardAnswer");
             else if(phase.equals("Start your Action Phase!")) {
                 setConstants("CardPlayed");
                 phaseHandler("StartTurnAnswer");
             }
-        });
+        });*/
 
     }
 
     /**
+     * Calls the first method of the game: based on the answer returned by proxy.first() calls the correct phase
+     * -SavedGame : a file save of an old game is present and the client is the first to connect, sets the scene to SAVED
+     * -SetupGame: the current client was the first to connect, so it can choose the number of players and game mode,
+     * sets the scene to SETUP
+     * -Not first: the client was not the first to connect, it can only choose its nickname and character,
+     * sets the scene to LOGIN
+     * -LoginRestore: there is a game save, but the client was not the first to connect, sets the scene to LOGINRESTORE
+     * @param stage of type Stage
      * @see Application#start(Stage)
-     * @param stage
+     * @see SavedSceneController
+     * @see LoginSceneController
+     * @see SetupSceneController
+     * @see LoginRestoreSceneController
      */
     @Override
     public void start(Stage stage){
@@ -164,32 +146,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 System.exit(-1);
             }
         });
-        isMainSceneInitialized = false;
-        areListenerSet = false;
         scenesSetup();
-
-        /*try {
-            proxy.setDisconnectedListener(this);
-            proxy.setServerOfflineListener(this);
-            proxy.setSoldOutListener(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
-        /**
-         * Calls the first method of the game: based on the answer returned by proxy.first() calls the correct phase
-         * -SavedGame : a file save of an old game is present and the client is the first to connect, sets the scene to SAVED
-         * -SetupGame: the current client was the first to connect, so it can choose the number of players and game mode,
-         * sets the scene to SETUP
-         * -Not first: the client was not the first to connect, it can only choose its nickname and character,
-         * sets the scene to LOGIN
-         * -LoginRestore: there is a game save, but the client was not the first to connect, sets the scene to LOGINRESTORE
-         * @see SavedSceneController
-         * @see LoginSceneController
-         * @see SetupSceneController
-         * @see LoginRestoreSceneController
-         */
         String result = null;
         try {
             result = proxy.first();
@@ -207,7 +164,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             primaryStage.setScene(scenesMap.get(SETUP));
             primaryStage.centerOnScreen();
         } else if (result.equals("Server Sold Out")) {
-            System.out.println(result);
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
             controller.setSoldOut();
             primaryStage.setScene(scenesMap.get(GAMEOVER));
@@ -221,7 +177,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         }
     }
     /**
-     * called when the GUI is laucnhed, loads all the scenes in advance and maps the name with the scene itself,
+     * Called when the GUI is launched, loads all the scenes in advance and maps the name with the scene itself,
      * and with its controller in two hashmaps. It also sets a reference to the GUI and Proxy in every controller
      */
     public void scenesSetup() {
@@ -265,13 +221,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
         switch (phase) {
             case "SetView" -> setViewService.start();
-            case "InitializeMain" -> {
-                //setViewService.cancel();
-                initializeMainService.start();
-            }
+            case "InitializeMain" -> initializeMainService.start();
+
             case "PlanningPhase" -> {
-                //initializeMainService.cancel();
-                //PlanningPhaseService planningPhaseService = new PlanningPhaseService(this);
                 if(planningPhaseService.getState().equals(Worker.State.READY))
                     planningPhaseService.start();
                 else
@@ -282,9 +234,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 cardsSceneController.enableConfirm();
                 loadScene(CARDS);
             }
-
             case "ActionPhase" -> {
-                //ActionPhaseService actionPhaseService= new ActionPhaseService();
                 if(actionPhaseService.getState().equals(Worker.State.READY))
                     actionPhaseService.start();
                 else
@@ -295,25 +245,25 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 setConstants("ActionPhase");
             }
             case "ChooseCloud" -> {
-                //specialSceneController.disableConfirm();
                 cloudsSceneController.enableConfirm();
                 loadScene(CLOUDS);
             }
         }
     }
-
-    /* action allowed specials:
-    special 1 -> 3
-    special 3 -> 4
-    special 4 -> 8
-    special 5 -> 5
-    special 7 -> 6
-    special 10 -> 7
-     */
-
     /**
-     *
-     * @param special
+     * Called from specialSceneController when a special card is chosen. It takes the number of the special
+     * and sets the action the user is allowed to make on the MainScene
+     * Actions allowed for the specials are:
+     * - special 1 : 3
+     * - special 3 : 4
+     * - special 5 : 5
+     * - special 7 : 6
+     * - special 10 : 7
+     * - special 4 : 8
+     * @param special of type int - the index of the special (out of 12)
+     * @see MainSceneController#setActionAllowed(int)
+     * @see SpecialsSceneController
+     * @see Special9or12SceneController
      */
     public void useSpecial(int special){
         if(special == 3 ){
@@ -338,23 +288,39 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             loadScene(SPECIALS9OR12);
         }
     }
-
-    //special 7
+    /**
+     * Called from specialSceneController when special card 7 is chosen.
+     * Sets the action the user is allowed to make on the MainScene
+     * @param special of type int - the index of the special (out of 12)
+     * @param cardStudents of type ArrayList<Integer> - the ArrayList of the students chosen form the card
+     */
     public void useSpecial(int special, ArrayList<Integer> cardStudents){
         if(special == 7){
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setFromCardToEntrance(cardStudents);
             controller.setActionAllowed(6);
         }
-
     }
-    //special 1
+    /**
+     * Called from specialSceneController when special card 1 is chosen.
+     * Sets the action the user is allowed to make on the MainScene
+     * @param special of type int - the index of the special (out of 12)
+     * @param color of type int - the index of the color of the student chosen from the card
+     */
     public void useSpecial(int special, int color){
-        MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-        controller.setCardStudent(color);
-        controller.setActionAllowed(3);
+        if(special == 1){
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.setCardStudent(color);
+            controller.setActionAllowed(3);
+        }
     }
-
+    /**
+     * Called from MainSceneController when the user tries to use a special card during its turn, but it receives "move not allowed" answer
+     * Resets the game to the last phase calling phaseHandler and setting the allowed action, resets the SpecialsScene
+     * @see SpecialsSceneController#resetScene()
+     * @see MainSceneController#setActionAllowed(int)
+     * @see GUI#phaseHandler(String)
+     */
     public void specialNotAllowed(){
         SpecialsSceneController specialsSceneController = (SpecialsSceneController) sceneControllersMap.get(SPECIALS);
         MainSceneController mainSceneController = (MainSceneController) sceneControllersMap.get(MAIN);
@@ -363,17 +329,26 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         else if(constants.lastPhase().equals("MoveStudent")) mainSceneController.setActionAllowed(0);
         else if(constants.lastPhase().equals("MoveMother")) mainSceneController.setActionAllowed(1);
     }
-
-
+    /**
+     * Sets the gameRestored to true, if the game is already initialized
+     */
     public void setGameRestored(){
         gameRestored = true;
     }
-
+    /**
+     * Used to recover the last phase of the game when a game is restored from file.
+     * When the state is set to succeeded, calls the phaseHandler for the last phase
+     * @see Service
+     */
     private class GetPhaseService extends Service<String>{
 
+        /**
+         * @see Task
+         * @return last phase of the game
+         */
         @Override
         protected Task<String> createTask() {
-            return new Task<String>(){
+            return new Task<>(){
                 @Override
                 protected String call() throws IOException {
                     String phase = proxy.getPhase();
@@ -381,20 +356,45 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 }
             };
         }
+        /**
+         * @see Task
+         */
+        @Override
+        protected void succeeded(){
+            String phase = getPhaseService.getValue();
+            if(phase.equals("Play card!")) phaseHandler("PlayCardAnswer");
+            else if(phase.equals("Start your Action Phase!")) {
+                setConstants("CardPlayed");
+                phaseHandler("StartTurnAnswer");
+            }
+        }
     }
 
+    /**
+     * Called after the login phase, calls the proxy to see if the client can start the planning phase of the game
+     * When the state is set to succeeded, calls the phaseHandler method for the PlayCardAnswer phase
+     * @see GUI#phaseHandler(String)
+     * @see Service
+     */
     private class PlanningPhaseService extends Service<Boolean> {
         Boolean result;
         GUI gui;
 
+        /**
+        * Constructor for the Service
+         * @param gui of type GUI - is the current gui
+         */
         public PlanningPhaseService(GUI gui) {
             this.gui = gui;
             result = false;
         }
-
+        /**
+         * @see Task
+         * @return a boolean indicating if the client can start its planning phase
+         */
         @Override
         protected Task<Boolean> createTask() {
-            return new Task<Boolean>() {
+            return new Task<>() {
                 @Override
                 protected Boolean call() throws Exception {
                     result = proxy.startPlanningPhase();
@@ -402,23 +402,28 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 }
             };
         }
-
+        /**
+         * @see Task
+         */
         @Override
         protected void succeeded() {
             phaseHandler("PlayCardAnswer");
         }
-
-        @Override
-        protected void failed(){
-            System.out.println("Task failed");
-        }
     }
 
+    /**
+     * Called after the client played an assistant card. It calls the proxy to see if it can start the action phase of the game
+     * When the state is set to succeeded, calls the phaseHandler method for the StartTurn phase
+     * @see Service
+     */
     private class ActionPhaseService extends Service<Boolean> {
-
+        /**
+         * @see Task
+         * @return a boolean indicating if the client can start its action phase
+         */
         @Override
         protected Task<Boolean> createTask() {
-            return new Task<Boolean>() {
+            return new Task<>() {
                 @Override
                 protected Boolean call() throws Exception {
                     Boolean result = proxy.startActionPhase();
@@ -426,28 +431,36 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 }
             };
         }
-
+        /**
+         * @see Task
+         */
         @Override
         protected void succeeded() {
             phaseHandler("StartTurnAnswer");
         }
-
-        @Override
-        protected void failed(){
-            System.out.println("Task failed");
-        }
     }
+    /**
+     * Called after login phase, calls the proxy method to start the view, and sets the gui as view listener
+     * When the state is set to succeeded, it set this.view to the returned value and calls the following phase
+     */
 
     private class SetViewService extends Service<View> {
         private GUI gui;
-
+        /**
+         * Constructor for the Service
+         * @param gui of type GUI - is the current gui
+         */
         public SetViewService(GUI gui) {
             this.gui = gui;
         }
 
+        /**
+         * @see Task
+         * @return the view for the current game
+         */
         @Override
         protected Task<View> createTask() {
-            return new Task<View>() {
+            return new Task<>() {
                 @Override
                 protected View call() throws Exception {
                     View view = proxy.startView();
@@ -466,19 +479,35 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     view.setNoEntryListener(gui);
                     proxy.setServerOfflineListener(gui);
                     proxy.setDisconnectedListener(gui);
-
                     view.setRestoreCardsListener(gui);
                     return view;
                 }
             };
         }
+        /**
+         * @see Task
+         */
+        @Override
+        protected void succeeded(){
+            View view = setViewService.getValue();
+            gui.view = view;
+            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
+            controller.setView(view);
+            phaseHandler("InitializeMain");
+        }
     }
-
+    /**
+     * Called after setView service, it calls the methods to initialize the MainScene of the game
+     * When the state is set to succeeded, it calls setView method on the proxy and goes to the following phase
+     */
     private class InitializeMainService extends Service<Boolean> {
-
+        /**
+         * @see Task
+         * @return a boolean indicating if the MainScene has been initialized
+         */
         @Override
         protected Task<Boolean> createTask() {
-            return new Task<Boolean>() {
+            return new Task<>() {
                 @Override
                 protected Boolean call() {
                     Boolean ok;
@@ -498,8 +527,29 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 }
             };
         }
+        /**
+         * If there the user choose not to restore the game, it calls the phaseHandler for the planning phase,
+         * else it start the service to get the last game phase and restoring it
+         * @see Task
+         */
+        @Override
+        protected void succeeded(){
+            switchScene(MAIN);
+            proxy.setView();
+            if(!gameRestored){
+                phaseHandler("PlanningPhase");
+            }
+            else {
+                switchScene(MAIN);
+                getPhaseService.start();
+            }
+        }
     }
-
+    /**
+     * Initialize the scene when the game is restored
+     * @param numberOfPlayer of type int - number of players for this game
+     * @param expertMode of type boolean - indicates if the game is in expert mode or not
+     */
     private void initializedSavedScene(int numberOfPlayer, boolean expertMode) {
         SavedSceneController controller = (SavedSceneController) sceneControllersMap.get(SAVED);
         String expertModeString;
@@ -507,8 +557,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         else expertModeString = "NO";
         controller.initializedScene(numberOfPlayer, expertModeString);
     }
-
-    //used to load a scene in a new stage (window), instead of the primaryStage
+    /**
+     * Used to load a scene in a new stage (window), instead of the primaryStage
+     * @param sceneName of type String - name of the scene to load
+     */
     public void loadScene(String sceneName) {
         Stage stage = new Stage();
         stage.setScene(scenesMap.get(sceneName));
@@ -519,26 +571,45 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         stage.show();
     }
 
-    public void setSocket(Socket socket) {
+   /* public void setSocket(Socket socket) {
         this.socket = socket;
-    }
+    }*/
 
-    public void setProxy(Exit proxy) throws IOException {
+    /**
+     * Sets the proxy for this client
+     * @param proxy of type Exit - proxy
+     */
+    public void setProxy(Exit proxy) {
         this.proxy = proxy;
-        proxy.setServerOfflineListener(this);
-        proxy.setDisconnectedListener(this);
+        try {
+            proxy.setServerOfflineListener(this);
+            proxy.setDisconnectedListener(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
+    /**
+     * Used to set the nickname of the current player in the Main Scene
+     * @param yourNickname of type String - the nickname of the player on this client
+     * @see MainSceneController#setYourNickname(String)
+     */
     public void setYourNickname(String yourNickname) {
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
         controller.setYourNickname(yourNickname);
     }
 
+    /**
+     * Sets the actionAllowed to -1 in MainSceneController, meaning the player cannot perform any action, as it's not his turn
+     * @see MainSceneController#setActionAllowed(int) 
+     */
     public void setNotYourTurn() {
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
         controller.setActionAllowed(-1);
     }
 
+    /** Sets the given constant to true. If the constant is SpecialUsed, meaning the user tried to use a special, reset the SpecialScene
+     * @param phase of type String - the name of the phase
+     */
     public void setConstants(String phase){
         switch(phase){
             case "PlanningPhase"  -> constants.setPlanningPhaseStarted(true);
@@ -558,7 +629,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             case "Reset" -> constants.resetAll();
         }
     }
-
+    /**
+     * @see UserInfoListener
+     */
     @Override
     public void userInfoNotify(String nickname, String character, int playerRef) {
         Platform.runLater(()->{
@@ -568,6 +641,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         });
     }
 
+    /**
+     * @see CoinsListener
+     */
     @Override
     public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
         Platform.runLater(()->{
@@ -575,7 +651,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setNewCoinsValue(playerRef, newCoinsValue);
         });
     }
-
+    /**
+     * @see SpecialListener
+     */
     @Override
     public void notifySpecial(int specialRef, int playerRef) {
         Platform.runLater(()->{
@@ -583,7 +661,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setSpecialPlayed(specialRef, playerRef);
         });
     }
-
+    /**
+     * @see SpecialListener
+     */
     @Override
     public void notifySpecialList(ArrayList<Integer> specialList, ArrayList<Integer> cost) {
         Platform.runLater(() -> {
@@ -591,7 +671,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.initializedSpecialsScene(specialList, cost);
         });
     }
-
+    /**
+     * @see SpecialListener
+     */
     @Override
     public void notifyIncreasedCost(int specialRef, int newCost) {
         Platform.runLater(() -> {
@@ -599,7 +681,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setCoins(specialRef, newCost);
         });
     }
-
+    /**
+     * @see InhibitedListener
+     */
     @Override
     public void notifyInhibited(int islandRef, int isInhibited) {
         Platform.runLater(() -> {
@@ -607,7 +691,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setInhibitedIsland(islandRef, isInhibited);
         });
     }
-
+    /**
+     * @see IslandListener
+     */
     @Override
     public void notifyIslandChange(int islandToDelete) {
         Platform.runLater(() -> {
@@ -615,16 +701,19 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.unifyIsland(islandToDelete);
         });
     }
-
+    /**
+     * @see MotherPositionListener
+     */
     @Override
     public void notifyMotherPosition(int newMotherPosition) {
         Platform.runLater(() -> {
             MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
             controller.setMotherPosition(newMotherPosition);
         });
-
     }
-
+    /**
+     * @see PlayedCardListener
+     */
     @Override
     public void notifyPlayedCard(int playerRef, String assistantCard) {
         Platform.runLater(() -> {
@@ -633,12 +722,15 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         });
 
     }
-
-    //restore
+    /**
+     * @see PlayedCardListener
+     */
     @Override
     public void notifyHand(int playerRef, ArrayList<String> hand) {
     }
-
+    /**
+     * @see ProfessorsListener
+     */
     @Override
     public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
         Platform.runLater(() -> {
@@ -647,6 +739,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         });
     }
 
+    /**
+     * Sets the new number of students in the respective sceneController
+     * @see StudentsListener
+     */
     @Override
     public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
        Platform.runLater(() -> {
@@ -661,6 +757,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
        });
     }
 
+    /**
+     * @see RestoreCardsListener
+     */
     @Override
     public void restoreCardsNotify(ArrayList<String> hand) {
         Platform.runLater(() -> {
@@ -669,7 +768,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         });
 
     }
-
+    /**
+     * @see TowersListener
+     */
     @Override
     public void notifyTowersChange(int place, int componentRef, int towersNumber) {
         Platform.runLater(() -> {
@@ -681,7 +782,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             }
         });
     }
-
+    /**
+     * @see TowersListener
+     */
     @Override
     public void notifyTowerColor(int islandRef, int newColor) {
         Platform.runLater(() -> {
@@ -689,7 +792,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setTowerColor(islandRef, newColor);
         });
     }
-
+    /**
+     * @see SpecialStudentsListener
+     */
     @Override
     public void specialStudentsNotify(int special, int color, int value) {
         Platform.runLater(() -> {
@@ -697,7 +802,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setStudent(special, color, value);
         });
     }
-
+    /**
+     * @see NoEntryListener
+     */
     @Override
     public void notifyNoEntry(int special, int newValue) {
         Platform.runLater(() -> {
@@ -705,8 +812,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             controller.setNoEntry(special, newValue);
         });
     }
-
-
+    /**
+     * Loads the GameOver scene when a client disconnects
+     * @see DisconnectedListener
+     */
     @Override
     public void notifyDisconnected() {
         Platform.runLater(()->{
@@ -715,9 +824,11 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             loadScene(GAMEOVER);
             primaryStage.close();
         });
-
     }
-
+    /**
+     * Loads the GameOver scene when the server is offline
+     * @see ServerOfflineListener
+     */
     @Override
     public void notifyServerOffline() {
         Platform.runLater(()->{
@@ -728,7 +839,10 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         });
 
     }
-
+    /**
+     * Loads the GameOver scene when somebody wins the game
+     * @see WinnerListener
+     */
     @Override
     public void notifyWinner() {
         Platform.runLater(()->{
@@ -740,7 +854,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             loadScene(GAMEOVER);
             primaryStage.close();
         });
-
     }
 }
 
