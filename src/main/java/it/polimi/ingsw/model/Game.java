@@ -546,7 +546,7 @@ public class Game implements GameManager{
     }
     @Override
     public void setNoEntryListener(NoEntryListener noEntryListener){
-        for(int i = 0; i < 3; i++)
+        for(int i = 1; i < 4; i++)
             roundStrategies.get(i).setNoEntryListener(noEntryListener);
     }
 }

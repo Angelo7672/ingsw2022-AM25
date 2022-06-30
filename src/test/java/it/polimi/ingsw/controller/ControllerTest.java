@@ -85,9 +85,9 @@ class ControllerTest {
     void planningPhase(){
         boolean checker = true;
 
-        controller.initializeGame();
-        controller.startGame();
         try{
+            controller.initializeGame();
+            controller.startGame();
             synchronized (this){ wait(1000); }
             controller.playCard(0,"LION");
             controller.playCard(1,"EAGLE");
@@ -108,9 +108,10 @@ class ControllerTest {
         boolean ok = true;
         int i = 0;
 
-        controller.initializeGame();
-        controller.startGame();
-        try { synchronized (this){ wait(1000); }
+        try {
+            controller.initializeGame();
+            controller.startGame();
+            synchronized (this){ wait(1000); }
         } catch (InterruptedException e) { e.printStackTrace(); }
 
         while (ok) {
