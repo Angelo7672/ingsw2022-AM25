@@ -2,7 +2,6 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.listeners.DisconnectedListener;
 import it.polimi.ingsw.listeners.ServerOfflineListener;
-import it.polimi.ingsw.listeners.SoldOutListener;
 import it.polimi.ingsw.server.answer.Answer;
 
 import java.io.IOException;
@@ -13,8 +12,6 @@ public interface Exit {
     void setDisconnectedListener(DisconnectedListener disconnectedListener);
 
     void setServerOfflineListener(ServerOfflineListener serverOfflineListener) throws IOException;
-
-    void setSoldOutListener(SoldOutListener soldOutListener) throws IOException;
 
     String first() throws IOException, ClassNotFoundException;
 

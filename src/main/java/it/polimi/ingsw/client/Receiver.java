@@ -2,7 +2,6 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.listeners.DisconnectedListener;
 import it.polimi.ingsw.listeners.ServerOfflineListener;
-import it.polimi.ingsw.listeners.SoldOutListener;
 import it.polimi.ingsw.server.answer.*;
 import it.polimi.ingsw.server.answer.viewmessage.*;
 
@@ -26,7 +25,6 @@ public class Receiver extends Thread {
     private final Socket socket;
     private DisconnectedListener disconnectedListener;
     private ServerOfflineListener serverOfflineListener;
-    private SoldOutListener soldOutListener;
     private boolean disconnected;
     private final View view;
     private boolean initializedView;
@@ -330,9 +328,6 @@ public class Receiver extends Thread {
     }
     public void setServerOfflineListener(ServerOfflineListener serverOfflineListener){
         this.serverOfflineListener = serverOfflineListener;
-    }
-    public void setSoldOutListener(SoldOutListener soldOutListener){
-        this.soldOutListener = soldOutListener;
     }
 
 }

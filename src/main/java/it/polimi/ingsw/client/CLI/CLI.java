@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class CLI implements Runnable, UserInfoListener, TowersListener, ProfessorsListener, SpecialListener, PlayedCardListener,
         MotherPositionListener, IslandListener, CoinsListener, StudentsListener, InhibitedListener, WinnerListener, DisconnectedListener,
-        NoEntryClientListener, ServerOfflineListener, SpecialStudentsListener, SoldOutListener, RestoreCardsListener{
+        NoEntryClientListener, ServerOfflineListener, SpecialStudentsListener, RestoreCardsListener{
 
     private final Exit proxy;
     private final Scanner scanner;
@@ -38,7 +38,6 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         this.proxy = proxy;
         proxy.setDisconnectedListener(this);
         proxy.setServerOfflineListener(this);
-        proxy.setSoldOutListener(this);
         lock = new Object();
         playCount=4;
     }
@@ -866,16 +865,6 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                 System.out.println();
             }
         }
-    }
-
-    @Override
-    public void notifySoldOut() throws IOException {
-        System.out.println();
-        System.out.print(ANSI_RED+SPACE+"Server Sold Out, game over."+ANSI_RESET);
-        socket.close();
-        scanner.close();
-        setActive(false);
-        System.exit(-1);
     }
 
     @Override
