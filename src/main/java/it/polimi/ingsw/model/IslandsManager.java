@@ -144,7 +144,9 @@ public class IslandsManager {
             returnItem[1] = islands.get(islandRef).getTowerTeam().getTeam();
             islands.get(islandRef).setTowerTeam(team);
             this.towersListener.notifyTowerColor(islandRef, islands.get(islandRef).getTowerTeam().getTeam());
-            int towerValue = checkAdjacentIslands(islandRef);
+            //int towerValue = checkAdjacentIslands(islandRef);
+            int towerValue = islands.get(islandRef).getTowerValue();
+            checkAdjacentIslands(islandRef);
             if(towerValue != -1) returnItem[0] = towerValue;
             else returnItem[0] = islands.get(islandRef).getTowerValue();
             return returnItem;
