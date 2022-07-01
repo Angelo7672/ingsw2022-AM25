@@ -33,6 +33,7 @@ public class Receiver extends Thread {
     private final View view;
     private boolean initializedView;
     private final ArrayList<Answer> answerView;
+    private boolean lockNotify;
 
     /**
      * Constructor allocates every variable of the class.
@@ -210,10 +211,7 @@ public class Receiver extends Thread {
                     synchronized (setViewLock) {
                         if (!initializedView) setViewLock.wait();
                     }
-                    synchronized (answerViewLock) {
-                        if (answerView.size() == 0) {
-                            answerViewLock.wait();
-                        }
+                    while(answerView.size() != 0) {
                         tmp = answerView.get(0);
                         if (tmp instanceof UserInfoAnswer) gameMessage(tmp);
                         else if (tmp instanceof LastCardAnswer) viewCardsMessage(tmp);
@@ -251,7 +249,7 @@ public class Receiver extends Thread {
     private void viewNotInitialized(Answer tmp){
         synchronized (answerViewLock) {
             answerView.add(tmp);
-            answerViewLock.notify();
+            if(lockNotify) answerViewLock.notify();
         }
     }
 
@@ -277,78 +275,78 @@ public class Receiver extends Thread {
                 }
                 else if (tmp instanceof GameInfoAnswer) gameMessage(tmp);
                 else if (tmp instanceof UserInfoAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else gameMessage(tmp);
                 }
                 else if (tmp instanceof LastCardAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewCardsMessage(tmp);
                 }
                 else if (tmp instanceof HandAfterRestoreAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewCardsMessage(tmp);
                 }
                 else if (tmp instanceof SchoolStudentAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewSchoolMessage(tmp);
                 }
                 else if (tmp instanceof ProfessorAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewSchoolMessage(tmp);
                 }
                 else if (tmp instanceof SchoolTowersAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewSchoolMessage(tmp);
                 }
                 else if (tmp instanceof CoinsAnswer) {
-                    if(!initializedView)viewNotInitialized(tmp);
+                    if(!initializedView)answerView.add(tmp);
                     else viewSchoolMessage(tmp);
                 }
                 else if (tmp instanceof CloudStudentAnswer){
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewCloudMessage(tmp);
                 }
                 else if (tmp instanceof IslandStudentAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewIslandMessage(tmp);
                 }
                 else if (tmp instanceof MotherPositionAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewIslandMessage(tmp);
                 }
                 else if (tmp instanceof MaxMovementMotherNatureAnswer) {
-                    if (!initializedView)viewNotInitialized(tmp);
+                    if (!initializedView)answerView.add(tmp);
                     else viewIslandMessage(tmp);
                 }
                 else if (tmp instanceof IslandTowersNumberAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewIslandMessage(tmp);
                 }
                 else if (tmp instanceof IslandTowersColorAnswer){
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewIslandMessage(tmp);
                 }
                 else if (tmp instanceof UnifiedIslandAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewIslandMessage(tmp);
                 }
                 else if (tmp instanceof InhibitedIslandAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewIslandMessage(tmp);
                 }
                 else if (tmp instanceof UseSpecialAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewSpecialMessage(tmp);
                 }
                 else if (tmp instanceof SetSpecialAnswer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewSpecialMessage(tmp);
                 }
                 else if (tmp instanceof InfoSpecial1or7or11Answer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewSpecialMessage(tmp);
                 } else if (tmp instanceof InfoSpecial5Answer) {
-                    if(!initializedView) viewNotInitialized(tmp);
+                    if(!initializedView) answerView.add(tmp);
                     else viewSpecialMessage(tmp);
                 } else if (tmp instanceof DisconnectedAnswer) {
                     disconnectedListener.notifyDisconnected();
@@ -367,7 +365,7 @@ public class Receiver extends Thread {
                 if(initializedView && answerView.isEmpty()) viewThread.interrupt();
             }
         } catch (SocketException e) {
-            System.out.println("time out");
+            System.out.println("socket exception in receiver");
                 /*try {
                     //serverOfflineListener.notifyServerOffline();
                 } catch (IOException ex) {

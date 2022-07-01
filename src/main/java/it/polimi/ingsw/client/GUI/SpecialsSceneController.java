@@ -84,6 +84,7 @@ public class SpecialsSceneController implements SceneController{
         for (int i = 0; i < specialsList.size(); i++) {
             specials.put(i, specialFactory(specialsList.get(i)));
             specialsName.add(i, specialsList.get(i));
+            setCoins(i,cost.get(i));
             if(specialsList.get(i)==1 || specialsList.get(i)==7 || specialsList.get(i)==11) showStudents(i);
         }
         special1View.setImage(specials.get(0));
@@ -106,12 +107,6 @@ public class SpecialsSceneController implements SceneController{
             }
         }
         studentsChosen = new ArrayList<>();
-        coinSpecial1.setVisible(false);
-        coinSpecial2.setVisible(false);
-        coinSpecial3.setVisible(false);
-        special1Cost.setVisible(false);
-        special2Cost.setVisible(false);
-        special3Cost.setVisible(false);
     }
 
     /**
@@ -126,18 +121,6 @@ public class SpecialsSceneController implements SceneController{
         special1View.setVisible(true);
         special1Button.setVisible(true);
         label2.setVisible(false);
-        if(!special1Cost.getText().equals("0")) {
-            special1Cost.setVisible(true);
-            coinSpecial1.setVisible(true);
-        }
-        if(!special2Cost.getText().equals("0")) {
-            special2Cost.setVisible(true);
-            coinSpecial2.setVisible(true);
-        }
-        if(!special3Cost.getText().equals("0")) {
-            special3Cost.setVisible(true);
-            coinSpecial3.setVisible(true);
-        }
         special2View.setVisible(true);
         special2Button.setVisible(true);
         special3View.setVisible(true);
@@ -186,22 +169,10 @@ public class SpecialsSceneController implements SceneController{
     protected void setCoins(int specialIndex, int newValue){
         if (specialIndex == 0) {
             special1Cost.setText(Integer.toString(newValue));
-            if (!special1Cost.toString().equals("0")) {
-                special1Cost.setVisible(true);
-                coinSpecial1.setVisible(true);
-            }
         } else if (specialIndex == 1) {
             special2Cost.setText(Integer.toString(newValue));
-            if (!special2Cost.toString().equals("0")) {
-                special2Cost.setVisible(true);
-                coinSpecial2.setVisible(true);
-            }
         } else if (specialIndex == 2) {
             special3Cost.setText(Integer.toString(newValue));
-            if (!special3Cost.toString().equals("0")) {
-                special3Cost.setVisible(true);
-                coinSpecial3.setVisible(true);
-            }
         }
     }
 

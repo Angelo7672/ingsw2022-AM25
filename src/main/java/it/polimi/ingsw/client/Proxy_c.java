@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  *
  */
-public class Proxy_c implements Exit, DisconnectedListener, PongListener {
+public class Proxy_c implements Exit, PongListener {
     private final Receiver receiver;
 
     private final ObjectOutputStream outputStream;
@@ -34,15 +34,12 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      */
     public Proxy_c(Socket socket) throws IOException{
         outputStream = new ObjectOutputStream(socket.getOutputStream());
-        startPing();
         initializedViewLock = new Object();
         view = new View();
         pingCounter = 0;
         receiver = new Receiver(initializedViewLock, socket, view);
         receiver.start();
-        receiver.setDisconnectedListener(this);
         receiver.setPongListeners(this);
-        //setServerOfflineListener(this);
 
     }
 
@@ -63,6 +60,7 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * @return String which corresponds to the actions.
      */
     public String first() {
+        startPing();
         send(new GenericMessage("Ready for login!"));
         tempObj = receiver.receive();
         if(tempObj instanceof SoldOutAnswer) return ((SoldOutAnswer) tempObj).getMessage();
@@ -382,16 +380,6 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
     public void setServerOfflineListener(ServerOfflineListener serverOfflineListener) {
         receiver.setServerOfflineListener(serverOfflineListener);
         this.serverOfflineListener = serverOfflineListener;
-    }
-
-    @Override
-    public void notifyDisconnected(){
-        disconnected = true;
-        try {
-            outputStream.close();
-        }catch (IOException e){
-            serverOfflineListener.notifyServerOffline();
-        }
     }
 
     @Override
