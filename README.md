@@ -8,6 +8,8 @@
 ## Project Description
 The project consists of a Java version of the board game Eriantys, by Cranio Creation <br>
 Rules: https://www.craniocreations.it/wp-content/uploads/2021/11/Eriantys_ITA_bassa.pdf
+### Eriantys
+<img src="https://github.com/Angelo7672/ingsw2022-AM25/blob/main/src/main/resources/graphics/eriantys_banner.png" width=200px height=200px align="center" />
 
 ## How to run
 #### Java version: 17 <br>
