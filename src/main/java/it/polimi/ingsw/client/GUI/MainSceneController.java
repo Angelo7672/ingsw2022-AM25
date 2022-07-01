@@ -57,7 +57,6 @@ public class MainSceneController implements SceneController {
     private String lastThingClicked;
     private int currentStudentColor;
     private String selectedStudents;
-    //private int oldStudentsValue;
     private final ArrayList<Table> greenTables;
     private final ArrayList<Table> redTables;
     private final ArrayList<Table> yellowTables;
@@ -173,7 +172,6 @@ public class MainSceneController implements SceneController {
                         mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(3) ||
                         mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(4)) {
                     if (studentsToExchange > 0) {
-                        //lastThingClicked = "studentToExchange";
                         for (int i = 0; i < 5; i++) {
                             if (mouseEvent.getSource() == entrancesMap.get(currentPlayer).getChildren().get(i))
                                 currentStudentColor = i;

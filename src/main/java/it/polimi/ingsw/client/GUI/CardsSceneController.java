@@ -13,12 +13,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * CardsSceneController is the controller of the CardsScene.fxml
+ */
 public class CardsSceneController implements SceneController{
     private String playedCard;
     private GUI gui;
     private Exit proxy;
     private HashMap<Integer, String> currentPlayedCards;
-    //private ArrayList<String> alreadyPlayedCards;
 
     @FXML private Button lionButton;
     @FXML private Button gooseButton;
@@ -30,32 +32,36 @@ public class CardsSceneController implements SceneController{
     @FXML private Button dogButton;
     @FXML private Button elephantButton;
     @FXML private Button turtleButton;
-
     @FXML private Label errorMessage;
-
     @FXML private Button confirmButton;
     @FXML private Label cardsLabel;
 
+    /**
+     * Constructor method, creates an instance of CardsSceneController and initializes the attributes
+     */
     public CardsSceneController(){
         currentPlayedCards= new HashMap<>();
         playedCard="";
     }
 
-
+    /**
+     * Service called when the user plays an assistant card, calls proxy method
+     * When the state is set to succeeded goes to the following phase
+     */
     public class PlayCardService extends Service<String>{
 
         @Override
         protected Task<String> createTask() {
-            return new Task<String>() {
+            return new Task<>() {
                 @Override
-                protected String call() throws Exception {
+                protected String call(){
                     String result = null;
                     try {
                         result = proxy.playCard(playedCard);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        gui.loadScene(GUI.GAMEOVER);
                     } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
+                        gui.loadScene(GUI.GAMEOVER);
                     }
                     return result;
                 }
@@ -76,17 +82,23 @@ public class CardsSceneController implements SceneController{
                 gui.phaseHandler("ActionPhase");
             } else
                 showErrorMessage();
-
-
         }
     }
 
+    /**
+     * Used to restore your assistant cards
+     * @param card of type ArrayList<String> - cards that have already been played
+     */
     public void restoreCards(ArrayList<String> card){
         for (int i = 0; i < card.size(); i++) {
             disableCard(card.get(i));
         }
     }
 
+    /**
+     * Sets the card chosen based on what button has been clicked by the user
+     * @param event
+     */
     @FXML
     public void setPlayedCard(ActionEvent event) {
         if(event.getSource()==lionButton){
@@ -112,6 +124,10 @@ public class CardsSceneController implements SceneController{
         }
     }
 
+    /**
+     * When the button confirm is pressed, starts PlayCardService
+     * @param event
+     */
     @FXML
     void confirmPressed(ActionEvent event) {
         if (!playedCard.equals("")) {
@@ -121,11 +137,14 @@ public class CardsSceneController implements SceneController{
             showErrorMessage();
         }
     }
-
     public void showErrorMessage(){
         errorMessage.setVisible(true);
     }
 
+    /**
+     * Hides the cards that have already been used by the player
+     * @param card of type String - card to hide
+     */
     public void disableCard(String card){
         if(card.equalsIgnoreCase("lion")){
             lionButton.setVisible(false);
@@ -160,10 +179,16 @@ public class CardsSceneController implements SceneController{
         this.proxy=proxy;
     }
 
+    /**
+     * Enables the confirm button
+     */
     public void enableConfirm(){
         this.confirmButton.setDisable(false);
         this.cardsLabel.setVisible(true);
     }
+    /**
+     * Disables the confirm button
+     */
     public void disableConfirm(){
         this.confirmButton.setDisable(true);
         this.cardsLabel.setVisible(false);

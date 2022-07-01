@@ -34,7 +34,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
 
     private static Exit proxy;
     private View view;
-    //private Socket socket;
     protected Stage primaryStage;
 
     private final Service<Boolean> planningPhaseService;
@@ -43,11 +42,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private final Service<Boolean> initializeMainService;
     private final Service<String> getPhaseService;
 
-    //protected boolean active;
-    //protected boolean isMainSceneInitialized;
-    //protected boolean areListenerSet;
     private boolean gameRestored;
-    //private int actionAllowed;
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String SAVED = "SavedScene.fxml";
     protected static final String LOGINRESTORE = "LoginRestoreScene.fxml";
@@ -77,45 +72,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         scenesMap = new HashMap<>();
         sceneControllersMap = new HashMap<>();
         constants = new PlayerConstants();
-        //isMainSceneInitialized = false;
-        //actionAllowed = -1;
-
         planningPhaseService= new PlanningPhaseService(this);
         actionPhaseService= new ActionPhaseService();
         setViewService = new SetViewService(this);
-
-        /*setViewService.setOnSucceeded(workerStateEvent -> {
-            View view = setViewService.getValue();
-            this.view = view;
-            MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
-            controller.setView(view);
-            phaseHandler("InitializeMain");
-        });*/
-
         initializeMainService = new InitializeMainService();
-       /* initializeMainService.setOnSucceeded(workerStateEvent -> {
-            switchScene(MAIN);
-            proxy.setView();
-            if(!gameRestored){
-                phaseHandler("PlanningPhase");
-            }
-            else {
-                switchScene(MAIN);
-                getPhaseService.start();
-            }
-        });*/
         getPhaseService = new GetPhaseService();
-        /*getPhaseService.setOnSucceeded(workerStateEvent -> {
-            String phase = getPhaseService.getValue();
-            if(phase.equals("Play card!")) phaseHandler("PlayCardAnswer");
-            else if(phase.equals("Start your Action Phase!")) {
-                setConstants("CardPlayed");
-                phaseHandler("StartTurnAnswer");
-            }
-        });*/
-
     }
-
     /**
      * Calls the first method of the game: based on the answer returned by proxy.first() calls the correct phase
      * -SavedGame : a file save of an old game is present and the client is the first to connect, sets the scene to SAVED
@@ -151,9 +113,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         try {
             result = proxy.first();
         } catch (IOException e) {
-            e.printStackTrace();
+           loadScene(GAMEOVER);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            loadScene(GAMEOVER);
         }
         if (result.equals("SavedGame")) {
             SavedGameAnswer savedGame = (SavedGameAnswer) proxy.getMessage();
@@ -192,7 +154,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 sceneControllersMap.put(scene, controller);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            loadScene(GAMEOVER);
         }
     }
     /**
@@ -570,11 +532,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         stage.centerOnScreen();
         stage.show();
     }
-
-   /* public void setSocket(Socket socket) {
-        this.socket = socket;
-    }*/
-
     /**
      * Sets the proxy for this client
      * @param proxy of type Exit - proxy
@@ -833,9 +790,17 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void notifyServerOffline() {
         Platform.runLater(()->{
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
-            controller.setServerOffline();
             loadScene(GAMEOVER);
-            primaryStage.close();
+            if(primaryStage!=null && controller!=null){
+                primaryStage.close();
+                controller.setServerOffline();
+            } else {
+                try {
+                    this.stop();
+                } catch (Exception e) {
+                    System.out.println("Some errors occurred, try again");
+                }
+            }
         });
 
     }
