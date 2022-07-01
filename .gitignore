@@ -4,7 +4,6 @@
 *.iws
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
