@@ -10,6 +10,12 @@ public class UserInfoAnswer implements Answer {
     private final String nickname;
     private final String character;
 
+    /**
+     * Create an answer contains info about a player.
+     * @param playerRef player reference;
+     * @param nickname nickname chosen;
+     * @param character character chosen;
+     */
     public UserInfoAnswer(int playerRef, String nickname, String character){
         this.playerRef = playerRef;
         this.nickname = nickname;

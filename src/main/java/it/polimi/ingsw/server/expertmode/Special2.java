@@ -10,6 +10,10 @@ import it.polimi.ingsw.server.VirtualClient;
 public class Special2 implements Special{
     private final Entrance server;
 
+    /**
+     * Create Special2.
+     * @param server server reference;
+     */
     public Special2(Entrance server) { this.server = server; }
 
     /**

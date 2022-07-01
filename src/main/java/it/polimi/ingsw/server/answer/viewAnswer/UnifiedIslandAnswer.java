@@ -8,6 +8,10 @@ import it.polimi.ingsw.server.answer.Answer;
 public class UnifiedIslandAnswer implements Answer{
     private final int unifiedIsland;
 
+    /**
+     * Create an answer contains info about the island that joined with another.
+     * @param unifiedIsland island that joined;
+     */
     public UnifiedIslandAnswer(int unifiedIsland) {
         this.unifiedIsland = unifiedIsland;
     }

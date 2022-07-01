@@ -6,6 +6,10 @@ package it.polimi.ingsw.server.answer;
 public class GenericAnswer implements Answer{
     private final String message;
 
+    /**
+     * Create a generic answer contains a string message.
+     * @param message string message;
+     */
     public GenericAnswer(String message) {
         this.message = message;
     }

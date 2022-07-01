@@ -6,6 +6,9 @@ package it.polimi.ingsw.server.answer;
 public class DisconnectedAnswer implements Answer{
     private final String message;
 
+    /**
+     * Create an answer that said server will close socket soon.
+     */
     public DisconnectedAnswer(){ this.message = "Socket Close"; }
 
     public String getMessage() { return message; }

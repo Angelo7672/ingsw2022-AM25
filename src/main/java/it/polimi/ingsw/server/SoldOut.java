@@ -17,11 +17,18 @@ public class SoldOut extends Thread{
     private final ExecutorService executor;
     private final ServerSocket serverSocket;
 
+    /**
+     * Create SoldOut class.
+     * @param serverSocket server reference;
+     */
     public SoldOut(ServerSocket serverSocket){
         this.executor = Executors.newCachedThreadPool();
         this.serverSocket = serverSocket;
     }
 
+    /**
+     * If received a new connection, submits it to executor.
+     */
     @Override
     public void run(){
         while(true){
@@ -38,8 +45,15 @@ public class SoldOut extends Thread{
     private static class Expired implements Runnable{
         private final Socket socket;
 
+        /**
+         * Create an expired class.
+         * @param socket socket reference;
+         */
         public Expired(Socket socket){ this.socket = socket; }
 
+        /**
+         * Sends SoldOut answer and close socket.
+         */
         @Override
         public void run() {
             try {

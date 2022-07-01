@@ -8,6 +8,10 @@ import it.polimi.ingsw.server.answer.Answer;
 public class MotherPositionAnswer implements Answer {
     private final int motherPosition;
 
+    /**
+     * Create an answer contains hte mother position.
+     * @param motherPosition mother pose;
+     */
     public MotherPositionAnswer(int motherPosition) {
         this.motherPosition = motherPosition;
     }

@@ -13,6 +13,10 @@ public class Special11 implements Special{
     private Special11Message special11Msg;
     private final Entrance server;
 
+    /**
+     * Create Special11.
+     * @param server server reference;
+     */
     public Special11(Entrance server) { this.server = server; }
 
     /**

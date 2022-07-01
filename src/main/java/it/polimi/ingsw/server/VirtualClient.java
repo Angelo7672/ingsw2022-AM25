@@ -9,7 +9,6 @@ import it.polimi.ingsw.server.expertmode.ExpertGame;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -289,8 +288,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                     }
                 }else System.out.println("errore! "+playerRef); //TODO: ovviamente da cambiare
             }
-        }catch (SocketException socketException){ clientConnectionExpired();
-        }catch (IOException | ClassNotFoundException e){ clientConnectionExpired(); }
+        } catch (IOException | ClassNotFoundException socketException){ clientConnectionExpired(); }
     }
 
     /**
