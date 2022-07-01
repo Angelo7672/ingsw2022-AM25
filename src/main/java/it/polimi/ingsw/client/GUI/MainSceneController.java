@@ -50,7 +50,7 @@ public class MainSceneController implements SceneController {
     private final HashMap<Integer, AnchorPane> entrancesMap;
     private final HashMap<Integer, AnchorPane> tablesMap;
     private final HashMap<Integer, AnchorPane> professorsMap;
-    private final HashMap<Integer, Integer> towersNumber;
+    private final ArrayList<Integer> towersNumber;
     private final HashMap<Integer, Integer> noEntryTilesMap;
 
     private String lastThingClicked;
@@ -120,7 +120,7 @@ public class MainSceneController implements SceneController {
         this.tablesMap = new HashMap<>();
         this.professorsMap = new HashMap<>();
         this.schoolMap = new HashMap<>();
-        this.towersNumber = new HashMap<>();
+        this.towersNumber = new ArrayList<>();
         this.greenTables = new ArrayList<>();
         this.redTables = new ArrayList<>();
         this.yellowTables = new ArrayList<>();
@@ -529,8 +529,8 @@ public class MainSceneController implements SceneController {
             teamLabel1.setTextFill(Color.WHITE);
             teamLabel2.setText("BLACK");
             teamLabel2.setTextFill(Color.BLACK);
-            towersNumber.put(0, 8);
-            towersNumber.put(1, 8);
+            towersNumber.add(0, 8);
+            towersNumber.add(1, 8);
             for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
                 tower = (ImageView) towersMap.get(0).getChildren().get(i);
                 tower.setImage(new Image(WHITETOWER));
@@ -547,9 +547,9 @@ public class MainSceneController implements SceneController {
             teamLabel2.setTextFill(Color.BLACK);
             teamLabel3.setText("GREY");
             teamLabel3.setTextFill(Color.GREY);
-            towersNumber.put(0, 6);
-            towersNumber.put(1, 6);
-            towersNumber.put(2, 6);
+            towersNumber.add(0, 6);
+            towersNumber.add(1, 6);
+            towersNumber.add(2, 6);
             for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
                 tower = (ImageView) towersMap.get(0).getChildren().get(i);
                 tower.setImage(new Image(WHITETOWER));
@@ -576,10 +576,10 @@ public class MainSceneController implements SceneController {
             teamLabel3.setTextFill(Color.BLACK);
             teamLabel4.setText("BLACK");
             teamLabel4.setTextFill(Color.BLACK);
-            towersNumber.put(0, 8);
-            towersNumber.put(1, 0);
-            towersNumber.put(2, 8);
-            towersNumber.put(3, 0);
+            towersNumber.add(0, 8);
+            towersNumber.add(1, 0);
+            towersNumber.add(2, 8);
+            towersNumber.add(3, 0);
             for (int i = 0; i < towersMap.get(0).getChildren().size(); i++) {
                 tower = (ImageView) towersMap.get(0).getChildren().get(i);
                 tower.setImage(new Image(WHITETOWER));
@@ -928,16 +928,16 @@ public class MainSceneController implements SceneController {
     public void setTowersSchool(int schoolRef, int newTowersNumber) {
         AnchorPane towerPane = towersMap.get(schoolRef);
         int oldTowersNumber = towersNumber.get(schoolRef);
-
         if (newTowersNumber < oldTowersNumber) {
             for (int i = oldTowersNumber - 1; i >= newTowersNumber; i--) {
                 towerPane.getChildren().get(i).setVisible(false);
             }
-        } else if (newTowersNumber > oldTowersNumber) {
+        } else if (newTowersNumber >= oldTowersNumber) {
             for (int i = oldTowersNumber; i < newTowersNumber; i++) {
                 towerPane.getChildren().get(i).setVisible(true);
             }
         }
+        towersNumber.set(schoolRef, newTowersNumber);
     }
     /**
     * Sets the value of the tower label on the island
@@ -1042,9 +1042,13 @@ public class MainSceneController implements SceneController {
         ImageView tower = (ImageView) islandsList.get(islandRef).getChildren().get(2);
         Label towerLabel = (Label) islandsList.get(islandRef).getChildren().get(13);
 
-        if (!tower.isVisible()) {
-            setTowersIsland(islandRef, 1);
-        }
+        if(!gui.isGameRestored())
+            if (!tower.isVisible()) {
+                setTowersIsland(islandRef, 1);
+            }
+        else
+            tower.setVisible(true);
+
         if (newColor == 0) {
             tower.setImage(new Image(WHITETOWER));
             towerLabel.setTextFill(Color.BLACK);

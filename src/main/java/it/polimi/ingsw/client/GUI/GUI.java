@@ -40,7 +40,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     private final Service<View> setViewService;
     private final Service<Boolean> initializeMainService;
     private final Service<String> getPhaseService;
-
+    private boolean clientDisconnected;
     private boolean gameRestored;
     protected static final String SETUP = "SetupScene.fxml";
     protected static final String SAVED = "SavedScene.fxml";
@@ -146,7 +146,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                 sceneControllersMap.put(scene, controller);
             }
         } catch (IOException e) {
-            loadScene(GAMEOVER);
+            if(!clientDisconnected)
+                switchScene(GAMEOVER);
         }
     }
     /**
@@ -762,9 +763,9 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
             if(primaryStage!=null && controller!=null){
                 controller.setClientDisconnected();
-                loadScene(GAMEOVER);
-                primaryStage.close();
+                switchScene(GAMEOVER);
             } else {
+                clientDisconnected = true;
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + GAMEOVER));
                 try {
                     primaryStage.setScene(new Scene(loader.load()));
@@ -785,8 +786,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
             if(primaryStage!=null && controller!=null){
                 controller.setServerOffline();
-                loadScene(GAMEOVER);
-                primaryStage.close();
+                switchScene(GAMEOVER);
 
             } else {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + GAMEOVER));
@@ -810,10 +810,13 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             String winner = view.getWinner();
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
             controller.setWinner(winner);
-            loadScene(GAMEOVER);
-            primaryStage.close();
+            switchScene(GAMEOVER);
         });
     }
+    public boolean isGameRestored() {
+        return gameRestored;
+    }
+
 }
 
 
