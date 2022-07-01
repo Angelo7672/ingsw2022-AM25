@@ -2,6 +2,9 @@ package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.client.View;
 
+/**
+ * Printable contains all the print of the cli.
+ */
 public class Printable {
     private final View view;
     private String ANSI_RESET = "\u001B[0m";

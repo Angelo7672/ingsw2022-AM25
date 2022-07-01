@@ -29,13 +29,13 @@ public class SavedSceneController implements SceneController{
         });
     }
 
-    public void YESPressed(ActionEvent e) throws IOException {
+    public void YESPressed(ActionEvent e) {
         gui.setGameRestored();
         proxy.savedGame("y");
         if(proxy.readyForLogin()) gui.switchScene(GUI.LOGINRESTORE);
     }
 
-    public void NOPressed(ActionEvent e) throws IOException {
+    public void NOPressed(ActionEvent e){
         proxy.savedGame("n");
         gui.switchScene(GUI.SETUP);
     }

@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * View contains all the variable of the game and updates it using view answer received from server.
+ */
 public class View {
 
     private int numberOfPlayers;
@@ -47,6 +50,11 @@ public class View {
         this.cards = new ArrayList<>();
     }
 
+    /**
+     * It initialized all the ArrayList.
+     * @param numberOfPlayers is the number of the players.
+     * @param expertMode true if expert mode, false if game is normal.
+     */
     public void initializedView(int numberOfPlayers, boolean expertMode){
         this.numberOfPlayers = numberOfPlayers;
         this.expertMode = expertMode;
@@ -80,6 +88,7 @@ public class View {
     }
 
     //Mother
+
     public void setMotherPosition(int motherPosition) {
         motherNaturePos = motherPosition;
         this.motherPositionListener.notifyMotherPosition(motherPosition);
@@ -92,6 +101,7 @@ public class View {
     public int getMaxStepsMotherNature(){return maxStepsMotherNature;}
 
     //Islands
+
     public void setIslandTowers(int islandRef, int towers) {
         islands.get(islandRef).setTowersNumber(towers);
         this.towersListener.notifyTowersChange(1, islandRef, towers);
@@ -120,6 +130,7 @@ public class View {
     public int getInhibited(int islandRef){ return islands.get(islandRef).isInhibited; }
 
     //School
+
     public void setSchoolStudents(String place, int ref, int color, int newValue){
         if(place.equalsIgnoreCase("Entrance")) {
             schoolBoards.get(ref).setStudentsEntrance(color, newValue);
@@ -161,6 +172,7 @@ public class View {
     public int getCoins(int playerRef){ return hands.get(playerRef).getCoins();}
 
     //Clouds
+
     public void setClouds(int cloudRef, int color, int newValue){
         clouds.get(cloudRef).setCloudStudents(color, newValue);
         this.studentsListener.notifyStudentsChange(3, cloudRef, color, newValue);
@@ -169,6 +181,11 @@ public class View {
     public int[] getStudentsCloud(int cloudRef){ return clouds.get(cloudRef).getStudents();}
 
     //Cards
+
+
+    /**
+     * Last card set the last card played by players. If the turn is finished set all as null.
+     */
     public void setLastCard(int playerRef, String card){
         if(turnCounter == numberOfPlayers){
             turnCounter=0;
@@ -218,6 +235,11 @@ public class View {
     public void setCards(String card){
         cards.remove(card.toUpperCase());
     }
+
+    /**
+     * It restore the card of the player which it has in the saved game.
+     * @param hand is the ArrayList of the player's card.
+     */
     public void restoreCards(ArrayList<String> hand){
         ArrayList<String> cardRemoved = cards;
         cards = hand;
@@ -229,10 +251,15 @@ public class View {
     public ArrayList<String> getCards(){ return cards; }
 
     //Special
+
     public void setSpecialUsed(int specialIndex, int playerRef){
         specialUsed = specialIndex;
         specialListener.notifySpecial(specialIndex, playerRef);
     }
+
+    /**
+     * If specials are not already all set, it adds the new special to the ArrayList. Else it updates the cost of the special.
+     */
     public void setSpecial(int name, int cost){
         if(specials.size()<3) {
             specials.add(new Special(cost, name));
@@ -248,6 +275,8 @@ public class View {
         if(specials.size()==3) return true;
         return false;
     }
+
+    //TODO  serve???
     public void specialComplete(){
         ArrayList<Integer> specialsName = new ArrayList<>();
         ArrayList<Integer> specialsCost = new ArrayList<>();
@@ -270,7 +299,6 @@ public class View {
     }
     public void setSpecialStudents(int color, int newValue, int special){
         int specialIndex = getSpecialIndex(special);
-        System.out.println("set student"+specialIndex);
         specials.get(specialIndex).setStudents(color, newValue);
         specialStudentsListener.specialStudentsNotify(getSpecialName(specialIndex),color,newValue);
     }
@@ -291,8 +319,6 @@ public class View {
     public int[] getSpecialStudents(int special){return specials.get(special).getStudents();}
     public int getNoEntry(int special){return specials.get(special).getNoEntry();}
     public int getSpecialIndex(int special){
-        System.out.println("special index"+special);
-        System.out.println(specials.get(0).getName()+" "+specials.get(1).getName()+" "+specials.get(2).getName());
         int specialIndex=-1;
         for(int i=0; i<specials.size(); i++){
             if(specials.get(i).getName() == special){
@@ -346,6 +372,9 @@ public class View {
     public void setWinnerListener(WinnerListener winnerListener){this.winnerListener=winnerListener;}
 
 
+    /**
+     * SchoolBoards contains all the variable about single school
+     */
     private class SchoolBoard {
         private String nickname;
         private String character;
@@ -407,6 +436,9 @@ public class View {
         }
     }
 
+    /**
+     * Island contains all the variable about a sigle island.
+     */
     private class Island{
         private int[] studentsIsland;
         private int towersNumber;
@@ -436,6 +468,9 @@ public class View {
         public int getIsInhibited(){return isInhibited;}
     }
 
+    /**
+     * Island contains all the variable about a single cloud.
+     */
     private class Cloud {
         private int[] students;
 
@@ -450,6 +485,10 @@ public class View {
             return students;
         }
     }
+
+    /**
+     * Hand contains coins and last card played of a single player.
+     */
     private class Hand{
         private int coins;
         private String lastPlayedCard;
@@ -469,6 +508,9 @@ public class View {
         public int getCoins(){ return coins;}
     }
 
+    /**
+     * Special contains all the variable about a single special.
+     */
     private class Special{
         private int cost;
         private int name;

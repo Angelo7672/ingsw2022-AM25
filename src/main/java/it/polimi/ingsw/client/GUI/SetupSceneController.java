@@ -53,7 +53,7 @@ public class SetupSceneController implements SceneController {
 
     }
 
-    public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
+    public void nextPressed(ActionEvent e) {
         System.out.println(numberOfPlayers + ", " + expertMode);
         if(numberOfPlayers!=0 && expertMode!="") {
             if (proxy.setupGame(numberOfPlayers, expertMode) == true) {

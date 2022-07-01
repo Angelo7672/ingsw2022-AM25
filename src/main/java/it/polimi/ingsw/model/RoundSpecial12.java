@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;
 
+/**
+ * Round strategy used by special 1
+ */
 public class RoundSpecial12 extends RoundStrategy{
     Special12 special;
 
@@ -12,6 +15,11 @@ public class RoundSpecial12 extends RoundStrategy{
         special =new Special12();
     }
 
+    /**
+     * It checks if effect could be used, then use it.
+     * @param color is the student's color.
+     * @return true if effect is used.
+     */
     @Override
     public boolean effect(int color){
         if(color <5 && color > -1 ) {

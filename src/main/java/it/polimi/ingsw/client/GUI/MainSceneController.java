@@ -239,24 +239,18 @@ public class MainSceneController implements SceneController {
                 if (lastThingClicked.equals("student"))
                     lastThingClicked = "table";
                 if ((mouseEvent.getSource() == tablesMap.get(currentPlayer))) {
-                    try {
-                        String result = proxy.moveStudent(currentStudentColor, "school", -1);
-                        if (result.equalsIgnoreCase("ok")) {
-                            moveNotAllowed = false;
-                            errorLabel.setVisible(false);
-                        } else if (result.equalsIgnoreCase("transfer complete")) {
-                            moveNotAllowed = false;
-                            currentStudentColor=-1;
-                            gui.setConstants("StudentsMoved");
-                            setActionAllowed(1);
-                        } else {
-                            showMoveNotAllowed();
-                            moveNotAllowed = true;
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
+                    String result = proxy.moveStudent(currentStudentColor, "school", -1);
+                    if (result.equalsIgnoreCase("ok")) {
+                        moveNotAllowed = false;
+                        errorLabel.setVisible(false);
+                    } else if (result.equalsIgnoreCase("transfer complete")) {
+                        moveNotAllowed = false;
+                        currentStudentColor=-1;
+                        gui.setConstants("StudentsMoved");
+                        setActionAllowed(1);
+                    } else {
+                        showMoveNotAllowed();
+                        moveNotAllowed = true;
                     }
                 }
             } else if (actionAllowed == 7) {
@@ -320,27 +314,21 @@ public class MainSceneController implements SceneController {
                             islandRef = i;
                         }
                     }
-                    try {
-                        String result = proxy.moveStudent(currentStudentColor, "island", islandRef);
-                        if (result.equalsIgnoreCase("ok")) {
-                            moveNotAllowed = false;
-                            currentStudentColor=-1;
-                            errorLabel.setVisible(false);
-                        } else if (result.equalsIgnoreCase("transfer complete")) {
-                            moveNotAllowed = false;
-                            currentStudentColor=-1;
-                            gui.setConstants("StudentsMoved");
-                            setActionAllowed(1);
-                        } else {
-                            currentStudentColor=-1;
-                            moveNotAllowed = true;
-                            errorLabel.setText("Error, move not allowed!");
-                            errorLabel.setVisible(true);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
+                    String result = proxy.moveStudent(currentStudentColor, "island", islandRef);
+                    if (result.equalsIgnoreCase("ok")) {
+                        moveNotAllowed = false;
+                        currentStudentColor=-1;
+                        errorLabel.setVisible(false);
+                    } else if (result.equalsIgnoreCase("transfer complete")) {
+                        moveNotAllowed = false;
+                        currentStudentColor=-1;
+                        gui.setConstants("StudentsMoved");
+                        setActionAllowed(1);
+                    } else {
+                        currentStudentColor=-1;
+                        moveNotAllowed = true;
+                        errorLabel.setText("Error, move not allowed!");
+                        errorLabel.setVisible(true);
                     }
                 } else {
                     errorLabel.setText("Error, move not allowed!");
@@ -359,21 +347,15 @@ public class MainSceneController implements SceneController {
                         motherMovement = islandsList.size() - currentMotherPos + islandRef;
                     }
                 }
-                try {
-                    String result = proxy.moveMotherNature(motherMovement);
-                    if (result.equalsIgnoreCase("ok")) {
-                        gui.setConstants("MovedMother");
-                        errorLabel.setVisible(false);
-                        actionLabel.setText("");
-                        setActionAllowed(2);
-                    } else {
-                        errorLabel.setText("Error, move not allowed!");
-                        errorLabel.setVisible(true);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                String result = proxy.moveMotherNature(motherMovement);
+                if (result.equalsIgnoreCase("ok")) {
+                    gui.setConstants("MovedMother");
+                    errorLabel.setVisible(false);
+                    actionLabel.setText("");
+                    setActionAllowed(2);
+                } else {
+                    errorLabel.setText("Error, move not allowed!");
+                    errorLabel.setVisible(true);
                 }
             } else if (actionAllowed == 3) { //special 1
                 for (int i = 0; i < islandsList.size(); i++) {
@@ -381,16 +363,12 @@ public class MainSceneController implements SceneController {
                         islandRef = i;
                     }
                 }
-                try {
-                    if (proxy.useSpecial(1, cardStudent, islandRef)) {
-                        gui.setConstants("SpecialUsed");
-                        specialLabel.setVisible(false);
-                    } else {
-                        showMoveNotAllowed();
-                        gui.specialNotAllowed();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (proxy.useSpecial(1, cardStudent, islandRef)) {
+                    gui.setConstants("SpecialUsed");
+                    specialLabel.setVisible(false);
+                } else {
+                    showMoveNotAllowed();
+                    gui.specialNotAllowed();
                 }
             } else if (actionAllowed == 4) { //Special 3
                 for (int i = 0; i < islandsList.size(); i++) {
@@ -398,17 +376,13 @@ public class MainSceneController implements SceneController {
                         islandRef = i;
                     }
                 }
-                try {
-                    if (proxy.useSpecial(3, islandRef)) {
-                        gui.setConstants("SpecialUsed");
-                        specialLabel.setVisible(false);
-                    } else {
-                        errorLabel.setText("Error, move not allowed!");
-                        errorLabel.setVisible(true);
-                        gui.specialNotAllowed();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (proxy.useSpecial(3, islandRef)) {
+                    gui.setConstants("SpecialUsed");
+                    specialLabel.setVisible(false);
+                } else {
+                    errorLabel.setText("Error, move not allowed!");
+                    errorLabel.setVisible(true);
+                    gui.specialNotAllowed();
                 }
             } else if (actionAllowed == 5) { //special 5
                 for (int i = 0; i < islandsList.size(); i++) {
@@ -416,14 +390,11 @@ public class MainSceneController implements SceneController {
                         islandRef = i;
                     }
                 }
-                try {
-                    if (proxy.useSpecial(5, islandRef)) {
-                        gui.setConstants("SpecialUsed");
-                    } else {
-                        showMoveNotAllowed();
-                        gui.specialNotAllowed();
-                    }
-                } catch (IOException e) {
+                if (proxy.useSpecial(5, islandRef)) {
+                    gui.setConstants("SpecialUsed");
+                } else {
+                    showMoveNotAllowed();
+                    gui.specialNotAllowed();
                 }
             } else {
                 showMoveNotAllowed();
@@ -446,42 +417,28 @@ public class MainSceneController implements SceneController {
      */
     public void confirmSpecial() { //special 7
         if (actionAllowed == 6) {
-            try {
-                if (proxy.useSpecial(7, fromEntranceToCard, fromCardToEntrance)) {
-                    gui.setConstants("SpecialUsed");
-                    specialLabel.setVisible(false);
-                    confirmSpecialButton.setVisible(false);
-                } else {
-                    showMoveNotAllowed();
-                    gui.specialNotAllowed();
-                    confirmSpecialButton.setVisible(false);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            if (proxy.useSpecial(7, fromEntranceToCard, fromCardToEntrance)) {
+                gui.setConstants("SpecialUsed");
+                specialLabel.setVisible(false);
+                confirmSpecialButton.setVisible(false);
+            } else {
+                showMoveNotAllowed();
+                gui.specialNotAllowed();
+                confirmSpecialButton.setVisible(false);
             }
             fromCardToEntrance.clear();
             fromEntranceToCard.clear();
             selectedStudents = "";
             selectedStudentSpecial7 = "";
         } else if (actionAllowed == 7) { //special 10
-            try {
-                if (proxy.useSpecial(10, fromEntranceToTable, fromTableToEntrance)) {
-                    gui.setConstants("SpecialUsed");
-                    specialLabel.setVisible(false);
-                    confirmSpecialButton.setVisible(false);
-                } else {
-                    showMoveNotAllowed();
-                    gui.specialNotAllowed();
-                    confirmSpecialButton.setVisible(false);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            if (proxy.useSpecial(10, fromEntranceToTable, fromTableToEntrance)) {
+                gui.setConstants("SpecialUsed");
+                specialLabel.setVisible(false);
+                confirmSpecialButton.setVisible(false);
+            } else {
+                showMoveNotAllowed();
+                gui.specialNotAllowed();
+                confirmSpecialButton.setVisible(false);
             }
             fromEntranceToTable.clear();
             fromTableToEntrance.clear();

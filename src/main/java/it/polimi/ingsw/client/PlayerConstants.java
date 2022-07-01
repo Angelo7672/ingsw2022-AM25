@@ -1,10 +1,13 @@
 package it.polimi.ingsw.client;
 
-public class PlayerConstants {//Meglio farle attivare/disattivare da server
+
+/**
+ * This class is used tto know which phase have been done and continue with the next one.
+ */
+public class PlayerConstants {
     private boolean planningPhaseStarted;
     private boolean cardPlayed;
     private boolean actionPhaseStarted;
-    private boolean movingStudent;
     private boolean studentMoved;
     private boolean specialUsed;
     private boolean motherMoved;
@@ -17,7 +20,6 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
         this.cardPlayed = false;
         this.actionPhaseStarted = false;
         this.studentMoved = false;
-        this.movingStudent = false;
         this.specialUsed = false;
         this.motherMoved = false;
         this.cloudChosen = false;
@@ -82,6 +84,9 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
     }
 
 
+    /**
+     * @return the phase that have to be done.
+     */
     public String lastPhase(){
         if(!isCardPlayed()) return "PlayCardAnswer";
         if(!isStudentMoved()) return "MoveStudent";
@@ -93,7 +98,6 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
     public void resetAll(){
         this.cardPlayed = false;
         this.actionPhaseStarted = false;
-        this.movingStudent = false;
         this.studentMoved = false;
         this.specialUsed = false;
         this.motherMoved = false;
@@ -117,11 +121,4 @@ public class PlayerConstants {//Meglio farle attivare/disattivare da server
         this.planningPhaseStarted = planningPhaseStarted;
     }
 
-    public boolean isMovingStudent() {
-        return movingStudent;
-    }
-
-    public void setMovingStudent(boolean movingStudent) {
-        this.movingStudent = movingStudent;
-    }
 }

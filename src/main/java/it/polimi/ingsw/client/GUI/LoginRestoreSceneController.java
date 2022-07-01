@@ -54,7 +54,7 @@ public class LoginRestoreSceneController implements SceneController{
 
 
 
-    public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
+    public void nextPressed(ActionEvent e){
         currentNickname = this.nicknameBox.getText();
         if(currentNickname!="") {
             if(loginService.getState()== Worker.State.READY)

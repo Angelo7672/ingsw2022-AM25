@@ -51,9 +51,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
     /**
      * Send a message to server to comunicate that client is ready for login.
      * @return true if server is ready for client to login.
-     * @throws IOException
      */
-    public boolean readyForLogin() throws IOException {
+    public boolean readyForLogin() {
         send(new GenericMessage("Ready for login!"));
         tempObj = receiver.receive();
         if(tempObj instanceof LoginRestoreAnswer) return true;
@@ -65,10 +64,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * Send a message to server to comunicate that client is ready for login. Server answers with the action tha client have to do.
      * It depends on what the player number is.
      * @return String which corresponds to the actions.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    public String first() throws IOException, ClassNotFoundException {
+    public String first() {
         send(new GenericMessage("Ready for login!"));
         tempObj = receiver.receive();
         if(tempObj instanceof SoldOutAnswer) return ((SoldOutAnswer) tempObj).getMessage();
@@ -89,9 +86,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * It sends the decision to the server.
      * @param decision is the decision of the player.
      * @return true if server accepted the message.
-     * @throws IOException
      */
-    public boolean savedGame(String decision) throws IOException {
+    public boolean savedGame(String decision) {
         send(new GenericMessage(decision));
         tempObj = receiver.receive();
         if (tempObj instanceof GenericAnswer) {
@@ -105,9 +101,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
     /**
      * It is used in the case of restore a game. It returns the phase of the game that have to be done.
      * @return the string inside the answer received.
-     * @throws IOException
      */
-    public String getPhase() throws IOException {
+    public String getPhase() {
         send(new GenericMessage("Ready to play!"));
         tempObj = receiver.receive();
         if(tempObj instanceof PlayCardAnswer){
@@ -124,9 +119,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * @param nickname is the nickname chosen.
      * @param character is the characters chosen.
      * @return true if server accepts nickname and characters.
-     * @throws IOException
      */
-    public boolean setupConnection(String nickname, String character) throws IOException {
+    public boolean setupConnection(String nickname, String character) {
         if(nickname.length()>10) nickname = nickname.substring(0,9);
         send(new SetupConnection(nickname, character));
         tempObj = receiver.receive();
@@ -139,9 +133,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * @param numberOfPlayers is the number of players chosen.
      * @param expertMode Y for expert mode or N for normal game.
      * @return true if server accepts the message.
-     * @throws IOException
      */
-    public boolean setupGame(int numberOfPlayers, String expertMode) throws IOException {
+    public boolean setupGame(int numberOfPlayers, String expertMode) {
         boolean isExpert;
 
         if(numberOfPlayers<2 || numberOfPlayers >4) return false;
@@ -173,13 +166,13 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
     /**
      * It is used to receive number of players and expertMode. Then, when view is initialized, return view.
      * @return view initialized.
-     * @throws IOException
-     * @throws InterruptedException
      */
-    public View startView() throws IOException, InterruptedException {
+    public View startView() {
         send(new GenericMessage("Ready to start"));
         synchronized (initializedViewLock){
-            if(!view.isInitializedView()) initializedViewLock.wait();
+            try {
+                if (!view.isInitializedView()) initializedViewLock.wait();
+            }catch (InterruptedException e){}
         }
         return view;
     }
@@ -195,9 +188,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
     /**
      * It sends a message to server to start planning phase. Server answer when it's player's turn.
      * @return true if it's player's turn.
-     * @throws IOException
      */
-    public boolean startPlanningPhase() throws IOException {
+    public boolean startPlanningPhase() {
         send(new GenericMessage("Ready for Planning Phase"));
         while(true) {
             tempObj = receiver.receive();
@@ -211,10 +203,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * Send the chosen card to server and wait its answer.
      * @param card is the card chosen.
      * @return true if card is accepted by server.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    public String playCard(String card) throws IOException, ClassNotFoundException {
+    public String playCard(String card) {
         send(new CardMessage(card));
         tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) {
@@ -231,9 +221,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
     /**
      * It sends a message to server to start action phase. Server answer when it's player's turn.
      * @return true if it's player's turn.
-     * @throws IOException
      */
-    public boolean startActionPhase() throws IOException, ClassNotFoundException {
+    public boolean startActionPhase() {
         while(true) {
             tempObj = receiver.receive();
             if(((StartTurnAnswer)tempObj).getMessage().equals("Start your Action Phase!")){
@@ -249,10 +238,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * @param where is the place where move the student (school or island).
      * @param islandRef is the number of island if the student is moved on an island.
      * @return true if student is accepted by server.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    public String moveStudent(int color, String where, int islandRef) throws IOException, ClassNotFoundException {
+    public String moveStudent(int color, String where, int islandRef) {
         if(color < 0 || color > 4) return "Error, insert a color";
         boolean inSchool;
         if (where.equalsIgnoreCase("school")) inSchool = true;
@@ -269,10 +256,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * Send the chosen number of steps to server and wait its answer.
      * @param steps is the number of steps chosen.
      * @return true if steps is accepted by server.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    public String moveMotherNature(int steps) throws IOException, ClassNotFoundException {
+    public String moveMotherNature(int steps) {
         send(new MoveMotherNature(steps));
         tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage();
@@ -284,10 +269,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * Send the chosen cloud of steps to server and wait its answer.
      * @param cloud is the number of the cloud.
      * @return true if cloud is accepted by server.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    public String chooseCloud(int cloud) throws IOException, ClassNotFoundException {
+    public String chooseCloud(int cloud) {
         send(new ChosenCloud(cloud));
         tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage();
@@ -299,13 +282,10 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * Send the chosen special to server and wait its answer.
      * @param special is the special chosen.
      * @return true if special is accepted by server.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    public boolean checkSpecial(int special) throws IOException, ClassNotFoundException {
+    public boolean checkSpecial(int special) {
         send(new UseSpecial(special));
         tempObj = receiver.receive();
-        System.out.println(tempObj);
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer) tempObj).getMessage().equals("ok");
         return false;
     }
@@ -316,10 +296,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * @param color1 is the first ArrayList.
      * @param color2 is the second ArrayList.
      * @return true if ArrayList of students are accepted by server.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    public boolean useSpecial(int special,ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException {
+    public boolean useSpecial(int special,ArrayList<Integer> color1, ArrayList<Integer> color2) {
         if(special == 7) send(new Special7Message(color1, color2));
         else if(special == 10) send(new Special10Message(color1, color2));
         tempObj = receiver.receive();
@@ -332,9 +310,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * @param special is the number of the special.
      * @param ref is the reference of the decision made by player.
      * @return true if ref is accepted by server.
-     * @throws IOException
      */
-    public boolean useSpecial(int special, int ref) throws IOException {
+    public boolean useSpecial(int special, int ref) {
         if(special == 3) send(new Special3Message(ref));
         else if(special == 5) send(new Special5Message(ref));
         else if(special == 9) send(new Special9Message(ref));
@@ -350,9 +327,8 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * @param color is the color of the student chosen.
      * @param islandRef is the number of the island chosen.
      * @return true if special is accepted by server.
-     * @throws IOException
      */
-    public boolean useSpecial(int special, int color, int islandRef) throws IOException {
+    public boolean useSpecial(int special, int color, int islandRef) {
         send(new Special1Message(color, islandRef));
         tempObj = receiver.receive();
         if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
@@ -362,26 +338,26 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
     /**
      * It sends message to server.
      * @param message is the message which have to be sent.
-     * @throws IOException
      */
-    private void send(Message message) throws IOException {
+    private void send(Message message) {
         try {
             outputStream.reset();
             outputStream.writeObject(message);
             outputStream.flush();
         } catch (IOException e){
-
+            serverOfflineListener.notifyServerOffline();
         }
     }
 
     /**
-     * It's a thread which sends ping message during the connection.
+     * It's a thread which sends ping message during the connection. If ping counter equals 3 it means that server doesn't send pong for 15 sec, so the game is closed.
      */
     private void startPing() {
         ping = new Thread(() -> {
         while (!disconnected) {
             try {
                 Thread.sleep(5000);
+                //System.out.println("ping");
                 pingCounter++;
                 if(pingCounter == 3) {
                     disconnected = true;
@@ -408,9 +384,13 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
     }
 
     @Override
-    public void notifyDisconnected() throws IOException {
+    public void notifyDisconnected(){
         disconnected = true;
-        outputStream.close();
+        try {
+            outputStream.close();
+        }catch (IOException e){
+            serverOfflineListener.notifyServerOffline();
+        }
     }
 
     @Override

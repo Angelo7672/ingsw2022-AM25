@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+/**
+ * Round strategy used by special 3.
+ */
 public class RoundSpecial3 extends RoundStrategy{
     Special3 special;
 
@@ -8,6 +11,11 @@ public class RoundSpecial3 extends RoundStrategy{
         special = new Special3();
     }
 
+    /**
+     * It checks if effect could be used, then use it.
+     * @param islandRef is the number of the island.
+     * @return true if effect is used.
+     */
     @Override
     public boolean effect(int islandRef){
         boolean victory = false;

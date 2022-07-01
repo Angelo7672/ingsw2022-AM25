@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;
 
+/**
+ * Round strategy used by special 10
+ */
 public class RoundSpecial10 extends RoundStrategy{
     Special10 special;
 
@@ -12,6 +15,13 @@ public class RoundSpecial10 extends RoundStrategy{
         special = new Special10();
     }
 
+    /**
+     * It checks if effect could be used, then use it.
+     * @param playerRef is the number of the player.
+     * @param entranceStudent is the students from the entrance.
+     * @param tableStudent is the students from the table.
+     * @return true if effect is used.
+     */
     @Override
     public boolean effect(int playerRef, ArrayList<Integer> entranceStudent, ArrayList<Integer> tableStudent){
         if(playerManager.checkStudentsEntranceForSpecial(entranceStudent, playerRef) && playerManager.checkStudentsTableForSpecial(tableStudent,playerRef)

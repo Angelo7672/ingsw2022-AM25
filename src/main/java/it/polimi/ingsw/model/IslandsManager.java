@@ -247,6 +247,9 @@ public class IslandsManager {
         this.inhibitedListener.notifyInhibited(islandRef, getInhibited(islandRef));
     }
 
+    /**
+     * Class island contains all the variable about a single island.
+     */
     private class Island {
         private int[] students;
         private int towerValue;

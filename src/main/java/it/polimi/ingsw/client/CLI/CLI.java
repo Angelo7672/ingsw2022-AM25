@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.answer.SavedGameAnswer;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
@@ -49,7 +50,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         proxy.setDisconnectedListener(this);
         proxy.setServerOfflineListener(this);
         lock = new Object();
-        playCount=4;
+        playCount=3;
     }
 
 
@@ -57,11 +58,8 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
      * Setup is the first method which starts the other method depending on the answer of the server. It could be setupGame if the player is the first, savedGame if there's a previous game and
      * the player is the first, LoginRestore if there's a previous game and player is not the first and, setupConnection if the player is not the first. After the login listeners are set.
      * If the game is restored then setup calls setPhase to know where the game was interrupted and set it.
-     * @throws IOException
-     * @throws ClassNotFoundException
-     * @throws InterruptedException
      */
-    private void setup() throws IOException, ClassNotFoundException, InterruptedException {
+    private void setup()  {
         boolean savedGame=false;
         boolean gameRestored = false;
         String result = proxy.first();
@@ -91,8 +89,10 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         else if(result.equals("Server Sold Out")) {
             System.out.println();
             System.out.print(ANSI_RED+SPACE+"Server Sold Out, game over."+ANSI_RESET);
-            socket.close();
-            scanner.close();
+            try {
+                socket.close();
+                scanner.close();
+            }catch (IOException e){}
             setActive(false);
             System.exit(-1);
         }
@@ -125,9 +125,8 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
 
     /**
      * It calls proxy.getPhase to know where the game was interrupted and then set the constant.
-     * @throws IOException
      */
-    private void setPhase() throws IOException {
+    private void setPhase(){
         constants.setStartGame(true);
         String phase = proxy.getPhase();
         if(phase.equals("Start your Action Phase!")){
@@ -143,10 +142,8 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
 
     /**
      * it get form the server the already chosen characters, it asks to the player nickname and character and send it to the proxy.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    private void setupConnection() throws IOException, ClassNotFoundException {
+    private void setupConnection() {
         while (true) {
             ArrayList<String> chosenCharacters = proxy.getChosenCharacters();
             ArrayList<String> availableCharacters = new ArrayList<>();
@@ -217,10 +214,6 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             } catch (NumberFormatException e) {
                 System.out.println();
                 System.out.println(ANSI_RED+SPACE+"Error, insert a number"+ANSI_RESET);
-            } catch (IOException e) {
-                System.err.println("io");
-            } catch (ClassNotFoundException e) {
-                System.err.println("class error");
             }
         }
     }
@@ -229,10 +222,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     /**
      * it gets from the proxy the information about the game and asks to the player if it wants to restore the game.
      * @return true if player want to restore the game, else return false.
-     * @throws IOException
-     * @throws ClassNotFoundException
+
      */
-    private boolean savedGame() throws IOException, ClassNotFoundException {
+    private boolean savedGame(){
         SavedGameAnswer savedGame = (SavedGameAnswer) proxy.getMessage();
         String decision;
         while(true) {
@@ -268,10 +260,8 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
 
     /**
      * it asks to the player the previous nickname chosen, then send it to the proxy.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    private void loginRestore() throws IOException, ClassNotFoundException {
+    private void loginRestore(){
         while (true){
             System.out.println();
             System.out.print(SPACE+"Insert your previous nickname for restore last game: ");
@@ -287,10 +277,8 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     /**
      * it asks to the player if it wants to use a special, if "n" the method return, else if it wants to use a special send the chosen one to the proxy.
      * if proxy's method return true then useSpecial call the method special if special number is different from 2, 4, 6, 8.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    private void useSpecial() throws IOException, ClassNotFoundException {
+    private void useSpecial() {
         cli();
         String answer;
         System.out.println();
@@ -334,10 +322,8 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
      * For each special it asks what the player wants to move or use depending on the special effect. Then send it to proxy.
      * @param special is the number of the special chosen.
      * @return true if server accepts the special, else return false.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    private boolean special(int special) throws IOException, ClassNotFoundException {
+    private boolean special(int special){
             while (true) {
                 try {
                     if (special == 1) {
@@ -527,10 +513,8 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
 
     /**
      * It asks to the player which card it wants to play and send it to the proxy. If server accepts it the constant about card played is set true.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    private void playCard() throws IOException, ClassNotFoundException {
+    private void playCard() {
         printable.cli();
         while (true) {
             System.out.println();
@@ -557,85 +541,69 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     private void moveStudents() {
         String accepted;
         cli();
-        try{
-            boolean moveNotAllowed;
-            do{
-                moveNotAllowed = false;
-                String color=null;
-                String where=null;
-                int colorInt=-1;
-                int islandRef = -1;
-                while (color == null) {
-                    synchronized (lock) {
+        boolean moveNotAllowed;
+        do{
+            moveNotAllowed = false;
+            String color=null;
+            String where=null;
+            int colorInt=-1;
+            int islandRef = -1;
+            while (color == null) {
+                synchronized (lock) {
+                    System.out.println();
+                    System.out.print(SPACE + "Which student do you want to move? Insert color ");
+                    color = readNext();
+                    colorInt = translateColor(color);
+                    if (colorInt == -1) {
                         System.out.println();
-                        System.out.print(SPACE + "Which student do you want to move? Insert color ");
-                        color = readNext();
-                        colorInt = translateColor(color);
-                        if (colorInt == -1) {
-                            System.out.println();
-                            System.out.println(ANSI_RED + SPACE + "Error, enter an existing color" + ANSI_RESET);
-                            color = null;
-                        }
+                        System.out.println(ANSI_RED + SPACE + "Error, enter an existing color" + ANSI_RESET);
+                        color = null;
                     }
                 }
-                while (where == null) {
-                    synchronized (lock) {
+            }
+            while (where == null) {
+                synchronized (lock) {
+                    System.out.println();
+                    System.out.print(SPACE + "Where do you want to move the student? School or Island ");
+                    where = readNext();
+                    if (!where.equalsIgnoreCase("island") && !where.equalsIgnoreCase("school")) {
                         System.out.println();
-                        System.out.print(SPACE + "Where do you want to move the student? School or Island ");
-                        where = readNext();
-                        if (!where.equalsIgnoreCase("island") && !where.equalsIgnoreCase("school")) {
+                        System.out.println(ANSI_RED + SPACE + "Error, insert school or island" + ANSI_RESET);
+                        where = null;
+                    }
+                }
+            }
+            System.out.println();
+            if (where.equalsIgnoreCase("island")) {
+                synchronized (lock) {
+                    while (islandRef == -1) {
+                        System.out.print(SPACE + "Which island? insert the number ");
+                        String intString = readNext();
+                        islandRef = Integer.parseInt(intString);
+                        islandRef = islandRef - 1;
+                        System.out.println();
+                        if (islandRef < 0 || islandRef >= view.getIslandSize()) {
                             System.out.println();
-                            System.out.println(ANSI_RED + SPACE + "Error, insert school or island" + ANSI_RESET);
-                            where = null;
+                            System.out.println(ANSI_RED + SPACE + "Error, insert an existing island" + ANSI_RESET);
+                            islandRef = -1;
                         }
                     }
                 }
-                System.out.println();
-                if (where.equalsIgnoreCase("island")) {
-                    synchronized (lock) {
-                        while (islandRef == -1) {
-                            System.out.print(SPACE + "Which island? insert the number ");
-                            String intString = readNext();
-                            islandRef = Integer.parseInt(intString);
-                            islandRef = islandRef - 1;
-                            System.out.println();
-                            if (islandRef < 0 || islandRef >= view.getIslandSize()) {
-                                System.out.println();
-                                System.out.println(ANSI_RED + SPACE + "Error, insert an existing island" + ANSI_RESET);
-                                islandRef = -1;
-                            }
-                        }
-                    }
-                }
-                accepted = proxy.moveStudent(colorInt, where, islandRef);
-                if (accepted.equals("transfer complete")) constants.setStudentMoved(true);
-                else if (accepted.equals("move not allowed")) {
-                    System.out.println(ANSI_RED + SPACE + "Move not allowed" + ANSI_RESET);
-                    moveNotAllowed = true;
-                }
-            }while(moveNotAllowed);
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println();
-            System.out.println(ANSI_RED + SPACE + "Error, try again" + ANSI_RESET);
-            try {
-                turn();
-            } catch (IOException | ClassNotFoundException ex) {}
-        } catch (NumberFormatException e) {
-            System.out.println();
-            System.out.println(ANSI_RED + SPACE + "Error, insert a number" + ANSI_RESET);
-            try {
-                turn();
-            } catch (IOException | ClassNotFoundException ex) {}
-        }
+            }
+            accepted = proxy.moveStudent(colorInt, where, islandRef);
+            if (accepted.equals("transfer complete")) constants.setStudentMoved(true);
+            else if (accepted.equals("move not allowed")) {
+                System.out.println(ANSI_RED + SPACE + "Move not allowed" + ANSI_RESET);
+                moveNotAllowed = true;
+            }
+        }while(moveNotAllowed);
     }
 
 
     /**
      * It asks to the player how many steps it wants to move mother nature, then send the number of steps to the proxy. If the server's answer is ok constant mother moved is set true.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    private void moveMotherNature() throws IOException, ClassNotFoundException {
+    private void moveMotherNature() {
         int steps = -1;
             try {
                 do {
@@ -662,10 +630,8 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
 
     /**
      * It asks to the player which cloud it wants, then send the cloud number to the proxy. If the server's answer is ok constant cloud chosen is set true.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    private void chooseCloud() throws IOException, ClassNotFoundException {
+    private void chooseCloud() {
         int cloud = -1;
         constants.setEndTurn(true);
             try {
@@ -708,7 +674,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
      * Use the play counter to print the entire cli every 4 plays.
      */
     private void cli(){
-        if(playCount==4){
+        if(playCount==3){
             printable.cli();
             playCount=0;
         } else playCount++;
@@ -719,22 +685,16 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
      */
     @Override
     public void run() {
-        try {
-            setup();
-            while (active) {
-                if (!constants.isPlanningPhaseStarted()){
-                    proxy.startPlanningPhase();
-                    constants.resetAll();
-                    constants.setPlanningPhaseStarted(true);
-                }
-                while (!constants.isCloudChosen()) {
-                    turn();
-                }
+        setup();
+        while (active) {
+            if (!constants.isPlanningPhaseStarted()){
+                proxy.startPlanningPhase();
+                constants.resetAll();
+                constants.setPlanningPhaseStarted(true);
             }
-        } catch (IOException | ClassNotFoundException e) {
-        System.err.println("io / class in run");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            while (!constants.isCloudChosen()) {
+                turn();
+            }
         }
         scanner.close();
     }
@@ -747,10 +707,8 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
      * it starts the right phase which player have to do. First, set the game started so prints about initialization of the game aren't printed.
      * Then, if in that action phase the special have not been used and the game is in expert mode, it asks to player if it wants to use a special.
      * Finally call phase handler with the phase that have to be done.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    private void turn() throws IOException, ClassNotFoundException {
+    private void turn() {
         if(!constants.isStartGame()) constants.setStartGame(true);
         if (!constants.isSpecialUsed() && constants.isActionPhaseStarted() && view.getExpertMode()) useSpecial();
         phaseHandler(constants.lastPhase());
@@ -759,10 +717,8 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     /**
      * it calls the method of the last phase.
      * @param phase is the phase that have to be done.
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    private void phaseHandler(String phase) throws IOException, ClassNotFoundException {
+    private void phaseHandler(String phase) {
         if(phase.equals("PlayCardAnswer")) playCard();
         else if(!constants.isActionPhaseStarted()) {
             constants.setActionPhaseStarted(proxy.startActionPhase());
@@ -806,13 +762,14 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
 
     /**
      * If server is offline close the socket, set active false and close the client.
-     * @throws IOException
      */
-    private void serverOffline() throws IOException {
+    private void serverOffline() {
         synchronized (lock) {
             System.out.println();
             System.out.println(ANSI_RED + SPACE + "Server is offline, Game over." + ANSI_RESET);
-            socket.close();
+            try {
+                socket.close();
+            }catch (IOException e){serverOffline();}
             setActive(false);
             System.exit(-1);
         }
@@ -820,13 +777,14 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
 
     /**
      * If one of the player disconnects then close the socket, set active false and close the client.
-     * @throws IOException
      */
-    private void disconnectClient() throws IOException {
+    private void disconnectClient() {
         synchronized (lock) {
             System.out.println();
             System.out.println(ANSI_RED + SPACE + "One of the player is offline, Game over." + ANSI_RESET);
-            socket.close();
+            try {
+                socket.close();
+            }catch (IOException e){serverOffline();}
             setActive(false);
             System.exit(-1);
         }
@@ -834,14 +792,15 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
 
     /**
      * If game is over, return the winner, close the socket, set active false and close the client.
-     * @throws IOException
      */
-    private void winner() throws IOException {
+    private void winner() {
         synchronized (lock) {
             printable.cli();
             System.out.println();
             System.out.println(ANSI_RED + SPACE + "Game over, the winner is " + view.getWinner() + "." + ANSI_RESET);
-            socket.close();
+            try {
+                socket.close();
+            }catch (IOException e){serverOffline();}
             setActive(false);
             System.exit(0);
         }
@@ -990,7 +949,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
      * See Listeners package.
      */
     @Override
-    public void notifyDisconnected() throws IOException {
+    public void notifyDisconnected(){
         disconnectClient();
     }
 
@@ -998,7 +957,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
      * See Listeners package.
      */
     @Override
-    public void notifyWinner() throws IOException {
+    public void notifyWinner() {
         winner();
     }
 
@@ -1006,7 +965,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
      * See Listeners package.
      */
     @Override
-    public void notifyServerOffline() throws IOException {
+    public void notifyServerOffline(){
         serverOffline();
     }
 

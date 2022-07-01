@@ -45,25 +45,19 @@ public class CloudsSceneController implements SceneController  {
     }
     @FXML
     public void confirmPressed(){
-        try {
-            String result = proxy.chooseCloud(chosenCloud);
+        String result = proxy.chooseCloud(chosenCloud);
 
-            if(result.equalsIgnoreCase("ok")){
-                errorMessage.setVisible(false);
-                gui.setConstants("Reset");
-                gui.setNotYourTurn();
-                disableConfirm();
-                Stage stage = (Stage) confirmButton.getScene().getWindow();
-                stage.close();
-                gui.phaseHandler("PlanningPhase");
+        if(result.equalsIgnoreCase("ok")){
+            errorMessage.setVisible(false);
+            gui.setConstants("Reset");
+            gui.setNotYourTurn();
+            disableConfirm();
+            Stage stage = (Stage) confirmButton.getScene().getWindow();
+            stage.close();
+            gui.phaseHandler("PlanningPhase");
 
-            } else {
-                errorMessage.setVisible(true);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } else {
+            errorMessage.setVisible(true);
         }
     }
 

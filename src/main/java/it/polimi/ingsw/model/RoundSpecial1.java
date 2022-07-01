@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.listeners.SpecialStudentsListener;
 
+/**
+ * Round strategy used by special 1
+ */
 public class RoundSpecial1 extends RoundStrategy{
     private Special1 special;
     protected SpecialStudentsListener specialStudentsListener;
@@ -25,6 +28,12 @@ public class RoundSpecial1 extends RoundStrategy{
     @Override
     public void restoreStudentSpecial(int[] students){ special.specialStudentRestore(students); }
 
+    /**
+     * It checks if effect could be used, then use it.
+     * @param islandRef is the island's number.
+     * @param color is the student's color.
+     * @return true if effect is used.
+     */
     @Override
     public boolean effect(int islandRef, int color){
         int extracted = -1;

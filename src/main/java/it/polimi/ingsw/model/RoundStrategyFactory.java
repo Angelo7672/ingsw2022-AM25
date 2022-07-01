@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model;
 
+
+/**
+ * It is used to return the special that corresponds to the number.
+ */
 public class RoundStrategyFactory {
     int numberOfPlayer;
     CloudsManager cloudsManager;

@@ -11,45 +11,45 @@ public interface Exit {
 
     void setDisconnectedListener(DisconnectedListener disconnectedListener);
 
-    void setServerOfflineListener(ServerOfflineListener serverOfflineListener) throws IOException;
+    void setServerOfflineListener(ServerOfflineListener serverOfflineListener);
 
-    String first() throws IOException, ClassNotFoundException;
+    String first();
 
-    ArrayList<String> getChosenCharacters() throws IOException, ClassNotFoundException;
+    ArrayList<String> getChosenCharacters();
 
-    View startView() throws IOException, ClassNotFoundException, InterruptedException;
+    View startView();
 
     void setView();
 
-    boolean setupConnection(String nickname, String character) throws IOException, ClassNotFoundException ;
+    boolean setupConnection(String nickname, String character);
 
-    boolean setupGame(int numberOfPlayers, String expertMode) throws IOException, ClassNotFoundException;
+    boolean setupGame(int numberOfPlayers, String expertMode);
 
-    boolean savedGame(String decision) throws IOException;
+    boolean savedGame(String decision);
 
-    String getPhase() throws IOException;
+    String getPhase();
 
-    boolean readyForLogin() throws IOException;
+    boolean readyForLogin();
 
-    boolean checkSpecial(int special)  throws IOException, ClassNotFoundException ;
+    boolean checkSpecial(int special);
 
-    boolean useSpecial(int special, ArrayList<Integer> color1, ArrayList<Integer> color2) throws IOException, ClassNotFoundException ;
+    boolean useSpecial(int special, ArrayList<Integer> color1, ArrayList<Integer> color2);
 
-    boolean useSpecial(int special, int ref) throws IOException;
+    boolean useSpecial(int special, int ref);
 
-    boolean useSpecial(int special, int ref, int color) throws IOException;
+    boolean useSpecial(int special, int ref, int color);
 
-    String playCard(String card) throws IOException, ClassNotFoundException;
+    String playCard(String card);
 
-    boolean startActionPhase() throws IOException, ClassNotFoundException;
+    boolean startActionPhase();
 
-    String moveStudent(int colorInt, String where, int islandRef) throws IOException, ClassNotFoundException;
+    String moveStudent(int colorInt, String where, int islandRef);
 
-    String moveMotherNature(int steps) throws IOException, ClassNotFoundException ;
+    String moveMotherNature(int steps);
 
-    String chooseCloud(int cloud) throws IOException, ClassNotFoundException;
+    String chooseCloud(int cloud);
 
-    boolean startPlanningPhase() throws ClassNotFoundException, IOException;
+    boolean startPlanningPhase();
 
     Answer getMessage();
 }

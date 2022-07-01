@@ -52,13 +52,7 @@ public class LoginSceneController implements SceneController{
             }
             else{
                 showErrorMessage();
-                try {
-                    disableCharacters(proxy.getChosenCharacters());
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } catch (ClassNotFoundException ex) {
-                    ex.printStackTrace();
-                }
+                disableCharacters(proxy.getChosenCharacters());
                 gui.switchScene(GUI.LOGIN);
             }
         });
@@ -91,7 +85,7 @@ public class LoginSceneController implements SceneController{
             this.currentCharacter="KING";
     }
 
-    public void nextPressed(ActionEvent e) throws IOException, ClassNotFoundException {
+    public void nextPressed(ActionEvent e) {
         currentNickname= this.nicknameBox.getText();
         if(currentNickname!="" && currentCharacter!="") {
             if(loginService.getState()== Worker.State.READY)

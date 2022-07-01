@@ -110,13 +110,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         });
         scenesSetup();
         String result = null;
-        try {
-            result = proxy.first();
-        } catch (IOException e) {
-           loadScene(GAMEOVER);
-        } catch (ClassNotFoundException e) {
-            loadScene(GAMEOVER);
-        }
+        result = proxy.first();
         if (result.equals("SavedGame")) {
             SavedGameAnswer savedGame = (SavedGameAnswer) proxy.getMessage();
             initializedSavedScene(savedGame.getNumberOfPlayers(), savedGame.isExpertMode());
@@ -312,7 +306,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         protected Task<String> createTask() {
             return new Task<>(){
                 @Override
-                protected String call() throws IOException {
+                protected String call() {
                     String phase = proxy.getPhase();
                     return phase;
                 }
@@ -358,7 +352,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         protected Task<Boolean> createTask() {
             return new Task<>() {
                 @Override
-                protected Boolean call() throws Exception {
+                protected Boolean call(){
                     result = proxy.startPlanningPhase();
                     return result;
                 }
@@ -387,7 +381,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         protected Task<Boolean> createTask() {
             return new Task<>() {
                 @Override
-                protected Boolean call() throws Exception {
+                protected Boolean call(){
                     Boolean result = proxy.startActionPhase();
                     return result;
                 }
@@ -538,12 +532,8 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
      */
     public void setProxy(Exit proxy) {
         this.proxy = proxy;
-        try {
-            proxy.setServerOfflineListener(this);
-            proxy.setDisconnectedListener(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        proxy.setServerOfflineListener(this);
+        proxy.setDisconnectedListener(this);
     }
     /**
      * Used to set the nickname of the current player in the Main Scene

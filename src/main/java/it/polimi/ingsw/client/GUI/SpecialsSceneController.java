@@ -41,7 +41,6 @@ public class SpecialsSceneController implements SceneController{
     private GUI gui;
     private HashMap<Integer, Image> specials;
     private ArrayList<Integer> specialsName;
-    private HashMap<Integer, Integer> specialsCost;
     private int specialChosen;
     private int studentChosen;
     private ArrayList<Integer> studentsChosen;
@@ -88,11 +87,9 @@ public class SpecialsSceneController implements SceneController{
     public void initializedSpecialsScene(ArrayList<Integer> specialsList, ArrayList<Integer> cost){
         this.specials = new HashMap<>();
         this.specialsName = new ArrayList<>();
-        this.specialsCost = new HashMap<>();
         for (int i = 0; i < specialsList.size(); i++) {
             specials.put(i, specialFactory(specialsList.get(i)));
             specialsName.add(i, specialsList.get(i));
-            specialsCost.put(i, cost.get(i));
             if(specialsList.get(i)==1 || specialsList.get(i)==7 || specialsList.get(i)==11) showStudents(i);
         }
         special1View.setImage(specials.get(0));
@@ -193,25 +190,23 @@ public class SpecialsSceneController implements SceneController{
      * @param newValue is the new cost.
      */
     protected void setCoins(int specialIndex, int newValue){
-        if(newValue-specialsCost.get(specialIndex)>0) {
-            if (specialIndex == 0) {
-                special1Cost.setText(Integer.toString(newValue - specialsCost.get(specialIndex)));
-                if (!special1Cost.toString().equals("0")) {
-                    special1Cost.setVisible(true);
-                    coinSpecial1.setVisible(true);
-                }
-            } else if (specialIndex == 1) {
-                special2Cost.setText(Integer.toString(newValue - specialsCost.get(specialIndex)));
-                if (!special2Cost.toString().equals("0")) {
-                    special2Cost.setVisible(true);
-                    coinSpecial2.setVisible(true);
-                }
-            } else if (specialIndex == 2) {
-                special3Cost.setText(Integer.toString(newValue - specialsCost.get(specialIndex)));
-                if (!special3Cost.toString().equals("0")) {
-                    special3Cost.setVisible(true);
-                    coinSpecial3.setVisible(true);
-                }
+        if (specialIndex == 0) {
+            special1Cost.setText(Integer.toString(newValue));
+            if (!special1Cost.toString().equals("0")) {
+                special1Cost.setVisible(true);
+                coinSpecial1.setVisible(true);
+            }
+        } else if (specialIndex == 1) {
+            special2Cost.setText(Integer.toString(newValue));
+            if (!special2Cost.toString().equals("0")) {
+                special2Cost.setVisible(true);
+                coinSpecial2.setVisible(true);
+            }
+        } else if (specialIndex == 2) {
+            special3Cost.setText(Integer.toString(newValue));
+            if (!special3Cost.toString().equals("0")) {
+                special3Cost.setVisible(true);
+                coinSpecial3.setVisible(true);
             }
         }
     }
@@ -290,9 +285,7 @@ public class SpecialsSceneController implements SceneController{
         if(specialChosen != -1 && gui.constants.isActionPhaseStarted()){
             errorMessage.setVisible(false);
             boolean result = false;
-            try {
-                result = proxy.checkSpecial(specialChosen);
-            }catch (IOException | ClassNotFoundException e ){}
+            result = proxy.checkSpecial(specialChosen);
             if(result) {
                 if(specialChosen!=2 && specialChosen!=4 && specialChosen!=6 && specialChosen!=8) {
                     useSpecial(specialChosen);
@@ -325,9 +318,7 @@ public class SpecialsSceneController implements SceneController{
         else if(specialChosen==11 && studentChosen != -1){
             boolean result=false;
             addButton.setVisible(false);
-            try {
-                result = proxy.useSpecial(11, studentChosen);
-            }catch (IOException e){}
+            result = proxy.useSpecial(11, studentChosen);
             if(result){
                 gui.setConstants("SpecialUsed");
                 Stage stage = (Stage) confirmButton.getScene().getWindow();

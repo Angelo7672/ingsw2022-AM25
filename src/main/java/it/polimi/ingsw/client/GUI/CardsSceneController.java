@@ -56,13 +56,7 @@ public class CardsSceneController implements SceneController{
                 @Override
                 protected String call(){
                     String result = null;
-                    try {
-                        result = proxy.playCard(playedCard);
-                    } catch (IOException e) {
-                        gui.loadScene(GUI.GAMEOVER);
-                    } catch (ClassNotFoundException e) {
-                        gui.loadScene(GUI.GAMEOVER);
-                    }
+                    result = proxy.playCard(playedCard);
                     return result;
                 }
             };

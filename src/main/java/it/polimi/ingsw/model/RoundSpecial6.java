@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+/**
+ * Round strategy used by special 2, it overrides move mother nature and highInfluence.
+ */
 public class RoundSpecial6 extends RoundStrategy{
     Special6 special;
 
@@ -13,7 +16,7 @@ public class RoundSpecial6 extends RoundStrategy{
         int maxMovement;
         boolean victory = false;
 
-        maxMovement = queueManager.readMaxMotherNatureMovement(queueRef); //da incrementare anche per scelta del giocatore
+        maxMovement = queueManager.readMaxMotherNatureMovement(queueRef);
 
         if(desiredMovement > 0 && desiredMovement <= maxMovement){
             islandsManager.moveMotherNature(desiredMovement);

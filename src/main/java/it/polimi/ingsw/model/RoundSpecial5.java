@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.listeners.NoEntryListener;
 
+/**
+ * Round strategy used by special 5.
+ */
 public class RoundSpecial5 extends RoundStrategy{
     private Special5 special;
     protected NoEntryListener noEntryListener;
@@ -11,6 +14,11 @@ public class RoundSpecial5 extends RoundStrategy{
         special = new Special5();
     }
 
+    /**
+     * It checks if effect could be used, then use it.
+     * @param islandRef is the island's number.
+     * @return true if effect is used.
+     */
     @Override
     public boolean effect(int islandRef){
         if(special.getNoEntry() > 0 && islandRef>=0 && islandsManager.getIslandsSize()>islandRef){
@@ -45,6 +53,9 @@ public class RoundSpecial5 extends RoundStrategy{
     @Override
     public void increaseCost(){ special.increaseCost(); }
 
+    /**
+     * It counts the number of island inhibited and compare it to the no entry number. If one no entry is missing, it increases the number of the tiles.
+     */
     @Override
     public void effect(){
         int inhibitedIsland = 0;

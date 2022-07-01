@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
+/**
+ * Round strategy used by special 2, it overrides moveStudent and use its effect.
+ */
 public class RoundSpecial2 extends RoundStrategy {
     Special2 special;
 
@@ -10,8 +13,9 @@ public class RoundSpecial2 extends RoundStrategy {
         special = new Special2();
     }
 
+
     @Override
-    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException {    //da cambiare e spezzare in due
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException {
         if(!inSchool){
             if(islandRef < 0 || islandRef >= islandsManager.getIslandsSize()) throw new NotAllowedException();
             playerManager.transferStudent(playerRef, colour, inSchool, true);

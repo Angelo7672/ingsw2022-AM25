@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.exception.NotAllowedException;
-
+/**
+ * Round strategy used by special 3.
+ */
 public class RoundSpecial4 extends RoundStrategy{
     Special4 special;
 
@@ -10,6 +11,10 @@ public class RoundSpecial4 extends RoundStrategy{
         special = new Special4();
     }
 
+    /**
+     * @param playerRef is the number of the player.
+     * @return true if effect is used.
+     */
     @Override
     public boolean effect(int playerRef) {
         for(int i = 0; i < numberOfPlayer; i++) {

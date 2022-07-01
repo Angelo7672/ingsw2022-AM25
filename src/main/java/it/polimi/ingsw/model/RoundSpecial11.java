@@ -3,6 +3,9 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.listeners.SpecialStudentsListener;
 import it.polimi.ingsw.model.exception.NotAllowedException;
 
+/**
+ * Round strategy used by special 11
+ */
 public class RoundSpecial11 extends RoundStrategy{
     private Special11 special;
     protected SpecialStudentsListener specialStudentsListener;
@@ -27,6 +30,12 @@ public class RoundSpecial11 extends RoundStrategy{
     @Override
     public void restoreStudentSpecial(int[] students){ special.specialStudentRestore(students); }
 
+    /**
+     * It checks if effect could be used, then use it.
+     * @param playerRef is the player's number.
+     * @param color is the student's color.
+     * @return true if effect is used.
+     */
     @Override
     public boolean effect(int playerRef, int color){
         int extracted = -1;

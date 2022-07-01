@@ -47,13 +47,11 @@ public class Special9or12SceneController implements SceneController{
      */
     @FXML
     void blueButtonPressed(ActionEvent event) {
-        try {
-            if (proxy.useSpecial(special, 4)) {
-                gui.setConstants("SpecialUsed");
-            } else {
-                specialNotAllowed();
-            }
-        }catch (IOException e){}
+        if (proxy.useSpecial(special, 4)) {
+            gui.setConstants("SpecialUsed");
+        } else {
+            specialNotAllowed();
+        }
     }
 
     /**
@@ -63,14 +61,12 @@ public class Special9or12SceneController implements SceneController{
      */
     @FXML
     void greenButtonPressed(ActionEvent event) {
-        try {
-            if (proxy.useSpecial(special, 0)) {
-                gui.setConstants("SpecialUsed");
+        if (proxy.useSpecial(special, 0)) {
+            gui.setConstants("SpecialUsed");
 
-            } else {
-                specialNotAllowed();
-            }
-        }catch (IOException e){}
+        } else {
+            specialNotAllowed();
+        }
     }
 
     /**
@@ -80,14 +76,12 @@ public class Special9or12SceneController implements SceneController{
      */
     @FXML
     void pinkButtonPressed(ActionEvent event) {
-        try {
-            if (proxy.useSpecial(special, 3)) {
-                gui.setConstants("SpecialUsed");
+        if (proxy.useSpecial(special, 3)) {
+            gui.setConstants("SpecialUsed");
 
-            } else {
-                specialNotAllowed();
-            }
-        }catch (IOException e){}
+        } else {
+            specialNotAllowed();
+        }
     }
 
     /**
@@ -97,14 +91,12 @@ public class Special9or12SceneController implements SceneController{
      */
     @FXML
     void redButtonPressed(ActionEvent event) {
-        try {
-            if (proxy.useSpecial(special, 1)) {
-                gui.setConstants("SpecialUsed");
+        if (proxy.useSpecial(special, 1)) {
+            gui.setConstants("SpecialUsed");
 
-            } else {
-                specialNotAllowed();
-            }
-        }catch (IOException e){}
+        } else {
+            specialNotAllowed();
+        }
     }
 
     /**
@@ -114,15 +106,13 @@ public class Special9or12SceneController implements SceneController{
      */
     @FXML
     void yellowButtonPressed(ActionEvent event) {
-        try {
-            if (proxy.useSpecial(special, 2)) {
-                System.out.println("true");
-                gui.setConstants("SpecialUsed");
+        if (proxy.useSpecial(special, 2)) {
+            System.out.println("true");
+            gui.setConstants("SpecialUsed");
 
-            } else {
-                specialNotAllowed();
-            }
-        }catch (IOException e){}
+        } else {
+            specialNotAllowed();
+        }
     }
 
 
