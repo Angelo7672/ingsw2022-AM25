@@ -17,7 +17,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,7 +55,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     protected static final String GAMEOVER = "GameOverScene.fxml";
     protected PlayerConstants constants;
     private final HashMap<String, Scene> scenesMap;
-    private HashMap<String, SceneController> sceneControllersMap;
+    private final HashMap<String, SceneController> sceneControllersMap;
     /**
      * Launches the GUI
      * @param args of type String[]
@@ -102,15 +101,14 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         primaryStage.centerOnScreen();
         primaryStage.show();
 
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        primaryStage.setOnCloseRequest(new EventHandler<>() {
             @Override
             public void handle(WindowEvent windowEvent) {
                 System.exit(-1);
             }
         });
         scenesSetup();
-        String result = null;
-        result = proxy.first();
+        String result = proxy.first();
         if (result.equals("SavedGame")) {
             SavedGameAnswer savedGame = (SavedGameAnswer) proxy.getMessage();
             initializedSavedScene(savedGame.getNumberOfPlayers(), savedGame.isExpertMode());
@@ -171,14 +169,12 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
      * @see GUI#loadScene(String)
      */
     public void phaseHandler(String phase) {
-        System.out.println("started phase handler!");
         MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
         CardsSceneController cardsSceneController = (CardsSceneController) sceneControllersMap.get(CARDS);
         CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
         switch (phase) {
             case "SetView" -> setViewService.start();
             case "InitializeMain" -> initializeMainService.start();
-
             case "PlanningPhase" -> {
                 if(planningPhaseService.getState().equals(Worker.State.READY))
                     planningPhaseService.start();
@@ -418,7 +414,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
         protected Task<View> createTask() {
             return new Task<>() {
                 @Override
-                protected View call() throws Exception {
+                protected View call() {
                     View view = proxy.startView();
                     view.setCoinsListener(gui);
                     view.setInhibitedListener(gui);
@@ -466,7 +462,6 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             return new Task<>() {
                 @Override
                 protected Boolean call() {
-                    Boolean ok;
                     MainSceneController controller = (MainSceneController) sceneControllersMap.get(MAIN);
                     CloudsSceneController cloudsSceneController = (CloudsSceneController) sceneControllersMap.get(CLOUDS);
                     CardsSceneController cardsSceneController = (CardsSceneController) sceneControllersMap.get(CARDS);
@@ -477,9 +472,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
                     cardsSceneController.disableConfirm();
                     controller.setExpertMode(view.getExpertMode());
                     controller.initializeScene();
-                    ok = true;
-
-                    return ok;
+                    return true;
                 }
             };
         }
@@ -767,9 +760,19 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void notifyDisconnected() {
         Platform.runLater(()->{
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
-            controller.setClientDisconnected();
-            loadScene(GAMEOVER);
-            primaryStage.close();
+            if(primaryStage!=null && controller!=null){
+                controller.setClientDisconnected();
+                loadScene(GAMEOVER);
+                primaryStage.close();
+            } else {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + GAMEOVER));
+                try {
+                    primaryStage.setScene(new Scene(loader.load()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         });
     }
     /**
@@ -780,19 +783,22 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void notifyServerOffline() {
         Platform.runLater(()->{
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
-            loadScene(GAMEOVER);
             if(primaryStage!=null && controller!=null){
-                primaryStage.close();
                 controller.setServerOffline();
+                loadScene(GAMEOVER);
+                primaryStage.close();
+
             } else {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + GAMEOVER));
                 try {
-                    this.stop();
-                } catch (Exception e) {
-                    System.out.println("Some errors occurred, try again");
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(loader.load()));
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
-
     }
     /**
      * Loads the GameOver scene when somebody wins the game
@@ -801,9 +807,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     @Override
     public void notifyWinner() {
         Platform.runLater(()->{
-            System.out.println("NOTIFY WINNER");
             String winner = view.getWinner();
-            System.out.println("winner is"+winner);
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
             controller.setWinner(winner);
             loadScene(GAMEOVER);

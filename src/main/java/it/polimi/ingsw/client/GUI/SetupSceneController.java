@@ -1,6 +1,4 @@
 package it.polimi.ingsw.client.GUI;
-//setupScene is to be shown only to the first player to choose number of player and expert mode
-
 import it.polimi.ingsw.client.Exit;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,10 +6,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.AnchorPane;
-
-import java.io.IOException;
-
-
+/**
+ * SetupSceneController is the controller class of SetupScene.fxml
+ * SetupScene is to be shown only to the first player to choose number of player and expert mode
+ */
 public class SetupSceneController implements SceneController {
 
     private int numberOfPlayers = 0;
@@ -29,13 +27,18 @@ public class SetupSceneController implements SceneController {
     @FXML private Button nextButton;
     @FXML private Label errorMessage;
 
-
+    /**
+     * Constructor method, creates an instance of SetupSceneController and initializes the attributes
+     */
     public SetupSceneController(){
         this.numberOfPlayers=0;
         this.expertMode="";
     }
 
-
+    /**
+     * Based on the source of the event, sets the number of players
+     * @param e of type ActionEvent - the action performed on the button
+     */
     public void setNumberOfPlayers(ActionEvent e) {
         if (e.getSource() == twoPlayersButton)
             this.numberOfPlayers = 2;
@@ -45,16 +48,23 @@ public class SetupSceneController implements SceneController {
             this.numberOfPlayers = 4;
     }
 
+    /**
+     * Based on the source of the event, sets the expert mode
+     * @param e of type ActionEvent - the action performed on the button
+     */
     public void setExpertMode(ActionEvent e) {
         if (e.getSource() == yesButton)
             this.expertMode = "y";
         else if (e.getSource() == noButton)
             this.expertMode = "n";
-
     }
 
+    /**
+     * Called when nextButton is pressed
+     * Calls proxy method setupGame
+     * @param e of type ActionEvent - the action performed on the button
+     */
     public void nextPressed(ActionEvent e) {
-        System.out.println(numberOfPlayers + ", " + expertMode);
         if(numberOfPlayers!=0 && expertMode!="") {
             if (proxy.setupGame(numberOfPlayers, expertMode) == true) {
                 gui.switchScene(GUI.LOGIN);

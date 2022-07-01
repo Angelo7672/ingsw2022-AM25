@@ -21,9 +21,7 @@ public class SavedSceneController implements SceneController{
 
 
     public void initializedScene(int numberOfPlayers, String expertMode){
-        System.out.println(Thread.currentThread());
         Platform.runLater(()-> {
-            System.out.println("initialize scene method");
             this.numberOfPlayers.setText(Integer.toString(numberOfPlayers));
             this.expertMode.setText(expertMode);
         });
@@ -39,10 +37,6 @@ public class SavedSceneController implements SceneController{
         proxy.savedGame("n");
         gui.switchScene(GUI.SETUP);
     }
-
-
-
-
 
     @Override
     public void setGUI(GUI gui) {this.gui = gui;}

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Exit;
-import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
@@ -13,17 +12,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-
-import java.io.IOException;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.ArrayList;
 
+/**
+ * LoginSceneController is the controller for LoginScene.fxml
+ * The user insert his nickname and choose a character
+ */
 public class LoginSceneController implements SceneController{
     private GUI gui;
     private String currentNickname;
     private String currentCharacter;
     private Exit proxy;
-    private Service<Boolean> loginService;
+    private final Service<Boolean> loginService;
 
     @FXML private TextField nicknameBox;
     @FXML private AnchorPane loginScene;
@@ -38,7 +38,9 @@ public class LoginSceneController implements SceneController{
     @FXML private ImageView kingImage;
     @FXML private Label errorMessage;
 
-
+    /**
+     * Constructor method, creates an instance of LoginSceneController and initializes the attributes
+     */
     public LoginSceneController(){
         this.currentNickname="";
         this.currentCharacter="";
@@ -47,7 +49,6 @@ public class LoginSceneController implements SceneController{
             Boolean result = loginService.getValue();
             if(result){
                 gui.setYourNickname(currentNickname);
-                //gui.startGame();
                 gui.phaseHandler("SetView");
             }
             else{
@@ -56,17 +57,18 @@ public class LoginSceneController implements SceneController{
                 gui.switchScene(GUI.LOGIN);
             }
         });
-
     }
 
+    /**
+     * LoginService is started when the user chose nickname and character, after pressing confirm
+     * Calls proxy method
+     */
     private class LoginService extends Service<Boolean> {
-
         @Override
         protected Task<Boolean> createTask() {
-            System.out.println("loginService started");
-            return new Task<Boolean>() {
+            return new Task<>() {
                 @Override
-                protected Boolean call() throws Exception {
+                protected Boolean call() {
                     Boolean result = proxy.setupConnection(currentNickname, currentCharacter);
                     return result;
                 }
@@ -74,6 +76,10 @@ public class LoginSceneController implements SceneController{
         }
     }
 
+    /**
+     * Based on the button pressed, sets the current character
+     * @param e of type ActionEvent - the click of the button
+     */
     public void setCharacter(ActionEvent e){
         if(e.getSource()==wizard)
             this.currentCharacter="WIZARD";
@@ -84,10 +90,12 @@ public class LoginSceneController implements SceneController{
         else if(e.getSource()==king)
             this.currentCharacter="KING";
     }
-
+    /**
+     * Called when next button is pressed. Starts LoginService, and while waiting switches to WaitingScene
+     */
     public void nextPressed(ActionEvent e) {
         currentNickname= this.nicknameBox.getText();
-        if(currentNickname!="" && currentCharacter!="") {
+        if(!currentNickname.equals("") && !currentCharacter.equals("")) {
             if(loginService.getState()== Worker.State.READY)
                 loginService.start();
             else
@@ -95,40 +103,17 @@ public class LoginSceneController implements SceneController{
             gui.switchScene(GUI.WAITING);
         }
         else showErrorMessage();
-
-        /*
-        currentNickname= this.nicknameBox.getText();
-        //System.out.println(currentNickname +", "+ currentCharacter);
-        if(currentNickname!="" && currentCharacter!="") {
-            if (proxy.setupConnection(currentNickname, currentCharacter)){
-                System.out.println("SetupConnection done");
-                gui.setYourNickname(currentNickname);
-                gui.switchScene(GUI.WAITING);
-                gui.startGame();
-            }
-            else {
-
-                showErrorMessage();
-                    try {
-                        disableCharacters(proxy.getChosenCharacters());
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    } catch (ClassNotFoundException ex) {
-                        ex.printStackTrace();
-                    }
-
-            }
-        }else
-            showErrorMessage();*/
-
     }
 
     public void showErrorMessage(){
         errorMessage.setVisible(true);
     }
 
+    /**
+     * Disables the buttons of the characters that have been chosen already
+     * @param chosenCharacters of type ArrayList<String> - characters that are already been chosen
+     */
     public void disableCharacters(ArrayList<String> chosenCharacters) {
-        //se il personaggio è già stato scelto
         for(String character: chosenCharacters){
             if(character.equalsIgnoreCase("WIZARD")){
                 wizardImage.setImage((new Image(getClass().getResourceAsStream("/graphics/character_wizard_taken.png"))));
@@ -148,8 +133,6 @@ public class LoginSceneController implements SceneController{
             }
         }
     }
-
-
     @Override
     public void setGUI(GUI gui) {
         this.gui=gui;
