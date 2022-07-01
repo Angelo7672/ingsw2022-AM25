@@ -213,8 +213,12 @@ public class MainSceneController implements SceneController {
                     errorLabel.setText("Error, move not allowed!");
                     errorLabel.setVisible(true);
                 }
+            } else {
+                errorLabel.setText("Error, move not allowed!");
+                errorLabel.setVisible(true);
             }
         }
+
     }
 
     /** Handles the clicks on the table Pane of each school, to add students
