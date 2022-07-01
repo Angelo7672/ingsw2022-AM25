@@ -128,6 +128,12 @@ public class SpecialsSceneController implements SceneController{
         addButton.setVisible(false);
         confirmSpecialButton.setVisible(false);
         errorMessage.setVisible(false);
+        special1Cost.setVisible(true);
+        coinSpecial1.setVisible(true);
+        special2Cost.setVisible(true);
+        coinSpecial2.setVisible(true);
+        special3Cost.setVisible(true);
+        coinSpecial3.setVisible(true);
         specialChosen = -1;
         studentChosen = -1;
         for (int i = 0; i < 3; i++) {
