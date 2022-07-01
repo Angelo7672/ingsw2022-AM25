@@ -1,7 +1,8 @@
 package it.polimi.ingsw.listeners;
 
-import java.io.IOException;
-
+/**
+ * Used to notify when the server goes offline
+ */
 public interface ServerOfflineListener {
     void notifyServerOffline();
 }

@@ -1,7 +1,8 @@
 package it.polimi.ingsw.listeners;
 
-import java.io.IOException;
-
+/**
+ * Notifies when a client disconnects from the server
+ */
 public interface DisconnectedListener {
     void notifyDisconnected() ;
 }
