@@ -36,7 +36,7 @@ public class RoundSpecial2 extends RoundStrategy {
         special.increaseCost();
     }
 
-    private class Special2 extends Special{
+    private static class Special2 extends Special{
         public Special2(){
             super(2);
         }

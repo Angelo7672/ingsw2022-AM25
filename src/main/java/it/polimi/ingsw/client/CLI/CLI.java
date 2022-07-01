@@ -2,14 +2,12 @@ package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.client.Exit;
 import it.polimi.ingsw.client.PlayerConstants;
-import it.polimi.ingsw.client.Proxy_c;
 import it.polimi.ingsw.client.View;
 import it.polimi.ingsw.listeners.*;
 import it.polimi.ingsw.server.answer.SavedGameAnswer;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
@@ -92,7 +90,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             try {
                 socket.close();
                 scanner.close();
-            }catch (IOException e){}
+            }catch (IOException e){
+                serverOffline();
+            }
             setActive(false);
             System.exit(-1);
         }

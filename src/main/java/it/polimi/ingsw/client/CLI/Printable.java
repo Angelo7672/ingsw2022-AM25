@@ -7,16 +7,16 @@ import it.polimi.ingsw.client.View;
  */
 public class Printable {
     private final View view;
-    private String ANSI_RESET = "\u001B[0m";
-    private String ANSI_BLACK = "\u001B[30m";
-    private String ANSI_RED = "\u001B[31m";
-    private String ANSI_GREEN = "\u001B[32m";
-    private String ANSI_YELLOW = "\u001B[33m";
-    private String ANSI_BLUE = "\u001B[34m";
-    private String ANSI_PURPLE = "\u001B[35m";
-    private String ANSI_CYAN = "\u001B[36m";
-    private String ANSI_WHITE = "\u001B[37m";
-    private String  UNDERLINE = "\u001B[4m";
+    private final String ANSI_RESET = "\u001B[0m";
+    private final String ANSI_BLACK = "\u001B[30m";
+    private final String ANSI_RED = "\u001B[31m";
+    private final String ANSI_GREEN = "\u001B[32m";
+    private final String ANSI_YELLOW = "\u001B[33m";
+    private final String ANSI_BLUE = "\u001B[34m";
+    private final String ANSI_PURPLE = "\u001B[35m";
+    private final String ANSI_CYAN = "\u001B[36m";
+    private final String ANSI_WHITE = "\u001B[37m";
+    private final String  UNDERLINE = "\u001B[4m";
 
     public Printable(View view) {
         this.view = view;
@@ -226,7 +226,6 @@ public class Printable {
     private boolean specialArray(int name){
         if(name == 1) return true;
         if(name == 7) return true;
-        if(name == 11) return true;
-        return false;
+        return name == 11;
     }
 }

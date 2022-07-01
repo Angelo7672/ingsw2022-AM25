@@ -17,7 +17,6 @@ import java.util.ArrayList;
  */
 public class Receiver extends Thread {
 
-    private Thread receive;
     private Thread viewThread;
     private final Object answerTmpLock; //lock the ArrayList answerList when it is empty
     private final Object initializedViewLock;
@@ -25,7 +24,7 @@ public class Receiver extends Thread {
     private final Object specialLock; //lock the update about specials when special list is not complete
     private final Object setViewLock;
     private final ObjectInputStream inputStream;
-    private ArrayList<Answer> answersList;
+    private final ArrayList<Answer> answersList;
     private final Socket socket;
     private DisconnectedListener disconnectedListener;
     private ServerOfflineListener serverOfflineListener;
@@ -33,21 +32,18 @@ public class Receiver extends Thread {
     private boolean disconnected;
     private final View view;
     private boolean initializedView;
-    private ArrayList<Answer> answerView;
-    private int pingCounter;
+    private final ArrayList<Answer> answerView;
 
     /**
      * Constructor allocates every variable of the class.
      * @param initializedViewLock Is the lock used to notify to proxy_c when view is initialized.
-     * @param pingCounter is the counter of the ping.
      * @throws IOException
      */
-    public Receiver(Object initializedViewLock, Socket socket, View view, Integer pingCounter) throws IOException {
+    public Receiver(Object initializedViewLock, Socket socket, View view) throws IOException {
         this.socket = socket;
         this.inputStream = new ObjectInputStream(this.socket.getInputStream());
         //this.socket.setSoTimeout(15000);
         this.view = view;
-        this.pingCounter = pingCounter;
         answersList = new ArrayList<>();
         answerView = new ArrayList<>();
         answerTmpLock = new Object();
@@ -79,8 +75,7 @@ public class Receiver extends Thread {
                 if (answersList.size() == 0){
                     answerTmpLock.wait();
                 }
-            }catch (InterruptedException e){
-            }
+            }catch (InterruptedException e){}
             tmp = answersList.get(0);
             answersList.remove(0);
         }

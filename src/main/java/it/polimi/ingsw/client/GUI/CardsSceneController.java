@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,7 +19,7 @@ public class CardsSceneController implements SceneController{
     private String playedCard;
     private GUI gui;
     private Exit proxy;
-    private HashMap<Integer, String> currentPlayedCards;
+    private final HashMap<Integer, String> currentPlayedCards;
 
     @FXML private Button lionButton;
     @FXML private Button gooseButton;
@@ -84,8 +83,8 @@ public class CardsSceneController implements SceneController{
      * @param card of type ArrayList<String> - cards that have already been played
      */
     public void restoreCards(ArrayList<String> card){
-        for (int i = 0; i < card.size(); i++) {
-            disableCard(card.get(i));
+        for (String s : card) {
+            disableCard(s);
         }
     }
 

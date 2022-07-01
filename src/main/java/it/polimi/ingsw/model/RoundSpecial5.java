@@ -6,7 +6,7 @@ import it.polimi.ingsw.listeners.NoEntryListener;
  * Round strategy used by special 5.
  */
 public class RoundSpecial5 extends RoundStrategy{
-    private Special5 special;
+    private final Special5 special;
     protected NoEntryListener noEntryListener;
 
     public RoundSpecial5(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
@@ -68,7 +68,7 @@ public class RoundSpecial5 extends RoundStrategy{
         }
     }
 
-    private class Special5 extends Special{
+    private static class Special5 extends Special{
         private int noEntry;
 
         public Special5(){

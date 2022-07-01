@@ -65,8 +65,8 @@ public class SetupSceneController implements SceneController {
      * @param e of type ActionEvent - the action performed on the button
      */
     public void nextPressed(ActionEvent e) {
-        if(numberOfPlayers!=0 && expertMode!="") {
-            if (proxy.setupGame(numberOfPlayers, expertMode) == true) {
+        if(numberOfPlayers!=0 && !expertMode.equals("")) {
+            if (proxy.setupGame(numberOfPlayers, expertMode)) {
                 gui.switchScene(GUI.LOGIN);
             } else
                 showErrorMessage();

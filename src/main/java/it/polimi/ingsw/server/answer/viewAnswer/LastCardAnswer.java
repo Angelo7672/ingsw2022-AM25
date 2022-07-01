@@ -7,7 +7,7 @@ import it.polimi.ingsw.server.answer.Answer;
  */
 public class LastCardAnswer implements Answer {
     private final int playerRef;
-    private String card;
+    private final String card;
 
     public LastCardAnswer(int playerRef, String card) {
         this.playerRef = playerRef;

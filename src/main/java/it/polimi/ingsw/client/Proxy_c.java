@@ -16,12 +16,11 @@ import java.util.ArrayList;
  *
  */
 public class Proxy_c implements Exit, DisconnectedListener, PongListener {
-    private Receiver receiver;
+    private final Receiver receiver;
 
     private final ObjectOutputStream outputStream;
-    private final Socket socket;
     private Answer tempObj;
-    private View view;
+    private final View view;
     private Thread ping;
     private final Object initializedViewLock;
     private boolean disconnected;
@@ -34,13 +33,12 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
      * @throws IOException
      */
     public Proxy_c(Socket socket) throws IOException{
-        this.socket = socket;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         startPing();
         initializedViewLock = new Object();
         view = new View();
         pingCounter = 0;
-        receiver = new Receiver(initializedViewLock, socket, view, pingCounter);
+        receiver = new Receiver(initializedViewLock, socket, view);
         receiver.start();
         receiver.setDisconnectedListener(this);
         receiver.setPongListeners(this);
@@ -55,8 +53,7 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
     public boolean readyForLogin() {
         send(new GenericMessage("Ready for login!"));
         tempObj = receiver.receive();
-        if(tempObj instanceof LoginRestoreAnswer) return true;
-        return false;
+        return tempObj instanceof LoginRestoreAnswer;
 
     }
 
@@ -91,8 +88,7 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
         send(new GenericMessage(decision));
         tempObj = receiver.receive();
         if (tempObj instanceof GenericAnswer) {
-            if(((GenericAnswer)tempObj).getMessage().equals("error"))
-            return false;
+            return !((GenericAnswer) tempObj).getMessage().equals("error");
         }
         return true;
     }
@@ -366,6 +362,7 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
                 }
                 send(new PingMessage());
             } catch (IOException | InterruptedException e) {
+                serverOfflineListener.notifyServerOffline();
             }
         }
         });

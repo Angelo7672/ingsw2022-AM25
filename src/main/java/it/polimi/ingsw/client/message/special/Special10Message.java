@@ -8,8 +8,8 @@ import java.util.ArrayList;
  * Special10Message contains all the chosen parameters to use it.
  */
 public class Special10Message implements Message {
-    private ArrayList<Integer> entranceStudent;
-    private ArrayList<Integer> tableStudent;
+    private final ArrayList<Integer> entranceStudent;
+    private final ArrayList<Integer> tableStudent;
 
     public Special10Message(ArrayList<Integer> entranceStudent, ArrayList<Integer> tableStudent) {
         this.entranceStudent = entranceStudent;

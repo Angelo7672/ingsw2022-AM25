@@ -12,12 +12,11 @@ import java.util.Scanner;
  * Starts the connection with the server.
  */
 public class Client {
-    private static Socket socket;
-    private static String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
-    private static String ANSI_GREEN = "\u001B[32m";
-    private static String ANSI_RED = "\u001B[31m";
-    private static String ANSI_RESET = "\u001B[0m";
-    private static String  UNDERLINE = "\u001B[4m";
+    private static final String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String  UNDERLINE = "\u001B[4m";
 
 
     /**
@@ -50,6 +49,7 @@ public class Client {
         System.out.print(SPACE+"Do you want to use CLI or GUI? ");
         String graph = scanner.next();
         try {
+            Socket socket;
             if (graph.equalsIgnoreCase("CLI")) {
                 try {
                     socket = new Socket(ip, port);
@@ -83,11 +83,10 @@ public class Client {
                 proxy.setServerOfflineListener(gui);
                 gui.setProxy(proxy);
                 System.out.println(SPACE + "GUI is starting...");
-                gui.main(null);
+                GUI.main(null);
 
             } else {
                 System.err.println("Error! Try again.");
-                return;
             }
         }catch (IOException e){
             System.out.println();

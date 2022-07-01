@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Round strategy used by special 1
  */
 public class RoundSpecial7 extends RoundStrategy{
-    private Special7 special;
+    private final Special7 special;
     protected SpecialStudentsListener specialStudentsListener;
 
     public RoundSpecial7(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
@@ -100,8 +100,8 @@ public class RoundSpecial7 extends RoundStrategy{
          */
         public boolean checkStudents(ArrayList<Integer> cardStudents){
             int[] tempStudent = {0,0,0,0,0};
-            for (int i = 0; i < cardStudents.size(); i++) {
-                tempStudent[cardStudents.get(i)]++;
+            for (Integer cardStudent : cardStudents) {
+                tempStudent[cardStudent]++;
             }
             for(int i=0; i<5; i++)
                 if(tempStudent[i]>students[i]) return false;

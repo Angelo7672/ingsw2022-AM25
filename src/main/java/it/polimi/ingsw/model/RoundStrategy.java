@@ -54,9 +54,7 @@ public abstract class RoundStrategy {
             else if(infoTower[1] == 2) teamWeaker = Team.GREY;
             playerManager.placeTower(teamWeaker,infoTower[0]);
         }
-        if(victory1 || victory2){ return true; }
-
-        return false;
+        return victory1 || victory2;
     }
 
     /**

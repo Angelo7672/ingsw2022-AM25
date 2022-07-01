@@ -32,7 +32,7 @@ public class RoundSpecial3 extends RoundStrategy{
     @Override
     public void increaseCost(){ special.increaseCost(); }
 
-    private class Special3 extends Special {
+    private static class Special3 extends Special {
         //non fa niente qua, fa solo calcolare l'influenza di un isola a scelta
         public Special3(){
             super(3);

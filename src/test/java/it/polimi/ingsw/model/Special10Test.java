@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Special10Test {
     int numberOfPlayer=3;
@@ -26,10 +26,7 @@ public class Special10Test {
    @BeforeEach
     void initialization(){
         islandsManager = new IslandsManager();
-        islandsManager.islandListener = new IslandListener() {
-            @Override
-            public void notifyIslandChange(int islandToDelete) {}
-        };
+        islandsManager.islandListener = islandToDelete -> {};
         islandsManager.towersListener = new TowersListener() {
             @Override
             public void notifyTowersChange(int place, int componentRef, int towersNumber) {}
@@ -37,18 +34,9 @@ public class Special10Test {
             @Override
             public void notifyTowerColor(int islandRef, int newColor) {}
         };
-        islandsManager.motherPositionListener = new MotherPositionListener() {
-            @Override
-            public void notifyMotherPosition(int newMotherPosition) {}
-        };
-        islandsManager.inhibitedListener = new InhibitedListener() {
-            @Override
-            public void notifyInhibited(int islandRef, int isInhibited) {}
-        };
-        islandsManager.studentListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-        };
+        islandsManager.motherPositionListener = newMotherPosition -> {};
+        islandsManager.inhibitedListener = (islandRef, isInhibited) -> {};
+        islandsManager.studentListener = (place, componentRef, color, newStudentsValue) -> {};
         islandsManager.islandsInitialize();
 
         bagRestore = new ArrayList<>();
@@ -64,10 +52,7 @@ public class Special10Test {
         bag.bagInitialize();
 
         cloudsManager = new CloudsManager(numberOfPlayer, bag);
-        cloudsManager.studentsListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-        };
+        cloudsManager.studentsListener = (place, componentRef, color, newStudentsValue) -> {};
 
 
         playerManager = new PlayerManager(numberOfPlayer, bag);
@@ -77,14 +62,8 @@ public class Special10Test {
             @Override
             public void notifyTowerColor(int islandRef, int newColor) {}
         };
-        playerManager.professorsListener = new ProfessorsListener() {
-            @Override
-            public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {}
-        };
-        playerManager.coinsListener = new CoinsListener() {
-            @Override
-            public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
-            }
+        playerManager.professorsListener = (playerRef, color, newProfessorValue) -> {};
+        playerManager.coinsListener = (playerRef, newCoinsValue) -> {
         };
         playerManager.playedCardListener = new PlayedCardListener() {
             @Override
@@ -93,12 +72,9 @@ public class Special10Test {
             public void notifyHand(int playerRef, ArrayList<String> hand) {
             }
         };
-        playerManager.studentsListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {
-                if(place==0 && componentRef == 0 & color==0) entranceStudent0 = newStudentsValue;
-                else if(place==0 && componentRef == 0 & color==1) entranceStudent1 = newStudentsValue;
-            }
+        playerManager.studentsListener = (place, componentRef, color, newStudentsValue) -> {
+            if(place==0 && componentRef == 0 & color==0) entranceStudent0 = newStudentsValue;
+            else if(place==0 && componentRef == 0 & color==1) entranceStudent1 = newStudentsValue;
         };
 
         queueManager = new QueueManager(numberOfPlayer, playerManager);
@@ -128,7 +104,7 @@ public class Special10Test {
         color1.add(0);
         color2.add(1);
         boolean done = round.effect(0, color1,color2);
-        assertEquals(false, done);
+        assertFalse(done);
         playerManager.setStudentEntrance(0,0, 1);
         playerManager.setStudentEntrance(0,1, 1);
         playerManager.transferStudent(0,1,true,false);
@@ -141,6 +117,6 @@ public class Special10Test {
         assertEquals(tableStudent1-1, playerManager.getStudentTable(0,1));
         assertEquals(tempEntranceStudent0-1,entranceStudent0);
         assertEquals(tempEntranceStudent1+1,entranceStudent1);
-        assertEquals(true,done);
+        assertTrue(done);
     }
 }

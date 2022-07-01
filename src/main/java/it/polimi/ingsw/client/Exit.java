@@ -4,7 +4,6 @@ import it.polimi.ingsw.listeners.DisconnectedListener;
 import it.polimi.ingsw.listeners.ServerOfflineListener;
 import it.polimi.ingsw.server.answer.Answer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**

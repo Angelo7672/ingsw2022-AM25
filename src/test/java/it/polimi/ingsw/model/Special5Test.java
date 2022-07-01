@@ -21,15 +21,12 @@ public class Special5Test implements NoEntryListener {
     private CloudsManager cloudsManager;
     private PlayerManager playerManager;
     private QueueManager queueManager;
-    private ArrayList<Assistant> alreadyPlayedAssistant = new ArrayList<>();
+    private final ArrayList<Assistant> alreadyPlayedAssistant = new ArrayList<>();
 
     @BeforeEach
     void initialization(){
         islandsManager = new IslandsManager();
-        islandsManager.islandListener = new IslandListener() {
-            @Override
-            public void notifyIslandChange(int islandToDelete) {}
-        };
+        islandsManager.islandListener = islandToDelete -> {};
         islandsManager.towersListener = new TowersListener() {
             @Override
             public void notifyTowersChange(int place, int componentRef, int towersNumber) {}
@@ -37,18 +34,9 @@ public class Special5Test implements NoEntryListener {
             @Override
             public void notifyTowerColor(int islandRef, int newColor) {}
         };
-        islandsManager.motherPositionListener = new MotherPositionListener() {
-            @Override
-            public void notifyMotherPosition(int newMotherPosition) {}
-        };
-        islandsManager.inhibitedListener = new InhibitedListener() {
-            @Override
-            public void notifyInhibited(int islandRef, int isInhibited) {}
-        };
-        islandsManager.studentListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-        };
+        islandsManager.motherPositionListener = newMotherPosition -> {};
+        islandsManager.inhibitedListener = (islandRef, isInhibited) -> {};
+        islandsManager.studentListener = (place, componentRef, color, newStudentsValue) -> {};
         islandsManager.islandsInitialize();
 
         bagRestore = new ArrayList<>();
@@ -64,10 +52,7 @@ public class Special5Test implements NoEntryListener {
         bag.bagInitialize();
 
         cloudsManager = new CloudsManager(numberOfPlayer, bag);
-        cloudsManager.studentsListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-        };
+        cloudsManager.studentsListener = (place, componentRef, color, newStudentsValue) -> {};
 
 
         playerManager = new PlayerManager(numberOfPlayer, bag);
@@ -77,14 +62,8 @@ public class Special5Test implements NoEntryListener {
             @Override
             public void notifyTowerColor(int islandRef, int newColor) {}
         };
-        playerManager.professorsListener = new ProfessorsListener() {
-            @Override
-            public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {}
-        };
-        playerManager.coinsListener = new CoinsListener() {
-            @Override
-            public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
-            }
+        playerManager.professorsListener = (playerRef, color, newProfessorValue) -> {};
+        playerManager.coinsListener = (playerRef, newCoinsValue) -> {
         };
         playerManager.playedCardListener = new PlayedCardListener() {
             @Override
@@ -93,10 +72,7 @@ public class Special5Test implements NoEntryListener {
             public void notifyHand(int playerRef, ArrayList<String> hand) {
             }
         };
-        playerManager.studentsListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-        };
+        playerManager.studentsListener = (place, componentRef, color, newStudentsValue) -> {};
 
         queueManager = new QueueManager(numberOfPlayer, playerManager);
         queueManager.queueListener = new QueueListener() {

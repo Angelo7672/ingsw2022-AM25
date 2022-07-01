@@ -9,5 +9,5 @@ public interface StudentsListener {
      * @param color of type int - color index
      * @param newStudentsValue of type int - new value
      */
-    public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue);
+    void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue);
 }

@@ -10,7 +10,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,11 +30,6 @@ public class SpecialsSceneController implements SceneController{
     private final String SPECIAL10 = "/graphics/CarteTOT_front10.png";
     private final String SPECIAL11 = "/graphics/CarteTOT_front11.png";
     private final String SPECIAL12 = "/graphics/CarteTOT_front12.png";
-    private final String GREENSTUDENT = "/graphics/wooden_pieces/greenStudent3D.png";
-    private final String REDSTUDENT = "/graphics/wooden_pieces/redStudent3D.png";
-    private final String YELLOWSTUDENT = "/graphics/wooden_pieces/yellowStudent3D.png";
-    private final String PINKSTUDENT = "/graphics/wooden_pieces/pinkStudent3D.png";
-    private final String BLUESTUDENT = "/graphics/wooden_pieces/blueStudent3D.png";
 
     private Exit proxy;
     private GUI gui;
@@ -359,12 +353,12 @@ public class SpecialsSceneController implements SceneController{
     private String printArrayColor(ArrayList<Integer> students){
         String string=" ";
         String color=" ";
-        for (int i = 0; i < students.size(); i++) {
-            if(students.get(i)==0) color=" Green";
-            else if(students.get(i)==1) color=" Red";
-            else if(students.get(i)==2) color=" Yellow";
-            else if(students.get(i)==3) color=" Pink";
-            else if(students.get(i)==4) color=" Blue";
+        for (Integer student : students) {
+            if (student == 0) color = " Green";
+            else if (student == 1) color = " Red";
+            else if (student == 2) color = " Yellow";
+            else if (student == 3) color = " Pink";
+            else if (student == 4) color = " Blue";
             string = string + color;
         }
         System.out.println(string);

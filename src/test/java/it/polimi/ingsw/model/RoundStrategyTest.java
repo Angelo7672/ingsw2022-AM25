@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static it.polimi.ingsw.model.Assistant.*;
@@ -16,28 +15,25 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RoundStrategyTest {
 
-    private int numberOfPlayer = 3;
-    private String[] playersInfo = {"Giorgio", "SAMURAI", "Marco", "KING", "Dino", "WIZARD"};
-    private IslandsManager islandsManager = new IslandsManager();
+    private final int numberOfPlayer = 3;
+    private final String[] playersInfo = {"Giorgio", "SAMURAI", "Marco", "KING", "Dino", "WIZARD"};
+    private final IslandsManager islandsManager = new IslandsManager();
     private Bag bag = new Bag();
     private List<Integer>  bagRestore;
     private CloudsManager cloudsManager;
     private PlayerManager playerManager;
     private QueueManager queueManager;
     private RoundStrategy round;
-    private ArrayList<Integer> color1 = new ArrayList<>();
-    private ArrayList<Integer> color2 = new ArrayList<>();
-    private ArrayList<Assistant> alreadyPlayedAssistant = new ArrayList<>();
+    private final ArrayList<Integer> color1 = new ArrayList<>();
+    private final ArrayList<Integer> color2 = new ArrayList<>();
+    private final ArrayList<Assistant> alreadyPlayedAssistant = new ArrayList<>();
     private ArrayList<Integer> schoolTowers;
 
     @BeforeEach
     void initialization(){
         schoolTowers=new ArrayList<>();
         for (int i = 0; i < numberOfPlayer; i++) schoolTowers.add(6);
-        islandsManager.islandListener = new IslandListener() {
-            @Override
-            public void notifyIslandChange(int islandToDelete) {}
-        };
+        islandsManager.islandListener = islandToDelete -> {};
         islandsManager.towersListener = new TowersListener() {
             @Override
             public void notifyTowersChange(int place, int componentRef, int towersNumber) {}
@@ -45,18 +41,9 @@ public class RoundStrategyTest {
             @Override
             public void notifyTowerColor(int islandRef, int newColor) {}
         };
-        islandsManager.motherPositionListener = new MotherPositionListener() {
-            @Override
-            public void notifyMotherPosition(int newMotherPosition) {}
-        };
-        islandsManager.inhibitedListener = new InhibitedListener() {
-            @Override
-            public void notifyInhibited(int islandRef, int isInhibited) {}
-        };
-        islandsManager.studentListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-        };
+        islandsManager.motherPositionListener = newMotherPosition -> {};
+        islandsManager.inhibitedListener = (islandRef, isInhibited) -> {};
+        islandsManager.studentListener = (place, componentRef, color, newStudentsValue) -> {};
         islandsManager.islandsInitialize();
 
         bagRestore = new ArrayList<>();
@@ -72,10 +59,7 @@ public class RoundStrategyTest {
         bag.bagInitialize();
 
         cloudsManager = new CloudsManager(numberOfPlayer, bag);
-        cloudsManager.studentsListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-        };
+        cloudsManager.studentsListener = (place, componentRef, color, newStudentsValue) -> {};
 
 
         playerManager = new PlayerManager(numberOfPlayer, bag);
@@ -87,14 +71,8 @@ public class RoundStrategyTest {
             @Override
             public void notifyTowerColor(int islandRef, int newColor) {}
         };
-        playerManager.professorsListener = new ProfessorsListener() {
-            @Override
-            public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {}
-        };
-        playerManager.coinsListener = new CoinsListener() {
-            @Override
-            public void notifyNewCoinsValue(int playerRef, int newCoinsValue) {
-            }
+        playerManager.professorsListener = (playerRef, color, newProfessorValue) -> {};
+        playerManager.coinsListener = (playerRef, newCoinsValue) -> {
         };
         playerManager.playedCardListener = new PlayedCardListener() {
             @Override
@@ -103,10 +81,7 @@ public class RoundStrategyTest {
             public void notifyHand(int playerRef, ArrayList<String> hand) {
             }
         };
-        playerManager.studentsListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-        };
+        playerManager.studentsListener = (place, componentRef, color, newStudentsValue) -> {};
 
         queueManager = new QueueManager(numberOfPlayer, playerManager);
         queueManager.queueListener = new QueueListener() {
@@ -243,7 +218,7 @@ public class RoundStrategyTest {
         queueManager.playCard(1, 0, LION, alreadyPlayedAssistant);
         queueManager.playCard(2, 2, DOG, alreadyPlayedAssistant);
         boolean victory = round.moveMotherNature(0, 1, -1);
-        assertEquals(false, victory);
+        assertFalse(victory);
     }
 
 

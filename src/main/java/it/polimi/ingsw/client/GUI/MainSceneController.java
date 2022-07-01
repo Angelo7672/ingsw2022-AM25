@@ -732,10 +732,7 @@ public class MainSceneController implements SceneController {
         ImageView motherNature;
         for (int i = 0; i < islandsList.size(); i++) {
             motherNature = (ImageView) islandsList.get(i).getChildren().get(1);
-            if (islandRef == i) {
-                motherNature.setVisible(true);
-            } else
-                motherNature.setVisible(false);
+            motherNature.setVisible(islandRef == i);
         }
     }
     /**

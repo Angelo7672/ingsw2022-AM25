@@ -11,19 +11,19 @@ public interface SpecialListener {
      * @param specialRef of type int - index of the special from 1 to 12
      * @param playerRef of type int - index of the player
      */
-    public void notifySpecial(int specialRef, int playerRef);
+    void notifySpecial(int specialRef, int playerRef);
 
     /**
      * Notifies the 3 special for the current game, as an arrayList, with the corresponding costs
      * @param specialList of type ArrayList<Integer> - indexes of the specials
      * @param cost of type ArrayList<Integer> - cost for each special
      */
-    public void notifySpecialList(ArrayList<Integer> specialList, ArrayList<Integer> cost);
+    void notifySpecialList(ArrayList<Integer> specialList, ArrayList<Integer> cost);
 
     /**
      * Notifies when a special's cost is increased as a consequence of its usage
      * @param specialRef of type int - index of the special
      * @param newCost of type int - new coins value
      */
-    public void notifyIncreasedCost(int specialRef, int newCost);
+    void notifyIncreasedCost(int specialRef, int newCost);
 }

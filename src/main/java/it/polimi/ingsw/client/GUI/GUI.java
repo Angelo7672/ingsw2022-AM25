@@ -397,7 +397,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
      */
 
     private class SetViewService extends Service<View> {
-        private GUI gui;
+        private final GUI gui;
         /**
          * Constructor for the Service
          * @param gui of type GUI - is the current gui
@@ -524,7 +524,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
      * @param proxy of type Exit - proxy
      */
     public void setProxy(Exit proxy) {
-        this.proxy = proxy;
+        GUI.proxy = proxy;
         proxy.setServerOfflineListener(this);
         proxy.setDisconnectedListener(this);
     }

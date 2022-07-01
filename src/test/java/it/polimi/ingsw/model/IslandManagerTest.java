@@ -16,10 +16,7 @@ public class IslandManagerTest {
     @BeforeEach
     void initialization(){
         islandsManager = new IslandsManager();
-        islandsManager.islandListener = new IslandListener() {
-            @Override
-            public void notifyIslandChange(int islandToDelete) {}
-        };
+        islandsManager.islandListener = islandToDelete -> {};
         islandsManager.towersListener = new TowersListener() {
             @Override
             public void notifyTowersChange(int place, int componentRef, int towersNumber) {}
@@ -27,18 +24,9 @@ public class IslandManagerTest {
             @Override
             public void notifyTowerColor(int islandRef, int newColor) {}
         };
-        islandsManager.motherPositionListener = new MotherPositionListener() {
-            @Override
-            public void notifyMotherPosition(int newMotherPosition) {}
-        };
-        islandsManager.inhibitedListener = new InhibitedListener() {
-            @Override
-            public void notifyInhibited(int islandRef, int isInhibited) {}
-        };
-        islandsManager.studentListener = new StudentsListener() {
-            @Override
-            public void notifyStudentsChange(int place, int componentRef, int color, int newStudentsValue) {}
-        };
+        islandsManager.motherPositionListener = newMotherPosition -> {};
+        islandsManager.inhibitedListener = (islandRef, isInhibited) -> {};
+        islandsManager.studentListener = (place, componentRef, color, newStudentsValue) -> {};
         islandsManager.islandsInitialize();
     }
 
@@ -70,9 +58,9 @@ public class IslandManagerTest {
 
 
     @Test
-    @DisplayName("Test if checkVitcory return true when there are only 3 islands")
+    @DisplayName("Test if checkVictory return true when there are only 3 islands")
     void checkVictoryTest(){
-        assertEquals(false, islandsManager.checkVictory());
+        assertFalse(islandsManager.checkVictory());
         islandsManager.towerChange(0,WHITE);
         islandsManager.towerChange(2, WHITE);
         islandsManager.towerChange(1,WHITE); //0,1,2 are unified in position 0

@@ -6,7 +6,7 @@ import it.polimi.ingsw.listeners.SpecialStudentsListener;
  * Round strategy used by special 1
  */
 public class RoundSpecial1 extends RoundStrategy{
-    private Special1 special;
+    private final Special1 special;
     protected SpecialStudentsListener specialStudentsListener;
     
     public RoundSpecial1(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
@@ -61,7 +61,7 @@ public class RoundSpecial1 extends RoundStrategy{
     public void increaseCost(){ special.increaseCost(); }
 
     private class Special1 extends Special {
-        private int[] students= {0,0,0,0,0};
+        private final int[] students= {0,0,0,0,0};
 
         private Special1(){
             super(1);

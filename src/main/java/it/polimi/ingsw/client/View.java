@@ -14,10 +14,10 @@ public class View {
 
     private int numberOfPlayers;
     private int turnCounter;
-    private ArrayList<SchoolBoard> schoolBoards;
-    private ArrayList<Island> islands;
-    private ArrayList<Cloud> clouds;
-    private ArrayList<Hand> hands;
+    private final ArrayList<SchoolBoard> schoolBoards;
+    private final ArrayList<Island> islands;
+    private final ArrayList<Cloud> clouds;
+    private final ArrayList<Hand> hands;
     private ArrayList<Special> specials; //specials keeps the 3 special character for the game
     private ArrayList<String> cards;
     private boolean expertMode;
@@ -38,7 +38,6 @@ public class View {
     private int maxStepsMotherNature;
     private int motherNaturePos;
     private String winner;
-    private int specialUsed;
     private boolean initializedView;
 
     public View(){
@@ -69,19 +68,19 @@ public class View {
             this.islands.add(new Island());
         }
         if(numberOfPlayers==2){
-            schoolBoards.add(new SchoolBoard(8,"WHITE"));
-            schoolBoards.add(new SchoolBoard(8,"BLACK"));
+            schoolBoards.add(new SchoolBoard(8, "WHITE"));
+            schoolBoards.add(new SchoolBoard(8, "BLACK"));
         }
         if(numberOfPlayers==3){
-            schoolBoards.add(new SchoolBoard(6,"WHITE"));
-            schoolBoards.add(new SchoolBoard(6,"BLACK"));
-            schoolBoards.add(new SchoolBoard(6,"GREY"));
+            schoolBoards.add(new SchoolBoard(6, "WHITE"));
+            schoolBoards.add(new SchoolBoard(6, "BLACK"));
+            schoolBoards.add(new SchoolBoard(6, "GREY"));
         }
         if(numberOfPlayers==4){
-            schoolBoards.add(new SchoolBoard(8,"WHITE"));
-            schoolBoards.add(new SchoolBoard(0,"WHITE"));
-            schoolBoards.add(new SchoolBoard(8,"BLACK"));
-            schoolBoards.add(new SchoolBoard(0,"BLACK"));
+            schoolBoards.add(new SchoolBoard(8, "WHITE"));
+            schoolBoards.add(new SchoolBoard(0, "WHITE"));
+            schoolBoards.add(new SchoolBoard(8, "BLACK"));
+            schoolBoards.add(new SchoolBoard(0, "BLACK"));
         }
         cards.add("LION"); cards.add("GOOSE"); cards.add("CAT"); cards.add("EAGLE"); cards.add("FOX");
         cards.add("LIZARD"); cards.add("OCTOPUS"); cards.add("DOG"); cards.add("ELEPHANT"); cards.add("TURTLE");
@@ -253,7 +252,6 @@ public class View {
     //Special
 
     public void setSpecialUsed(int specialIndex, int playerRef){
-        specialUsed = specialIndex;
         specialListener.notifySpecial(specialIndex, playerRef);
     }
 
@@ -272,8 +270,7 @@ public class View {
         }
     }
     public boolean specialSet(){
-        if(specials.size()==3) return true;
-        return false;
+        return specials.size() == 3;
     }
 
     //TODO  serve???
@@ -364,7 +361,8 @@ public class View {
     public void setSpecialListener(SpecialListener specialListener) {
         this.specialListener = specialListener;
     }
-    public void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener){this.specialStudentsListener = specialStudentsListener;};
+    public void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener){this.specialStudentsListener = specialStudentsListener;}
+
     public void setNoEntryListener(NoEntryClientListener noEntryListener){this.noEntryListener = noEntryListener;}
     public void setStudentsListener(StudentsListener studentsListener) {
         this.studentsListener = studentsListener;
@@ -375,14 +373,14 @@ public class View {
     /**
      * SchoolBoards contains all the variable about single school
      */
-    private class SchoolBoard {
+    private static class SchoolBoard {
         private String nickname;
         private String character;
         private final String team;
-        private int[] studentsEntrance;
-        private int[] studentsTable;
+        private final int[] studentsEntrance;
+        private final int[] studentsTable;
         private int towersNumber;
-        private boolean[] professors;
+        private final boolean[] professors;
 
         SchoolBoard(int towersNumber, String team){
             studentsEntrance = new int[]{0, 0, 0, 0, 0};
@@ -439,8 +437,8 @@ public class View {
     /**
      * Island contains all the variable about a sigle island.
      */
-    private class Island{
-        private int[] studentsIsland;
+    private static class Island{
+        private final int[] studentsIsland;
         private int towersNumber;
         private int towersColor;
         private int isInhibited;
@@ -471,8 +469,8 @@ public class View {
     /**
      * Island contains all the variable about a single cloud.
      */
-    private class Cloud {
-        private int[] students;
+    private static class Cloud {
+        private final int[] students;
 
         public Cloud(){
             students = new int[]{0, 0, 0, 0, 0};
@@ -489,7 +487,7 @@ public class View {
     /**
      * Hand contains coins and last card played of a single player.
      */
-    private class Hand{
+    private static class Hand{
         private int coins;
         private String lastPlayedCard;
 
@@ -511,10 +509,10 @@ public class View {
     /**
      * Special contains all the variable about a single special.
      */
-    private class Special{
+    private static class Special{
         private int cost;
         private int name;
-        private int[] students;
+        private final int[] students;
         private int noEntry;
 
         private Special(int cost, int name) {

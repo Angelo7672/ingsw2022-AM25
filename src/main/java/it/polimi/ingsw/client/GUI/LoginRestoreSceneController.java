@@ -10,13 +10,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
-
 public class LoginRestoreSceneController implements SceneController{
     private Exit proxy;
     private GUI gui;
     private String currentNickname;
-    private Service<Boolean> loginService;
+    private final Service<Boolean> loginService;
     @FXML private Button next;
     @FXML private TextField nicknameBox;
     @FXML private Label errorMessage;
@@ -43,7 +41,7 @@ public class LoginRestoreSceneController implements SceneController{
 
         @Override
         protected Task<Boolean> createTask() {
-            return new Task<Boolean>() {
+            return new Task<>() {
                 @Override
                 protected Boolean call() throws Exception {
                     return proxy.setupConnection(currentNickname, null);
@@ -56,7 +54,7 @@ public class LoginRestoreSceneController implements SceneController{
 
     public void nextPressed(ActionEvent e){
         currentNickname = this.nicknameBox.getText();
-        if(currentNickname!="") {
+        if(!currentNickname.equals("")) {
             if(loginService.getState()== Worker.State.READY)
                 loginService.start();
             else

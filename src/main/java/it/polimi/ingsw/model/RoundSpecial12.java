@@ -1,9 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.exception.NotAllowedException;
-
-import java.util.ArrayList;
-
 /**
  * Round strategy used by special 1
  */
@@ -12,7 +8,7 @@ public class RoundSpecial12 extends RoundStrategy{
 
     public RoundSpecial12(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
         super(numberOfPlayer, cloudsManager, islandsManager, playerManager, queueManager, bag);
-        special =new Special12();
+        special = new Special12();
     }
 
     /**
@@ -43,7 +39,7 @@ public class RoundSpecial12 extends RoundStrategy{
     public int getCost(){ return special.getCost(); }
     @Override
     public void increaseCost(){ special.increaseCost(); }
-    private class Special12 extends Special {
+    private static class Special12 extends Special {
         public Special12(){
             super(3);
         }

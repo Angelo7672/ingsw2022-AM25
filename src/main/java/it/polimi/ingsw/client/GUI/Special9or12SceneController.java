@@ -7,8 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 
 /**
  * Special9or12Controller is the controller of the scene used by special 9 and special 12.

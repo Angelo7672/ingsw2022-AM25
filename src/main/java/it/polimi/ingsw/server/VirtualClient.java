@@ -63,7 +63,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
     private boolean special11;
     private boolean special12;
 
-    private boolean victory;
+    private final boolean victory;
     private final Object errorLocker;   //error locker
     private boolean error;
 

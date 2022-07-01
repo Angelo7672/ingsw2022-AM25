@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
  * Round strategy used by special 11
  */
 public class RoundSpecial11 extends RoundStrategy{
-    private Special11 special;
+    private final Special11 special;
     protected SpecialStudentsListener specialStudentsListener;
 
     public RoundSpecial11(int numberOfPlayer, CloudsManager cloudsManager, IslandsManager islandsManager,PlayerManager playerManager, QueueManager queueManager, Bag bag){
@@ -65,7 +65,7 @@ public class RoundSpecial11 extends RoundStrategy{
     public void increaseCost(){ special.increaseCost(); }
 
     private class Special11 extends Special {
-        private int[] students= {0,0,0,0,0};
+        private final int[] students= {0,0,0,0,0};
 
         public Special11(){
             super(2);

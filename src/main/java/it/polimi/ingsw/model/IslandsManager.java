@@ -9,7 +9,7 @@ import java.util.Random;
  * IslandManager contains all the information about islands and mother nature.
  */
 public class IslandsManager {
-    private ArrayList<Island> islands;
+    private final ArrayList<Island> islands;
     private int motherPos;
     protected StudentsListener studentListener;
     protected TowersListener towersListener;
@@ -169,7 +169,7 @@ public class IslandsManager {
         if(checkAdjacent(pos, posTemp)) {
             if(pos>posTemp) pos = circularArray(pos,-1);
             towerValue = islands.get(pos).towerValue;
-        };
+        }
 
         posTemp = circularArray(pos,1);     //right tower
         if(checkAdjacent(pos, posTemp)) {
@@ -250,8 +250,8 @@ public class IslandsManager {
     /**
      * Class island contains all the variable about a single island.
      */
-    private class Island {
-        private int[] students;
+    private static class Island {
+        private final int[] students;
         private int towerValue;
         private Team towerTeam;
         private int inhibited;
