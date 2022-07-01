@@ -514,9 +514,6 @@ public class MainSceneController implements SceneController {
             noEntryTilesMap.put(i, 0);
         }
     }
-
-    //inizializza le scuole, mettendo le torri del colore giusto a seconda del numero di giocatori
-
     /**
      * Initializes all the schools, setting the color of the towers and the team, depending on the number of players
      * It set for each school entrancePane and tablePane the respective click handler
@@ -696,7 +693,7 @@ public class MainSceneController implements SceneController {
     }
     /**
      * Sets the proxy
-     * @param proxy
+     * @param proxy of type Exit
      * @see SceneController
      */
     @Override
@@ -808,7 +805,7 @@ public class MainSceneController implements SceneController {
                 student.setOnMouseClicked(studentTableClickHandler);
             }
         } else if (newStudentsValue<oldStudentsValue){
-            Boolean ok = false;
+            boolean ok = false;
             for (int i = tablePane.getChildren().size() - 1; i >= 0 && !ok; i--) {
                 student = (ImageView) tablePane.getChildren().get(i);
                 String imageName = student.getImage().getUrl();

@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.AnchorPane;
-import java.io.IOException;
 /**
  * SetupSceneController is the controller class of SetupScene.fxml
  * SetupScene is to be shown only to the first player to choose number of player and expert mode
@@ -63,10 +62,9 @@ public class SetupSceneController implements SceneController {
     /**
      * Called when nextButton is pressed
      * Calls proxy method setupGame
-     * @param e
+     * @param e of type ActionEvent - the action performed on the button
      */
     public void nextPressed(ActionEvent e) {
-        System.out.println(numberOfPlayers + ", " + expertMode);
         if(numberOfPlayers!=0 && expertMode!="") {
             if (proxy.setupGame(numberOfPlayers, expertMode) == true) {
                 gui.switchScene(GUI.LOGIN);

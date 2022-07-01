@@ -19,12 +19,21 @@ public class GameOverSceneController implements SceneController {
     @FXML private Label gameOverLabel;
     @FXML private Label messageLabel;
 
+    public GameOverSceneController(){
+        this.exitStatus = -1;
+    }
+
     /**
      * When exit button is pressed, closes the gui
      * @param event of type ActionEvent - is the click on the button
      */
     @FXML
     void exitGame(ActionEvent event) {
+        try {
+            gui.stop();
+        } catch (Exception e) {
+            System.exit(exitStatus);
+        }
         System.exit(exitStatus);
     }
 

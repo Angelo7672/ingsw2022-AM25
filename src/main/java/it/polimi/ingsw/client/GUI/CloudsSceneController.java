@@ -51,7 +51,6 @@ public class CloudsSceneController implements SceneController  {
     @FXML
     public void confirmPressed(){
         String result = proxy.chooseCloud(chosenCloud);
-
         if(result.equalsIgnoreCase("ok")){
             errorMessage.setVisible(false);
             gui.setConstants("Reset");

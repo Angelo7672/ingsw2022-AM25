@@ -12,7 +12,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -24,7 +23,7 @@ public class LoginSceneController implements SceneController{
     private String currentNickname;
     private String currentCharacter;
     private Exit proxy;
-    private Service<Boolean> loginService;
+    private final Service<Boolean> loginService;
 
     @FXML private TextField nicknameBox;
     @FXML private AnchorPane loginScene;
@@ -69,7 +68,7 @@ public class LoginSceneController implements SceneController{
         protected Task<Boolean> createTask() {
             return new Task<>() {
                 @Override
-                protected Boolean call() throws Exception {
+                protected Boolean call() {
                     Boolean result = proxy.setupConnection(currentNickname, currentCharacter);
                     return result;
                 }
@@ -96,7 +95,7 @@ public class LoginSceneController implements SceneController{
      */
     public void nextPressed(ActionEvent e) {
         currentNickname= this.nicknameBox.getText();
-        if(currentNickname!="" && currentCharacter!="") {
+        if(!currentNickname.equals("") && !currentCharacter.equals("")) {
             if(loginService.getState()== Worker.State.READY)
                 loginService.start();
             else
@@ -104,7 +103,6 @@ public class LoginSceneController implements SceneController{
             gui.switchScene(GUI.WAITING);
         }
         else showErrorMessage();
-
     }
 
     public void showErrorMessage(){
@@ -116,7 +114,6 @@ public class LoginSceneController implements SceneController{
      * @param chosenCharacters of type ArrayList<String> - characters that are already been chosen
      */
     public void disableCharacters(ArrayList<String> chosenCharacters) {
-        //se il personaggio è già stato scelto
         for(String character: chosenCharacters){
             if(character.equalsIgnoreCase("WIZARD")){
                 wizardImage.setImage((new Image(getClass().getResourceAsStream("/graphics/character_wizard_taken.png"))));
@@ -136,8 +133,6 @@ public class LoginSceneController implements SceneController{
             }
         }
     }
-
-
     @Override
     public void setGUI(GUI gui) {
         this.gui=gui;

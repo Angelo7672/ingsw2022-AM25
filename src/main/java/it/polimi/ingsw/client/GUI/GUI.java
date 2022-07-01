@@ -807,9 +807,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     @Override
     public void notifyWinner() {
         Platform.runLater(()->{
-            System.out.println("NOTIFY WINNER");
             String winner = view.getWinner();
-            System.out.println("winner is"+winner);
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
             controller.setWinner(winner);
             loadScene(GAMEOVER);
