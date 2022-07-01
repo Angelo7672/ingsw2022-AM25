@@ -4,6 +4,9 @@ import it.polimi.ingsw.client.message.Message;
 
 import java.util.ArrayList;
 
+/**
+ * Special7Message contains all the chosen parameters to use it.
+ */
 public class Special7Message implements Message {
     private ArrayList<Integer> entranceStudent;
     private ArrayList<Integer> cardStudent;

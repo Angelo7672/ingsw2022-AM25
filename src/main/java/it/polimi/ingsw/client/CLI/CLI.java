@@ -342,7 +342,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                         int island;
                         do {
                             System.out.println();
-                            System.out.print(SPACE + "In witch island? Insert the number ");
+                            System.out.print(SPACE + "In which island? Insert the number ");
                             String intString = readNext();
                             island = Integer.parseInt(intString);
                             if (island < 1 || island > 12) {

@@ -2,6 +2,9 @@ package it.polimi.ingsw.client.message.special;
 
 import it.polimi.ingsw.client.message.Message;
 
+/**
+ * Special1Message contains all the chosen parameters to use it.
+ */
 public class Special1Message implements Message {
     private int color;
     private int islandRef;
