@@ -168,7 +168,9 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
         synchronized (initializedViewLock){
             try {
                 if (!view.isInitializedView()) initializedViewLock.wait();
-            }catch (InterruptedException e){}
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
         }
         return view;
     }
@@ -361,8 +363,10 @@ public class Proxy_c implements Exit, DisconnectedListener, PongListener {
                     serverOfflineListener.notifyServerOffline();
                 }
                 send(new PingMessage());
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
                 serverOfflineListener.notifyServerOffline();
+            } catch (InterruptedException e){
+                e.printStackTrace();
             }
         }
         });

@@ -75,7 +75,9 @@ public class Receiver extends Thread {
                 if (answersList.size() == 0){
                     answerTmpLock.wait();
                 }
-            }catch (InterruptedException e){}
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
             tmp = answersList.get(0);
             answersList.remove(0);
         }
@@ -160,7 +162,9 @@ public class Receiver extends Thread {
                     synchronized (specialLock) {
                         try {
                             specialLock.wait();
-                        } catch (InterruptedException e) {}
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
             }
             view.setSpecialStudents(((InfoSpecial1or7or11Answer) tmp).getStudentColor(), ((InfoSpecial1or7or11Answer) tmp).getValue(), ((InfoSpecial1or7or11Answer) tmp).getSpecialIndex());
@@ -169,7 +173,9 @@ public class Receiver extends Thread {
                 synchronized (specialLock) {
                     try {
                         specialLock.wait();
-                    } catch (InterruptedException e) {}
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             view.setNoEntry(((InfoSpecial5Answer) tmp).getCards());
@@ -230,7 +236,9 @@ public class Receiver extends Thread {
                         else if (tmp instanceof InfoSpecial5Answer) viewSpecialMessage(tmp);
                         answerView.remove(0);
                     }
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         viewThread.start();
