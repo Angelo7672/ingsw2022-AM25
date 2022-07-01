@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+/**
+ * Special abstract class is extended by all special and overrides its methods.
+ */
 public abstract class Special {
     private int cost;
 

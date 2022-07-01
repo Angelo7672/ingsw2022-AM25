@@ -365,19 +365,11 @@ public class Receiver extends Thread {
                 if(initializedView && answerView.isEmpty()) viewThread.interrupt();
             }
         } catch (SocketException e) {
-            System.out.println("socket exception in receiver");
-                /*try {
-                    //serverOfflineListener.notifyServerOffline();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }*/
-        } catch (IOException | ClassNotFoundException e) {
-                /*try {
-                    socket.close();
-                    return;
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }*/
+            serverOfflineListener.notifyServerOffline();
+        } catch (IOException e) {
+            serverOfflineListener.notifyServerOffline();
+        } catch(ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 

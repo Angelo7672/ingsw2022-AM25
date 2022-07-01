@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- *
+ * Proxy_s is client's proxy, it manages connections with server.
  */
 public class Proxy_c implements Exit, PongListener {
     private final Receiver receiver;
@@ -44,17 +44,6 @@ public class Proxy_c implements Exit, PongListener {
     }
 
     /**
-     * Send a message to server to comunicate that client is ready for login.
-     * @return true if server is ready for client to login.
-     */
-    public boolean readyForLogin() {
-        send(new GenericMessage("Ready for login!"));
-        tempObj = receiver.receive();
-        return tempObj instanceof LoginRestoreAnswer;
-
-    }
-
-    /**
      * Send a message to server to comunicate that client is ready for login. Server answers with the action tha client have to do.
      * It depends on what the player number is.
      * @return String which corresponds to the actions.
@@ -68,58 +57,6 @@ public class Proxy_c implements Exit, PongListener {
         else if(tempObj instanceof SavedGameAnswer) return "SavedGame";
         else if (tempObj instanceof LoginRestoreAnswer) return "LoginRestore";
         else return "Not first";
-    }
-
-    /**
-     * @return last message that proxy_c received.
-     */
-    public Answer getMessage(){
-        return tempObj;
-    }
-
-    /**
-     * It sends the decision to the server.
-     * @param decision is the decision of the player.
-     * @return true if server accepted the message.
-     */
-    public boolean savedGame(String decision) {
-        send(new GenericMessage(decision));
-        tempObj = receiver.receive();
-        if (tempObj instanceof GenericAnswer) {
-            return !((GenericAnswer) tempObj).getMessage().equals("error");
-        }
-        return true;
-    }
-
-
-    /**
-     * It is used in the case of restore a game. It returns the phase of the game that have to be done.
-     * @return the string inside the answer received.
-     */
-    public String getPhase() {
-        send(new GenericMessage("Ready to play!"));
-        tempObj = receiver.receive();
-        if(tempObj instanceof PlayCardAnswer){
-            return ((PlayCardAnswer) tempObj).getMessage();
-        }
-        if(tempObj instanceof StartTurnAnswer){
-            return ((StartTurnAnswer) tempObj).getMessage();
-        }
-        return null;
-    }
-
-    /**
-     * It sends to the server nickname and character chosen by the player.
-     * @param nickname is the nickname chosen.
-     * @param character is the characters chosen.
-     * @return true if server accepts nickname and characters.
-     */
-    public boolean setupConnection(String nickname, String character) {
-        if(nickname.length()>10) nickname = nickname.substring(0,9);
-        send(new SetupConnection(nickname, character));
-        tempObj = receiver.receive();
-        if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
-        else return false;
     }
 
     /**
@@ -145,6 +82,20 @@ public class Proxy_c implements Exit, PongListener {
     }
 
     /**
+     * It sends to the server nickname and character chosen by the player.
+     * @param nickname is the nickname chosen.
+     * @param character is the characters chosen.
+     * @return true if server accepts nickname and characters.
+     */
+    public boolean setupConnection(String nickname, String character) {
+        if(nickname.length()>10) nickname = nickname.substring(0,9);
+        send(new SetupConnection(nickname, character));
+        tempObj = receiver.receive();
+        if(tempObj instanceof GenericAnswer) return ((GenericAnswer)tempObj).getMessage().equals("ok");
+        else return false;
+    }
+
+    /**
      * It used to get characters already chosen.
      * @return the ArrayList of characters already chosen.
      */
@@ -155,6 +106,53 @@ public class Proxy_c implements Exit, PongListener {
         LoginAnswer msg = (LoginAnswer) tempObj;
         tempObj = null;
         return (msg.getCharacterAlreadyChosen());
+    }
+
+    /**
+     * It sends the decision to the server.
+     * @param decision is the decision of the player.
+     * @return true if server accepted the message.
+     */
+    public boolean savedGame(String decision) {
+        send(new GenericMessage(decision));
+        tempObj = receiver.receive();
+        if (tempObj instanceof GenericAnswer) {
+            return !((GenericAnswer) tempObj).getMessage().equals("error");
+        }
+        return true;
+    }
+
+    /**
+     * Send a message to server to comunicate that client is ready for login.
+     * @return true if server is ready for client to login.
+     */
+    public boolean readyForLogin() {
+        send(new GenericMessage("Ready for login!"));
+        tempObj = receiver.receive();
+        return tempObj instanceof LoginRestoreAnswer;
+    }
+
+    /**
+     * @return last message that proxy_c received.
+     */
+    public Answer getMessage(){
+        return tempObj;
+    }
+
+    /**
+     * It is used in the case of restore a game. It returns the phase of the game that have to be done.
+     * @return the string inside the answer received.
+     */
+    public String getPhase() {
+        send(new GenericMessage("Ready to play!"));
+        tempObj = receiver.receive();
+        if(tempObj instanceof PlayCardAnswer){
+            return ((PlayCardAnswer) tempObj).getMessage();
+        }
+        if(tempObj instanceof StartTurnAnswer){
+            return ((StartTurnAnswer) tempObj).getMessage();
+        }
+        return null;
     }
 
     /**
@@ -172,7 +170,6 @@ public class Proxy_c implements Exit, PongListener {
         }
         return view;
     }
-
 
     /**
      * It tells to the receiver that listeners are set and cli/gui is ready to received notify.
@@ -226,7 +223,6 @@ public class Proxy_c implements Exit, PongListener {
             }
         }
     }
-
 
     /**
      * Send the chosen student to server and wait its answer.

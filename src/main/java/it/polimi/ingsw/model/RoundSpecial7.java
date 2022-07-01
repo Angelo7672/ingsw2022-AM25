@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 import java.util.ArrayList;
 
 /**
- * Round strategy used by special 1
+ * Round strategy used by special 7
  */
 public class RoundSpecial7 extends RoundStrategy{
     private final Special7 special;

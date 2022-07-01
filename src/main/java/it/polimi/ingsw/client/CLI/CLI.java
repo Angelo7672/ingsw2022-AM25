@@ -869,10 +869,11 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
         }
     }
 
+    /**
+     * See Listeners package.
+     */
     @Override
-    public void notifyHand(int playerRef, ArrayList<String> hand) {
-
-    }
+    public void notifyHand(int playerRef, ArrayList<String> hand) {}
 
     @Override
     public void notifyProfessors(int playerRef, int color, boolean newProfessorValue) {
