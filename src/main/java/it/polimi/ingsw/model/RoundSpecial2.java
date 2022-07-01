@@ -13,7 +13,10 @@ public class RoundSpecial2 extends RoundStrategy {
         special = new Special2();
     }
 
-
+    /**
+     * Takes control of the professor even if you have the same number of students at table.
+     * @see RoundStrategy
+     */
     @Override
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException {
         if(!inSchool){

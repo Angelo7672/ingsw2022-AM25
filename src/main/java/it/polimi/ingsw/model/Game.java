@@ -298,7 +298,6 @@ public class Game implements GameManager{
                     victory = roundStrategies.get(i + 1).moveMotherNature(queueRef, desiredMovement, refSpecial);    //can throw NotAllowedException
                 }
             if(!stop) victory = roundStrategies.get(indexSpecial).moveMotherNature(queueRef, desiredMovement, refSpecial);
-            //setSpecial(0,-1);
             for (int i = 0; i < 3; i++)
                 if (extractedSpecials.get(i) == 5) checkNoEntry(i + 1);
         }
@@ -438,7 +437,6 @@ public class Game implements GameManager{
             for(int i = 0; i < 3; i++)
                 if(indexSpecial == extractedSpecials.get(i)) checker = roundStrategies.get(i+1).effect(playerRef, color1, color2);
             if(checker) findSpecial(indexSpecial, playerRef);
-            setSpecial(0, -1);
         }
 
         return checker;

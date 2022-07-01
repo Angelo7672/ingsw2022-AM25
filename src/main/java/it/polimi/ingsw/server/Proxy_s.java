@@ -379,7 +379,7 @@ public class Proxy_s implements Exit {
     }
 
     /**
-     * Notify all clients (except the disconnected one) that a client has disconnected.
+     * Notify all clients that a client has disconnected.
      * @see VirtualClient
      */
     public void clientDisconnected(){

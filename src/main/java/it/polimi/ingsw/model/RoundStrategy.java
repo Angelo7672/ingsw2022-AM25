@@ -160,7 +160,7 @@ public abstract class RoundStrategy {
      * @param islandRef is the number of the island.
      * @throws NotAllowedException if chosen parameters are not valid.
      */
-    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{ //da cambiare e spezzare in due
+    public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{
         if(!inSchool){
             if(islandRef < 0 || islandRef >= islandsManager.getIslandsSize()) throw new NotAllowedException();
             playerManager.transferStudent(playerRef, colour, inSchool, false);
