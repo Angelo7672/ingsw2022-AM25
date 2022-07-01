@@ -260,7 +260,6 @@ public class Receiver extends Thread {
      * If game is over or a client is disconnected, the method notify it.
      */
     public void run(){
-        //receive = new Thread(() -> {
         viewMessage();
         try {
             ArrayList<Answer> answersTmpList = new ArrayList<>();

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 /**
- * Round strategy used by special 2, it overrides move mother nature and highInfluence.
+ * Round strategy used by special 2, it overrides move mother nature and highInfluence. It skips tower value in the count of influence.
  */
 public class RoundSpecial6 extends RoundStrategy{
     Special6 special;

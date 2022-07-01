@@ -31,7 +31,7 @@ public class RoundSpecial11 extends RoundStrategy{
     public void restoreStudentSpecial(int[] students){ special.specialStudentRestore(students); }
 
     /**
-     * It checks if effect could be used, then use it.
+     * It checks if effect could be used, then use it. It takes the chosen student from the card and put it in player's table.
      * @param playerRef is the player's number.
      * @param color is the student's color.
      * @return true if effect is used.
@@ -71,6 +71,10 @@ public class RoundSpecial11 extends RoundStrategy{
             super(2);
         }
 
+        /**
+         * It puts student extracted on the card.
+         * @param color is the array with color.
+         */
         public void setup(int[] color){
             for(int i = 0; i < 5; i++){
                 students[i] = color[i];
@@ -78,6 +82,10 @@ public class RoundSpecial11 extends RoundStrategy{
             }
         }
 
+        /**
+         * @see it.polimi.ingsw.controller.VirtualView
+         * @param students are the extracted students.
+         */
         public void specialStudentRestore(int[] students){
             for(int i = 0; i < 5; i++){
                 this.students[i] = students[i];
@@ -92,6 +100,11 @@ public class RoundSpecial11 extends RoundStrategy{
             students[color]++;
         }
 
+        /**
+         * it removes the chosen student from the card and add the extracted one to the card.
+         * @param chosen student chosen.
+         * @param extracted student extracted.
+         */
         @Override
         public void effect(int chosen, int extracted) {
             students[chosen]--;

@@ -12,7 +12,7 @@ public class RoundSpecial3 extends RoundStrategy{
     }
 
     /**
-     * It checks if effect could be used, then use it.
+     * It checks if effect could be used, then use it. It counts influence on a chosen island.
      * @param islandRef is the number of the island.
      * @return true if effect is used.
      */
@@ -33,7 +33,6 @@ public class RoundSpecial3 extends RoundStrategy{
     public void increaseCost(){ special.increaseCost(); }
 
     private static class Special3 extends Special {
-        //non fa niente qua, fa solo calcolare l'influenza di un isola a scelta
         public Special3(){
             super(3);
         }

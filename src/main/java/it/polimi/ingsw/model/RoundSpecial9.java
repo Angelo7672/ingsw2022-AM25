@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 /**
- * Round strategy used by special 9, it overrides highInfluenceTeam and use its effect.
+ * Round strategy used by special 9, it overrides highInfluenceTeam and use its effect. It skips in the influence count the chosen color.
  */
 public class RoundSpecial9 extends RoundStrategy{
     Special9 special;

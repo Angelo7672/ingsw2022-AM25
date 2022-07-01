@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.listeners.SpecialStudentsListener;
 
 /**
- * Round strategy used by special 1
+ * Round strategy used by special 1.
  */
 public class RoundSpecial1 extends RoundStrategy{
     private final Special1 special;
@@ -14,6 +14,9 @@ public class RoundSpecial1 extends RoundStrategy{
         this.special = new Special1();
     }
 
+    /**
+     * It extracts student from bag and put it on the card.
+     */
     @Override
     public void initializeSpecial(){
         int[] extraction = {0,0,0,0,0};
@@ -29,7 +32,7 @@ public class RoundSpecial1 extends RoundStrategy{
     public void restoreStudentSpecial(int[] students){ special.specialStudentRestore(students); }
 
     /**
-     * It checks if effect could be used, then use it.
+     * It checks if effect could be used, then use it. It takes one student from the card and put it on an island.
      * @param islandRef is the island's number.
      * @param color is the student's color.
      * @return true if effect is used.
@@ -67,6 +70,10 @@ public class RoundSpecial1 extends RoundStrategy{
             super(1);
         }
 
+        /**
+         * It puts student extracted on the card.
+         * @param color is the array with color.
+         */
         public void setup(int[] color){
             for(int i = 0; i < 5; i++){
                 students[i] = color[i];
@@ -74,6 +81,11 @@ public class RoundSpecial1 extends RoundStrategy{
             }
         }
 
+
+        /**
+         * @see it.polimi.ingsw.controller.VirtualView
+         * @param students are the extracted students.
+         */
         public void specialStudentRestore(int[] students){
             for(int i = 0; i < 5; i++){
                 this.students[i] = students[i];

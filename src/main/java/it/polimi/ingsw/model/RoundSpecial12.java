@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 /**
- * Round strategy used by special 1
+ * Round strategy used by special 12.
  */
 public class RoundSpecial12 extends RoundStrategy{
     Special12 special;
@@ -12,7 +12,8 @@ public class RoundSpecial12 extends RoundStrategy{
     }
 
     /**
-     * It checks if effect could be used, then use it.
+     * It checks if effect could be used, then use it. If player have at least 3 students of the chosen color in the table, then it removes 3 students.
+     * Else if player have less than 3 students, it removes all of them.
      * @param color is the student's color.
      * @return true if effect is used.
      */

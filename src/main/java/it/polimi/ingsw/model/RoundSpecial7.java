@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 import java.util.ArrayList;
 
 /**
- * Round strategy used by special 7
+ * Round strategy used by special 7.
  */
 public class RoundSpecial7 extends RoundStrategy{
     private final Special7 special;
@@ -20,6 +20,9 @@ public class RoundSpecial7 extends RoundStrategy{
     @Override
     public void setSpecialStudentsListener(SpecialStudentsListener specialStudentsListener) { this.specialStudentsListener = specialStudentsListener; }
 
+    /**
+     * It extracts student from bag and put it on the card.
+     */
     @Override
     public void initializeSpecial(){
         int[] extraction = {0,0,0,0,0};
@@ -36,7 +39,7 @@ public class RoundSpecial7 extends RoundStrategy{
     public void restoreStudentSpecial(int[] students){ special.specialStudentRestore(students); }
 
     /**
-     * It checks if effect could be used, then use it.
+     * It checks if effect could be used, then use it. It switches chosen students from the card with chosen students from entrance.
      * @param playerRef is the number of the player.
      * @param entranceStudent is the students from the entrance.
      * @param cardStudent is the students from the card.
@@ -73,6 +76,10 @@ public class RoundSpecial7 extends RoundStrategy{
 
         public Special7(){ super(1); }
 
+        /**
+         * It puts student extracted on the card.
+         * @param color is the array with color.
+         */
         public void setup(int[] color){
             for(int i=0; i<5;i++){
                 students[i] = color[i];
@@ -80,6 +87,10 @@ public class RoundSpecial7 extends RoundStrategy{
             }
         }
 
+        /**
+         * @see it.polimi.ingsw.controller.VirtualView
+         * @param students are the extracted students.
+         */
         public void specialStudentRestore(int[] students){
             for(int i = 0; i < 5; i++){
                 this.students[i] = students[i];
@@ -89,6 +100,12 @@ public class RoundSpecial7 extends RoundStrategy{
 
         public int getStudent(int color){ return students[color]; }
 
+
+        /**
+         * it removes the chosen student from the card and add the extracted one to the card.
+         * @param chosen student chosen.
+         * @param extracted student extracted.
+         */
         @Override
         public void effect(int chosen, int extracted) {
             students[chosen]--;

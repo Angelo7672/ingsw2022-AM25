@@ -15,7 +15,7 @@ public class RoundSpecial5 extends RoundStrategy{
     }
 
     /**
-     * It checks if effect could be used, then use it.
+     * It checks if effect could be used, then use it. It puts a no entry tiles on an island.
      * @param islandRef is the island's number.
      * @return true if effect is used.
      */

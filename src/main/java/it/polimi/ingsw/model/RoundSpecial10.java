@@ -16,7 +16,7 @@ public class RoundSpecial10 extends RoundStrategy{
     }
 
     /**
-     * It checks if effect could be used, then use it.
+     * It checks if effect could be used, then use it. It switches the students from entrance with the students from table.
      * @param playerRef is the number of the player.
      * @param entranceStudent is the students from the entrance.
      * @param tableStudent is the students from the table.

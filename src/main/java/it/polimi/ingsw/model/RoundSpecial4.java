@@ -12,7 +12,7 @@ public class RoundSpecial4 extends RoundStrategy{
     }
 
     /**
-     * @param playerRef is the number of the player.
+     * @param playerRef is the number of the player. It increases max move mother nature of two additional steps.
      * @return true if effect is used.
      */
     @Override
