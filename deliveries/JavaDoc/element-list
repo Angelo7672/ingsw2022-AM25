@@ -1,0 +1,15 @@
+it.polimi.ingsw
+it.polimi.ingsw.client
+it.polimi.ingsw.client.CLI
+it.polimi.ingsw.client.GUI
+it.polimi.ingsw.client.message
+it.polimi.ingsw.client.message.special
+it.polimi.ingsw.controller
+it.polimi.ingsw.controller.exception
+it.polimi.ingsw.listeners
+it.polimi.ingsw.model
+it.polimi.ingsw.model.exception
+it.polimi.ingsw.server
+it.polimi.ingsw.server.answer
+it.polimi.ingsw.server.answer.viewAnswer
+it.polimi.ingsw.server.expertmode
