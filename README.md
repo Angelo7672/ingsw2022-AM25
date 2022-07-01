@@ -5,19 +5,29 @@
 -   Ginevra Bozza ([@ginevra-bozza](https://github.com/ginevra-bozza)): ginevra.bozza@mail.polimi.it
 -   Chiara Di Pasquale ([@chiaradipasquale](https://github.com/chiaradipasquale)): chiara2.dipasquale@mail.polimi.it
 
+## Project Description
+The project consists of a Java version of the board game Eriantys, by Cranio Creation <br>
+Rules: https://www.craniocreations.it/wp-content/uploads/2021/11/Eriantys_ITA_bassa.pdf
+
+## How to run
+#### Java version: 17 <br>
+To run the jar via terminal, you need to go to the directory where the jat file is locate and use the command: java -jar AM25-1.0.jar <br>
+Select 0 to start the Server, 1 to run the Client with CLI or GUI <br> <br>
+Note: when starting the GUI, it will take some time to load 
+
 ## Implemented functionalities
 
 | Functionality                |                      State                         |
 |:-----------------------------|:--------------------------------------------------:|
-| Basic rules                  | 🟡 |
-| Complete rules               | 🟡 |
-| Socket                       | 🟡 |
-| GUI                          | 🟡 |
-| CLI                          | 🟡 |
-| Special Characters           | 🟡 |
-| 4-players Game               | 🟡 |
+| Basic rules                  | 🟢 |
+| Complete rules               | 🟢 |
+| Socket                       | 🟢 |
+| GUI                          | 🟢 |
+| CLI                          | 🟢 |
+| Special Characters           | 🟢 |
+| 4-players Game               | 🟢 |
 | Multiple Games               | 🔴 |
-| Persistence                  | 🟡 |
+| Persistence                  | 🟢 |
 | Resilience to disconnections | 🔴 |
 
 
@@ -25,9 +35,9 @@
 🟢 implemented <br>
 🟡 in progress <br>
 
+## Tests coverage
+| Package     |  Lines coverage  |  Classes coverage |
+|:------------|:----------------:|:-----------------:|
+| Model       |       83%        |       100%        |
+| Controller  |       81%        |       91%         |
 
-
-## Notes
-REGOLE: https://www.craniocreations.it/wp-content/uploads/2021/11/Eriantys_ITA_bassa.pdf
-
-APPUNTI: https://docs.google.com/document/d/1qh6zJXBbtEIRsvy-bJgb3VWvDlqLr_IHzKXpXaqZY3o/edit?usp=sharing
