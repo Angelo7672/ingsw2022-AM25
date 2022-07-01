@@ -43,7 +43,6 @@ public class Receiver extends Thread {
     public Receiver(Object initializedViewLock, Socket socket, View view) throws IOException {
         this.socket = socket;
         this.inputStream = new ObjectInputStream(this.socket.getInputStream());
-        //this.socket.setSoTimeout(15000);
         this.view = view;
         answersList = new ArrayList<>();
         answerView = new ArrayList<>();
@@ -267,9 +266,7 @@ public class Receiver extends Thread {
             socket.setSoTimeout(15000);
             while (!disconnected) {
                 tmp = (Answer) inputStream.readObject();
-                //socket.setSoTimeout(15000);
                 if (tmp instanceof PongAnswer) {
-                    //socket.setSoTimeout(15000);
                     pongListener.notifyPong();
                 }
                 else if (tmp instanceof GameInfoAnswer) gameMessage(tmp);

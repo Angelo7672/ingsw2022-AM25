@@ -11,7 +11,6 @@ public class WaitingSceneController implements SceneController{
     private GUI gui;
     private Exit proxy;
 
-
     @Override
     public void setGUI(GUI gui) {
         this.gui=gui;
@@ -21,4 +20,5 @@ public class WaitingSceneController implements SceneController{
     public void setProxy(Exit proxy) {
         this.proxy=proxy;
     }
+
 }

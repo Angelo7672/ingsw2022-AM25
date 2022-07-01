@@ -350,7 +350,6 @@ public class Proxy_c implements Exit, PongListener, DisconnectedListener {
         while (!disconnected) {
             try {
                 Thread.sleep(5000);
-                //System.out.println("ping");
                 pingCounter++;
                 if(pingCounter == 3) {
                     disconnected = true;

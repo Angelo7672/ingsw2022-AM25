@@ -460,4 +460,5 @@ public class SpecialsSceneController implements SceneController{
     public void setProxy(Exit proxy) {
         this.proxy=proxy;
     }
+
 }

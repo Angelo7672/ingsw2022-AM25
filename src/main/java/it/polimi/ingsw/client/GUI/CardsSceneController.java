@@ -187,4 +187,5 @@ public class CardsSceneController implements SceneController{
         this.cardsLabel.setVisible(false);
     }
 
+
 }

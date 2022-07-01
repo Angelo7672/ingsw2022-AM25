@@ -133,4 +133,5 @@ public class Special9or12SceneController implements SceneController{
     public void setProxy(Exit proxy) {
         this.proxy = proxy;
     }
+
 }

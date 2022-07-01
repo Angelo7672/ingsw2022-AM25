@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class LoginRestoreSceneController implements SceneController{
     private Exit proxy;
@@ -76,5 +77,10 @@ public class LoginRestoreSceneController implements SceneController{
     @Override
     public void setProxy(Exit proxy) {
         this.proxy = proxy;
+    }
+
+    public void closeScene(){
+        Stage stage = (Stage) next.getScene().getWindow();
+        stage.close();
     }
 }

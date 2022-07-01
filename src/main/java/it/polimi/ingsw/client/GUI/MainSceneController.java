@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import static it.polimi.ingsw.client.GUI.GUI.SPECIALS;
@@ -1161,4 +1162,5 @@ public class MainSceneController implements SceneController {
         specialLabel.setText(playerName+" played special card "+specialRef+"!");
         specialLabel.setVisible(true);
     }
+
 }

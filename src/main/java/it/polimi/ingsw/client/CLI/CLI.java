@@ -87,6 +87,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             System.out.println(SPACE+"Setup Connection done, waiting for players...");
         }
         else if(result.equals("Server Sold Out")) {
+            clientDisconnected = true;
             System.out.println();
             System.out.print(ANSI_RED+SPACE+"Server Sold Out, game over."+ANSI_RESET);
             try {
@@ -320,7 +321,10 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                 }
                 else if (special(special)) {
                     constants.setSpecialUsed(true);
-                } else turn();
+                } else {
+                    playCount--;
+                    turn();
+                }
             }
         }
         else turn();
@@ -535,7 +539,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                 System.out.println(ANSI_RED + SPACE + result + ANSI_RESET);
             } else {
                 constants.setCardPlayed(true);
-                System.out.print(SPACE + "It's your opponent turn, wait...");
+                System.out.println(SPACE + "It's your opponent turn, wait...");
                 System.out.println();
                 return;
             }
@@ -852,7 +856,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     public void notifyIslandChange(int islandToDelete) {
         if(constants.isStartGame()) {
             synchronized (lock) {
-                //System.out.println();
+                System.out.println();
                 System.out.println("New play: " + "\t" + "\t" + " island " + (islandToDelete + 1) + " had been united.");
             }
         }

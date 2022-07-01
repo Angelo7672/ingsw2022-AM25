@@ -104,7 +104,6 @@ public class Printable {
             }
             case (1) -> printTowersValue(componentRef);
         }
-        //System.out.println();
     }
 
     protected void printStudentsChange(int place, int componentRef){
@@ -140,6 +139,7 @@ public class Printable {
         }
         System.out.println();
     }
+
     protected void printSpecialStudents(int special){
         System.out.println();
         System.out.print("New play: "+"\t"+"\t");
@@ -166,7 +166,7 @@ public class Printable {
             else System.out.println();
         }
         System.out.println();
-        System.out.println(UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));//aggiungere
+        System.out.println(UNDERLINE+"Mother Nature"+ANSI_RESET+" is on island " + (view.getMotherPosition()+1));
         System.out.println();
 
         System.out.println(UNDERLINE+"SCHOOLS"+ANSI_RESET);

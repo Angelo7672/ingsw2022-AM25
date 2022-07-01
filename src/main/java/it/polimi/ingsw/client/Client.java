@@ -45,7 +45,6 @@ public class Client {
         System.out.println(ANSI_RED + SPACE + "Error, insert a number." + ANSI_RESET);
         return;
         }
-        System.out.println();
         System.out.print(SPACE+"Do you want to use CLI or GUI? ");
         String graph = scanner.next();
         try {
@@ -61,6 +60,7 @@ public class Client {
                 Exit proxy = null;
                 try {
                     proxy = new Proxy_c(socket);
+                    System.out.println("Proxy created");
                 } catch (SocketTimeoutException e) {
                     System.out.println();
                     System.out.println(ANSI_RED + SPACE + "Server is offline, Game over." + ANSI_RESET);
@@ -68,6 +68,7 @@ public class Client {
                     System.exit(-1);
                 }
                 CLI cli = new CLI(socket, proxy);
+                System.out.println("CLI created ");
                 cli.run();
             } else if (graph.equalsIgnoreCase("GUI")) {
                 try {

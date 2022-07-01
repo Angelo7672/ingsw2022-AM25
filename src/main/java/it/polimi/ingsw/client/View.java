@@ -273,7 +273,6 @@ public class View {
         return specials.size() == 3;
     }
 
-    //TODO  serve???
     public void specialComplete(){
         ArrayList<Integer> specialsName = new ArrayList<>();
         ArrayList<Integer> specialsCost = new ArrayList<>();
@@ -339,7 +338,6 @@ public class View {
     public boolean isInitializedView() {
         return initializedView;
     }
-
 
 
     //Listeners

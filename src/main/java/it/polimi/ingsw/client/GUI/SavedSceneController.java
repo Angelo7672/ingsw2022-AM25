@@ -39,4 +39,5 @@ public class SavedSceneController implements SceneController{
     public void setGUI(GUI gui) {this.gui = gui;}
     @Override
     public void setProxy(Exit proxy) {this.proxy = proxy;}
+
 }

@@ -161,22 +161,18 @@ public class IslandsManager {
      * Check if the island on the left or/and on the right could be unified.
      * @param pos the islands reference;
      */
-    private int checkAdjacentIslands(int pos) {
+    private void checkAdjacentIslands(int pos) {
         int posTemp;
-        int towerValue = -1;
 
         posTemp = circularArray(pos,-1);    //left tower
         if(checkAdjacent(pos, posTemp)) {
             if(pos>posTemp) pos = circularArray(pos,-1);
-            towerValue = islands.get(pos).towerValue;
         }
 
         posTemp = circularArray(pos,1);     //right tower
         if(checkAdjacent(pos, posTemp)) {
             if(pos>posTemp) pos = circularArray(pos,-1);
-            towerValue = islands.get(pos).towerValue;
         }
-        return towerValue;
     }
 
     /**

@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.AnchorPane;
+
 /**
  * SetupSceneController is the controller class of SetupScene.fxml
  * SetupScene is to be shown only to the first player to choose number of player and expert mode

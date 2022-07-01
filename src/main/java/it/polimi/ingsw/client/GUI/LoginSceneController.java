@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+
 import java.util.ArrayList;
 
 /**
@@ -142,6 +143,7 @@ public class LoginSceneController implements SceneController{
     public void setProxy(Exit proxy) {
         this.proxy=proxy;
     }
+
 
 
 }

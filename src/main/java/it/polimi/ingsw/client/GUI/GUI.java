@@ -570,6 +570,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
             case "Reset" -> constants.resetAll();
         }
     }
+
     /**
      * @see UserInfoListener
      */
