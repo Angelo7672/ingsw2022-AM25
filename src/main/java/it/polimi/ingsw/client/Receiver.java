@@ -33,7 +33,7 @@ public class Receiver extends Thread {
     private final View view;
     private boolean initializedView;
     private final ArrayList<Answer> answerView;
-    private boolean lockNotify;
+    private boolean clientDisconnected;
 
     /**
      * Constructor allocates every variable of the class.
@@ -249,7 +249,7 @@ public class Receiver extends Thread {
     private void viewNotInitialized(Answer tmp){
         synchronized (answerViewLock) {
             answerView.add(tmp);
-            if(lockNotify) answerViewLock.notify();
+            answerViewLock.notify();
         }
     }
 
@@ -348,8 +348,9 @@ public class Receiver extends Thread {
                     if(!initializedView) answerView.add(tmp);
                     else viewSpecialMessage(tmp);
                 } else if (tmp instanceof DisconnectedAnswer) {
-                    disconnectedListener.notifyDisconnected();
                     disconnected = true;
+                    clientDisconnected = true;
+                    disconnectedListener.notifyDisconnected();
                 } else if (tmp instanceof GameOverAnswer) {
                     view.setWinner(((GameOverAnswer) tmp).getWinner());
                     disconnected = true;
@@ -364,9 +365,9 @@ public class Receiver extends Thread {
                 if(initializedView && answerView.isEmpty()) viewThread.interrupt();
             }
         } catch (SocketException e) {
-            serverOfflineListener.notifyServerOffline();
+            if(!clientDisconnected)  serverOfflineListener.notifyServerOffline();
         } catch (IOException e) {
-            serverOfflineListener.notifyServerOffline();
+            if(!clientDisconnected)  serverOfflineListener.notifyServerOffline();
         } catch(ClassNotFoundException e){
             e.printStackTrace();
         }

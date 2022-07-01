@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * Proxy_s is client's proxy, it manages connections with server.
  */
-public class Proxy_c implements Exit, PongListener {
+public class Proxy_c implements Exit, PongListener, DisconnectedListener {
     private final Receiver receiver;
 
     private final ObjectOutputStream outputStream;
@@ -24,6 +24,7 @@ public class Proxy_c implements Exit, PongListener {
     private Thread ping;
     private final Object initializedViewLock;
     private boolean disconnected;
+    private boolean clientDisconnected;
     private Integer pingCounter;
     private ServerOfflineListener serverOfflineListener;
 
@@ -337,7 +338,7 @@ public class Proxy_c implements Exit, PongListener {
             outputStream.writeObject(message);
             outputStream.flush();
         } catch (IOException e){
-            serverOfflineListener.notifyServerOffline();
+            if(!clientDisconnected) serverOfflineListener.notifyServerOffline();
         }
     }
 
@@ -358,7 +359,7 @@ public class Proxy_c implements Exit, PongListener {
                 }
                 send(new PingMessage());
             } catch (IOException e) {
-                serverOfflineListener.notifyServerOffline();
+                if(!clientDisconnected) serverOfflineListener.notifyServerOffline();
             } catch (InterruptedException e){
                 e.printStackTrace();
             }
@@ -381,6 +382,11 @@ public class Proxy_c implements Exit, PongListener {
     @Override
     public void notifyPong() {
         pingCounter=0;
+    }
+
+    @Override
+    public void notifyDisconnected() {
+        clientDisconnected = true;
     }
 }
 

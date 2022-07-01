@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Command Line Interface
@@ -31,6 +32,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     private final String SPACE = "\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t"+"\t";
     private final Object lock;
     private int playCount;
+    private boolean clientDisconnected;
 
 
     /**
@@ -91,7 +93,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
                 socket.close();
                 scanner.close();
             }catch (IOException e){
-                serverOffline();
+                if(!clientDisconnected) serverOffline();
             }
             setActive(false);
             System.exit(-1);
@@ -126,8 +128,14 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
     /**
      * It calls proxy.getPhase to know where the game was interrupted and then set the constant.
      */
-    private void setPhase(){
+    private void setPhase() {
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         constants.setStartGame(true);
+        cli();
         String phase = proxy.getPhase();
         if(phase.equals("Start your Action Phase!")){
             constants.setPlanningPhaseStarted(true);
@@ -769,7 +777,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             System.out.println(ANSI_RED + SPACE + "Server is offline, Game over." + ANSI_RESET);
             try {
                 socket.close();
-            }catch (IOException e){serverOffline();}
+            }catch (IOException e){
+                if(!clientDisconnected) serverOffline();
+            }
             setActive(false);
             System.exit(-1);
         }
@@ -784,7 +794,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             System.out.println(ANSI_RED + SPACE + "One of the player is offline, Game over." + ANSI_RESET);
             try {
                 socket.close();
-            }catch (IOException e){serverOffline();}
+            }catch (IOException e){
+                if(!clientDisconnected) serverOffline();
+            }
             setActive(false);
             System.exit(-1);
         }
@@ -800,7 +812,9 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             System.out.println(ANSI_RED + SPACE + "Game over, the winner is " + view.getWinner() + "." + ANSI_RESET);
             try {
                 socket.close();
-            }catch (IOException e){serverOffline();}
+            }catch (IOException e){
+                if(!clientDisconnected) serverOffline();
+            }
             setActive(false);
             System.exit(0);
         }
@@ -951,6 +965,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
      */
     @Override
     public void notifyDisconnected(){
+        clientDisconnected = true;
         disconnectClient();
     }
 
