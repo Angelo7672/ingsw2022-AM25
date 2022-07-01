@@ -191,7 +191,7 @@ public class IslandsManager {
                 }
             }
             for (int i = 0; i < islands.get(posTemp).getInhibited(); i++) {
-                islands.get(pos).increaseInhibited();
+                increaseInhibited(pos);
             }
             islands.get(pos).incTowerValue(islands.get(posTemp).getTowerValue()); //tower value increase
             this.towersListener.notifyTowersChange(1,pos, islands.get(pos).getTowerValue());
