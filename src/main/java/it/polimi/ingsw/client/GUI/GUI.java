@@ -761,19 +761,20 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void notifyDisconnected() {
         Platform.runLater(()->{
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
-            if(primaryStage!=null && controller!=null){
-                controller.setClientDisconnected();
-                switchScene(GAMEOVER);
-            } else {
-                clientDisconnected = true;
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + GAMEOVER));
-                try {
-                    primaryStage.setScene(new Scene(loader.load()));
-                } catch (IOException e) {
-                    e.printStackTrace();
+            if(!clientDisconnected){
+                if(primaryStage!=null && controller!=null){
+                    controller.setClientDisconnected();
+                    switchScene(GAMEOVER);
+                } else {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + GAMEOVER));
+                    try {
+                        primaryStage.setScene(new Scene(loader.load()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+                clientDisconnected = true;
             }
-
         });
     }
     /**
@@ -784,19 +785,21 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     public void notifyServerOffline() {
         Platform.runLater(()->{
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
-            if(primaryStage!=null && controller!=null){
-                controller.setServerOffline();
-                switchScene(GAMEOVER);
-
-            } else {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + GAMEOVER));
-                try {
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(loader.load()));
-                    stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            if (!clientDisconnected) {
+                if(primaryStage!=null && controller!=null){
+                    controller.setServerOffline();
+                    switchScene(GAMEOVER);
+                } else {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + GAMEOVER));
+                    try {
+                        Stage stage = new Stage();
+                        stage.setScene(new Scene(loader.load()));
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+                clientDisconnected = true;
             }
         });
     }
@@ -807,6 +810,7 @@ public class GUI extends Application implements TowersListener, ProfessorsListen
     @Override
     public void notifyWinner() {
         Platform.runLater(()->{
+            clientDisconnected = true;
             String winner = view.getWinner();
             GameOverSceneController controller = (GameOverSceneController) sceneControllersMap.get(GAMEOVER);
             controller.setWinner(winner);
