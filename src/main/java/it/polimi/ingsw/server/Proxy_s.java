@@ -77,12 +77,13 @@ public class Proxy_s implements Exit {
             soldOut.start();    //from this moment all other connections are discharged
             synchronized (this){ this.wait(); }
 
+            virtualClientInOrder(); //order VirtualClient, in the order they logged in
+
             if(restoreGame) server.restoreGame();   //If the first player decides to load the save
             else {  //otherwise, initialize a new game
                 server.createGame(false);
                 server.initializeGame();
             }
-            virtualClientInOrder(); //order VirtualClient, in the order they logged in
             if(start != connectionsAllowed) synchronized (this){ this.wait(); } //wait for everyone to be ready
             server.startGame();
         } catch (IOException | InterruptedException e) {

@@ -286,7 +286,7 @@ public class VirtualClient implements Runnable, Comparable<VirtualClient>{
                         gameSetupInitialization = true;
                         send(new GenericAnswer("error"));
                     }
-                }else System.out.println("errore! "+playerRef); //TODO: ovviamente da cambiare
+                }else send(new GenericAnswer("error"));
             }
         } catch (IOException | ClassNotFoundException socketException){ clientConnectionExpired(); }
     }

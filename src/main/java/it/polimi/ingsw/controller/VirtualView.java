@@ -844,7 +844,7 @@ public class VirtualView
          * Set cards after restore.
          * @param cards cards of the player.
          */
-        public void setCards(ArrayList<String> cards) { this.cards = cards;}
+        public void setCards(ArrayList<String> cards) { this.cards = cards; }
     }
 
     /**

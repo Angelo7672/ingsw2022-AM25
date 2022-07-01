@@ -62,8 +62,6 @@ public class SoldOut extends Thread{
                 output.writeObject(new SoldOutAnswer());
                 System.err.println("A client tried to connect, but there were no connections available!");
                 output.flush();
-                //this.socket.setSoTimeout(5000); //in any case, close the socket after 4 seconds
-                //TODO: final check
                 this.wait(5000);
                 socket.close();
             } catch (SocketException socketException){ System.err.println("A client tried to connect, but there were no connections available!");

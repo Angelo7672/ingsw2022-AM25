@@ -12,10 +12,7 @@ public class HandAfterRestoreAnswer implements Answer{
      * Create an answer contains info about cards of last saved game of the recipient player.
      * @param hand hand of a player of last saved game;
      */
-    public HandAfterRestoreAnswer(ArrayList<String> hand) {
-        for (String h:hand)
-            System.out.println(h);  //TODO: togli
-        this.hand = hand; }
+    public HandAfterRestoreAnswer(ArrayList<String> hand) { this.hand = hand; }
 
     public ArrayList<String> getHand() { return hand; }
 }
