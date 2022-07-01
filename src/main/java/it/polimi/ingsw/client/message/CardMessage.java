@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.message;
 
+/**
+ * CardMessage contains the chosen card.
+ */
 public class CardMessage implements Message{
     private final String card;
 

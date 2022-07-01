@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.exception.NotAllowedException;
 
 import java.util.ArrayList;
 
+/**
+ * Strategy for special card. Each special extends RoundStrategy and overrides his special methods.
+ */
 public abstract class RoundStrategy {
     public CloudsManager cloudsManager;
     public IslandsManager islandsManager;
@@ -29,6 +32,13 @@ public abstract class RoundStrategy {
     public void restoreStudentSpecial(int[] students){}
     public void noEntryCardsRestore(int numCards){}
 
+    /**
+     * It changes towers on an island, remove it to the school's team of higher influence team and put it back in the weaker team's school.
+     * @param islandRef is the number of the island.
+     * @param noColor is the color of the special 9's effect.
+     * @param playerRef is the number of the player.
+     * @return true if game is over.
+     */
     protected boolean conquestIsland(int islandRef, int noColor, int playerRef){
         Team teamStronger = highInfluenceTeam(islandRef, noColor, playerRef);
         Team teamWeaker = Team.NONE;
@@ -44,10 +54,18 @@ public abstract class RoundStrategy {
             else if(infoTower[1] == 2) teamWeaker = Team.GREY;
             playerManager.placeTower(teamWeaker,infoTower[0]);
         }
-        if(victory1 || victory2){ System.out.println("conquestIsland - EndGame");return true; }
+        if(victory1 || victory2){ return true; }
 
         return false;
     }
+
+    /**
+     * It counts influence on the selected island and return the team with higher influence.
+     * @param islandRef is the number of the island.
+     * @param noColor is the color of the special 9's effect.
+     * @param playerRef is the number of the player.
+     * @return the stronger team.
+     */
     protected Team highInfluenceTeam(int islandRef, int noColor, int playerRef) {
         int[] studentOnIsland = new int[]{0,0,0,0,0};
         int professorOwner;
@@ -86,6 +104,14 @@ public abstract class RoundStrategy {
         return highInfluenceTeam;
     }
 
+    /**
+     * Compare the influence of teams and return the highest.
+     * @param team1 First team.
+     * @param influenceTeam1 number of influence of team 1.
+     * @param team2 Second team.
+     * @param influenceTeam2 number of influence of team 2.
+     * @return the stronger team.
+     */
     private Team compareInfluenceTeam(Team team1, int influenceTeam1, Team team2, int influenceTeam2){
         if(influenceTeam1 == 0) {
             if (influenceTeam2 != 0) return team2;
@@ -98,6 +124,15 @@ public abstract class RoundStrategy {
         else return team2;
     }
 
+
+    /**
+     * It checks the max movement that player can choose and check if its choose is valid. Then, it moves mother nature and start conquestIsland.
+     * @param queueRef is the number of the player in the queue.
+     * @param desiredMovement is the number of steps.
+     * @param ref is the reference to a parameter used for special.
+     * @return if game is over.
+     * @throws NotAllowedException if chosen steps is not valid.
+     */
     public boolean moveMotherNature(int queueRef, int desiredMovement, int ref) throws NotAllowedException {
         int maxMovement;
         boolean victory = false;
@@ -117,6 +152,16 @@ public abstract class RoundStrategy {
         return victory;
     }
 
+
+    /**
+     * It checks if chosen parameters are valid. Then if player want to move it in school it transfer student from entrane to table. Else if
+     * in school is false remove the student from school's entrance and put it on the chosen island.
+     * @param playerRef is the number of the player.
+     * @param colour is the color of the student chosen.
+     * @param inSchool true if it's in school or false if it's on island.
+     * @param islandRef is the number of the island.
+     * @throws NotAllowedException if chosen parameters are not valid.
+     */
     public void moveStudent(int playerRef, int colour, boolean inSchool, int islandRef) throws NotAllowedException{ //da cambiare e spezzare in due
         if(!inSchool){
             if(islandRef < 0 || islandRef >= islandsManager.getIslandsSize()) throw new NotAllowedException();

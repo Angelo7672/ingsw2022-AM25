@@ -1,7 +1,8 @@
 package it.polimi.ingsw.client.message;
 
-import java.util.ArrayList;
-
+/**
+ * UseSpecial contains the chosen number of special.
+ */
 public class UseSpecial implements Message{
     private final int indexSpecial;
 

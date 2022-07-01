@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.message;
 
+/**
+ * SetupConnection contains the chosen nickname and character.
+ */
 public class SetupConnection implements  Message{
     private final String nickname;
     private final String character;

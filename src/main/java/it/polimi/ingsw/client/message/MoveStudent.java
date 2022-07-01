@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.message;
 
+/**
+ * MoveStudent contains the chosen student to be moved and the place where it has to be moved..
+ */
 public class MoveStudent implements Message{
     private final int color;
     private final boolean inSchool;

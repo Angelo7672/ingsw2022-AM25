@@ -270,7 +270,7 @@ public class Receiver extends Thread {
                 //socket.setSoTimeout(15000);
                 if (tmp instanceof PongAnswer) {
                     //socket.setSoTimeout(15000);
-                    //pongListener.notifyPong();
+                    pongListener.notifyPong();
                 }
                 else if (tmp instanceof GameInfoAnswer) gameMessage(tmp);
                 else if (tmp instanceof UserInfoAnswer) {

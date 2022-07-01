@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.message;
 
+/**
+ * SetupGame contains the chosen number of player and if the game will be in expert mode.
+ */
 public class SetupGame implements Message{
     private final int playersNumber;
     private final boolean expertMode;
