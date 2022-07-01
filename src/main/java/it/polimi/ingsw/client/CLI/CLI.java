@@ -90,6 +90,7 @@ public class CLI implements Runnable, UserInfoListener, TowersListener, Professo
             clientDisconnected = true;
             System.out.println();
             System.out.print(ANSI_RED+SPACE+"Server Sold Out, game over."+ANSI_RESET);
+            System.exit(-1);
             try {
                 socket.close();
                 scanner.close();

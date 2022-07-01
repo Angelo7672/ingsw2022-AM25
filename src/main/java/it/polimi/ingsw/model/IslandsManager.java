@@ -190,6 +190,9 @@ public class IslandsManager {
                     this.studentListener.notifyStudentsChange(2, pos, i, islands.get(pos).getNumStudents(i));
                 }
             }
+            for (int i = 0; i < islands.get(posTemp).getInhibited(); i++) {
+                islands.get(pos).increaseInhibited();
+            }
             islands.get(pos).incTowerValue(islands.get(posTemp).getTowerValue()); //tower value increase
             this.towersListener.notifyTowersChange(1,pos, islands.get(pos).getTowerValue());
             islands.remove(posTemp); //island delete
