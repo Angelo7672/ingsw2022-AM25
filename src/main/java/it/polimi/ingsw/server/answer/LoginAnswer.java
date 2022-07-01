@@ -9,6 +9,10 @@ public class LoginAnswer implements Answer{
     private final String message;
     ArrayList<String> characterAlreadyChosen;
 
+    /**
+     * Create an answer contains already chosen characters.
+     * @param characterAlreadyChosen already chosen characters;
+     */
     public LoginAnswer(ArrayList<String> characterAlreadyChosen){
         this.message = "Login!";
         this.characterAlreadyChosen = characterAlreadyChosen;

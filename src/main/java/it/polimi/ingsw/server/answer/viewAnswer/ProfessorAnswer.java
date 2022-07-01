@@ -10,6 +10,12 @@ public class ProfessorAnswer implements Answer {
     private final boolean professor;
     private final int color;
 
+    /**
+     * Create an answer contains in info about holding or not a professor of a color by a player.
+     * @param playerRef player reference;
+     * @param professor professor reference;
+     * @param color color reference;
+     */
     public ProfessorAnswer(int playerRef, boolean professor, int color) {
         this.playerRef = playerRef;
         this.professor = professor;

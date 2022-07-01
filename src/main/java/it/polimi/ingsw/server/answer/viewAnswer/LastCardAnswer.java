@@ -9,6 +9,11 @@ public class LastCardAnswer implements Answer {
     private final int playerRef;
     private final String card;
 
+    /**
+     * Create an answer containing the last card played from a player.
+     * @param playerRef player reference;
+     * @param card card played;
+     */
     public LastCardAnswer(int playerRef, String card) {
         this.playerRef = playerRef;
         this.card = card;

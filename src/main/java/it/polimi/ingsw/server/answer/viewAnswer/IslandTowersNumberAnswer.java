@@ -9,6 +9,11 @@ public class IslandTowersNumberAnswer implements Answer {
     private final int islandRef;
     private final int towersNumber;
 
+    /**
+     * Create an island with a number of towers.
+     * @param islandRef island reference;
+     * @param towersNumber towers number;
+     */
     public IslandTowersNumberAnswer(int islandRef, int towersNumber) {
         this.islandRef = islandRef;
         this.towersNumber = towersNumber;

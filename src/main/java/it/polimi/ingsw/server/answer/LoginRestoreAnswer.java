@@ -6,6 +6,9 @@ package it.polimi.ingsw.server.answer;
 public class LoginRestoreAnswer implements Answer{
     private final String msg;
 
+    /**
+     * Create an answer contains a message "Insert nickname for restore last game".
+     */
     public LoginRestoreAnswer() { this.msg = "Insert nickname for restore last game"; }
     public String getMsg() { return msg; }
 }

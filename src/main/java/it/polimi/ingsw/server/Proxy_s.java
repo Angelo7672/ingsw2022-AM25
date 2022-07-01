@@ -21,8 +21,8 @@ public class Proxy_s implements Exit {
     private int limiter;
     private int clientReady;
     private int start;
-    private boolean first;
-    private boolean restoreGame;
+    private boolean first;  //for first player
+    private boolean restoreGame;    //if we're restoring a game
 
     /**
      * Create ServerSocket.

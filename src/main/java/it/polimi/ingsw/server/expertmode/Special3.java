@@ -14,6 +14,10 @@ public class Special3 implements Special{
     private Special3Message special3Msg;
     private final Entrance server;
 
+    /**
+     * Create Special3.
+     * @param server server reference;
+     */
     public Special3(Entrance server) { this.server = server; }
 
     /**

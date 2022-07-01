@@ -13,6 +13,9 @@ import java.util.List;
 public class SpecialDeck {
     private final List<Special> specialsOfThisMatch;
 
+    /**
+     * Create a special deck.
+     */
     public SpecialDeck(){ this.specialsOfThisMatch = new ArrayList<>(); }
 
     /**

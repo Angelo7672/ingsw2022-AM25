@@ -9,6 +9,11 @@ public class SchoolTowersAnswer implements Answer {
     private final int playerRef;
     private final int towers;
 
+    /**
+     * Create an answer contains info about the number of towers in a school.
+     * @param playerRef player reference;
+     * @param towers towers number;
+     */
     public SchoolTowersAnswer(int playerRef, int towers) {
         this.playerRef = playerRef;
         this.towers = towers;

@@ -20,7 +20,6 @@ import java.util.Scanner;
 public class Server implements Entrance,ControllerServer{
     private ServerController controller;
     private final Exit proxy;
-    private ExpertGame expertGame;
     private final String filename;
 
     /**
@@ -112,10 +111,7 @@ public class Server implements Entrance,ControllerServer{
      * Set Server ready for a game in expert mode.
      */
     @Override
-    public void setExpertGame(){
-        expertGame = new ExpertGame(this, controller.getExtractedSpecials());
-        proxy.setExpertGame(expertGame);
-    }
+    public void setExpertGame(){ proxy.setExpertGame(new ExpertGame(this, controller.getExtractedSpecials())); }
 
     /**
      * Check if nickname entered is one of the last saved game.
