@@ -13,7 +13,7 @@ Rules: https://www.craniocreations.it/wp-content/uploads/2021/11/Eriantys_ITA_ba
 
 ## How to run
 #### Java version: 17 <br>
-To run the jar via terminal, you need to go to the directory where the jat file is locate and use the command: java -jar AM25-1.0.jar <br>
+To run the jar via terminal, you need to go to the directory where the jar file is locate and use the command: java -jar AM25-1.0.jar <br>
 Select 0 to start the Server, 1 to run the Client with CLI or GUI <br> <br>
 Note: when starting the GUI, it will take some time to load 
 
