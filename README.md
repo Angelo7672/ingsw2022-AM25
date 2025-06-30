@@ -9,7 +9,7 @@
 <img src="https://github.com/Angelo7672/ingsw2022-AM25/blob/main/src/main/resources/graphics/eriantys_banner2.jpg" width=300px height=162 px align="right" /> <br>
 The project is the final test of the Software Engineering course held at Politecnico di Milano <br> 
 **Final Score**: 30/30 cum laude <br> <br>
-It consists of a Java version of the board game [*Eriantys*](https://www.craniocreations.it/prodotto/eriantys/), by CranioCreations (the rules of the game can be found [here](https://www.craniocreations.it/wp-content/uploads/2021/11/Eriantys_ITA_bassa.pdf)). <br>
+It consists of a Java version of the board game [*Eriantys*](https://www.craniocreations.it/prodotto/eriantys/), by CranioCreations (the rules of the game can be found [here](https://www.studiogiochi.com/files/studiogiochi.com/2022/02/Eriantys_Rules_EN_low.pdf)). <br>
 This repository includes the source code of the game and of the unity tests, and the executable versione of the game (.jar), plus all the information regarding the implementation.
 
 ## How to run
